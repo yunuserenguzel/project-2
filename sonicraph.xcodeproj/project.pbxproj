@@ -1,0 +1,825 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE15963D1814175200929D1D /* SNCCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE15963C1814175200929D1D /* SNCCameraViewController.m */; };
+		AE15964118141A7E00929D1D /* SonicraphMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE15964018141A7E00929D1D /* SonicraphMediaManager.m */; };
+		AE15965218141A9F00929D1D /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15964718141A9F00929D1D /* libmp3lame.a */; };
+		AE15965318141A9F00929D1D /* AudioConverter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15964918141A9F00929D1D /* AudioConverter.a */; };
+		AE15965418141A9F00929D1D /* AudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = AE15964B18141A9F00929D1D /* AudioConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AE15965518141A9F00929D1D /* AudioConverterKitforiOS.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AE15964D18141A9F00929D1D /* AudioConverterKitforiOS.pdf */; };
+		AE15965618141A9F00929D1D /* MP3Converter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15964F18141A9F00929D1D /* MP3Converter.a */; };
+		AE15965718141A9F00929D1D /* MP3Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = AE15965118141A9F00929D1D /* MP3Converter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AE15965A18141ABA00929D1D /* UIImage+scaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = AE15965918141ABA00929D1D /* UIImage+scaleToSize.m */; };
+		AE15966718142C6300929D1D /* Camera Button.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15965E18142C6300929D1D /* Camera Button.png */; };
+		AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15965F18142C6300929D1D /* Camera Flash@2x.png */; };
+		AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966018142C6300929D1D /* Camera Front and Back.png */; };
+		AE15966A18142C6300929D1D /* Cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966118142C6300929D1D /* Cancel.png */; };
+		AE15966B18142C6300929D1D /* Film.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966218142C6300929D1D /* Film.png */; };
+		AE15966C18142C6300929D1D /* Option.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966318142C6300929D1D /* Option.png */; };
+		AE15966D18142C6300929D1D /* Polaroid.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966418142C6300929D1D /* Polaroid.png */; };
+		AE15966E18142C6300929D1D /* Sound Bar Handle.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966518142C6300929D1D /* Sound Bar Handle.png */; };
+		AE15966F18142C6300929D1D /* Sound Bar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966618142C6300929D1D /* Sound Bar.png */; };
+		AE159672181BE55A00929D1D /* SNCPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE159671181BE55A00929D1D /* SNCPreviewViewController.m */; };
+		AE159676181BE59700929D1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE159675181BE59700929D1D /* Sonic.m */; };
+		AE15967B181BE95E00929D1D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967A181BE95E00929D1D /* AVFoundation.framework */; };
+		AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967C181BF64800929D1D /* AudioToolbox.framework */; };
+		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
+		AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9D1801A35D000DF866 /* CoreGraphics.framework */; };
+		AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9F1801A35D000DF866 /* UIKit.framework */; };
+		AED56EA21801A35D000DF866 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56EA11801A35D000DF866 /* CoreData.framework */; };
+		AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED56EA61801A35D000DF866 /* InfoPlist.strings */; };
+		AED56EAA1801A35D000DF866 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EA91801A35D000DF866 /* main.m */; };
+		AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EAD1801A35D000DF866 /* SNCAppDelegate.m */; };
+		AED56EB11801A35D000DF866 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED56EAF1801A35D000DF866 /* Main.storyboard */; };
+		AED56EB41801A35D000DF866 /* sonicraph.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AED56EB21801A35D000DF866 /* sonicraph.xcdatamodeld */; };
+		AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED56EBB1801A35D000DF866 /* Images.xcassets */; };
+		AED56EC31801A35D000DF866 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56EC21801A35D000DF866 /* XCTest.framework */; };
+		AED56EC41801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
+		AED56EC51801A35D000DF866 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9F1801A35D000DF866 /* UIKit.framework */; };
+		AED56EC61801A35D000DF866 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56EA11801A35D000DF866 /* CoreData.framework */; };
+		AED56ECE1801A35D000DF866 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AED56ECC1801A35D000DF866 /* InfoPlist.strings */; };
+		AED56ED01801A35D000DF866 /* sonicraphTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56ECF1801A35D000DF866 /* sonicraphTests.m */; };
+		AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EDC1801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m */; };
+		AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EDE1801A39F000DF866 /* NSData+MKBase64.m */; };
+		AED56EF31801A39F000DF866 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EE01801A39F000DF866 /* NSDate+RFC1123.m */; };
+		AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EE21801A39F000DF866 /* NSDictionary+RequestEncoding.m */; };
+		AED56EF51801A39F000DF866 /* NSString+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EE41801A39F000DF866 /* NSString+MKNetworkKitAdditions.m */; };
+		AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EE61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m */; };
+		AED56EF71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EE81801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m */; };
+		AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EEA1801A39F000DF866 /* MKNetworkEngine.m */; };
+		AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EED1801A39F000DF866 /* MKNetworkOperation.m */; };
+		AED56EFA1801A39F000DF866 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EF01801A39F000DF866 /* Reachability.m */; };
+		AED56F011801A6CC000DF866 /* SNCAPIConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56F001801A6CC000DF866 /* SNCAPIConnector.m */; };
+		AED56F081801B425000DF866 /* SNCAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56F071801B425000DF866 /* SNCAPITest.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AED56EC71801A35D000DF866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AED56E901801A35D000DF866 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AED56E971801A35D000DF866;
+			remoteInfo = sonicraph;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AE15963B1814175200929D1D /* SNCCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCCameraViewController.h; path = viewcontrollers/SNCCameraViewController.h; sourceTree = "<group>"; };
+		AE15963C1814175200929D1D /* SNCCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SNCCameraViewController.m; path = viewcontrollers/SNCCameraViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		AE15963F18141A7E00929D1D /* SonicraphMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SonicraphMediaManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		AE15964018141A7E00929D1D /* SonicraphMediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SonicraphMediaManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		AE15964518141A9F00929D1D /* lame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
+		AE15964718141A9F00929D1D /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmp3lame.a; sourceTree = "<group>"; };
+		AE15964818141A9F00929D1D /* AudioConverter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AudioConverter-Prefix.pch"; sourceTree = "<group>"; };
+		AE15964918141A9F00929D1D /* AudioConverter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AudioConverter.a; sourceTree = "<group>"; };
+		AE15964A18141A9F00929D1D /* AudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioConverter.h; sourceTree = "<group>"; };
+		AE15964B18141A9F00929D1D /* AudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioConverter.m; sourceTree = "<group>"; };
+		AE15964D18141A9F00929D1D /* AudioConverterKitforiOS.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AudioConverterKitforiOS.pdf; sourceTree = "<group>"; };
+		AE15964E18141A9F00929D1D /* MP3Converter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MP3Converter-Prefix.pch"; sourceTree = "<group>"; };
+		AE15964F18141A9F00929D1D /* MP3Converter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = MP3Converter.a; sourceTree = "<group>"; };
+		AE15965018141A9F00929D1D /* MP3Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MP3Converter.h; sourceTree = "<group>"; };
+		AE15965118141A9F00929D1D /* MP3Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP3Converter.m; sourceTree = "<group>"; };
+		AE15965818141ABA00929D1D /* UIImage+scaleToSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+scaleToSize.h"; sourceTree = "<group>"; };
+		AE15965918141ABA00929D1D /* UIImage+scaleToSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+scaleToSize.m"; sourceTree = "<group>"; };
+		AE15965E18142C6300929D1D /* Camera Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Button.png"; sourceTree = "<group>"; };
+		AE15965F18142C6300929D1D /* Camera Flash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Flash@2x.png"; sourceTree = "<group>"; };
+		AE15966018142C6300929D1D /* Camera Front and Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Front and Back.png"; sourceTree = "<group>"; };
+		AE15966118142C6300929D1D /* Cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cancel.png; sourceTree = "<group>"; };
+		AE15966218142C6300929D1D /* Film.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Film.png; sourceTree = "<group>"; };
+		AE15966318142C6300929D1D /* Option.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Option.png; sourceTree = "<group>"; };
+		AE15966418142C6300929D1D /* Polaroid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Polaroid.png; sourceTree = "<group>"; };
+		AE15966518142C6300929D1D /* Sound Bar Handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sound Bar Handle.png"; sourceTree = "<group>"; };
+		AE15966618142C6300929D1D /* Sound Bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sound Bar.png"; sourceTree = "<group>"; };
+		AE159670181BE55A00929D1D /* SNCPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCPreviewViewController.h; path = viewcontrollers/SNCPreviewViewController.h; sourceTree = "<group>"; };
+		AE159671181BE55A00929D1D /* SNCPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNCPreviewViewController.m; path = viewcontrollers/SNCPreviewViewController.m; sourceTree = "<group>"; };
+		AE159674181BE59700929D1D /* Sonic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sonic.h; sourceTree = "<group>"; };
+		AE159675181BE59700929D1D /* Sonic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sonic.m; sourceTree = "<group>"; };
+		AE159679181BE70D00929D1D /* TypeDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypeDefs.h; path = common/TypeDefs.h; sourceTree = "<group>"; };
+		AE15967A181BE95E00929D1D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AE15967C181BF64800929D1D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		AED56E981801A35D000DF866 /* sonicraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonicraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AED56E9B1801A35D000DF866 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AED56E9D1801A35D000DF866 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		AED56E9F1801A35D000DF866 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		AED56EA11801A35D000DF866 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		AED56EA51801A35D000DF866 /* sonicraph-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "sonicraph-Info.plist"; sourceTree = "<group>"; };
+		AED56EA71801A35D000DF866 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AED56EA91801A35D000DF866 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AED56EAB1801A35D000DF866 /* sonicraph-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sonicraph-Prefix.pch"; sourceTree = "<group>"; };
+		AED56EAC1801A35D000DF866 /* SNCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SNCAppDelegate.h; sourceTree = "<group>"; };
+		AED56EAD1801A35D000DF866 /* SNCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SNCAppDelegate.m; sourceTree = "<group>"; };
+		AED56EB01801A35D000DF866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AED56EB31801A35D000DF866 /* sonicraph.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = sonicraph.xcdatamodel; sourceTree = "<group>"; };
+		AED56EBB1801A35D000DF866 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AED56EC11801A35D000DF866 /* sonicraphTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sonicraphTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AED56EC21801A35D000DF866 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		AED56ECB1801A35D000DF866 /* sonicraphTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "sonicraphTests-Info.plist"; sourceTree = "<group>"; };
+		AED56ECD1801A35D000DF866 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AED56ECF1801A35D000DF866 /* sonicraphTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sonicraphTests.m; sourceTree = "<group>"; };
+		AED56EDB1801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAlert+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
+		AED56EDC1801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
+		AED56EDD1801A39F000DF866 /* NSData+MKBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MKBase64.h"; sourceTree = "<group>"; };
+		AED56EDE1801A39F000DF866 /* NSData+MKBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MKBase64.m"; sourceTree = "<group>"; };
+		AED56EDF1801A39F000DF866 /* NSDate+RFC1123.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RFC1123.h"; sourceTree = "<group>"; };
+		AED56EE01801A39F000DF866 /* NSDate+RFC1123.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RFC1123.m"; sourceTree = "<group>"; };
+		AED56EE11801A39F000DF866 /* NSDictionary+RequestEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RequestEncoding.h"; sourceTree = "<group>"; };
+		AED56EE21801A39F000DF866 /* NSDictionary+RequestEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RequestEncoding.m"; sourceTree = "<group>"; };
+		AED56EE31801A39F000DF866 /* NSString+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
+		AED56EE41801A39F000DF866 /* NSString+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
+		AED56EE51801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
+		AED56EE61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
+		AED56EE71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
+		AED56EE81801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
+		AED56EE91801A39F000DF866 /* MKNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNetworkEngine.h; sourceTree = "<group>"; };
+		AED56EEA1801A39F000DF866 /* MKNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNetworkEngine.m; sourceTree = "<group>"; };
+		AED56EEB1801A39F000DF866 /* MKNetworkKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNetworkKit.h; sourceTree = "<group>"; };
+		AED56EEC1801A39F000DF866 /* MKNetworkOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNetworkOperation.h; sourceTree = "<group>"; };
+		AED56EED1801A39F000DF866 /* MKNetworkOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNetworkOperation.m; sourceTree = "<group>"; };
+		AED56EEF1801A39F000DF866 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		AED56EF01801A39F000DF866 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		AED56EFF1801A6CC000DF866 /* SNCAPIConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCAPIConnector.h; sourceTree = "<group>"; };
+		AED56F001801A6CC000DF866 /* SNCAPIConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCAPIConnector.m; sourceTree = "<group>"; };
+		AED56F061801B425000DF866 /* SNCAPITest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCAPITest.h; path = test/SNCAPITest.h; sourceTree = "<group>"; };
+		AED56F071801B425000DF866 /* SNCAPITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SNCAPITest.m; path = test/SNCAPITest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AED56E951801A35D000DF866 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */,
+				AE15967B181BE95E00929D1D /* AVFoundation.framework in Frameworks */,
+				AE15965218141A9F00929D1D /* libmp3lame.a in Frameworks */,
+				AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */,
+				AED56EA21801A35D000DF866 /* CoreData.framework in Frameworks */,
+				AE15965618141A9F00929D1D /* MP3Converter.a in Frameworks */,
+				AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */,
+				AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */,
+				AE15965318141A9F00929D1D /* AudioConverter.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AED56EBE1801A35D000DF866 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AED56EC31801A35D000DF866 /* XCTest.framework in Frameworks */,
+				AED56EC61801A35D000DF866 /* CoreData.framework in Frameworks */,
+				AED56EC51801A35D000DF866 /* UIKit.framework in Frameworks */,
+				AED56EC41801A35D000DF866 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE15963A181416EB00929D1D /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AE15963B1814175200929D1D /* SNCCameraViewController.h */,
+				AE15963C1814175200929D1D /* SNCCameraViewController.m */,
+				AE159670181BE55A00929D1D /* SNCPreviewViewController.h */,
+				AE159671181BE55A00929D1D /* SNCPreviewViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		AE15963E18141A6B00929D1D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				AE15963F18141A7E00929D1D /* SonicraphMediaManager.h */,
+				AE15964018141A7E00929D1D /* SonicraphMediaManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		AE15964218141A9F00929D1D /* AudioConverterKit */ = {
+			isa = PBXGroup;
+			children = (
+				AE15964318141A9F00929D1D /* 3rd-party */,
+				AE15964818141A9F00929D1D /* AudioConverter-Prefix.pch */,
+				AE15964918141A9F00929D1D /* AudioConverter.a */,
+				AE15964A18141A9F00929D1D /* AudioConverter.h */,
+				AE15964B18141A9F00929D1D /* AudioConverter.m */,
+				AE15964C18141A9F00929D1D /* Documentation */,
+				AE15964E18141A9F00929D1D /* MP3Converter-Prefix.pch */,
+				AE15964F18141A9F00929D1D /* MP3Converter.a */,
+				AE15965018141A9F00929D1D /* MP3Converter.h */,
+				AE15965118141A9F00929D1D /* MP3Converter.m */,
+			);
+			path = AudioConverterKit;
+			sourceTree = "<group>";
+		};
+		AE15964318141A9F00929D1D /* 3rd-party */ = {
+			isa = PBXGroup;
+			children = (
+				AE15964418141A9F00929D1D /* inc */,
+				AE15964618141A9F00929D1D /* lib */,
+			);
+			path = "3rd-party";
+			sourceTree = "<group>";
+		};
+		AE15964418141A9F00929D1D /* inc */ = {
+			isa = PBXGroup;
+			children = (
+				AE15964518141A9F00929D1D /* lame.h */,
+			);
+			path = inc;
+			sourceTree = "<group>";
+		};
+		AE15964618141A9F00929D1D /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				AE15964718141A9F00929D1D /* libmp3lame.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		AE15964C18141A9F00929D1D /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				AE15964D18141A9F00929D1D /* AudioConverterKitforiOS.pdf */,
+			);
+			path = Documentation;
+			sourceTree = "<group>";
+		};
+		AE15965C18142C6300929D1D /* images */ = {
+			isa = PBXGroup;
+			children = (
+				AE15965D18142C6300929D1D /* sonicraphcameramodeelementspng */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		AE15965D18142C6300929D1D /* sonicraphcameramodeelementspng */ = {
+			isa = PBXGroup;
+			children = (
+				AE15965E18142C6300929D1D /* Camera Button.png */,
+				AE15965F18142C6300929D1D /* Camera Flash@2x.png */,
+				AE15966018142C6300929D1D /* Camera Front and Back.png */,
+				AE15966118142C6300929D1D /* Cancel.png */,
+				AE15966218142C6300929D1D /* Film.png */,
+				AE15966318142C6300929D1D /* Option.png */,
+				AE15966418142C6300929D1D /* Polaroid.png */,
+				AE15966518142C6300929D1D /* Sound Bar Handle.png */,
+				AE15966618142C6300929D1D /* Sound Bar.png */,
+			);
+			path = sonicraphcameramodeelementspng;
+			sourceTree = "<group>";
+		};
+		AE159673181BE58800929D1D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AE159674181BE59700929D1D /* Sonic.h */,
+				AE159675181BE59700929D1D /* Sonic.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		AE159677181BE68500929D1D /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				AE159679181BE70D00929D1D /* TypeDefs.h */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		AED56E8F1801A35D000DF866 = {
+			isa = PBXGroup;
+			children = (
+				AED56EA31801A35D000DF866 /* sonicraph */,
+				AED56EC91801A35D000DF866 /* sonicraphTests */,
+				AED56E9A1801A35D000DF866 /* Frameworks */,
+				AED56E991801A35D000DF866 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AED56E991801A35D000DF866 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AED56E981801A35D000DF866 /* sonicraph.app */,
+				AED56EC11801A35D000DF866 /* sonicraphTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AED56E9A1801A35D000DF866 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE15967C181BF64800929D1D /* AudioToolbox.framework */,
+				AE15967A181BE95E00929D1D /* AVFoundation.framework */,
+				AED56E9B1801A35D000DF866 /* Foundation.framework */,
+				AED56E9D1801A35D000DF866 /* CoreGraphics.framework */,
+				AED56E9F1801A35D000DF866 /* UIKit.framework */,
+				AED56EA11801A35D000DF866 /* CoreData.framework */,
+				AED56EC21801A35D000DF866 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AED56EA31801A35D000DF866 /* sonicraph */ = {
+			isa = PBXGroup;
+			children = (
+				AE159677181BE68500929D1D /* Common */,
+				AE159673181BE58800929D1D /* Models */,
+				AE15963E18141A6B00929D1D /* Managers */,
+				AE15963A181416EB00929D1D /* View Controllers */,
+				AED56F051801B409000DF866 /* test */,
+				AED56EFE1801A6CC000DF866 /* lib */,
+				AE15964218141A9F00929D1D /* AudioConverterKit */,
+				AED56ED91801A39F000DF866 /* MKNetworkKit */,
+				AE15965C18142C6300929D1D /* images */,
+				AED56EAC1801A35D000DF866 /* SNCAppDelegate.h */,
+				AED56EAD1801A35D000DF866 /* SNCAppDelegate.m */,
+				AED56EAF1801A35D000DF866 /* Main.storyboard */,
+				AED56EBB1801A35D000DF866 /* Images.xcassets */,
+				AED56EB21801A35D000DF866 /* sonicraph.xcdatamodeld */,
+				AED56EA41801A35D000DF866 /* Supporting Files */,
+			);
+			path = sonicraph;
+			sourceTree = "<group>";
+		};
+		AED56EA41801A35D000DF866 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AED56EA51801A35D000DF866 /* sonicraph-Info.plist */,
+				AED56EA61801A35D000DF866 /* InfoPlist.strings */,
+				AED56EA91801A35D000DF866 /* main.m */,
+				AED56EAB1801A35D000DF866 /* sonicraph-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AED56EC91801A35D000DF866 /* sonicraphTests */ = {
+			isa = PBXGroup;
+			children = (
+				AED56ECF1801A35D000DF866 /* sonicraphTests.m */,
+				AED56ECA1801A35D000DF866 /* Supporting Files */,
+			);
+			path = sonicraphTests;
+			sourceTree = "<group>";
+		};
+		AED56ECA1801A35D000DF866 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AED56ECB1801A35D000DF866 /* sonicraphTests-Info.plist */,
+				AED56ECC1801A35D000DF866 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AED56ED91801A39F000DF866 /* MKNetworkKit */ = {
+			isa = PBXGroup;
+			children = (
+				AED56EDA1801A39F000DF866 /* Categories */,
+				AED56EE91801A39F000DF866 /* MKNetworkEngine.h */,
+				AED56EEA1801A39F000DF866 /* MKNetworkEngine.m */,
+				AED56EEB1801A39F000DF866 /* MKNetworkKit.h */,
+				AED56EEC1801A39F000DF866 /* MKNetworkOperation.h */,
+				AED56EED1801A39F000DF866 /* MKNetworkOperation.m */,
+				AED56EEE1801A39F000DF866 /* Reachability */,
+			);
+			path = MKNetworkKit;
+			sourceTree = "<group>";
+		};
+		AED56EDA1801A39F000DF866 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				AED56EDB1801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.h */,
+				AED56EDC1801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m */,
+				AED56EDD1801A39F000DF866 /* NSData+MKBase64.h */,
+				AED56EDE1801A39F000DF866 /* NSData+MKBase64.m */,
+				AED56EDF1801A39F000DF866 /* NSDate+RFC1123.h */,
+				AED56EE01801A39F000DF866 /* NSDate+RFC1123.m */,
+				AED56EE11801A39F000DF866 /* NSDictionary+RequestEncoding.h */,
+				AED56EE21801A39F000DF866 /* NSDictionary+RequestEncoding.m */,
+				AED56EE31801A39F000DF866 /* NSString+MKNetworkKitAdditions.h */,
+				AED56EE41801A39F000DF866 /* NSString+MKNetworkKitAdditions.m */,
+				AED56EE51801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.h */,
+				AED56EE61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m */,
+				AED56EE71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.h */,
+				AED56EE81801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		AED56EEE1801A39F000DF866 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				AED56EEF1801A39F000DF866 /* Reachability.h */,
+				AED56EF01801A39F000DF866 /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
+		AED56EFE1801A6CC000DF866 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				AE15965818141ABA00929D1D /* UIImage+scaleToSize.h */,
+				AE15965918141ABA00929D1D /* UIImage+scaleToSize.m */,
+				AED56EFF1801A6CC000DF866 /* SNCAPIConnector.h */,
+				AED56F001801A6CC000DF866 /* SNCAPIConnector.m */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		AED56F051801B409000DF866 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				AED56F061801B425000DF866 /* SNCAPITest.h */,
+				AED56F071801B425000DF866 /* SNCAPITest.m */,
+			);
+			name = test;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AED56E971801A35D000DF866 /* sonicraph */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AED56ED31801A35D000DF866 /* Build configuration list for PBXNativeTarget "sonicraph" */;
+			buildPhases = (
+				AED56E941801A35D000DF866 /* Sources */,
+				AED56E951801A35D000DF866 /* Frameworks */,
+				AED56E961801A35D000DF866 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sonicraph;
+			productName = sonicraph;
+			productReference = AED56E981801A35D000DF866 /* sonicraph.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AED56EC01801A35D000DF866 /* sonicraphTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AED56ED61801A35D000DF866 /* Build configuration list for PBXNativeTarget "sonicraphTests" */;
+			buildPhases = (
+				AED56EBD1801A35D000DF866 /* Sources */,
+				AED56EBE1801A35D000DF866 /* Frameworks */,
+				AED56EBF1801A35D000DF866 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AED56EC81801A35D000DF866 /* PBXTargetDependency */,
+			);
+			name = sonicraphTests;
+			productName = sonicraphTests;
+			productReference = AED56EC11801A35D000DF866 /* sonicraphTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AED56E901801A35D000DF866 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SNC;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Yunus Eren Guzel";
+				TargetAttributes = {
+					AED56EC01801A35D000DF866 = {
+						TestTargetID = AED56E971801A35D000DF866;
+					};
+				};
+			};
+			buildConfigurationList = AED56E931801A35D000DF866 /* Build configuration list for PBXProject "sonicraph" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AED56E8F1801A35D000DF866;
+			productRefGroup = AED56E991801A35D000DF866 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AED56E971801A35D000DF866 /* sonicraph */,
+				AED56EC01801A35D000DF866 /* sonicraphTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AED56E961801A35D000DF866 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE15966B18142C6300929D1D /* Film.png in Resources */,
+				AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */,
+				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
+				AE15966718142C6300929D1D /* Camera Button.png in Resources */,
+				AE15966A18142C6300929D1D /* Cancel.png in Resources */,
+				AE15966E18142C6300929D1D /* Sound Bar Handle.png in Resources */,
+				AED56EB11801A35D000DF866 /* Main.storyboard in Resources */,
+				AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */,
+				AE15966D18142C6300929D1D /* Polaroid.png in Resources */,
+				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,
+				AE15966C18142C6300929D1D /* Option.png in Resources */,
+				AE15965518141A9F00929D1D /* AudioConverterKitforiOS.pdf in Resources */,
+				AE15966F18142C6300929D1D /* Sound Bar.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AED56EBF1801A35D000DF866 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AED56ECE1801A35D000DF866 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AED56E941801A35D000DF866 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE15965718141A9F00929D1D /* MP3Converter.m in Sources */,
+				AED56EAA1801A35D000DF866 /* main.m in Sources */,
+				AE15965A18141ABA00929D1D /* UIImage+scaleToSize.m in Sources */,
+				AE159676181BE59700929D1D /* Sonic.m in Sources */,
+				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
+				AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */,
+				AED56EF71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
+				AED56EFA1801A39F000DF866 /* Reachability.m in Sources */,
+				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
+				AE15964118141A7E00929D1D /* SonicraphMediaManager.m in Sources */,
+				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
+				AED56EB41801A35D000DF866 /* sonicraph.xcdatamodeld in Sources */,
+				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
+				AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */,
+				AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */,
+				AED56EF51801A39F000DF866 /* NSString+MKNetworkKitAdditions.m in Sources */,
+				AED56EF31801A39F000DF866 /* NSDate+RFC1123.m in Sources */,
+				AED56F081801B425000DF866 /* SNCAPITest.m in Sources */,
+				AE15963D1814175200929D1D /* SNCCameraViewController.m in Sources */,
+				AE159672181BE55A00929D1D /* SNCPreviewViewController.m in Sources */,
+				AED56F011801A6CC000DF866 /* SNCAPIConnector.m in Sources */,
+				AE15965418141A9F00929D1D /* AudioConverter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AED56EBD1801A35D000DF866 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AED56ED01801A35D000DF866 /* sonicraphTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AED56EC81801A35D000DF866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AED56E971801A35D000DF866 /* sonicraph */;
+			targetProxy = AED56EC71801A35D000DF866 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AED56EA61801A35D000DF866 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AED56EA71801A35D000DF866 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AED56EAF1801A35D000DF866 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AED56EB01801A35D000DF866 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		AED56ECC1801A35D000DF866 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AED56ECD1801A35D000DF866 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AED56ED11801A35D000DF866 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		AED56ED21801A35D000DF866 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AED56ED41801A35D000DF866 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = armv7;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
+				INFOPLIST_FILE = "sonicraph/sonicraph-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/yunuserenguzel/Documents/sonicraph/sonicraph/AudioConverterKit/3rd-party/lib",
+					/Users/yunuserenguzel/Documents/sonicraph/sonicraph/AudioConverterKit,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		AED56ED51801A35D000DF866 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = armv7;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
+				INFOPLIST_FILE = "sonicraph/sonicraph-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/yunuserenguzel/Documents/sonicraph/sonicraph/AudioConverterKit/3rd-party/lib",
+					/Users/yunuserenguzel/Documents/sonicraph/sonicraph/AudioConverterKit,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		AED56ED71801A35D000DF866 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/sonicraph.app/sonicraph";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "sonicraphTests/sonicraphTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		AED56ED81801A35D000DF866 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/sonicraph.app/sonicraph";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
+				INFOPLIST_FILE = "sonicraphTests/sonicraphTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AED56E931801A35D000DF866 /* Build configuration list for PBXProject "sonicraph" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AED56ED11801A35D000DF866 /* Debug */,
+				AED56ED21801A35D000DF866 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AED56ED31801A35D000DF866 /* Build configuration list for PBXNativeTarget "sonicraph" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AED56ED41801A35D000DF866 /* Debug */,
+				AED56ED51801A35D000DF866 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AED56ED61801A35D000DF866 /* Build configuration list for PBXNativeTarget "sonicraphTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AED56ED71801A35D000DF866 /* Debug */,
+				AED56ED81801A35D000DF866 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		AED56EB21801A35D000DF866 /* sonicraph.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				AED56EB31801A35D000DF866 /* sonicraph.xcdatamodel */,
+			);
+			currentVersion = AED56EB31801A35D000DF866 /* sonicraph.xcdatamodel */;
+			path = sonicraph.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = AED56E901801A35D000DF866 /* Project object */;
+}

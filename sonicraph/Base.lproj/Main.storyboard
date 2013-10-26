@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="esE-xM-snl">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+    </dependencies>
+    <scenes>
+        <!--Camera View Controller-->
+        <scene sceneID="mqD-3J-2Oq">
+            <objects>
+                <viewController id="TUs-6I-CiF" customClass="SNCCameraViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zwk-YQ-Yxs"/>
+                        <viewControllerLayoutGuide type="bottom" id="8et-3r-0XE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HIo-QE-Sxc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="GDs-1n-5VB"/>
+                    <connections>
+                        <segue destination="txA-4h-PAt" kind="push" identifier="PreviewSonicSegue" id="H9h-Ej-L8c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c0n-Ck-jzz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="317" y="-67"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Nli-MK-1Y4">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="esE-xM-snl" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vwm-YA-u75">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="TUs-6I-CiF" kind="relationship" relationship="rootViewController" id="Mdg-XV-6vt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="poz-eC-360" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-148" y="-64"/>
+        </scene>
+        <!--Preview View Controller-->
+        <scene sceneID="MlE-0O-PWD">
+            <objects>
+                <viewController id="txA-4h-PAt" customClass="SNCPreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="b0G-7V-JH6"/>
+                        <viewControllerLayoutGuide type="bottom" id="aVm-Zq-yAy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6Ew-KM-8SE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="m77-2D-ake"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ahw-zR-L87" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="745" y="-64"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

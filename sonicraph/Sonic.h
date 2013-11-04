@@ -10,6 +10,10 @@
 #define SonicklesUserDefaultsKey @"SonicklesUserDefaultsKey"
 #import "UIImage+scaleToSize.h"
 
+@class Sonic;
+
+typedef void (^SonicBlock) (Sonic* sonic, NSError* error);
+
 @interface Sonic : NSObject
 
 
@@ -33,4 +37,6 @@
 
 - (void) saveToFile;
 
+
+- (void)sonicFromCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock;
 @end

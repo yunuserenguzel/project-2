@@ -79,7 +79,7 @@
     CGFloat y = -rect.origin.y;
     [self drawInRect:CGRectMake(x, y, self.size.width, self.size.height)];
     UIImage* croppedImage = UIGraphicsGetImageFromCurrentImageContext();
-
+    UIGraphicsEndImageContext();
 //    CGImageRef imageRef = CGImageCreateWithImageInRect([self CGImage], rect);
 //    UIImage* croppedImage = [UIImage imageWithCGImage:imageRef];
 //    CGImageRelease(imageRef);

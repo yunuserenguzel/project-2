@@ -18,7 +18,9 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 @protocol SonicraphMediaProtocol <NSObject>
 
-- (void)manager:(SonicraphMediaManager*)manager audioDataReady:(NSData*)data;
+- (void) manager:(SonicraphMediaManager*)manager audioDataReady:(NSData*)data;
+
+- (void) audioRecordStartedForManager:(SonicraphMediaManager*)manager ;
 
 @end
 

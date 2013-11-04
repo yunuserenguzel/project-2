@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Sonic.h"
 #import <AVFoundation/AVFoundation.h>
+#import "NMRangeSlider.h"
 @interface SNCPreviewViewController : UIViewController <AVAudioPlayerDelegate>
 
 @property (nonatomic) Sonic* sonic;

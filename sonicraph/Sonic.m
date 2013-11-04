@@ -7,6 +7,7 @@
 //
 
 #import "Sonic.h"
+#import <AVFoundation/AVFoundation.h>
 
 @implementation Sonic
 
@@ -43,11 +44,14 @@
     return self;
 }
 
+- (NSString*) documents
+{
+    return [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+}
 
 - (void)saveToFile
 {
-    NSString* fileName = NSHomeDirectory();
-    fileName = [fileName stringByAppendingPathComponent:@"Documents"];
+    NSString* fileName = [self documents];
     fileName = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.snc",self.sonicId]];
 
     
@@ -69,5 +73,60 @@
     NSLog(@"fileName: %@\nfileSize: %@",fileName,fileSizeNumber);
 }
 
+
+- (void)sonicFromCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock
+{
+    float vocalStartMarker = from;
+    float vocalEndMarker = to;
+    
+    NSURL *audioFileInput = [NSURL fileURLWithPath:[[self documents] stringByAppendingPathComponent:@"inputAudio"]];
+    NSURL *audioFileOutput = [NSURL fileURLWithPath:[[self documents] stringByAppendingPathComponent:@"outputAudio"]];
+    
+    NSLog(@"%@",self.sound);
+    NSError* error;
+    [self.sound writeToURL:audioFileInput options:NSDataWritingFileProtectionComplete error:&error];
+    NSLog(@"error: %@, file: %@",error,[NSData dataWithContentsOfURL:audioFileInput]);
+    if (!audioFileInput || !audioFileOutput)
+    {
+        sonicBlock(nil,[[NSError alloc] init]);
+    }
+    
+    [[NSFileManager defaultManager] removeItemAtURL:audioFileOutput error:NULL];
+    AVAsset *asset = [AVAsset assetWithURL:audioFileInput];
+    
+    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset
+                                                                            presetName:AVAssetExportPresetAppleM4A];
+    
+    if (exportSession == nil)
+    {
+        sonicBlock(nil, [[NSError alloc] init]);
+    }
+    
+    CMTime startTime = CMTimeMake((int)(floor(vocalStartMarker * 100)), 100);
+    CMTime stopTime = CMTimeMake((int)(ceil(vocalEndMarker * 100)), 100);
+    CMTimeRange exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime);
+    
+    exportSession.outputURL = audioFileOutput;
+    exportSession.outputFileType = AVFileTypeAppleM4A;
+    exportSession.timeRange = exportTimeRange;
+    
+    [exportSession exportAsynchronouslyWithCompletionHandler:^
+     {
+         if (AVAssetExportSessionStatusCompleted == exportSession.status)
+         {
+             //create sonic from file
+             NSData* soundData = [NSData dataWithContentsOfURL:audioFileOutput];
+             Sonic* sonic = [[Sonic alloc] initWithImage:self.image andSound:soundData withId:self.sonicId];
+             sonicBlock(sonic,nil);
+         }
+         else if (AVAssetExportSessionStatusFailed == exportSession.status)
+         {
+             // It failed...
+             sonicBlock(nil, exportSession.error);
+         }
+     }];
+    
+
+}
 
 @end

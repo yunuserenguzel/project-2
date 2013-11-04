@@ -165,6 +165,7 @@
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:NULL];
         if([audioRecorder record]){
             NSLog(@"Audio recording is started");
+            [self.delegate audioRecordStartedForManager:self];
         }
         else {
             NSLog(@"Auido recording is failed to start");
@@ -178,9 +179,13 @@
     if(audioRecorder.isRecording){
         [audioRecorder stop];
         [@"" writeToFile:[self tempConvertedSoundFileUrl].path atomically:YES encoding:NSStringEncodingConversionAllowLossy error:nil ];
-        MP3Converter *mp3Converter = [[MP3Converter alloc] initWithPreset:PRESET_CD];
+        MP3Converter *mp3Converter = [[MP3Converter alloc] initWithPreset:PRESET_PHONE];
         mp3Converter.delegate = self;
         [mp3Converter initializeLame];
+        [mp3Converter setConversionStartPoint:10];
+        mp3Converter.bitrate = 128;
+        mp3Converter.vbrQuality = LOW_QUALITY;
+        mp3Converter.encodingEngineQuality = Fast;
         [mp3Converter convertMP3WithFilePath:[self tempSoundFileUrl].path outputName:TempConvertedSoundFileName];
         
     }
@@ -198,6 +203,7 @@
 {
     NSLog(@"SonicMediaManager: auido convert is done");
     NSData* soundData = [NSData dataWithContentsOfURL:[self tempConvertedSoundFileUrl]];
+    NSLog(@"soundData: %d",soundData.length);
     [self.delegate manager:self audioDataReady:soundData];
     
 }
@@ -233,24 +239,6 @@
     
     return soundFileURL;
 }
-//-(void) recordAudio
-//{
-//    if (!audioRecorder.recording) {
-//        [audioRecorder record];
-//        NSLog(@"start audio recording..");
-//    }
-//}
-//-(void)stop
-//{
-//    if (audioRecorder.recording) {
-//        [audioRecorder stop];
-//        NSLog(@"stop audio recording..");
-//    }
-//    //    else if (audioPlayer.playing) {
-//    //        [audioPlayer stop];
-//    //    }
-//}
-
 
 -(void)audioPlayerDidFinishPlaying:
 (AVAudioPlayer *)player successfully:(BOOL)flag

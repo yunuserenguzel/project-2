@@ -36,10 +36,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     [self initializeImageView];
     [self initializeSoundSlider];
-    
+    [self initializePlayPauseButton];
+    [self initializeDurationLabel];
     UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(play)];
     [self.view addGestureRecognizer:tapGesture];
     
@@ -54,15 +55,21 @@
 
 - (void) doneEdit
 {
-    [self.sonic sonicFromCroppingFrom:self.soundSlider.minimumValue to:self.soundSlider.maximumValue withCompletionHandler:^(Sonic *sonic, NSError *error) {
+    __block UINavigationController* navigationController = self.navigationController;
+    [self.sonic setSoundCroppingFrom:self.soundSlider.lowerValue to:self.soundSlider.upperValue withCompletionHandler:^(Sonic *sonic, NSError *error) {
         if(sonic){
             SNCPreviewViewController* preview = [[SNCPreviewViewController alloc] init];
-            [self.navigationController pushViewController:preview animated:YES];
+            [navigationController pushViewController:preview animated:YES];
             [preview setSonic:sonic];
         } else {
             NSLog(@"error: %@",error);
         }
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [audioPlayer stop];
 }
 
 - (void) initializeImageView
@@ -87,12 +94,29 @@
     [self.view addSubview:self.soundSlider];
 }
 
+- (void) initializePlayPauseButton
+{
+    self.playPauseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.playPauseButton setTitle:@"Play" forState:UIControlStateNormal];
+    [self.playPauseButton setFrame:CGRectMake(50.0, 400.0, 100.0, 50.0)];
+    [self.playPauseButton addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.playPauseButton];
+}
+
+- (void) initializeDurationLabel
+{
+    self.durationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height - 20.0, 100.0, 20.0)];
+    [self.view addSubview:self.durationLabel];
+}
+
 - (void) play
 {
     if(self.sonic != nil){
-        [audioPlayer setVolume:1.0];
-        audioPlayer.delegate = self;
-        [audioPlayer play];
+        if([audioPlayer isPlaying]){
+            [audioPlayer stop];
+        } else {
+            [audioPlayer play];
+        }
     }
 }
 
@@ -105,14 +129,17 @@
 {
     [self.imageView setImage:self.sonic.image];    [self.soundSlider setMaximumValue:audioPlayer.duration];
     [self.soundSlider setUpperValue:audioPlayer.duration];
-    
+    [self.durationLabel setText:[NSString stringWithFormat:@"%f",audioPlayer.duration]];
 }
 
 - (void)setSonic:(Sonic *)sonic
 {
     _sonic = sonic;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:NULL];
-    audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:nil];
+    NSData* sound = self.sonic.sound ? self.sonic.sound : self.sonic.rawSound;
+    audioPlayer = [[AVAudioPlayer alloc] initWithData:sound error:nil];
+    [audioPlayer setVolume:1.0];
+    audioPlayer.delegate = self;
     if([self isViewLoaded]){
         [self configureViews];
     }

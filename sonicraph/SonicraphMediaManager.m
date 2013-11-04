@@ -23,6 +23,8 @@
     AVCaptureStillImageOutput* stillImageOutput;
     AVAudioRecorder *audioRecorder;
     
+    Mp3ConverterInterface* mp3ConverterInterface;
+    
     CFURLRef sourceURL;
     CFURLRef destinationURL;
     OSType   outputFormat;
@@ -178,35 +180,34 @@
     NSLog(@"SonicMediaManager: stopping auido record");
     if(audioRecorder.isRecording){
         [audioRecorder stop];
-        [@"" writeToFile:[self tempConvertedSoundFileUrl].path atomically:YES encoding:NSStringEncodingConversionAllowLossy error:nil ];
-        MP3Converter *mp3Converter = [[MP3Converter alloc] initWithPreset:PRESET_PHONE];
-        mp3Converter.delegate = self;
-        [mp3Converter initializeLame];
-        [mp3Converter setConversionStartPoint:10];
-        mp3Converter.bitrate = 128;
-        mp3Converter.vbrQuality = LOW_QUALITY;
-        mp3Converter.encodingEngineQuality = Fast;
-        [mp3Converter convertMP3WithFilePath:[self tempSoundFileUrl].path outputName:TempConvertedSoundFileName];
-        
+//        mp3ConverterInterface = [[Mp3ConverterInterface alloc] init];
+//        [mp3ConverterInterface convertMp3FromFile:[self tempSoundFileUrl] toOutputName:TempConvertedSoundFileName andCompletionBlock:^{
+//            NSLog(@"SonicMediaManager: auido convert is done");
+//            NSData* soundData = [NSData dataWithContentsOfURL:[self tempConvertedSoundFileUrl]];
+//            NSLog(@"soundData: %d",soundData.length);
+//            [self.delegate manager:self audioDataReady:soundData];
+//        }];
+        NSData* soundData = [NSData dataWithContentsOfURL:[self tempSoundFileUrl]];
+        [self.delegate manager:self audioDataReady:soundData];
     }
     else {
         NSLog(@"Audio recorder is not recording!!!");
     }
 }
 
-- (void)convertFailed:(MP3Converter *)converter
-{
-//    NSLog(@"")
-}
-
-- (void)convertDone:(MP3Converter *)converter
-{
-    NSLog(@"SonicMediaManager: auido convert is done");
-    NSData* soundData = [NSData dataWithContentsOfURL:[self tempConvertedSoundFileUrl]];
-    NSLog(@"soundData: %d",soundData.length);
-    [self.delegate manager:self audioDataReady:soundData];
-    
-}
+//- (void)convertFailed:(MP3Converter *)converter
+//{
+////    NSLog(@"")
+//}
+//
+//- (void)convertDone:(MP3Converter *)converter
+//{
+//    NSLog(@"SonicMediaManager: auido convert is done");
+//    NSData* soundData = [NSData dataWithContentsOfURL:[self tempConvertedSoundFileUrl]];
+//    NSLog(@"soundData: %d",soundData.length);
+//    [self.delegate manager:self audioDataReady:soundData];
+//    
+//}
 - (NSURL*) tempConvertedSoundFileUrl
 {
     

@@ -33,10 +33,10 @@ typedef void (^SonicBlock) (Sonic* sonic, NSError* error);
 @property (nonatomic) UIImage* image;
 @property (nonatomic) NSData* sound;
 @property (nonatomic) UIImage* thumbnail;
-
+@property (nonatomic) NSData* rawSound;
+@property (nonatomic) CGFloat start;
+@property (nonatomic) CGFloat length;
 
 - (void) saveToFile;
-
-
-- (void)sonicFromCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock;
+- (void)setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock;
 @end

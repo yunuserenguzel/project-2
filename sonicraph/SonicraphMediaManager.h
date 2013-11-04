@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MP3Converter.h"
-#import "UIImage+scaleToSize.h"
+#import "Mp3ConverterInterface.h"
 
 typedef void (^ ImageBlock)(UIImage* image);
 
@@ -24,7 +23,7 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 @end
 
-@interface SonicraphMediaManager : NSObject <AVAudioRecorderDelegate,MP3ConverterDelegate>
+@interface SonicraphMediaManager : NSObject <AVAudioRecorderDelegate>
 
 @property (nonatomic) UIView* cameraView;
 

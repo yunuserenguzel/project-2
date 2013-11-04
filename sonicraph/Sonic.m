@@ -8,9 +8,11 @@
 
 #import "Sonic.h"
 #import <AVFoundation/AVFoundation.h>
-
+#import "Mp3ConverterInterface.h"
 @implementation Sonic
-
+{
+    Mp3ConverterInterface* mp3ConverterInterface;
+}
 + (Sonic*) sonickleFromDictionary:(NSDictionary*)dictionary
 {
     UIImage* image = [UIImage imageWithData:[dictionary objectForKey:@"image"]];
@@ -74,59 +76,29 @@
 }
 
 
-- (void)sonicFromCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock
+- (void)setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock
 {
-    float vocalStartMarker = from;
-    float vocalEndMarker = to;
-    
-    NSURL *audioFileInput = [NSURL fileURLWithPath:[[self documents] stringByAppendingPathComponent:@"inputAudio"]];
-    NSURL *audioFileOutput = [NSURL fileURLWithPath:[[self documents] stringByAppendingPathComponent:@"outputAudio"]];
-    
-    NSLog(@"%@",self.sound);
+    if(self.rawSound == nil){
+        NSLog(@"setSoundCroppingFrom method requires rawSound to be set");
+        return;
+    }
+    NSURL *audioFileInput = [NSURL fileURLWithPath:[[self documents] stringByAppendingPathComponent:@"sonicConvertInputAudio.aac"]];
+    NSString* outputName = @"sonicConvertOuputAuido.mp3";
     NSError* error;
-    [self.sound writeToURL:audioFileInput options:NSDataWritingFileProtectionComplete error:&error];
-    NSLog(@"error: %@, file: %@",error,[NSData dataWithContentsOfURL:audioFileInput]);
-    if (!audioFileInput || !audioFileOutput)
-    {
-        sonicBlock(nil,[[NSError alloc] init]);
+    
+    [self.rawSound writeToFile:audioFileInput.path options:NSDataWritingAtomic error:&error];
+    if(error){
+        NSLog(@"sonicFromCroppingFrom error: %@",error);
     }
     
-    [[NSFileManager defaultManager] removeItemAtURL:audioFileOutput error:NULL];
-    AVAsset *asset = [AVAsset assetWithURL:audioFileInput];
-    
-    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset
-                                                                            presetName:AVAssetExportPresetAppleM4A];
-    
-    if (exportSession == nil)
-    {
-        sonicBlock(nil, [[NSError alloc] init]);
-    }
-    
-    CMTime startTime = CMTimeMake((int)(floor(vocalStartMarker * 100)), 100);
-    CMTime stopTime = CMTimeMake((int)(ceil(vocalEndMarker * 100)), 100);
-    CMTimeRange exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime);
-    
-    exportSession.outputURL = audioFileOutput;
-    exportSession.outputFileType = AVFileTypeAppleM4A;
-    exportSession.timeRange = exportTimeRange;
-    
-    [exportSession exportAsynchronouslyWithCompletionHandler:^
-     {
-         if (AVAssetExportSessionStatusCompleted == exportSession.status)
-         {
-             //create sonic from file
-             NSData* soundData = [NSData dataWithContentsOfURL:audioFileOutput];
-             Sonic* sonic = [[Sonic alloc] initWithImage:self.image andSound:soundData withId:self.sonicId];
-             sonicBlock(sonic,nil);
-         }
-         else if (AVAssetExportSessionStatusFailed == exportSession.status)
-         {
-             // It failed...
-             sonicBlock(nil, exportSession.error);
-         }
-     }];
-    
-
+    mp3ConverterInterface = [[Mp3ConverterInterface alloc] init];
+    [mp3ConverterInterface convertMp3FromFile:audioFileInput toOutputName:outputName withStarting:from andLength:to-from andCompletionBlock:^{
+        NSData* soundData = [NSData dataWithContentsOfURL:[[audioFileInput URLByDeletingLastPathComponent] URLByAppendingPathComponent:outputName]];
+        self.sound = soundData;
+        self.start =  from;
+        self.length = to-from;
+        sonicBlock(self,nil);
+    }];
 }
 
 @end

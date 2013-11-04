@@ -39,6 +39,7 @@
 		AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */; };
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
+		AE1596C418281A6100929D1D /* Mp3ConverterInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1596C318281A6100929D1D /* Mp3ConverterInterface.m */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
 		AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9D1801A35D000DF866 /* CoreGraphics.framework */; };
 		AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9F1801A35D000DF866 /* UIKit.framework */; };
@@ -108,6 +109,8 @@
 		AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground@2x.png"; sourceTree = "<group>"; };
 		AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver.png"; sourceTree = "<group>"; };
 		AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver@2x.png"; sourceTree = "<group>"; };
+		AE1596C218281A6100929D1D /* Mp3ConverterInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mp3ConverterInterface.h; sourceTree = "<group>"; };
+		AE1596C318281A6100929D1D /* Mp3ConverterInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mp3ConverterInterface.m; sourceTree = "<group>"; };
 		AED56E981801A35D000DF866 /* sonicraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonicraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED56E9B1801A35D000DF866 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AED56E9D1801A35D000DF866 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -249,6 +252,8 @@
 				AE15968B181C134D00929D1D /* MP3Converter.a */,
 				AE15968C181C134D00929D1D /* MP3Converter.h */,
 				AE15968D181C134D00929D1D /* MP3Converter.m */,
+				AE1596C218281A6100929D1D /* Mp3ConverterInterface.h */,
+				AE1596C318281A6100929D1D /* Mp3ConverterInterface.m */,
 			);
 			path = AudioConverterKit;
 			sourceTree = "<group>";
@@ -554,6 +559,7 @@
 				AE159690181C134D00929D1D /* AudioConverter.m in Sources */,
 				AE159693181C134D00929D1D /* MP3Converter.m in Sources */,
 				AE15964118141A7E00929D1D /* SonicraphMediaManager.m in Sources */,
+				AE1596C418281A6100929D1D /* Mp3ConverterInterface.m in Sources */,
 				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
 				AED56EB41801A35D000DF866 /* sonicraph.xcdatamodeld in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,

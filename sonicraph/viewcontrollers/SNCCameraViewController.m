@@ -150,7 +150,7 @@ typedef enum SonicRecordType {
     ImageBlock block = ^(UIImage *image) {
         
         image = [image imageByScalingAndCroppingForSize:CGSizeMake(620.0, image.size.height/(image.size.width/620.0))];
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+//        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
         
         CGFloat xScale = image.size.width / [self cameraViewFrame].size.width;
         CGFloat yScale = image.size.height / [self cameraViewFrame].size.height;
@@ -160,7 +160,7 @@ typedef enum SonicRecordType {
         CGFloat h = [self visibleRectFrame].size.height * yScale;
         
         capturedImage = [image cropForRect:CGRectMake(x, y, w, h)];
-        UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
+//        UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
         if(self.recordType == SonicRecordTypePhotoFirst){
             [self startAudioRecording];
         }
@@ -322,8 +322,9 @@ typedef enum SonicRecordType {
 {
     if([segue.destinationViewController isKindOfClass:[SNCPreviewViewController class]]){
         Sonic* sonic = [[Sonic alloc] initWithImage:capturedImage
-                                                    andSound:capturedAudio
+                                                    andSound:nil
                                                       withId:[NSString stringWithFormat:@"sonic%f",[NSDate timeIntervalSinceReferenceDate]]];
+        [sonic setRawSound:capturedAudio];
         SNCPreviewViewController* previewController = segue.destinationViewController;
         [previewController setSonic:sonic];
         capturedAudio = nil;

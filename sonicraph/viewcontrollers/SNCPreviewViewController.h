@@ -13,6 +13,6 @@
 @interface SNCPreviewViewController : UIViewController <AVAudioPlayerDelegate>
 
 @property (nonatomic) Sonic* sonic;
-
-
+@property (nonatomic) UIButton* playPauseButton;
+@property (nonatomic) UILabel* durationLabel;
 @end

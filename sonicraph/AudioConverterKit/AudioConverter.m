@@ -168,7 +168,7 @@
 
 	__block UInt64 convertedByteCount = 0;
 
-    int totalSecond = songAsset.duration.value/songAsset.duration.timescale;
+    int totalSecond = (int)(songAsset.duration.value/songAsset.duration.timescale);
     //NSLog (@"%d totalSecond", totalSecond);
 
 	dispatch_queue_t mediaInputQueue = dispatch_queue_create("mediaInputQueue", NULL);
@@ -186,7 +186,7 @@
                  //NSLog (@"%lld bytes converted", convertedByteCount);
                  if (_delegate && [_delegate respondsToSelector:@selector(onConvertionProgress:)]) {
                      CMTime presTime = CMSampleBufferGetPresentationTimeStamp(nextBuffer);
-                     int atSecond = presTime.value/presTime.timescale;
+                     int atSecond = (int)(presTime.value/presTime.timescale);
                      //NSLog (@"%d atSecond", atSecond);
                      float p = ((double)(atSecond)/(double)totalSecond)*100;
                      NSNumber *percentage = [NSNumber numberWithDouble:p];
@@ -218,7 +218,7 @@
                                                        attributesOfItemAtPath:exportPath
                                                        error:nil];
                  NSLog (@"Media is converted. File size is %lld",[outputFileAttributes fileSize]);
-                 _fileSize = [outputFileAttributes fileSize];
+                 _fileSize = (long)[outputFileAttributes fileSize];
 
                  if (!_fileSize) {
                      if (_delegate && [_delegate respondsToSelector:@selector(convertFailed:)]) {

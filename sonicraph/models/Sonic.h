@@ -16,16 +16,13 @@ typedef void (^SonicBlock) (Sonic* sonic, NSError* error);
 
 @interface Sonic : NSObject
 
-
-+ (Sonic*) sonickleFromDictionary:(NSDictionary*)dictionary;
++ (Sonic*) sonicFromDictionary:(NSDictionary*)dictionary;
 
 + (Sonic*) readFromFile:(NSString*)fileName;
 
-
 + (Sonic*) sonickleWithImage:(UIImage*)image andSound:(NSData*)sound withId:(NSString*)sonickleId;
 
-- (NSDictionary*)dictionaryFromSonickle;
-
+- (NSDictionary*)dictionaryFromSonic;
 
 - (id) initWithImage:(UIImage*)image andSound:(NSData*)sound withId:(NSString*)sonickleId;
 
@@ -36,7 +33,15 @@ typedef void (^SonicBlock) (Sonic* sonic, NSError* error);
 @property (nonatomic) NSData* rawSound;
 @property (nonatomic) CGFloat start;
 @property (nonatomic) CGFloat length;
+@property (nonatomic) CGFloat latitude;
+@property (nonatomic) CGFloat longitude;
+
+@property (nonatomic) NSURL* localSonicFileUrl;
+@property (nonatomic) NSURL* remoteSonicFileUrl;
 
 - (void) saveToFile;
+- (void) readFromFile;
+
 - (void)setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock;
+
 @end

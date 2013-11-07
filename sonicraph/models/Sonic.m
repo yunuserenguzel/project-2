@@ -13,16 +13,16 @@
 {
     Mp3ConverterInterface* mp3ConverterInterface;
 }
-+ (Sonic*) sonickleFromDictionary:(NSDictionary*)dictionary
++ (Sonic*) sonicFromDictionary:(NSDictionary*)dictionary
 {
     UIImage* image = [UIImage imageWithData:[dictionary objectForKey:@"image"]];
     return [Sonic sonickleWithImage:image andSound:[dictionary objectForKey:@"sound"] withId:[dictionary objectForKey:@"sonickleId"]];
 }
 
-- (NSDictionary*)dictionaryFromSonickle
+- (NSDictionary*)dictionaryFromSonic
 {
     NSData* imageData = UIImageJPEGRepresentation(self.image, 1.0);
-    return @{ @"image": imageData, @"sound": self.sound, @"sonickleId": self.sonicId };
+    return @{ @"image": [imageData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed], @"sound": [self.sound base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed], @"sonickleId": self.sonicId };
 }
 
 + (Sonic *)sonickleWithImage:(UIImage *)image andSound:(NSData *)sound withId:(NSString *)sonickleId
@@ -65,7 +65,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:array forKey:SonicklesUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    NSDictionary* file = [self dictionaryFromSonickle];
+    NSDictionary* file = [self dictionaryFromSonic];
     [file writeToFile:fileName atomically:YES];
     
     NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:fileName error:nil];
@@ -100,5 +100,7 @@
         sonicBlock(self,nil);
     }];
 }
+
+
 
 @end

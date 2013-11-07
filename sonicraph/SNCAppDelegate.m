@@ -24,7 +24,7 @@
 //    controller.managedObjectContext = self.managedObjectContext;
     
     //TEST
-//    [SNCAPITest start];
+    [SNCAPITest start];
     
     return YES;
 }

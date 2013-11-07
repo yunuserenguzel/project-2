@@ -10,6 +10,6 @@
 #define sonicraph_TypeDefs_h
 
 #define PreviewSonicSegue @"PreviewSonicSegue"
-
+#define ShareSonicSegue @"ShareSonicSegue"
 
 #endif

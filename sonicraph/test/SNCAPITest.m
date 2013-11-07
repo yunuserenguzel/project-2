@@ -9,23 +9,23 @@
 #import "SNCAPITest.h"
 #import "SNCAPIConnector.h"
 
-static NSString* token = @"SNCKL0015249c4d49c5355249c4d49c5435249c4d49c552";
+static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
 //static NSNumber* pageNumber = [NSNumber numberWithInt:0];
 //static NSNumber* pageCount = [NSNumber numberWithInt:20];
 @implementation SNCAPITest
 
 + (void) start
 {
-    [SNCAPITest registerTest];
-    [SNCAPITest loginTest];
-    [SNCAPITest followUser];
-    [SNCAPITest unfollowUser];
-    [SNCAPITest getFollowedList];
-    [SNCAPITest getFollowerList];
-    [SNCAPITest createSonic];
-    [SNCAPITest getMySonics];
-    [SNCAPITest getSonicFeed];
-    [SNCAPITest likeSonic];
+//    [SNCAPITest registerTest];
+//    [SNCAPITest loginTest];
+//    [SNCAPITest followUser];
+//    [SNCAPITest unfollowUser];
+//    [SNCAPITest getFollowedList];
+//    [SNCAPITest getFollowerList];
+//    [SNCAPITest createSonic];
+//    [SNCAPITest getMySonics];
+//    [SNCAPITest getSonicFeed];
+//    [SNCAPITest likeSonic];
 }
 
 + (void) successLogForOperation:(NSString*)operationName
@@ -167,6 +167,7 @@ static NSString* token = @"SNCKL0015249c4d49c5355249c4d49c5435249c4d49c552";
 
 + (void) createSonic
 {
+    
     NSData* sonic = [NSData data];
     NSString* operation = @"create_sonic";
     NSNumber* latitude = [NSNumber numberWithFloat:1.22123];

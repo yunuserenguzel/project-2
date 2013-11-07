@@ -1,8 +1,8 @@
-
 #import "SNCPreviewViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <AudioToolbox/AudioServices.h>
 #import "NMRangeSlider.h"
+#import "SNCShareViewController.h"
 
 
 @interface SNCPreviewViewController ()
@@ -55,12 +55,11 @@
 
 - (void) doneEdit
 {
-    __block UINavigationController* navigationController = self.navigationController;
+    __block SNCPreviewViewController* this = self;
     [self.sonic setSoundCroppingFrom:self.soundSlider.lowerValue to:self.soundSlider.upperValue withCompletionHandler:^(Sonic *sonic, NSError *error) {
         if(sonic){
-            SNCPreviewViewController* preview = [[SNCPreviewViewController alloc] init];
-            [navigationController pushViewController:preview animated:YES];
-            [preview setSonic:sonic];
+            [this performSegueWithIdentifier:ShareSonicSegue sender:this];
+            
         } else {
             NSLog(@"error: %@",error);
         }
@@ -142,6 +141,14 @@
     audioPlayer.delegate = self;
     if([self isViewLoaded]){
         [self configureViews];
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:ShareSonicSegue]){
+        SNCShareViewController* shareController = [segue destinationViewController];
+        [shareController setSonic:self.sonic];
     }
 }
 

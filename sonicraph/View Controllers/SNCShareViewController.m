@@ -41,9 +41,14 @@
 - (void) shareSonic
 {
     NSLog(@"Should share to server");
+    
     [SNCAPIManager createSonic:self.sonic withCompletionBlock:^(NSDictionary *responseDictionary) {
-        NSLog(@"%@",responseDictionary);
+        [SNCAPIManager getMySonicsWithCompletionBlock:nil];
     }];
+    
+    
+    [self.tabBarController setSelectedIndex:2];
+    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)didReceiveMemoryWarning

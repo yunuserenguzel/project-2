@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#define SonicklesUserDefaultsKey @"SonicklesUserDefaultsKey"
 #import "UIImage+scaleToSize.h"
+#import "SonicManagedObject.h"
+
+#define SonicklesUserDefaultsKey @"SonicklesUserDefaultsKey"
 
 @class Sonic;
 
@@ -16,17 +18,19 @@ typedef void (^SonicBlock) (Sonic* sonic, NSError* error);
 
 @interface Sonic : NSObject
 
-+ (Sonic*) sonicFromDictionary:(NSDictionary*)dictionary;
++ (Sonic*) sonicFromServerResponseDictionary:(NSDictionary*)dictionary;
 
-+ (Sonic*) readFromFile:(NSString*)fileName;
+//+ (Sonic*) sonicFromDictionary:(NSDictionary*)dictionary;
 
-+ (Sonic*) sonickleWithImage:(UIImage*)image andSound:(NSData*)sound withId:(NSString*)sonickleId;
++ (Sonic*) readFromFile:(SonicManagedObject*)sonicManagedObject;
+
++ (Sonic*) sonickleWithImage:(UIImage*)image andSound:(NSData*)sound;
 
 - (NSDictionary*)dictionaryFromSonic;
 
-- (id) initWithImage:(UIImage*)image andSound:(NSData*)sound withId:(NSString*)sonickleId;
+- (id) initWithImage:(UIImage*)image andSound:(NSData*)sound;
 
-@property (nonatomic) NSString* sonicId;
+@property (nonatomic) SonicManagedObject* sonicManagedObject;
 @property (nonatomic) UIImage* image;
 @property (nonatomic) NSData* sound;
 @property (nonatomic) UIImage* thumbnail;
@@ -40,8 +44,7 @@ typedef void (^SonicBlock) (Sonic* sonic, NSError* error);
 @property (nonatomic) NSURL* remoteSonicFileUrl;
 
 - (void) saveToFile;
-- (void) readFromFile;
 
-- (void)setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock;
+- (void) setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock;
 
 @end

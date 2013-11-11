@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AE15964118141A7E00929D1D /* SonicraphMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE15964018141A7E00929D1D /* SonicraphMediaManager.m */; };
 		AE15966718142C6300929D1D /* Camera Button.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15965E18142C6300929D1D /* Camera Button.png */; };
 		AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15965F18142C6300929D1D /* Camera Flash@2x.png */; };
 		AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966018142C6300929D1D /* Camera Front and Back.png */; };
@@ -19,12 +18,6 @@
 		AE15966F18142C6300929D1D /* Sound Bar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966618142C6300929D1D /* Sound Bar.png */; };
 		AE15967B181BE95E00929D1D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967A181BE95E00929D1D /* AVFoundation.framework */; };
 		AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967C181BF64800929D1D /* AudioToolbox.framework */; };
-		AE15968E181C134D00929D1D /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE159683181C134D00929D1D /* libmp3lame.a */; };
-		AE15968F181C134D00929D1D /* AudioConverter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE159685181C134D00929D1D /* AudioConverter.a */; };
-		AE159690181C134D00929D1D /* AudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = AE159687181C134D00929D1D /* AudioConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AE159691181C134D00929D1D /* AudioConverterKitforiOS.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AE159689181C134D00929D1D /* AudioConverterKitforiOS.pdf */; };
-		AE159692181C134D00929D1D /* MP3Converter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15968B181C134D00929D1D /* MP3Converter.a */; };
-		AE159693181C134D00929D1D /* MP3Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = AE15968D181C134D00929D1D /* MP3Converter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AE159695181C15AE00929D1D /* Sound Button.png in Resources */ = {isa = PBXBuildFile; fileRef = AE159694181C15AE00929D1D /* Sound Button.png */; };
 		AE1596BA182452CF00929D1D /* slider-default7-handle.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B2182452CF00929D1D /* slider-default7-handle.png */; };
 		AE1596BB182452CF00929D1D /* slider-default7-handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B3182452CF00929D1D /* slider-default7-handle@2x.png */; };
@@ -34,16 +27,28 @@
 		AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */; };
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
-		AE1596C418281A6100929D1D /* Mp3ConverterInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1596C318281A6100929D1D /* Mp3ConverterInterface.m */; };
-		AE1596C71829700C00929D1D /* SNCAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1596C61829700C00929D1D /* SNCAPIManager.m */; };
 		AE86EE7B182C0DA800F74F1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* Sonic.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AE86EE8B182C0DF300F74F1D /* SNCAPIConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */; };
 		AE86EE8C182C0DF300F74F1D /* UIImage+scaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE89182C0DF300F74F1D /* UIImage+scaleToSize.m */; };
 		AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */; };
-		AE86EE95182C0E0E00F74F1D /* SNCPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE91182C0E0E00F74F1D /* SNCPreviewViewController.m */; };
+		AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE91182C0E0E00F74F1D /* SNCEditViewController.m */; };
 		AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */; };
+		AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */; };
+		AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE9B182E741900F74F1D /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AE86EE9F1831547600F74F1D /* SonicManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE9E1831547600F74F1D /* SonicManagedObject.m */; };
+		AE86EEA8183158D300F74F1D /* UserManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEA7183158D300F74F1D /* UserManagedObject.m */; };
+		AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEAE18316BC500F74F1D /* DatabaseManager.m */; };
+		AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEB018316BC500F74F1D /* SNCAPIManager.m */; };
+		AE86EEB518316BC500F74F1D /* SonicraphMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEB218316BC500F74F1D /* SonicraphMediaManager.m */; };
+		AE86EEC818316CA800F74F1D /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE86EEBB18316CA800F74F1D /* libmp3lame.a */; };
+		AE86EEC918316CA800F74F1D /* AudioConverter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE86EEBD18316CA800F74F1D /* AudioConverter.a */; };
+		AE86EECA18316CA800F74F1D /* AudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEBF18316CA800F74F1D /* AudioConverter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AE86EECB18316CA800F74F1D /* AudioConverterKitforiOS.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AE86EEC118316CA800F74F1D /* AudioConverterKitforiOS.pdf */; };
+		AE86EECC18316CA800F74F1D /* MP3Converter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE86EEC318316CA800F74F1D /* MP3Converter.a */; };
+		AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEC518316CA800F74F1D /* MP3Converter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AE86EECE18316CA800F74F1D /* Mp3ConverterInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEC718316CA800F74F1D /* Mp3ConverterInterface.m */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
 		AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9D1801A35D000DF866 /* CoreGraphics.framework */; };
 		AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9F1801A35D000DF866 /* UIKit.framework */; };
@@ -68,8 +73,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AE15963F18141A7E00929D1D /* SonicraphMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SonicraphMediaManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		AE15964018141A7E00929D1D /* SonicraphMediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SonicraphMediaManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AE15965E18142C6300929D1D /* Camera Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Button.png"; sourceTree = "<group>"; };
 		AE15965F18142C6300929D1D /* Camera Flash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Flash@2x.png"; sourceTree = "<group>"; };
 		AE15966018142C6300929D1D /* Camera Front and Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Front and Back.png"; sourceTree = "<group>"; };
@@ -81,17 +84,6 @@
 		AE15966618142C6300929D1D /* Sound Bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sound Bar.png"; sourceTree = "<group>"; };
 		AE15967A181BE95E00929D1D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE15967C181BF64800929D1D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		AE159681181C134D00929D1D /* lame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
-		AE159683181C134D00929D1D /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmp3lame.a; sourceTree = "<group>"; };
-		AE159684181C134D00929D1D /* AudioConverter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AudioConverter-Prefix.pch"; sourceTree = "<group>"; };
-		AE159685181C134D00929D1D /* AudioConverter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AudioConverter.a; sourceTree = "<group>"; };
-		AE159686181C134D00929D1D /* AudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioConverter.h; sourceTree = "<group>"; };
-		AE159687181C134D00929D1D /* AudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioConverter.m; sourceTree = "<group>"; };
-		AE159689181C134D00929D1D /* AudioConverterKitforiOS.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AudioConverterKitforiOS.pdf; sourceTree = "<group>"; };
-		AE15968A181C134D00929D1D /* MP3Converter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MP3Converter-Prefix.pch"; sourceTree = "<group>"; };
-		AE15968B181C134D00929D1D /* MP3Converter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = MP3Converter.a; sourceTree = "<group>"; };
-		AE15968C181C134D00929D1D /* MP3Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MP3Converter.h; sourceTree = "<group>"; };
-		AE15968D181C134D00929D1D /* MP3Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP3Converter.m; sourceTree = "<group>"; };
 		AE159694181C15AE00929D1D /* Sound Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sound Button.png"; sourceTree = "<group>"; };
 		AE1596B2182452CF00929D1D /* slider-default7-handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-handle.png"; sourceTree = "<group>"; };
 		AE1596B3182452CF00929D1D /* slider-default7-handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-handle@2x.png"; sourceTree = "<group>"; };
@@ -101,10 +93,6 @@
 		AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground@2x.png"; sourceTree = "<group>"; };
 		AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver.png"; sourceTree = "<group>"; };
 		AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver@2x.png"; sourceTree = "<group>"; };
-		AE1596C218281A6100929D1D /* Mp3ConverterInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mp3ConverterInterface.h; sourceTree = "<group>"; };
-		AE1596C318281A6100929D1D /* Mp3ConverterInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mp3ConverterInterface.m; sourceTree = "<group>"; };
-		AE1596C51829700C00929D1D /* SNCAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCAPIManager.h; sourceTree = "<group>"; };
-		AE1596C61829700C00929D1D /* SNCAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCAPIManager.m; sourceTree = "<group>"; };
 		AE86EE79182C0DA800F74F1D /* Sonic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sonic.h; sourceTree = "<group>"; };
 		AE86EE7A182C0DA800F74F1D /* Sonic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sonic.m; sourceTree = "<group>"; };
 		AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMRangeSlider.h; sourceTree = "<group>"; };
@@ -118,10 +106,37 @@
 		AE86EE89182C0DF300F74F1D /* UIImage+scaleToSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+scaleToSize.m"; sourceTree = "<group>"; };
 		AE86EE8E182C0E0E00F74F1D /* SNCCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCCameraViewController.h; sourceTree = "<group>"; };
 		AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCCameraViewController.m; sourceTree = "<group>"; };
-		AE86EE90182C0E0E00F74F1D /* SNCPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCPreviewViewController.h; sourceTree = "<group>"; };
-		AE86EE91182C0E0E00F74F1D /* SNCPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCPreviewViewController.m; sourceTree = "<group>"; };
+		AE86EE90182C0E0E00F74F1D /* SNCEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCEditViewController.h; sourceTree = "<group>"; };
+		AE86EE91182C0E0E00F74F1D /* SNCEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCEditViewController.m; sourceTree = "<group>"; };
 		AE86EE92182C0E0E00F74F1D /* SNCShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCShareViewController.h; sourceTree = "<group>"; };
 		AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCShareViewController.m; sourceTree = "<group>"; };
+		AE86EE97182D7D2000F74F1D /* SNCProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCProfileViewController.h; sourceTree = "<group>"; };
+		AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCProfileViewController.m; sourceTree = "<group>"; };
+		AE86EE9A182E741900F74F1D /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		AE86EE9B182E741900F74F1D /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		AE86EE9D1831547600F74F1D /* SonicManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicManagedObject.h; sourceTree = "<group>"; };
+		AE86EE9E1831547600F74F1D /* SonicManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicManagedObject.m; sourceTree = "<group>"; };
+		AE86EEA6183158D300F74F1D /* UserManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManagedObject.h; sourceTree = "<group>"; };
+		AE86EEA7183158D300F74F1D /* UserManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManagedObject.m; sourceTree = "<group>"; };
+		AE86EEAD18316BC500F74F1D /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
+		AE86EEAE18316BC500F74F1D /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
+		AE86EEAF18316BC500F74F1D /* SNCAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCAPIManager.h; sourceTree = "<group>"; };
+		AE86EEB018316BC500F74F1D /* SNCAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCAPIManager.m; sourceTree = "<group>"; };
+		AE86EEB118316BC500F74F1D /* SonicraphMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicraphMediaManager.h; sourceTree = "<group>"; };
+		AE86EEB218316BC500F74F1D /* SonicraphMediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicraphMediaManager.m; sourceTree = "<group>"; };
+		AE86EEB918316CA700F74F1D /* lame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
+		AE86EEBB18316CA800F74F1D /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmp3lame.a; sourceTree = "<group>"; };
+		AE86EEBC18316CA800F74F1D /* AudioConverter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AudioConverter-Prefix.pch"; sourceTree = "<group>"; };
+		AE86EEBD18316CA800F74F1D /* AudioConverter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AudioConverter.a; sourceTree = "<group>"; };
+		AE86EEBE18316CA800F74F1D /* AudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioConverter.h; sourceTree = "<group>"; };
+		AE86EEBF18316CA800F74F1D /* AudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioConverter.m; sourceTree = "<group>"; };
+		AE86EEC118316CA800F74F1D /* AudioConverterKitforiOS.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AudioConverterKitforiOS.pdf; sourceTree = "<group>"; };
+		AE86EEC218316CA800F74F1D /* MP3Converter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MP3Converter-Prefix.pch"; sourceTree = "<group>"; };
+		AE86EEC318316CA800F74F1D /* MP3Converter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = MP3Converter.a; sourceTree = "<group>"; };
+		AE86EEC418316CA800F74F1D /* MP3Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MP3Converter.h; sourceTree = "<group>"; };
+		AE86EEC518316CA800F74F1D /* MP3Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP3Converter.m; sourceTree = "<group>"; };
+		AE86EEC618316CA800F74F1D /* Mp3ConverterInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mp3ConverterInterface.h; sourceTree = "<group>"; };
+		AE86EEC718316CA800F74F1D /* Mp3ConverterInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mp3ConverterInterface.m; sourceTree = "<group>"; };
 		AED56E981801A35D000DF866 /* sonicraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonicraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED56E9B1801A35D000DF866 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AED56E9D1801A35D000DF866 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -171,31 +186,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */,
-				AE15968F181C134D00929D1D /* AudioConverter.a in Frameworks */,
-				AE159692181C134D00929D1D /* MP3Converter.a in Frameworks */,
+				AE86EEC918316CA800F74F1D /* AudioConverter.a in Frameworks */,
+				AE86EECC18316CA800F74F1D /* MP3Converter.a in Frameworks */,
 				AE15967B181BE95E00929D1D /* AVFoundation.framework in Frameworks */,
 				AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */,
 				AED56EA21801A35D000DF866 /* CoreData.framework in Frameworks */,
 				AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */,
 				AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */,
-				AE15968E181C134D00929D1D /* libmp3lame.a in Frameworks */,
+				AE86EEC818316CA800F74F1D /* libmp3lame.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AE15963E18141A6B00929D1D /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				AE15963F18141A7E00929D1D /* SonicraphMediaManager.h */,
-				AE15964018141A7E00929D1D /* SonicraphMediaManager.m */,
-				AE1596C51829700C00929D1D /* SNCAPIManager.h */,
-				AE1596C61829700C00929D1D /* SNCAPIManager.m */,
-			);
-			name = Managers;
-			sourceTree = "<group>";
-		};
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,58 +224,6 @@
 				AE15966618142C6300929D1D /* Sound Bar.png */,
 			);
 			path = sonicraphcameramodeelementspng;
-			sourceTree = "<group>";
-		};
-		AE15967E181C134D00929D1D /* AudioConverterKit */ = {
-			isa = PBXGroup;
-			children = (
-				AE15967F181C134D00929D1D /* 3rd-party */,
-				AE159684181C134D00929D1D /* AudioConverter-Prefix.pch */,
-				AE159685181C134D00929D1D /* AudioConverter.a */,
-				AE159686181C134D00929D1D /* AudioConverter.h */,
-				AE159687181C134D00929D1D /* AudioConverter.m */,
-				AE159688181C134D00929D1D /* Documentation */,
-				AE15968A181C134D00929D1D /* MP3Converter-Prefix.pch */,
-				AE15968B181C134D00929D1D /* MP3Converter.a */,
-				AE15968C181C134D00929D1D /* MP3Converter.h */,
-				AE15968D181C134D00929D1D /* MP3Converter.m */,
-				AE1596C218281A6100929D1D /* Mp3ConverterInterface.h */,
-				AE1596C318281A6100929D1D /* Mp3ConverterInterface.m */,
-			);
-			path = AudioConverterKit;
-			sourceTree = "<group>";
-		};
-		AE15967F181C134D00929D1D /* 3rd-party */ = {
-			isa = PBXGroup;
-			children = (
-				AE159680181C134D00929D1D /* inc */,
-				AE159682181C134D00929D1D /* lib */,
-			);
-			path = "3rd-party";
-			sourceTree = "<group>";
-		};
-		AE159680181C134D00929D1D /* inc */ = {
-			isa = PBXGroup;
-			children = (
-				AE159681181C134D00929D1D /* lame.h */,
-			);
-			path = inc;
-			sourceTree = "<group>";
-		};
-		AE159682181C134D00929D1D /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				AE159683181C134D00929D1D /* libmp3lame.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		AE159688181C134D00929D1D /* Documentation */ = {
-			isa = PBXGroup;
-			children = (
-				AE159689181C134D00929D1D /* AudioConverterKitforiOS.pdf */,
-			);
-			path = Documentation;
 			sourceTree = "<group>";
 		};
 		AE1596B1182452CF00929D1D /* rangeslider */ = {
@@ -302,6 +254,10 @@
 		AE86EE78182C0DA800F74F1D /* Managed Objects */ = {
 			isa = PBXGroup;
 			children = (
+				AE86EE9D1831547600F74F1D /* SonicManagedObject.h */,
+				AE86EE9E1831547600F74F1D /* SonicManagedObject.m */,
+				AE86EEA6183158D300F74F1D /* UserManagedObject.h */,
+				AE86EEA7183158D300F74F1D /* UserManagedObject.m */,
 			);
 			path = "Managed Objects";
 			sourceTree = "<group>";
@@ -326,6 +282,8 @@
 		AE86EE82182C0DF300F74F1D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AE86EE9A182E741900F74F1D /* NSData+Base64.h */,
+				AE86EE9B182E741900F74F1D /* NSData+Base64.m */,
 				AE86EE83182C0DF300F74F1D /* JSONKit */,
 				AE86EE86182C0DF300F74F1D /* SNCAPIConnector.h */,
 				AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */,
@@ -349,12 +307,79 @@
 			children = (
 				AE86EE8E182C0E0E00F74F1D /* SNCCameraViewController.h */,
 				AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */,
-				AE86EE90182C0E0E00F74F1D /* SNCPreviewViewController.h */,
-				AE86EE91182C0E0E00F74F1D /* SNCPreviewViewController.m */,
+				AE86EE90182C0E0E00F74F1D /* SNCEditViewController.h */,
+				AE86EE91182C0E0E00F74F1D /* SNCEditViewController.m */,
 				AE86EE92182C0E0E00F74F1D /* SNCShareViewController.h */,
 				AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */,
+				AE86EE97182D7D2000F74F1D /* SNCProfileViewController.h */,
+				AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		AE86EEAC18316BC500F74F1D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				AE86EEAD18316BC500F74F1D /* DatabaseManager.h */,
+				AE86EEAE18316BC500F74F1D /* DatabaseManager.m */,
+				AE86EEAF18316BC500F74F1D /* SNCAPIManager.h */,
+				AE86EEB018316BC500F74F1D /* SNCAPIManager.m */,
+				AE86EEB118316BC500F74F1D /* SonicraphMediaManager.h */,
+				AE86EEB218316BC500F74F1D /* SonicraphMediaManager.m */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		AE86EEB618316CA700F74F1D /* AudioConverterKit */ = {
+			isa = PBXGroup;
+			children = (
+				AE86EEB718316CA700F74F1D /* 3rd-party */,
+				AE86EEBC18316CA800F74F1D /* AudioConverter-Prefix.pch */,
+				AE86EEBD18316CA800F74F1D /* AudioConverter.a */,
+				AE86EEBE18316CA800F74F1D /* AudioConverter.h */,
+				AE86EEBF18316CA800F74F1D /* AudioConverter.m */,
+				AE86EEC018316CA800F74F1D /* Documentation */,
+				AE86EEC218316CA800F74F1D /* MP3Converter-Prefix.pch */,
+				AE86EEC318316CA800F74F1D /* MP3Converter.a */,
+				AE86EEC418316CA800F74F1D /* MP3Converter.h */,
+				AE86EEC518316CA800F74F1D /* MP3Converter.m */,
+				AE86EEC618316CA800F74F1D /* Mp3ConverterInterface.h */,
+				AE86EEC718316CA800F74F1D /* Mp3ConverterInterface.m */,
+			);
+			path = AudioConverterKit;
+			sourceTree = "<group>";
+		};
+		AE86EEB718316CA700F74F1D /* 3rd-party */ = {
+			isa = PBXGroup;
+			children = (
+				AE86EEB818316CA700F74F1D /* inc */,
+				AE86EEBA18316CA800F74F1D /* lib */,
+			);
+			path = "3rd-party";
+			sourceTree = "<group>";
+		};
+		AE86EEB818316CA700F74F1D /* inc */ = {
+			isa = PBXGroup;
+			children = (
+				AE86EEB918316CA700F74F1D /* lame.h */,
+			);
+			path = inc;
+			sourceTree = "<group>";
+		};
+		AE86EEBA18316CA800F74F1D /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				AE86EEBB18316CA800F74F1D /* libmp3lame.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		AE86EEC018316CA800F74F1D /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				AE86EEC118316CA800F74F1D /* AudioConverterKitforiOS.pdf */,
+			);
+			path = Documentation;
 			sourceTree = "<group>";
 		};
 		AED56E8F1801A35D000DF866 = {
@@ -392,13 +417,13 @@
 		AED56EA31801A35D000DF866 /* sonicraph */ = {
 			isa = PBXGroup;
 			children = (
+				AE86EEB618316CA700F74F1D /* AudioConverterKit */,
 				AE86EE8D182C0E0E00F74F1D /* View Controllers */,
 				AE86EE82182C0DF300F74F1D /* Lib */,
 				AE86EE80182C0DD700F74F1D /* Common */,
 				AE86EE7C182C0DC000F74F1D /* Views */,
 				AE86EE77182C0DA800F74F1D /* Models */,
-				AE15963E18141A6B00929D1D /* Managers */,
-				AE15967E181C134D00929D1D /* AudioConverterKit */,
+				AE86EEAC18316BC500F74F1D /* Managers */,
 				AED56ED91801A39F000DF866 /* MKNetworkKit */,
 				AE15965C18142C6300929D1D /* images */,
 				AED56EAC1801A35D000DF866 /* SNCAppDelegate.h */,
@@ -561,13 +586,13 @@
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
 				AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */,
 				AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */,
+				AE86EECB18316CA800F74F1D /* AudioConverterKitforiOS.pdf in Resources */,
 				AE15966D18142C6300929D1D /* Polaroid.png in Resources */,
 				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,
 				AE159695181C15AE00929D1D /* Sound Button.png in Resources */,
 				AE15966C18142C6300929D1D /* Option.png in Resources */,
 				AE15966F18142C6300929D1D /* Sound Bar.png in Resources */,
 				AE1596BD182452CF00929D1D /* slider-default7-track@2x.png in Resources */,
-				AE159691181C134D00929D1D /* AudioConverterKitforiOS.pdf in Resources */,
 				AE1596BB182452CF00929D1D /* slider-default7-handle@2x.png in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
 			);
@@ -584,28 +609,33 @@
 				AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */,
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
+				AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */,
 				AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */,
 				AE86EE8C182C0DF300F74F1D /* UIImage+scaleToSize.m in Sources */,
 				AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */,
 				AED56EF71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
 				AE86EE8B182C0DF300F74F1D /* SNCAPIConnector.m in Sources */,
 				AED56EFA1801A39F000DF866 /* Reachability.m in Sources */,
+				AE86EECE18316CA800F74F1D /* Mp3ConverterInterface.m in Sources */,
 				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
-				AE86EE95182C0E0E00F74F1D /* SNCPreviewViewController.m in Sources */,
-				AE159690181C134D00929D1D /* AudioConverter.m in Sources */,
-				AE1596C71829700C00929D1D /* SNCAPIManager.m in Sources */,
-				AE159693181C134D00929D1D /* MP3Converter.m in Sources */,
-				AE15964118141A7E00929D1D /* SonicraphMediaManager.m in Sources */,
-				AE1596C418281A6100929D1D /* Mp3ConverterInterface.m in Sources */,
+				AE86EECA18316CA800F74F1D /* AudioConverter.m in Sources */,
+				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
+				AE86EEA8183158D300F74F1D /* UserManagedObject.m in Sources */,
+				AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */,
 				AE86EE7B182C0DA800F74F1D /* Sonic.m in Sources */,
 				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
 				AED56EB41801A35D000DF866 /* sonicraph.xcdatamodeld in Sources */,
+				AE86EEB518316BC500F74F1D /* SonicraphMediaManager.m in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */,
 				AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */,
+				AE86EE9F1831547600F74F1D /* SonicManagedObject.m in Sources */,
+				AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */,
 				AED56EF51801A39F000DF866 /* NSString+MKNetworkKitAdditions.m in Sources */,
 				AED56EF31801A39F000DF866 /* NSDate+RFC1123.m in Sources */,
 				AED56F081801B425000DF866 /* SNCAPITest.m in Sources */,
+				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
+				AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */,
 				AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -724,8 +754,6 @@
 				INFOPLIST_FILE = "sonicraph/sonicraph-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/yunuserenguzel/Documents/sonicraph/sonicraph/AudioConverterKit/3rd-party/lib",
-					/Users/yunuserenguzel/Documents/sonicraph/sonicraph/AudioConverterKit,
 					"/Users/yunuserenguzel/Documents/sonicraph_ios/sonicraph/AudioConverterKit/3rd-party/lib",
 					/Users/yunuserenguzel/Documents/sonicraph_ios/sonicraph/AudioConverterKit,
 				);

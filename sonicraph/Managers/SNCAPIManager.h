@@ -10,9 +10,14 @@
 #import "Sonic.h"
 #import "SNCAPIConnector.h"
 
+typedef void (^CompletionArrayBlock) (NSArray *sonics);
+
+
 @interface SNCAPIManager : NSObject
 
 + (void)createSonic:(Sonic *)sonic withCompletionBlock:(CompletionBlock)completionBlock;
 
+
++ (void) getMySonicsWithCompletionBlock:(Block)completionBlock;
 
 @end

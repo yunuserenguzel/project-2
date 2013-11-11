@@ -7,6 +7,7 @@
 //
 
 #import "SonicraphMediaManager.h"
+#import "UIImage+scaleToSize.h"
 
 #define TempSoundFileName @"sound.caf"
 #define TempConvertedSoundFileName @"converted_sound.caf"
@@ -137,6 +138,7 @@
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
              image = [UIImage imageWithData:imageData];
 //             image = [image imageByScalingAndCroppingForSize:CGSizeMake(612.0, 612.0)];
+             
 //             image = [UIImage imageWithData:UIImageJPEGRepresentation(image, 0.6)];
              completionBlock(image);
              

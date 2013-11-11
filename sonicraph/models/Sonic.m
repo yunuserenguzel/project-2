@@ -9,70 +9,101 @@
 #import "Sonic.h"
 #import <AVFoundation/AVFoundation.h>
 #import "Mp3ConverterInterface.h"
+#import "JSONKit.h"
+#import "NSData+Base64.h"
+
 @implementation Sonic
 {
     Mp3ConverterInterface* mp3ConverterInterface;
 }
-+ (Sonic*) sonicFromDictionary:(NSDictionary*)dictionary
+
++ (Sonic *)sonicFromServerResponseDictionary:(NSDictionary *)dictionary
 {
-    UIImage* image = [UIImage imageWithData:[dictionary objectForKey:@"image"]];
-    return [Sonic sonickleWithImage:image andSound:[dictionary objectForKey:@"sound"] withId:[dictionary objectForKey:@"sonickleId"]];
+//    NSString* string = [NSData dataWithContentsOfURL:[dictionary @"sonic_url"]];
+    NSURL* sonicUrl = [NSURL URLWithString:[dictionary objectForKey:@"sonic_url"]];
+    NSError* error = nil;
+    NSString* sonicDataString = [NSString stringWithContentsOfURL:sonicUrl encoding:NSUTF8StringEncoding error:&error];
+    if(error){
+        return nil;
+    }
+   
+    return [Sonic sonicWithJsonDataString:sonicDataString];
+}
+
++ (Sonic *) sonicWithJsonDataString:(NSString*)jsonDataString
+{
+    NSDictionary* sonicDict = [jsonDataString objectFromJSONString];
+    UIImage* image = [UIImage imageWithData:[NSData dataFromBase64String:[sonicDict objectForKey:@"image"]]];
+    NSData* sound = [NSData dataFromBase64String:[sonicDict objectForKey:@"sound"]];
+    Sonic* sonic = [[Sonic alloc] initWithImage:image andSound:sound];
+    return sonic;
 }
 
 - (NSDictionary*)dictionaryFromSonic
 {
     NSData* imageData = UIImageJPEGRepresentation(self.image, 1.0);
-    return @{ @"image": [imageData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed], @"sound": [self.sound base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed], @"sonickleId": self.sonicId };
+    NSLog(@"imageSize w:%f h:%f",self.image.size.width,self.image.size.height);
+//    NSLog(@"")
+    NSLog(@"imageData: %d",[imageData length]);
+    NSString* imageDataString = [imageData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+    NSLog(@"imageDataString: %d",[[imageDataString dataUsingEncoding:NSUTF8StringEncoding] length]);
+//    imageData
+    return @{ @"image": imageDataString, @"sound": [self.sound base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed] };
 }
 
-+ (Sonic *)sonickleWithImage:(UIImage *)image andSound:(NSData *)sound withId:(NSString *)sonickleId
++ (Sonic *)sonickleWithImage:(UIImage *)image andSound:(NSData *)sound
 {
-    return [[Sonic alloc] initWithImage:image andSound:sound withId:sonickleId];
+    return [[Sonic alloc] initWithImage:image andSound:sound];
 }
 
 
-+ (Sonic *)readFromFile:(NSString *)fileName
++ (Sonic*) readFromFile:(SonicManagedObject*)sonicManagedObject;
 {
-    return nil;
+    NSString* filePath = [Sonic filePathWithId:sonicManagedObject.sonicId];
+    NSString* sonicDataString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    return [Sonic sonicWithJsonDataString:sonicDataString];
 }
 
-- (id)initWithImage:(UIImage *)image andSound:(NSData *)sound withId:(NSString *)sonickleId
+- (id)initWithImage:(UIImage *)image andSound:(NSData *)sound
 {
     if(self = [super init]){
         _image = image;
         _sound = sound;
-        _sonicId = sonickleId;
     }
     return self;
 }
 
-- (NSString*) documents
++ (NSString*) filePathWithId:(NSString*)id
 {
-    return [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString* folderPath = [[Sonic documents] stringByAppendingPathComponent:@"sonics"];
+    [[NSFileManager defaultManager] createDirectoryAtPath:folderPath
+                              withIntermediateDirectories:NO
+                                               attributes:nil
+                                                    error:nil];
+    NSString* filePath = [folderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.snc",id]];
+    return filePath;
 }
 
 - (void)saveToFile
 {
-    NSString* fileName = [self documents];
-    fileName = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.snc",self.sonicId]];
+    NSString* filePath = [Sonic filePathWithId:self.sonicManagedObject.sonicId];
+    NSString* file = [[self dictionaryFromSonic] JSONString];
+    NSError* error;
+    [file writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    NSLog(@"saveToFile error: %@",error);
+}
 
-    
-    NSMutableArray* array = [[NSUserDefaults standardUserDefaults] objectForKey:SonicklesUserDefaultsKey];
-    if(array == nil){
-        array = [[NSMutableArray alloc] init];
+- (void)setSonicManagedObject:(SonicManagedObject *)sonicManagedObject
+{
+    _sonicManagedObject = sonicManagedObject;
+    if(sonicManagedObject.sonic != self){
+        sonicManagedObject.sonic = self;
     }
-    [array addObject:fileName];
-    [[NSUserDefaults standardUserDefaults] setObject:array forKey:SonicklesUserDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    NSDictionary* file = [self dictionaryFromSonic];
-    [file writeToFile:fileName atomically:YES];
-    
-    NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:fileName error:nil];
-    NSNumber *fileSizeNumber = [fileAttributes objectForKey:NSFileSize];
-//    long long fileSize = [fileSizeNumber longLongValue];
-    
-    NSLog(@"fileName: %@\nfileSize: %@",fileName,fileSizeNumber);
+}
+
++ (NSString*) documents
+{
+    return [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
 }
 
 
@@ -82,7 +113,7 @@
         NSLog(@"setSoundCroppingFrom method requires rawSound to be set");
         return;
     }
-    NSURL *audioFileInput = [NSURL fileURLWithPath:[[self documents] stringByAppendingPathComponent:@"sonicConvertInputAudio.aac"]];
+    NSURL *audioFileInput = [NSURL fileURLWithPath:[[Sonic documents] stringByAppendingPathComponent:@"sonicConvertInputAudio.aac"]];
     NSString* outputName = @"sonicConvertOuputAuido.mp3";
     NSError* error;
     

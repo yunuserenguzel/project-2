@@ -11,5 +11,7 @@
 
 #define PreviewSonicSegue @"PreviewSonicSegue"
 #define ShareSonicSegue @"ShareSonicSegue"
+#define ProfileToPreviewSegue @"ProfileToPreviewSegue"
 
+#define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
 #endif

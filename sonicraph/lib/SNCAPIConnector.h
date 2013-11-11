@@ -11,6 +11,7 @@
 
 
 typedef void (^CompletionBlock) (NSDictionary *responseDictionary);
+typedef void (^Block) ();
 typedef void (^ErrorBlock) (NSError *error);
 
 @interface SNCAPIConnector : MKNetworkEngine

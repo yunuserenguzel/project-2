@@ -8,7 +8,7 @@
 
 #import "SNCCameraViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SNCPreviewViewController.h"
+#import "SNCEditViewController.h"
 
 #define SonicSoundMaxTime 30.0
 
@@ -149,17 +149,11 @@ typedef enum SonicRecordType {
     
     ImageBlock block = ^(UIImage *image) {
         
-        image = [image imageByScalingAndCroppingForSize:CGSizeMake(620.0, image.size.height/(image.size.width/620.0))];
+//        image = [image imageByScalingAndCroppingForSize:CGSizeMake(620.0, image.size.height/(image.size.width/620.0))];
 //        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
         
-        CGFloat xScale = image.size.width / [self cameraViewFrame].size.width;
-        CGFloat yScale = image.size.height / [self cameraViewFrame].size.height;
-        CGFloat x = [self visibleRectFrame].origin.x * xScale;
-        CGFloat y = [self visibleRectFrame].origin.y * yScale;
-        CGFloat w = [self visibleRectFrame].size.width * xScale;
-        CGFloat h = [self visibleRectFrame].size.height * yScale;
+        [self performSelector:@selector(formatCapturedImage:) withObject:image afterDelay:0.0];
         
-        capturedImage = [image cropForRect:CGRectMake(x, y, w, h)];
 //        UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
         if(self.recordType == SonicRecordTypePhotoFirst){
             [self startAudioRecording];
@@ -173,6 +167,22 @@ typedef enum SonicRecordType {
     [self.mediaManager performSelector:@selector(takePictureWithCompletionBlock:) withObject:block afterDelay:0.5];
     
 //    [self.mediaManager takePictureWithCompletionBlock:];
+}
+
+- (void) formatCapturedImage:(UIImage*)image
+{
+    image = [image imageByScalingAndCroppingForSize:CGSizeMake(310.0, image.size.height/(image.size.width/310.0))];
+    CGFloat xScale = image.size.width / [self cameraViewFrame].size.width;
+    CGFloat yScale = image.size.height / [self cameraViewFrame].size.height;
+    CGFloat x = [self visibleRectFrame].origin.x * xScale;
+    CGFloat y = [self visibleRectFrame].origin.y * yScale;
+    CGFloat w = [self visibleRectFrame].size.width * xScale;
+    CGFloat h = [self visibleRectFrame].size.height * yScale;
+    
+    image = [image cropForRect:CGRectMake(x, y, w, h)];
+    capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 1.0)];
+//    UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
+//    NSLog(@"here");
 }
 
 - (void) audioRecordStartedForManager:(SonicraphMediaManager *)manager
@@ -320,12 +330,10 @@ typedef enum SonicRecordType {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.destinationViewController isKindOfClass:[SNCPreviewViewController class]]){
-        Sonic* sonic = [[Sonic alloc] initWithImage:capturedImage
-                                                    andSound:nil
-                                                      withId:[NSString stringWithFormat:@"sonic%f",[NSDate timeIntervalSinceReferenceDate]]];
+    if([segue.destinationViewController isKindOfClass:[SNCEditViewController class]]){
+        Sonic* sonic = [[Sonic alloc] initWithImage:capturedImage andSound:nil];
         [sonic setRawSound:capturedAudio];
-        SNCPreviewViewController* previewController = segue.destinationViewController;
+        SNCEditViewController* previewController = segue.destinationViewController;
         [previewController setSonic:sonic];
         capturedAudio = nil;
         capturedImage = nil;

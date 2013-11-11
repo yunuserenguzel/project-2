@@ -1,11 +1,11 @@
-#import "SNCPreviewViewController.h"
+#import "SNCEditViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <AudioToolbox/AudioServices.h>
 #import "NMRangeSlider.h"
 #import "SNCShareViewController.h"
 
 
-@interface SNCPreviewViewController ()
+@interface SNCEditViewController ()
 
 @property UIImageView* imageView;
 @property UIButton* saveButton;
@@ -13,14 +13,14 @@
 
 @end
 
-@implementation SNCPreviewViewController
+@implementation SNCEditViewController
 {
     AVAudioPlayer *audioPlayer;
 }
 
 - (CGRect) soundSliderFrame
 {
-    return CGRectMake(10.0, 500.0, 300.0, 20.0);
+    return CGRectMake(10.0, 450.0, 300.0, 20.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -55,7 +55,7 @@
 
 - (void) doneEdit
 {
-    __block SNCPreviewViewController* this = self;
+    __block SNCEditViewController* this = self;
     [self.sonic setSoundCroppingFrom:self.soundSlider.lowerValue to:self.soundSlider.upperValue withCompletionHandler:^(Sonic *sonic, NSError *error) {
         if(sonic){
             [this performSegueWithIdentifier:ShareSonicSegue sender:this];

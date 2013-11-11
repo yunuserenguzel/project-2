@@ -12,7 +12,7 @@
 #import "NMRangeSlider.h"
 #import "TypeDefs.h"
 
-@interface SNCPreviewViewController : UIViewController <AVAudioPlayerDelegate>
+@interface SNCEditViewController : UIViewController <AVAudioPlayerDelegate>
 
 @property (nonatomic) Sonic* sonic;
 @property (nonatomic) UIButton* playPauseButton;

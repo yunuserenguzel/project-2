@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "SonicraphMediaManager.h"
 #import "TypeDefs.h"
+#import "SNCAppDelegate.h"
 
 @interface SNCCameraViewController : UIViewController <SonicraphMediaProtocol>
 

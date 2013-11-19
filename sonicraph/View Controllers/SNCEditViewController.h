@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Sonic.h"
+#import "SonicData.h"
 #import <AVFoundation/AVFoundation.h>
 #import "NMRangeSlider.h"
 #import "TypeDefs.h"
 
 @interface SNCEditViewController : UIViewController <AVAudioPlayerDelegate>
 
-@property (nonatomic) Sonic* sonic;
+@property (nonatomic) SonicData* sonic;
 @property (nonatomic) UIButton* playPauseButton;
 @property (nonatomic) UILabel* durationLabel;
 @end

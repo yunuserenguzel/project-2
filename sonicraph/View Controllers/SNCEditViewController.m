@@ -56,7 +56,7 @@
 - (void) doneEdit
 {
     __block SNCEditViewController* this = self;
-    [self.sonic setSoundCroppingFrom:self.soundSlider.lowerValue to:self.soundSlider.upperValue withCompletionHandler:^(Sonic *sonic, NSError *error) {
+    [self.sonic setSoundCroppingFrom:self.soundSlider.lowerValue to:self.soundSlider.upperValue withCompletionHandler:^(SonicData *sonic, NSError *error) {
         if(sonic){
             [this performSegueWithIdentifier:ShareSonicSegue sender:this];
             
@@ -131,7 +131,7 @@
     [self.durationLabel setText:[NSString stringWithFormat:@"%f",audioPlayer.duration]];
 }
 
-- (void)setSonic:(Sonic *)sonic
+- (void)setSonic:(SonicData *)sonic
 {
     _sonic = sonic;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:NULL];

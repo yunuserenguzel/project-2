@@ -27,7 +27,7 @@
 		AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */; };
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
-		AE86EE7B182C0DA800F74F1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* Sonic.m */; };
+		AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* SonicData.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AE86EE8B182C0DF300F74F1D /* SNCAPIConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */; };
@@ -49,6 +49,11 @@
 		AE86EECC18316CA800F74F1D /* MP3Converter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE86EEC318316CA800F74F1D /* MP3Converter.a */; };
 		AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEC518316CA800F74F1D /* MP3Converter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AE86EECE18316CA800F74F1D /* Mp3ConverterInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEC718316CA800F74F1D /* Mp3ConverterInterface.m */; };
+		AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EED31832C69600F74F1D /* SNCHomeViewController.m */; };
+		AE86EED71832E07600F74F1D /* SonicPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EED61832E07600F74F1D /* SonicPlayerView.m */; };
+		AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */; };
+		AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDC1837EA3E00F74F1D /* Sonic.m */; };
+		AE86EEE01837EA7E00F74F1D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDF1837EA7E00F74F1D /* User.m */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
 		AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9D1801A35D000DF866 /* CoreGraphics.framework */; };
 		AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9F1801A35D000DF866 /* UIKit.framework */; };
@@ -93,8 +98,8 @@
 		AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground@2x.png"; sourceTree = "<group>"; };
 		AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver.png"; sourceTree = "<group>"; };
 		AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver@2x.png"; sourceTree = "<group>"; };
-		AE86EE79182C0DA800F74F1D /* Sonic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sonic.h; sourceTree = "<group>"; };
-		AE86EE7A182C0DA800F74F1D /* Sonic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sonic.m; sourceTree = "<group>"; };
+		AE86EE79182C0DA800F74F1D /* SonicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicData.h; sourceTree = "<group>"; };
+		AE86EE7A182C0DA800F74F1D /* SonicData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicData.m; sourceTree = "<group>"; };
 		AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMRangeSlider.h; sourceTree = "<group>"; };
 		AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMRangeSlider.m; sourceTree = "<group>"; };
 		AE86EE81182C0DD700F74F1D /* TypeDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypeDefs.h; sourceTree = "<group>"; };
@@ -137,6 +142,16 @@
 		AE86EEC518316CA800F74F1D /* MP3Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP3Converter.m; sourceTree = "<group>"; };
 		AE86EEC618316CA800F74F1D /* Mp3ConverterInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mp3ConverterInterface.h; sourceTree = "<group>"; };
 		AE86EEC718316CA800F74F1D /* Mp3ConverterInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mp3ConverterInterface.m; sourceTree = "<group>"; };
+		AE86EED21832C69600F74F1D /* SNCHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCHomeViewController.h; sourceTree = "<group>"; };
+		AE86EED31832C69600F74F1D /* SNCHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCHomeViewController.m; sourceTree = "<group>"; };
+		AE86EED51832E07600F74F1D /* SonicPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicPlayerView.h; sourceTree = "<group>"; };
+		AE86EED61832E07600F74F1D /* SonicPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicPlayerView.m; sourceTree = "<group>"; };
+		AE86EED81835590F00F74F1D /* SNCHomeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCHomeTableCell.h; sourceTree = "<group>"; };
+		AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCHomeTableCell.m; sourceTree = "<group>"; };
+		AE86EEDB1837EA3E00F74F1D /* Sonic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sonic.h; sourceTree = "<group>"; };
+		AE86EEDC1837EA3E00F74F1D /* Sonic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sonic.m; sourceTree = "<group>"; };
+		AE86EEDE1837EA7E00F74F1D /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		AE86EEDF1837EA7E00F74F1D /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		AED56E981801A35D000DF866 /* sonicraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonicraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED56E9B1801A35D000DF866 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AED56E9D1801A35D000DF866 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -245,8 +260,12 @@
 			isa = PBXGroup;
 			children = (
 				AE86EE78182C0DA800F74F1D /* Managed Objects */,
-				AE86EE79182C0DA800F74F1D /* Sonic.h */,
-				AE86EE7A182C0DA800F74F1D /* Sonic.m */,
+				AE86EE79182C0DA800F74F1D /* SonicData.h */,
+				AE86EE7A182C0DA800F74F1D /* SonicData.m */,
+				AE86EEDB1837EA3E00F74F1D /* Sonic.h */,
+				AE86EEDC1837EA3E00F74F1D /* Sonic.m */,
+				AE86EEDE1837EA7E00F74F1D /* User.h */,
+				AE86EEDF1837EA7E00F74F1D /* User.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -267,6 +286,10 @@
 			children = (
 				AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */,
 				AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */,
+				AE86EED51832E07600F74F1D /* SonicPlayerView.h */,
+				AE86EED61832E07600F74F1D /* SonicPlayerView.m */,
+				AE86EED81835590F00F74F1D /* SNCHomeTableCell.h */,
+				AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -313,6 +336,8 @@
 				AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */,
 				AE86EE97182D7D2000F74F1D /* SNCProfileViewController.h */,
 				AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */,
+				AE86EED21832C69600F74F1D /* SNCHomeViewController.h */,
+				AE86EED31832C69600F74F1D /* SNCHomeViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -605,6 +630,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE86EEE01837EA7E00F74F1D /* User.m in Sources */,
 				AED56EAA1801A35D000DF866 /* main.m in Sources */,
 				AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */,
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
@@ -622,18 +648,22 @@
 				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
 				AE86EEA8183158D300F74F1D /* UserManagedObject.m in Sources */,
 				AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */,
-				AE86EE7B182C0DA800F74F1D /* Sonic.m in Sources */,
+				AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */,
 				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
 				AED56EB41801A35D000DF866 /* sonicraph.xcdatamodeld in Sources */,
+				AE86EED71832E07600F74F1D /* SonicPlayerView.m in Sources */,
 				AE86EEB518316BC500F74F1D /* SonicraphMediaManager.m in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */,
 				AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */,
 				AE86EE9F1831547600F74F1D /* SonicManagedObject.m in Sources */,
 				AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */,
+				AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */,
 				AED56EF51801A39F000DF866 /* NSString+MKNetworkKitAdditions.m in Sources */,
 				AED56EF31801A39F000DF866 /* NSDate+RFC1123.m in Sources */,
+				AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */,
 				AED56F081801B425000DF866 /* SNCAPITest.m in Sources */,
+				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
 				AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */,
 				AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */,

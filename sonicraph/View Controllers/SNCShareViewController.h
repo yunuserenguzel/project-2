@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Sonic.h"
+#import "SonicData.h"
 
 @interface SNCShareViewController : UIViewController
-@property Sonic* sonic;
+@property SonicData* sonic;
 @end

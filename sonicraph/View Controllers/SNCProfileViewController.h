@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "TypeDefs.h"
+#import "UserManagedObject.h"
 
 @interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property UICollectionView* sonicCollectionView;
 @property UICollectionViewFlowLayout* sonicCollectionViewFlowLayout;
+
+@property (nonatomic) UserManagedObject* user;
+
 @end

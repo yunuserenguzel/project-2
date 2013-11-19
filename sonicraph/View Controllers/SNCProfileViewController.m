@@ -9,7 +9,9 @@
 #import "SNCProfileViewController.h"
 #import "SNCAPIManager.h"
 #import "SNCEditViewController.h"
+#import "SonicData.h"
 #import "Sonic.h"
+
 
 @interface SNCProfileViewController ()
 
@@ -19,7 +21,7 @@
 
 @implementation SNCProfileViewController
 {
-    SonicManagedObject* selectedSonicManagedObject;
+    Sonic* selectedSonic;
 }
 
 - (CGRect) sonicCollectionViewFrame
@@ -46,7 +48,17 @@
     [super viewDidLoad];
     [self initializeSonicCollectionView];
     // Do any additional setup after loading the view.
+    
 }
+
+- (void) setUser:(UserManagedObject *)user
+{
+    _user = user;
+    [SNCAPIManager getUserSonics:self.user withCompletionBlock:^(NSArray *sonics) {
+        
+    }];
+}
+
 
 - (void) initializeSonicCollectionView
 {
@@ -70,7 +82,8 @@
                                                  name:NotificationSonicsAreLoaded
                                                object:nil];
 }
- -(void)viewWillDisappear:(BOOL)animated
+
+- (void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:nil
@@ -94,10 +107,20 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
     SonicManagedObject* sonicManagedObject = [self.sonics objectAtIndex:indexPath.row];
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:[sonicManagedObject getImage]];
+//    UIImageView* imageView = [[UIImageView alloc] initWithImage:[sonicManagedObject getImage]];
+    UIImageView* imageView = [[UIImageView alloc] init];
     imageView.frame = CGRectMake(0.0, 0.0, cell.frame.size.width, cell.frame.size.height);
     [imageView setUserInteractionEnabled:NO];
+    NSURL*  url = [NSURL URLWithString:[sonicManagedObject sonicUrl]];
+    [SNCAPIManager getSonic:url withSonicBlock:^(SonicData *sonic, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imageView.image = sonic.image;
+        });
+    }];
+    
     [cell addSubview:imageView];
+    
+    
     
     return cell;
 }
@@ -113,7 +136,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"indexPath.row: %d",indexPath.row);
-    selectedSonicManagedObject = [self.sonics objectAtIndex:indexPath.row];
+    selectedSonic = [self.sonics objectAtIndex:indexPath.row];
     [self performSegueWithIdentifier:ProfileToPreviewSegue sender:self];
     
 }
@@ -122,7 +145,7 @@
 {
     if ([[segue identifier] isEqualToString:ProfileToPreviewSegue]){
         SNCEditViewController* preview = segue.destinationViewController;
-        [preview setSonic:selectedSonicManagedObject.sonic];
+        [preview setSonic:selectedSonic.sonicData];
     }
 }
 

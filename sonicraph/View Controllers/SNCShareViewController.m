@@ -43,7 +43,7 @@
     NSLog(@"Should share to server");
     
     [SNCAPIManager createSonic:self.sonic withCompletionBlock:^(NSDictionary *responseDictionary) {
-        [SNCAPIManager getMySonicsWithCompletionBlock:nil];
+        [SNCAPIManager getUserSonics:[UserManagedObject last] withCompletionBlock:nil];
     }];
     
     

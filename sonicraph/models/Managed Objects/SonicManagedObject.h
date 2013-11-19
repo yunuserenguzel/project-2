@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "UserManagedObject.h"
 
-@class Sonic;
+@class SonicData;
 
 @interface SonicManagedObject : NSManagedObject
 
@@ -20,17 +20,20 @@
 @property (nonatomic, retain) NSNumber * isPrivate;
 @property (nonatomic, retain) NSDate * creationDate;
 @property (nonatomic, retain) NSString * sonicUrl;
-@property (nonatomic, retain) NSManagedObject *owner;
-@property Sonic* sonic;
+@property (nonatomic, retain) UserManagedObject *owner;
 
 + (SonicManagedObject*) createWith:(NSString*)sonicId andLongitude:(NSNumber*)longitude andLatitude:(NSNumber*)latitude andIsPrivate:(NSNumber*)isPrivate andCreationDate:(NSDate*)creationDate andSonicUrl:(NSString*)sonicUrl andOwner:(UserManagedObject*)userManagedObject;
+
++ (SonicManagedObject*) createOrFetchForId:(NSString*)sonicId;
 
 + (NSArray*) getFrom:(NSInteger)from to:(NSInteger)to;
 
 + (SonicManagedObject*) getWithId:(NSString*)sonicId;
 
-- (UIImage*) getImage;
++ (SonicManagedObject*) last;
 
-- (NSData*) getSound;
+- (void) save;
+
+- (void) deleteFromDatase;
 
 @end

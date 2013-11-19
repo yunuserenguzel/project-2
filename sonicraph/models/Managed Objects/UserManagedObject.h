@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Sonic;
+@class SonicData;
 
 @interface UserManagedObject : NSManagedObject
 
@@ -17,12 +17,22 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * userId;
 @property (nonatomic, retain) NSSet *sonics;
+
++ (UserManagedObject*) createOrFetchWithId:(NSString*)userId;
++ (UserManagedObject*) createUserWith:(NSString*)userId andUserName:(NSString*)userName andRealName:(NSString*)realName andImage:(NSString*)image;
+
++ (UserManagedObject*) getUser:(NSString*)userId;
+
++ (UserManagedObject*) last;
+
+- (void) save;
+
 @end
 
 @interface UserManagedObject (CoreDataGeneratedAccessors)
 
-- (void)addSonicsObject:(Sonic *)value;
-- (void)removeSonicsObject:(Sonic *)value;
+- (void)addSonicsObject:(SonicData *)value;
+- (void)removeSonicsObject:(SonicData *)value;
 - (void)addSonics:(NSSet *)values;
 - (void)removeSonics:(NSSet *)values;
 

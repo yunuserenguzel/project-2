@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SNCAppDelegate : UIResponder <UIApplicationDelegate>
+@interface SNCAppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -18,5 +18,7 @@
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+
+- (void) openPreviousTab;
 
 @end

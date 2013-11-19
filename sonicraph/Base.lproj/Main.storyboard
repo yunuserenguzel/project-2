@@ -66,6 +66,49 @@
             </objects>
             <point key="canvasLocation" x="12" y="374"/>
         </scene>
+        <!--Home View Controller - Home-->
+        <scene sceneID="kPu-WX-Z0g">
+            <objects>
+                <tableViewController id="sdK-cW-6gb" customClass="SNCHomeViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="I9k-nd-A2G">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="BFv-D4-HwU">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BFv-D4-HwU" id="CRm-Kn-WID">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Home" id="bH5-cB-bBr">
+                        <barButtonItem key="backBarButtonItem" title="Home" id="kaH-Zw-nft"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uBg-5r-JB6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="90" y="1080"/>
+        </scene>
+        <!--Navigation Controller - Home-->
+        <scene sceneID="hYG-yn-2P9">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="F0F-wh-NmK" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" id="FTh-dn-qqH"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ILS-Fh-ei1">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="sdK-cW-6gb" kind="relationship" relationship="rootViewController" id="ob4-Ka-6rJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W2i-vT-gdP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-444" y="1080"/>
+        </scene>
         <!--Edit View Controller - Preview Sonic-->
         <scene sceneID="BfV-Wz-2kw">
             <objects>
@@ -97,7 +140,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="neT-du-0DP" kind="relationship" relationship="viewControllers" id="zWD-6d-NGe"/>
+                        <segue destination="F0F-wh-NmK" kind="relationship" relationship="viewControllers" id="rXR-Mh-qPd"/>
                         <segue destination="esE-xM-snl" kind="relationship" relationship="viewControllers" id="xIE-XJ-2kB"/>
                         <segue destination="fCe-kc-u0K" kind="relationship" relationship="viewControllers" id="DMP-Tc-aWG"/>
                     </connections>
@@ -106,30 +149,11 @@
             </objects>
             <point key="canvasLocation" x="-1057" y="369"/>
         </scene>
-        <!--View Controller - Item 2-->
-        <scene sceneID="yXO-vA-shQ">
-            <objects>
-                <viewController id="neT-du-0DP" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lbw-JN-qMB"/>
-                        <viewControllerLayoutGuide type="bottom" id="bOP-vM-8ic"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mnI-I8-E10">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="ZBg-dd-SYl"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="C1f-hQ-t1n" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-447" y="1121"/>
-        </scene>
-        <!--Navigation Controller - Item-->
+        <!--Navigation Controller - Camera-->
         <scene sceneID="Nli-MK-1Y4">
             <objects>
                 <navigationController definesPresentationContext="YES" id="esE-xM-snl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="SHW-Eb-fuJ"/>
+                    <tabBarItem key="tabBarItem" title="Camera" id="SHW-Eb-fuJ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vwm-YA-u75">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

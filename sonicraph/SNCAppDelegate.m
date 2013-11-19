@@ -11,6 +11,12 @@
 #import "SNCAPITest.h"
 #import "SNCAPIManager.h"
 #import "TypeDefs.h"
+#import "SNCCameraViewController.h"
+
+#import "SonicManagedObject.h"
+
+static int previousTabIndex = 0;
+
 @implementation SNCAppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -24,17 +30,37 @@
 //    SNCMasterViewController *controller = (SNCMasterViewController *)navigationController.topViewController;
 //    controller.managedObjectContext = self.managedObjectContext;
     UITabBarController* tabbarController = (UITabBarController*)self.window.rootViewController;
-    [tabbarController setSelectedIndex:2];
+    [tabbarController setDelegate:self];
+    [tabbarController setSelectedIndex:0];
+    
+    [[SonicManagedObject last] deleteFromDatase];
+    
+    [SNCAPIManager getLatestSonicsWithCompletionBlock:nil];
+    
     
     //TEST
-    [SNCAPITest start];
+//    [SNCAPITest start];
+    
     
     return YES;
 }
-							
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    previousTabIndex = tabBarController.selectedIndex;
+    return YES;
+}
+
+- (void)openPreviousTab
+{
+    
+    UITabBarController* tabbarController = (UITabBarController*)self.window.rootViewController;
+    [tabbarController setSelectedIndex:previousTabIndex];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    [SNCAPIManager getMySonicsWithCompletionBlock:nil];
+    
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
@@ -52,6 +78,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+//    [SNCAPIManager get:nil];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

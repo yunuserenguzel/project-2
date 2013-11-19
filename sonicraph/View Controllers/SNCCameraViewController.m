@@ -35,6 +35,7 @@ typedef enum SonicRecordType {
 @property NSTimer* soundTimer;
 @property NSDate* soundTimerInitialFireDate;
 @property UISwitch* recordTypeSwitch;
+@property UIButton* cancelButton;
 @end
 
 @implementation SNCCameraViewController
@@ -66,6 +67,11 @@ typedef enum SonicRecordType {
     return CGRectMake(10.0, 370.0, 300.0, 10.0);
 }
 
+-(CGRect) cancelButtonFrame
+{
+    return CGRectMake(320.0-80.0, self.view.frame.size.height-80.0, 60.0, 44.0);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -79,6 +85,7 @@ typedef enum SonicRecordType {
     [self initializeMaskView];
     [self initializeCameraFeaturesBar];
     [self initializeSoundTimeSlider];
+    [self initializeCancelButton];
     self.recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.recordButton setImage:[UIImage imageNamed:@"Camera Button.png"] forState:UIControlStateNormal];
 //    [self.recordButton setTitle:@"Take" forState:UIControlStateNormal];
@@ -120,6 +127,7 @@ typedef enum SonicRecordType {
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [self.tabBarController.tabBar setHidden:YES];
     [self.mediaManager startCamera];
     [self.recordTypeSwitch setHidden:NO];
     [self.activityIndicator stopAnimating];
@@ -136,6 +144,7 @@ typedef enum SonicRecordType {
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:NO  animated:NO];
+    [self.tabBarController.tabBar setHidden:NO];
 }
 
 - (void) takePicture
@@ -276,6 +285,23 @@ typedef enum SonicRecordType {
     
 }
 
+- (void) initializeCancelButton
+{
+    self.cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.cancelButton setFrame:[self cancelButtonFrame]];
+    [self.cancelButton setTitle:@"X" forState:UIControlStateNormal];
+    [self.cancelButton addTarget:self action:@selector(cancelButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.cancelButton];
+}
+
+- (void) cancelButtonTapped
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    SNCAppDelegate* appDelegate = (SNCAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate openPreviousTab];
+
+}
+
 -(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
     return UIStatusBarAnimationSlide;
@@ -331,7 +357,7 @@ typedef enum SonicRecordType {
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.destinationViewController isKindOfClass:[SNCEditViewController class]]){
-        Sonic* sonic = [[Sonic alloc] initWithImage:capturedImage andSound:nil];
+        SonicData* sonic = [[SonicData alloc] initWithImage:capturedImage andSound:nil];
         [sonic setRawSound:capturedAudio];
         SNCEditViewController* previewController = segue.destinationViewController;
         [previewController setSonic:sonic];

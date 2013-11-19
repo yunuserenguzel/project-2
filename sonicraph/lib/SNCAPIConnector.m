@@ -20,8 +20,6 @@
     return sharedInstance;
 }
 
-
-
 - (void) postRequestWithParams:(NSDictionary*) params
                   andOperation:(NSString*) opearation
             andCompletionBlock:(CompletionBlock) completionBlock

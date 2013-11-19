@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Sonic.h"
+#import "SonicData.h"
 #import "SNCAPIConnector.h"
 
 typedef void (^CompletionArrayBlock) (NSArray *sonics);
@@ -15,9 +15,19 @@ typedef void (^CompletionArrayBlock) (NSArray *sonics);
 
 @interface SNCAPIManager : NSObject
 
-+ (void)createSonic:(Sonic *)sonic withCompletionBlock:(CompletionBlock)completionBlock;
++ (void) createSonic:(SonicData *)sonic withCompletionBlock:(CompletionBlock)completionBlock;
 
++ (void) getUserSonics:(UserManagedObject*)user withCompletionBlock:(CompletionArrayBlock)completionBlock;
 
-+ (void) getMySonicsWithCompletionBlock:(Block)completionBlock;
++ (void) getSonicsBefore:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
+
++ (void) getSonicsAfter:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
+
++ (void) getLatestSonicsWithCompletionBlock:(Block)completionBlock;
+
++ (void) getSonicsWithParams:(NSDictionary*)dictionary saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(Block)completionBlock;
+
++ (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock;
+
 
 @end

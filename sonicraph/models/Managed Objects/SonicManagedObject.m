@@ -7,7 +7,7 @@
 //
 
 #import "SonicManagedObject.h"
-#import "Sonic.h"
+#import "SonicData.h"
 #import "DatabaseManager.h"
 
 @implementation SonicManagedObject
@@ -20,26 +20,44 @@
 @dynamic sonicUrl;
 @dynamic owner;
 
-@synthesize sonic = _sonic;
 
++ (SonicManagedObject *)last
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    // Results should be in descending order of timeStamp.
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sonicId" ascending:NO];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+    return (SonicManagedObject*)[[DatabaseManager sharedInstance] entityWithRequest:request forName:@"Sonic"];
+}
+
++ (SonicManagedObject*) createOrFetchForId:(NSString*)sonicId
+{
+    SonicManagedObject* sonicManagedObject = [SonicManagedObject getWithId:sonicId];
+    if(sonicManagedObject == nil) {
+        sonicManagedObject = (SonicManagedObject*)[[DatabaseManager sharedInstance] createEntity:@"Sonic"];
+        [sonicManagedObject setSonicId:sonicId];
+    }
+    return sonicManagedObject;
+}
 
 + (SonicManagedObject *)createWith:(NSString *)sonicId andLongitude:(NSNumber *)longitude andLatitude:(NSNumber *)latitude andIsPrivate:(NSNumber*)isPrivate andCreationDate:(NSDate *)creationDate andSonicUrl:(NSString *)sonicUrl andOwner:(UserManagedObject *)userManagedObject
 {
-    SonicManagedObject* sonic = [SonicManagedObject getWithId:sonicId];
-    if(sonic == nil){
-        sonic = (SonicManagedObject*)[[DatabaseManager sharedInstance] createEntity:@"Sonic"];
-        [sonic setSonicId:sonicId];
-        [sonic setLongitude:longitude];
-        [sonic setLatitude:latitude];
-        [sonic setIsPrivate:isPrivate];
-        [sonic setCreationDate:creationDate];
-        [sonic setSonicUrl:sonicUrl];
-        [sonic setOwner:userManagedObject];
+    SonicManagedObject* sonicManagedObject = [SonicManagedObject getWithId:sonicId];
+    if(sonicManagedObject == nil){
+        sonicManagedObject = (SonicManagedObject*)[[DatabaseManager sharedInstance] createEntity:@"Sonic"];
+        [sonicManagedObject setSonicId:sonicId];
+        [sonicManagedObject setLongitude:longitude];
+        [sonicManagedObject setLatitude:latitude];
+        [sonicManagedObject setIsPrivate:isPrivate];
+        [sonicManagedObject setCreationDate:creationDate];
+        [sonicManagedObject setSonicUrl:sonicUrl];
+        [sonicManagedObject setOwner:userManagedObject];
         [[DatabaseManager sharedInstance] saveContext];
     }
-    return sonic;
+    return sonicManagedObject;
 }
-
 
 + (SonicManagedObject *)getWithId:(NSString *)sonicId
 {
@@ -53,32 +71,19 @@
 + (NSArray *)getFrom:(NSInteger)from to:(NSInteger)to
 {
     NSFetchRequest* request = [[NSFetchRequest alloc] init];
-    return [[DatabaseManager sharedInstance] entitiesWithRequest:request forName:@"Sonic"];
+    NSArray* sonics = [[DatabaseManager sharedInstance] entitiesWithRequest:request forName:@"Sonic"];
+    return [sonics sortedArrayUsingComparator:^NSComparisonResult(SonicManagedObject* obj1, SonicManagedObject* obj2) {
+        return [obj2.creationDate compare:obj1.creationDate];
+    }];
 }
 
-
-- (UIImage *)getImage
+- (void)save
 {
-    return [[self sonic] image];
+    [[DatabaseManager sharedInstance] saveContext];
 }
 
-- (NSData *)getSound
+- (void) deleteFromDatase
 {
-    return [[self sonic] sound];
+    [[DatabaseManager sharedInstance] deleteObject:self];
 }
-
-- (Sonic *)sonic
-{
-    if(_sonic == nil){
-        self.sonic = [Sonic readFromFile:self];
-    }
-    return _sonic;
-}
-
-- (void)setSonic:(Sonic *)sonic
-{
-    _sonic = sonic;
-    sonic.sonicManagedObject = self;
-}
-
 @end

@@ -67,6 +67,7 @@ static DatabaseManager *sharedInstance = nil;
     return [mutableFetchResults objectAtIndex:0];
 }
 
+
 -(NSManagedObject*) createEntity:(NSString*)entityName
 {
     NSManagedObject* entity =  [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];

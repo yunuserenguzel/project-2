@@ -12,7 +12,8 @@
 #import "SonicManagedObject.h"
 #import "UserManagedObject.h"
 #import "TypeDefs.h"
-
+#import "User.h"
+#import "AuthenticationManager.h"
 @implementation SNCAPIManager
 
 NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
@@ -25,16 +26,42 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     }
     return connector;
 }
-+ (void)createSonic:(SonicData *)sonic withCompletionBlock:(CompletionBlock)completionBlock
+
++ (void)createSonic:(SonicData *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock
 {
     NSString* sonicData = [[sonic dictionaryFromSonicData] JSONString];
-    NSLog(@"length: %d",[sonicData lengthOfBytesUsingEncoding:NSStringEncodingConversionAllowLossy]);
-    NSString* operation = @"create_sonic";
+    NSString* tempFile = [SonicData filePathWithId:@"temp_sonic"];
+    NSError* error;
+    [sonicData writeToFile:tempFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    
+    NSString* operation = @"sonic/create_sonic";
     [[SNCAPIConnector sharedInstance]
-     postRequestWithParams:@{@"token":token, @"latitude":[NSNumber numberWithFloat:sonic.latitude], @"longitude":[NSNumber numberWithFloat:sonic.longitude], @"sonic":sonicData}
+     uploadFileRequestWithParams:@{@"token":[[AuthenticationManager sharedInstance] token], @"latitude":[NSNumber numberWithFloat:sonic.latitude], @"longitude":[NSNumber numberWithFloat:sonic.longitude]}
+     andFiles:@[@{@"file":tempFile,@"key":@"sonic_data"}]
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
-         completionBlock(responseDictionary);
+         NSDictionary* sonicDict = [responseDictionary objectForKey:@"sonic"];
+         NSDictionary* userDict = [sonicDict objectForKey:@"user"];
+         User* user = [User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andProfileImage:nil];
+         [user saveToDatabase];
+         
+         NSNumber* longitude = [sonicDict objectForKey:@"longitude"];
+         longitude = [longitude isKindOfClass:[NSNull class]] ? nil : longitude;
+         NSNumber* latitude = [sonicDict objectForKey:@"latitude"];
+         latitude = [latitude isKindOfClass:[NSNull class]] ? nil :latitude;
+         NSNumber* isPrivate = [sonicDict objectForKey:@"is_private" ];
+         isPrivate = [isPrivate isKindOfClass:[NSNull class]] ? nil : isPrivate;
+         NSString* sonicId = [NSString stringWithFormat:@"%@",[sonicDict objectForKey:@"id"]];
+                              
+         Sonic* sonic = [Sonic sonicWith:sonicId
+                            andLongitude:longitude
+                             andLatitude:latitude
+                            andIsPrivate:isPrivate
+                         andCreationDate:nil
+                             andSonicUrl:[sonicDict objectForKey:@"sonic_data"]
+                                andOwner:user];
+         [sonic saveToDatabase];
+         completionBlock(sonic);
      }
      andErrorBlock:^(NSError *error) {
          
@@ -154,7 +181,81 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
 
 + (void) getSonicsWithCompletionBlock:(Block)completionBlock
 {
-    
+
 }
 
+
++ (void) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
+{
+    [[SNCAPIConnector sharedInstance] getRequestWithParams:@{@"token": token}
+                                              andOperation:@"check_is_valid_token"
+                                        andCompletionBlock:^(NSDictionary *responseDictionary) {
+                                            NSString* userId = [[responseDictionary objectForKey:@"user"] objectForKey:@"id"];
+                                            User* user = [User userWithId:userId];
+                                            if(user == nil){
+                                                user = [[User alloc] init];
+                                                user.userId = userId;
+                                                user.username = [[responseDictionary objectForKey:@"user"] objectForKey:@"username"];
+                                                [user saveToDatabase];
+                                            }
+                                            if(block != nil){
+                                                block(user,nil);
+                                            }
+                                        }
+                                             andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *) loginWithUsername:(NSString*) username andPassword:(NSString*)password withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"username": username,
+                             @"password": password};
+    
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"user/login"andCompletionBlock:^(NSDictionary *responseDictionary) {
+        
+        NSString* userId = [[responseDictionary objectForKey:@"user"] objectForKey:@"id"];
+        NSString* token = [responseDictionary objectForKey:@"token"];
+        User* user = [User userWithId:userId];
+        if(user == nil){
+            user = [[User alloc] init];
+            user.userId = userId;
+        }
+        user.username = [[responseDictionary objectForKey:@"user"] objectForKey:@"username"];
+        [user saveToDatabase];
+        if(completionBlock != nil){
+            completionBlock(user,token);
+        }
+    } andErrorBlock:errorBlock];
+}
+
+
++ (MKNetworkOperation *)registerWithUsername:(NSString *)username email:(NSString *)email password:(NSString *)password andCompletionBlock:(CompletionBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"username": username,
+                             @"email":email,
+                             @"password":password};
+    return [[SNCAPIConnector sharedInstance] postRequestWithParams:params andOperation:@"user/register"andCompletionBlock:^(NSDictionary *responseDictionary) {
+        if(completionBlock != nil){
+            completionBlock(responseDictionary);
+        }
+    } andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)validateWithEmail:(NSString *)email andValidationCode:(NSString *)validationCode withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"email": email,
+                             @"validation_code": validationCode};
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"user/validate"andCompletionBlock:^(NSDictionary *responseDictionary) {
+        if(completionBlock != nil){
+            completionBlock(YES);
+        }
+    } andErrorBlock:errorBlock];
+}
+
+
 @end
+
+
+
+
+
+

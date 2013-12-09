@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @interface SNCAppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -16,7 +15,12 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+@property (readonly) UITabBarController* tabbarController;
+
++ (SNCAppDelegate*) sharedInstance;
+
 - (void)saveContext;
+
 - (NSURL *)applicationDocumentsDirectory;
 
 - (void) openPreviousTab;

@@ -13,9 +13,12 @@
 #import "TypeDefs.h"
 #import "SNCCameraViewController.h"
 
+#import "AuthenticationManager.h"
+
 #import "SonicManagedObject.h"
 
 static int previousTabIndex = 0;
+static SNCAppDelegate* sharedInstance = nil;
 
 @implementation SNCAppDelegate
 
@@ -23,24 +26,56 @@ static int previousTabIndex = 0;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
++ (SNCAppDelegate *)sharedInstance
+{
+    return sharedInstance;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    sharedInstance = self;
     // Override point for customization after application launch.
 //    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
 //    SNCMasterViewController *controller = (SNCMasterViewController *)navigationController.topViewController;
 //    controller.managedObjectContext = self.managedObjectContext;
-    UITabBarController* tabbarController = (UITabBarController*)self.window.rootViewController;
-    [tabbarController setDelegate:self];
-    [tabbarController setSelectedIndex:0];
+    _tabbarController = (UITabBarController*) self.window.rootViewController;
+    [self.tabbarController setDelegate:self];
+    [self.tabbarController setSelectedIndex:0];
     
-    [[SonicManagedObject last] deleteFromDatase];
+//    [[SonicManagedObject last] deleteFromDatase];
+    NSLog(@"%@",[Sonic getFrom:1 to:1]);
+//    [SNCAPIManager getLatestSonicsWithCompletionBlock:nil];
     
-    [SNCAPIManager getLatestSonicsWithCompletionBlock:nil];
     
+//    [SNCAPIManager registerWithUsername:@"yeguzel" email:@"exculuber@gmail.com" password:@"741285" andCompletionBlock:^(NSDictionary *responseDictionary) {
+//        NSString* validationCode = [responseDictionary objectForKey:@"validation_code"];
+//        [SNCAPIManager validateWithEmail:@"exculuber@gmail.com" andValidationCode:validationCode withCompletionBlock:^(BOOL successful) {
+//            [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
+//                [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//            } andErrorBlock:^(NSError *error) {
+//                
+//            }];
+//        } andErrorBlock:^(NSError *error) {
+//            NSLog(@"%@",error);
+//        }];
+//
+//    } andErrorBlock:^(NSError *error) {
+//        
+//    }];
     
     //TEST
 //    [SNCAPITest start];
+
+    [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
+        [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
     
+    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [[AuthenticationManager sharedInstance] checkAuthentication];
+//    });
     
     return YES;
 }
@@ -53,14 +88,12 @@ static int previousTabIndex = 0;
 
 - (void)openPreviousTab
 {
-    
     UITabBarController* tabbarController = (UITabBarController*)self.window.rootViewController;
     [tabbarController setSelectedIndex:previousTabIndex];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
@@ -73,6 +106,7 @@ static int previousTabIndex = 0;
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    [[AuthenticationManager sharedInstance] checkAuthentication];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

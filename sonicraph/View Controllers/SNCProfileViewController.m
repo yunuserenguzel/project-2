@@ -92,7 +92,7 @@
 
 - (void) refresh
 {   
-    self.sonics = [SonicManagedObject getFrom:0 to:20];
+    self.sonics = [Sonic getFrom:0 to:20];
     [self.sonicCollectionView reloadData];
 }
 
@@ -106,12 +106,12 @@
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    SonicManagedObject* sonicManagedObject = [self.sonics objectAtIndex:indexPath.row];
+    Sonic* sonic = [self.sonics objectAtIndex:indexPath.row];
 //    UIImageView* imageView = [[UIImageView alloc] initWithImage:[sonicManagedObject getImage]];
     UIImageView* imageView = [[UIImageView alloc] init];
     imageView.frame = CGRectMake(0.0, 0.0, cell.frame.size.width, cell.frame.size.height);
     [imageView setUserInteractionEnabled:NO];
-    NSURL*  url = [NSURL URLWithString:[sonicManagedObject sonicUrl]];
+    NSURL*  url = [NSURL URLWithString:[sonic sonicUrl]];
     [SNCAPIManager getSonic:url withSonicBlock:^(SonicData *sonic, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             imageView.image = sonic.image;
@@ -145,7 +145,7 @@
 {
     if ([[segue identifier] isEqualToString:ProfileToPreviewSegue]){
         SNCEditViewController* preview = segue.destinationViewController;
-        [preview setSonic:selectedSonic.sonicData];
+//        [preview setSonic:selectedSonic.sonicData];
     }
 }
 

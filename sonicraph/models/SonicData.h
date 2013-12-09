@@ -29,6 +29,8 @@ typedef void (^SonicBlock) (SonicData* sonicData, NSError* error);
 
 - (id) initWithImage:(UIImage*)image andSound:(NSData*)sound;
 
++ (NSString*) filePathWithId:(NSString*)id;
+
 @property (nonatomic) Sonic* sonic;
 @property (nonatomic) UIImage* image;
 @property (nonatomic) NSData* sound;

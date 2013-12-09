@@ -11,10 +11,22 @@
 
 @interface User : NSObject
 
++ (User*) userWithId:(NSString*)userId andUsername:(NSString*)username andProfileImage:(NSString*)profile_image;
 
 + (User*) userWithManagedObject:(UserManagedObject*)userManagedObject;
+
++ (User*) userWithId:(NSString*)userId;
+
 - (void) saveToDatabase;
 
+
+
+@property (nonatomic) NSString* userId;
+
 @property (nonatomic) NSString* fullName;
+
+@property (nonatomic) NSString* username;
+
+@property (nonatomic) UserManagedObject* userManagedObject;
 
 @end

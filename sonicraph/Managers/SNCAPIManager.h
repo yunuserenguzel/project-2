@@ -11,11 +11,14 @@
 #import "SNCAPIConnector.h"
 
 typedef void (^CompletionArrayBlock) (NSArray *sonics);
+typedef void (^CompletionUserBlock) (User *user,NSString* token);
+typedef void (^CompletionBoolBlock) (BOOL successful);
+typedef void (^CompletionSonicBlock) (Sonic* sonic);
 
 
 @interface SNCAPIManager : NSObject
 
-+ (void) createSonic:(SonicData *)sonic withCompletionBlock:(CompletionBlock)completionBlock;
++ (void) createSonic:(SonicData *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock;
 
 + (void) getUserSonics:(UserManagedObject*)user withCompletionBlock:(CompletionArrayBlock)completionBlock;
 
@@ -28,6 +31,24 @@ typedef void (^CompletionArrayBlock) (NSArray *sonics);
 + (void) getSonicsWithParams:(NSDictionary*)dictionary saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(Block)completionBlock;
 
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock;
+
++ (void) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation *) registerWithUsername:(NSString*)username
+                                        email:(NSString*)email
+                                     password:(NSString*)password
+                           andCompletionBlock:(CompletionBlock)completionBlock
+                                andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation *) loginWithUsername:(NSString*) username
+                               andPassword:(NSString*)password
+                       withCompletionBlock:(CompletionUserBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation *) validateWithEmail:(NSString*)email
+                         andValidationCode:(NSString*)validationCode
+                       withCompletionBlock:(CompletionBoolBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
 
 
 @end

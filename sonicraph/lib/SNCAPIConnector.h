@@ -19,8 +19,21 @@ typedef void (^ErrorBlock) (NSError *error);
 + (SNCAPIConnector*) sharedInstance;
 
 
-- (void) postRequestWithParams:(NSDictionary*) params
-                  andOperation:(NSString*)opearation
-            andCompletionBlock:(CompletionBlock) completionBlock
-                 andErrorBlock:(ErrorBlock)errorBlock;
+- (MKNetworkOperation *) postRequestWithParams:(NSDictionary*) params
+                                  andOperation:(NSString*)opearation
+                            andCompletionBlock:(CompletionBlock) completionBlock
+                                 andErrorBlock:(ErrorBlock)errorBlock;
+
+- (MKNetworkOperation*) getRequestWithParams:(NSDictionary*) params
+                                andOperation:(NSString*)opearation
+                          andCompletionBlock:(CompletionBlock) completionBlock
+                               andErrorBlock:(ErrorBlock)errorBlock;
+
+- (MKNetworkOperation*) uploadFileRequestWithParams:(NSDictionary*) params
+                                           andFiles:(NSArray*) files
+                                       andOperation:(NSString*)opearation
+                                 andCompletionBlock:(CompletionBlock) completionBlock
+                                      andErrorBlock:(ErrorBlock)errorBlock;
+
+
 @end

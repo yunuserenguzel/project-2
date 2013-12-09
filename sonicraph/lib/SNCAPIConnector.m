@@ -15,21 +15,70 @@
 {
     static SNCAPIConnector* sharedInstance = nil;
     if(sharedInstance == nil){
-        sharedInstance = [[SNCAPIConnector alloc] initWithHostName:@"www.sonicraph.com/api"];
+        sharedInstance = [[SNCAPIConnector alloc] initWithHostName:@"sonicraph.herokuapp.com/api"];
     }
     return sharedInstance;
 }
 
-- (void) postRequestWithParams:(NSDictionary*) params
+- (MKNetworkOperation *) postRequestWithParams:(NSDictionary*) params
                   andOperation:(NSString*) opearation
             andCompletionBlock:(CompletionBlock) completionBlock
                  andErrorBlock:(ErrorBlock) errorBlock
 {
     
-    MKNetworkOperation* op = [self operationWithPath:opearation
-                                              params:params
-                                          httpMethod:@"POST"];
+    MKNetworkOperation* op = [self requestWithMethod:@"POST"
+                         andParams:params
+                      andOperation:opearation
+                andCompletionBlock:completionBlock
+                     andErrorBlock:errorBlock];
+    [self enqueueOperation:op];
+    return op;
+    
+}
 
+- (MKNetworkOperation *)getRequestWithParams:(NSDictionary *)params
+                                andOperation:(NSString *)opearation
+                          andCompletionBlock:(CompletionBlock)completionBlock
+                               andErrorBlock:(ErrorBlock)errorBlock
+{
+    MKNetworkOperation* op = [self requestWithMethod:@"GET"
+                         andParams:params
+                      andOperation:opearation
+                andCompletionBlock:completionBlock
+                     andErrorBlock:errorBlock];
+    [self enqueueOperation:op];
+    return op;
+}
+
+- (MKNetworkOperation *)uploadFileRequestWithParams:(NSDictionary *)params andFiles:(NSArray *)files andOperation:(NSString *)opearation andCompletionBlock:(CompletionBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    MKNetworkOperation* op = [self requestWithMethod:@"POST"
+                                           andParams:params
+                                        andOperation:opearation
+                                  andCompletionBlock:completionBlock
+                                       andErrorBlock:errorBlock];
+    for (NSDictionary* fileDict in files) {
+        if([fileDict objectForKey:@"mime"]){
+            [op addFile:[fileDict objectForKey:@"file"] forKey:[fileDict objectForKey:@"key"] mimeType:[fileDict objectForKey:@"mime"]];
+        } else {
+            [op addFile:[fileDict objectForKey:@"file"] forKey:[fileDict objectForKey:@"key"]];
+        }
+    }
+    [self enqueueOperation:op];
+    return op;
+}
+
+- (MKNetworkOperation *)requestWithMethod:(NSString*)method
+                                andParams:(NSDictionary*)params
+                             andOperation:(NSString*)operation
+                       andCompletionBlock:(CompletionBlock)completionBlock
+                            andErrorBlock:(ErrorBlock)errorBlock
+{
+    operation = [operation stringByAppendingString:@".json"];
+    MKNetworkOperation* op = [self operationWithPath:operation
+                                              params:params
+                                          httpMethod:method];
+    
     [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         NSLog(@"response string: %@",[completedOperation responseString]);
         NSDictionary *responseDictionary = [completedOperation responseJSON];
@@ -37,7 +86,7 @@
         if([[responseDictionary valueForKey:@"error"] boolValue] == true){
             NSError *apiError = [NSError errorWithDomain:@"APIError"
                                                     code:[[responseDictionary objectForKey:@"error_code"] intValue]
-                                                userInfo:@{NSLocalizedDescriptionKey : [responseDictionary valueForKey:@"error_message"]}];
+                                                userInfo:@{NSLocalizedDescriptionKey : [responseDictionary valueForKey:@"error_description"]}];
             if(errorBlock != nil)
                 errorBlock(apiError);
         }
@@ -58,8 +107,10 @@
         }
     }];
     
-    [self enqueueOperation:op];
-    
+    return op;
 }
+
+
+
 
 @end

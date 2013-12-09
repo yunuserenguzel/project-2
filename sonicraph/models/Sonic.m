@@ -47,7 +47,15 @@
 
 + (Sonic *)sonicWith:(NSString *)sonicId andLongitude:(NSNumber *)longitude andLatitude:(NSNumber *)latitude andIsPrivate:(NSNumber *)isPrivate andCreationDate:(NSDate *)creationDate andSonicUrl:(NSString *)sonicUrl andOwner:(User *)user
 {
-    return nil;
+    Sonic* sonic = [[Sonic alloc] init];
+    sonic.sonicId = sonicId;
+    sonic.longitude = [longitude floatValue];
+    sonic.latitude = [latitude floatValue];
+    sonic.isPrivate = [isPrivate boolValue];
+    sonic.creationDate = creationDate;
+    sonic.sonicUrl = sonicUrl;
+    sonic.owner = user;
+    return sonic;
 }
 
 

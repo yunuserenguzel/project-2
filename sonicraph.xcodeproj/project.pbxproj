@@ -27,6 +27,7 @@
 		AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */; };
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
+		AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */; };
 		AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* SonicData.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -54,6 +55,8 @@
 		AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */; };
 		AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDC1837EA3E00F74F1D /* Sonic.m */; };
 		AE86EEE01837EA7E00F74F1D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDF1837EA7E00F74F1D /* User.m */; };
+		AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECBA6401856408600DE8EDE /* SNCLoginViewController.m */; };
+		AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBA64218564D9D00DE8EDE /* QuartzCore.framework */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
 		AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9D1801A35D000DF866 /* CoreGraphics.framework */; };
 		AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9F1801A35D000DF866 /* UIKit.framework */; };
@@ -98,6 +101,8 @@
 		AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground@2x.png"; sourceTree = "<group>"; };
 		AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver.png"; sourceTree = "<group>"; };
 		AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver@2x.png"; sourceTree = "<group>"; };
+		AE637F32184BBCE700DDEE21 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
+		AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
 		AE86EE79182C0DA800F74F1D /* SonicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicData.h; sourceTree = "<group>"; };
 		AE86EE7A182C0DA800F74F1D /* SonicData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicData.m; sourceTree = "<group>"; };
 		AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMRangeSlider.h; sourceTree = "<group>"; };
@@ -152,6 +157,9 @@
 		AE86EEDC1837EA3E00F74F1D /* Sonic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sonic.m; sourceTree = "<group>"; };
 		AE86EEDE1837EA7E00F74F1D /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		AE86EEDF1837EA7E00F74F1D /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCLoginViewController.h; path = ../Views/SNCLoginViewController.h; sourceTree = "<group>"; };
+		AECBA6401856408600DE8EDE /* SNCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNCLoginViewController.m; path = ../Views/SNCLoginViewController.m; sourceTree = "<group>"; };
+		AECBA64218564D9D00DE8EDE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AED56E981801A35D000DF866 /* sonicraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonicraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED56E9B1801A35D000DF866 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AED56E9D1801A35D000DF866 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -200,6 +208,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */,
 				AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */,
 				AE86EEC918316CA800F74F1D /* AudioConverter.a in Frameworks */,
 				AE86EECC18316CA800F74F1D /* MP3Converter.a in Frameworks */,
@@ -328,6 +337,8 @@
 		AE86EE8D182C0E0E00F74F1D /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */,
+				AECBA6401856408600DE8EDE /* SNCLoginViewController.m */,
 				AE86EE8E182C0E0E00F74F1D /* SNCCameraViewController.h */,
 				AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */,
 				AE86EE90182C0E0E00F74F1D /* SNCEditViewController.h */,
@@ -351,6 +362,8 @@
 				AE86EEB018316BC500F74F1D /* SNCAPIManager.m */,
 				AE86EEB118316BC500F74F1D /* SonicraphMediaManager.h */,
 				AE86EEB218316BC500F74F1D /* SonicraphMediaManager.m */,
+				AE637F32184BBCE700DDEE21 /* AuthenticationManager.h */,
+				AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -428,6 +441,7 @@
 		AED56E9A1801A35D000DF866 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AECBA64218564D9D00DE8EDE /* QuartzCore.framework */,
 				AE15967C181BF64800929D1D /* AudioToolbox.framework */,
 				AE15967A181BE95E00929D1D /* AVFoundation.framework */,
 				AED56E9B1801A35D000DF866 /* Foundation.framework */,
@@ -653,12 +667,14 @@
 				AED56EB41801A35D000DF866 /* sonicraph.xcdatamodeld in Sources */,
 				AE86EED71832E07600F74F1D /* SonicPlayerView.m in Sources */,
 				AE86EEB518316BC500F74F1D /* SonicraphMediaManager.m in Sources */,
+				AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */,
 				AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */,
 				AE86EE9F1831547600F74F1D /* SonicManagedObject.m in Sources */,
 				AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */,
 				AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */,
+				AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */,
 				AED56EF51801A39F000DF866 /* NSString+MKNetworkKitAdditions.m in Sources */,
 				AED56EF31801A39F000DF866 /* NSDate+RFC1123.m in Sources */,
 				AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */,

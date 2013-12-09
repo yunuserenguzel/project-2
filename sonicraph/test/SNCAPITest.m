@@ -8,6 +8,7 @@
 
 #import "SNCAPITest.h"
 #import "SNCAPIConnector.h"
+#import "SNCAPIManager.h"
 
 static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
 //static NSNumber* pageNumber = [NSNumber numberWithInt:0];
@@ -42,24 +43,27 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
 {
     NSString* username = [NSString stringWithFormat:@"testuser%.10f",[[NSDate date] timeIntervalSince1970]];
     NSString* email = [NSString stringWithFormat:@"testuser%.10f@sonicraph.com",[[NSDate date] timeIntervalSince1970]];
-//    NSString* username = @"yunus";
-//    NSString* email = @"yunus@sonicraph.com";
     NSString* password = @"123456";
-    NSString* platform = @"iOS";
-    NSString* operation = @"register";
-    [[SNCAPIConnector sharedInstance]
-     postRequestWithParams:@{@"username":username,@"email":email,@"password":password,@"platform":platform}
-     andOperation:operation
-     andCompletionBlock:^(NSDictionary *responseDictionary) {
-         if([responseDictionary objectForKey:@"user_id"] && [responseDictionary objectForKey:@"token"]){
-             [SNCAPITest successLogForOperation:operation];
-         }else {
-             [SNCAPITest failLogForOperation:operation andError:nil];
-         }
-         
-     } andErrorBlock:^(NSError *error) {
-         [SNCAPITest failLogForOperation:operation andError:error];
-     }];
+//    NSString* platform = @"iOS";
+//    NSString* operation = @"user/register";
+    
+    [SNCAPIManager registerWithUsername:username email:email password:password andCompletionBlock:^(NSDictionary *responseDictionary) {
+        NSString* validationCode = [NSString stringWithFormat:@"%@",[responseDictionary objectForKey:@"validation_code"]];
+        [SNCAPIManager validateWithEmail:email andValidationCode:validationCode withCompletionBlock:^(BOOL successful) {
+            [SNCAPIManager loginWithUsername:username andPassword:password withCompletionBlock:^(User *user,NSString* token) {
+                NSLog(@"%@",user);
+            } andErrorBlock:^(NSError *error) {
+                NSLog(@"%@",error);
+            }];
+        } andErrorBlock:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+        
+        NSLog(@"%@",responseDictionary);
+        
+    } andErrorBlock:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 + (void) loginTest

@@ -144,7 +144,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:ProfileToPreviewSegue]){
-        SNCEditViewController* preview = segue.destinationViewController;
+//        SNCEditViewController* preview = segue.destinationViewController;
 //        [preview setSonic:selectedSonic.sonicData];
     }
 }

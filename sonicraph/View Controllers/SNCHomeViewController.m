@@ -11,7 +11,7 @@
 #import "TypeDefs.h"
 #import "Sonic.h"
 
-#define HeightForHomeCell 400.0
+#define HeightForHomeCell 424.0
 
 @interface SNCHomeViewController ()
 @property NSArray* sonics;

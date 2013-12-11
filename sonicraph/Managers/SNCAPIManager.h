@@ -50,5 +50,12 @@ typedef void (^CompletionSonicBlock) (Sonic* sonic);
                        withCompletionBlock:(CompletionBoolBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
 
++ (MKNetworkOperation*) likeSonic:(Sonic*)sonic
+              withCompletionBlock:(CompletionSonicBlock)completionBlock
+                    andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) dislikeSonic:(Sonic*)sonic
+                 withCompletionBlock:(CompletionSonicBlock)completionBlock
+                       andErrorBlock:(ErrorBlock)errorBlock;
 
 @end

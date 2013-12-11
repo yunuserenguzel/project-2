@@ -27,6 +27,41 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     return connector;
 }
 
++ (MKNetworkOperation*) likeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"sonic": sonic.sonicId,
+                             @"token": [[AuthenticationManager sharedInstance] token]};
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"sonic/like_sonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
+        Sonic* sonic = [SNCAPIManager sonicWithDictionary:[responseDictionary objectForKey:@"sonic"] saveToDatabase:NO];
+        
+        dispatch_async(dispatch_get_main_queue(),^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationLikeSonic object:sonic];
+        });
+        
+        if(completionBlock){
+            completionBlock(sonic);
+        }
+    } andErrorBlock:errorBlock];
+}
++ (MKNetworkOperation*) dislikeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"sonic": sonic.sonicId,
+                             @"token": [[AuthenticationManager sharedInstance] token]};
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"sonic/dislike_sonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
+        Sonic* sonic = [SNCAPIManager sonicWithDictionary:[responseDictionary objectForKey:@"sonic"] saveToDatabase:NO];
+        
+        dispatch_async(dispatch_get_main_queue(),^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationDislikeSonic object:sonic];
+        });
+        
+        if(completionBlock){
+            completionBlock(sonic);
+        }
+    } andErrorBlock:errorBlock];
+}
+
+
+
 + (void)createSonic:(SonicData *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock
 {
     NSString* sonicData = [[sonic dictionaryFromSonicData] JSONString];
@@ -41,26 +76,7 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          NSDictionary* sonicDict = [responseDictionary objectForKey:@"sonic"];
-         NSDictionary* userDict = [sonicDict objectForKey:@"user"];
-         User* user = [User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andProfileImage:nil];
-         [user saveToDatabase];
-         
-         NSNumber* longitude = [sonicDict objectForKey:@"longitude"];
-         longitude = [longitude isKindOfClass:[NSNull class]] ? nil : longitude;
-         NSNumber* latitude = [sonicDict objectForKey:@"latitude"];
-         latitude = [latitude isKindOfClass:[NSNull class]] ? nil :latitude;
-         NSNumber* isPrivate = [sonicDict objectForKey:@"is_private" ];
-         isPrivate = [isPrivate isKindOfClass:[NSNull class]] ? nil : isPrivate;
-         NSString* sonicId = [NSString stringWithFormat:@"%@",[sonicDict objectForKey:@"id"]];
-                              
-         Sonic* sonic = [Sonic sonicWith:sonicId
-                            andLongitude:longitude
-                             andLatitude:latitude
-                            andIsPrivate:isPrivate
-                         andCreationDate:nil
-                             andSonicUrl:[sonicDict objectForKey:@"sonic_data"]
-                                andOwner:user];
-         [sonic saveToDatabase];
+         Sonic* sonic = [SNCAPIManager sonicWithDictionary:sonicDict saveToDatabase:YES];
          completionBlock(sonic);
      }
      andErrorBlock:^(NSError *error) {
@@ -112,6 +128,7 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     SonicManagedObject* lastSonic = [SonicManagedObject last];
     [SNCAPIManager getSonicsAfter:lastSonic withCompletionBlock:completionBlock];
 }
+
 + (void)getSonicsWithParams:(NSDictionary *)dictionary saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(Block)completionBlock
 {
     NSString* operation = @"get_sonics";
@@ -132,6 +149,35 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
      andErrorBlock:^(NSError *error) {
          
      }];
+}
+
++ (Sonic*) sonicWithDictionary:(NSDictionary*)sonicDict saveToDatabase:(BOOL)saveToDatabase
+{
+    NSDictionary* userDict = [sonicDict objectForKey:@"user"];
+    User* user = [User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andProfileImage:nil];
+    if(saveToDatabase){
+        [user saveToDatabase];
+    }
+    
+    NSNumber* longitude = [sonicDict objectForKey:@"longitude"];
+    longitude = [longitude isKindOfClass:[NSNull class]] ? nil : longitude;
+    NSNumber* latitude = [sonicDict objectForKey:@"latitude"];
+    latitude = [latitude isKindOfClass:[NSNull class]] ? nil :latitude;
+    NSNumber* isPrivate = [sonicDict objectForKey:@"is_private" ];
+    isPrivate = [isPrivate isKindOfClass:[NSNull class]] ? nil : isPrivate;
+    NSString* sonicId = [NSString stringWithFormat:@"%@",[sonicDict objectForKey:@"id"]];
+    
+    Sonic* sonic = [Sonic sonicWith:sonicId
+                       andLongitude:longitude
+                        andLatitude:latitude
+                       andIsPrivate:isPrivate
+                    andCreationDate:nil
+                        andSonicUrl:[sonicDict objectForKey:@"sonic_data"]
+                           andOwner:user];
+    if(saveToDatabase){
+        [sonic saveToDatabase];
+    }
+    return sonic;
 }
 
 + (SonicManagedObject*) saveSonic:(NSDictionary*)sonicDict

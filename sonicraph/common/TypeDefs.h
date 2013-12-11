@@ -14,4 +14,6 @@
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"
 
 #define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
+#define NotificationLikeSonic @"NotificationLikeSonic"
+#define NotificationDislikeSonic @"NotificationDislikeSonic"
 #endif

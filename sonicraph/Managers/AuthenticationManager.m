@@ -55,6 +55,7 @@ static AuthenticationManager* sharedInstance = nil;
     [SNCAPIManager loginWithUsername:@"yeguzel" andPassword:@"741285" withCompletionBlock:^(User *user,NSString* token) {
         NSLog(@"%@",user);
         self.token = token;
+        self.authenticatedUser = user;
         _isUserAuthenticated = YES;
         if(block){
             block(user,token);

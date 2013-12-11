@@ -15,6 +15,11 @@
 
 @property (nonatomic) Sonic* sonic;
 
+@property UIButton* likeButton;
+@property UIButton* commentButton;
+@property UIButton* resonicButton;
+@property UIButton* shareButton;
+
 - (void) cellWonCenterOfTableView;
 
 - (void) cellLostCenterOfTableView;

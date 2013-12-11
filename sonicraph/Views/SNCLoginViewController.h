@@ -20,7 +20,7 @@
 @property UIButton* registerButton;
 @property UIButton* loginButton;
 
-- (void) display;
-- (void) close;
+//- (void) display;
+//- (void) close;
 
 @end

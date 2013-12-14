@@ -41,4 +41,8 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 - (void) stopCamera;
 
+- (void) useFrontCamera;
+
+- (void) useMainCamera;
+
 @end

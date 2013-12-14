@@ -10,11 +10,20 @@
 #import "UserManagedObject.h"
 @implementation User
 
-+ (User *)userWithId:(NSString *)userId andUsername:(NSString *)username andProfileImage:(NSString *)profile_image
++ (User*) userWithId:(NSString*)userId andUsername:(NSString*)username andFullname:(NSString*)fullname andProfileImage:(NSString*)profile_image;
+
 {
     User* user = [[User alloc] init];
     user.userId = userId;
-    user.username = username;
+    if([username isKindOfClass:[NSString class]]){
+        user.username = username;
+    }
+    if([fullname isKindOfClass:[NSString class]]){
+        user.fullName = fullname;
+    }
+    if([profile_image isKindOfClass:[NSString class]]){
+        user.profileImageUrl = profile_image;
+    }
 //    user.profileImage = profile_image
     return user;
 }
@@ -23,8 +32,9 @@
 {
     User* user = [[User alloc] init];
     user.userManagedObject = userManagedObject;
-    user.username = userManagedObject.name;
+    user.username = userManagedObject.username;
     user.userId = userManagedObject.userId;
+    user.profileImageUrl = userManagedObject.image;
     return user;
 }
 
@@ -44,7 +54,9 @@
     if(self.userManagedObject == nil){
         self.userManagedObject = [UserManagedObject createOrFetchWithId:self.userId];
     }
-    self.userManagedObject.name = self.username;
+    self.userManagedObject.username = self.username;
+    self.userManagedObject.fullname = self.fullName;
+    self.userManagedObject.image = self.profileImageUrl;
     [self.userManagedObject save];
 }
 

@@ -9,6 +9,7 @@
 #import "SNCCameraViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SNCEditViewController.h"
+#import "Configurations.h"
 
 #define SonicSoundMaxTime 30.0
 
@@ -34,8 +35,12 @@ typedef enum SonicRecordType {
 @property UISlider* soundTimeSlider;
 @property NSTimer* soundTimer;
 @property NSDate* soundTimerInitialFireDate;
-@property UISwitch* recordTypeSwitch;
+//@property UISwitch* recordTypeSwitch;
+@property UISegmentedControl* recordTypeSwitch;
 @property UIButton* cancelButton;
+
+@property UIButton* cameraTypeToggleButton;
+
 @end
 
 @implementation SNCCameraViewController
@@ -43,15 +48,30 @@ typedef enum SonicRecordType {
     NSInteger tapIndex;
     UIImage* capturedImage;
     NSData* capturedAudio;
+    BOOL isMainCamera;
 }
 
+-(CGRect) flashButtonFrame
+{
+    return CGRectMake(0.0, 0.0, 44.0, 44.0);
+}
+
+- (CGRect) cameraTypeToggleButtonFrame
+{
+    return CGRectMake(self.view.frame.size.width - 44.0, 0.0, 44.0, 44.0);
+}
+
+- (CGRect) recordTypeSwitchFrame
+{
+    return CGRectMake(70.0, 5.0, 180.0, 32.0);
+}
 - (CGRect) cameraFeaturesBarFrame
 {
     return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
 - (CGRect) cameraViewFrame
 {
-    return CGRectMake(0.0, 0.0 , 320.0, 426.0);
+    return CGRectMake(0.0, 22.0 , 320.0, 426.0);
 }
 - (CGRect) visibleRectFrame
 {
@@ -59,23 +79,23 @@ typedef enum SonicRecordType {
 }
 - (CGRect) recordButtonFrame
 {
-    return CGRectMake(self.view.frame.size.width*0.5 - 33.0, 420.0, 66.0, 66.0);
+    return CGRectMake(self.view.frame.size.width*0.5 - 33.0, self.view.frame.size.height-88.0, 66.0, 66.0);
 }
 
 -(CGRect) soundTimeSliderFrame
 {
-    return CGRectMake(10.0, 370.0, 300.0, 10.0);
+    return CGRectMake(10.0, 390.0, 300.0, 10.0);
 }
 
 -(CGRect) cancelButtonFrame
 {
-    return CGRectMake(320.0-80.0, self.view.frame.size.height-80.0, 60.0, 44.0);
+    return CGRectMake(320.0-80.0, self.view.frame.size.height-88.0, 66.0, 66.0);
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.recordType = SonicRecordTypePhotoFirst;
+    self.recordType = SonicRecordTypeSoundFirst;
     [self.view setBackgroundColor:[UIColor blackColor]];
     self.cameraView = [[UIView alloc] initWithFrame:[self cameraViewFrame]];
     [self.view addSubview:self.cameraView];
@@ -104,10 +124,9 @@ typedef enum SonicRecordType {
     } else {
         [self takePicture];
     }
-
 }
 
-- (BOOL)prefersStatusBarHidden
+- (BOOL) prefersStatusBarHidden
 {
     return YES;
 }
@@ -120,15 +139,18 @@ typedef enum SonicRecordType {
         [self performSegueWithIdentifier:PreviewSonicSegue sender:self];
     }
 }
--(void)viewWillAppear:(BOOL)animated
+
+- (void) viewWillAppear:(BOOL)animated
 {
+    [self.recordTypeSwitch setSelectedSegmentIndex:0];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.tabBarController.tabBar setHidden:YES];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void) viewDidAppear:(BOOL)animated
 {
-    [self.tabBarController.tabBar setHidden:YES];
     [self.mediaManager startCamera];
+
     [self.recordTypeSwitch setHidden:NO];
     [self.activityIndicator stopAnimating];
     [self.soundTimeSlider setValue:0.0 animated:YES];
@@ -141,7 +163,7 @@ typedef enum SonicRecordType {
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void) viewWillDisappear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:NO  animated:NO];
     [self.tabBarController.tabBar setHidden:NO];
@@ -192,6 +214,9 @@ typedef enum SonicRecordType {
     capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 1.0)];
 //    UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
 //    NSLog(@"here");
+    if(self.recordType == SonicRecordTypeSoundFirst){
+        [self previewSonic];
+    }
 }
 
 - (void) audioRecordStartedForManager:(SonicraphMediaManager *)manager
@@ -212,17 +237,15 @@ typedef enum SonicRecordType {
     [self.soundTimer fire];
     if(self.recordType == SonicRecordTypeSoundFirst){
         [self.recordButton removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
-        [self.recordButton addTarget:self action:@selector(takePicture) forControlEvents:UIControlEventTouchUpInside];
-    }
-    else if (self.recordType == SonicRecordTypeSoundFirst){
         [self.recordButton setImage:RecordButtonCameraImage forState:UIControlStateNormal];
+        [self.recordButton addTarget:self action:@selector(takePicture) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
 - (void) updateSoundTimer:(NSTimer*) timer
 {
     NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:self.soundTimerInitialFireDate];
-    if(interval < 30.0){
+    if(interval < MaximumSoundInterval){
         self.soundTimeSlider.value = interval;
     }
     else {
@@ -254,17 +277,39 @@ typedef enum SonicRecordType {
 
     [self.flashButton setImage:[UIImage imageNamed:@"Camera Flash.png"] forState:UIControlStateNormal];
 
-    [self.flashButton setFrame:CGRectMake(11.0, 0.0, 88.0, 44.0)];
+    [self.flashButton setFrame:[self flashButtonFrame]];
     [self.cameraFeaturesBar addSubview:self.flashButton];
     
-    self.recordTypeSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(140.0, 0.0, 88.0, 44.0)];
+    self.recordTypeSwitch = [[UISegmentedControl alloc] initWithFrame:[self recordTypeSwitchFrame]];
     [self.cameraFeaturesBar addSubview:self.recordTypeSwitch];
     [self.recordTypeSwitch addTarget:self action:@selector(recordTypeSwitchChanged) forControlEvents:UIControlEventValueChanged];
+    [self.recordTypeSwitch insertSegmentWithTitle:@"Sound First" atIndex:0 animated:NO];
+    [self.recordTypeSwitch insertSegmentWithTitle:@"Photo First" atIndex:1 animated:NO];
+    [self.recordTypeSwitch setTintColor:[UIColor whiteColor]];
+    
+    self.cameraTypeToggleButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.cameraTypeToggleButton.frame = [self cameraTypeToggleButtonFrame];
+    [self.cameraTypeToggleButton setImage:[UIImage imageNamed:@"CameraBackFrontWhite.png"] forState:UIControlStateNormal];
+    [self.cameraTypeToggleButton addTarget:self action:@selector(toggleCameraType) forControlEvents:UIControlEventTouchUpInside];
+    [self.cameraTypeToggleButton setTintColor:[UIColor whiteColor]];
+    [self.cameraFeaturesBar addSubview:self.cameraTypeToggleButton];
+
+}
+
+- (void) toggleCameraType
+{
+    if (isMainCamera){
+        [self.mediaManager useFrontCamera];
+        isMainCamera = NO;
+    } else {
+        [self.mediaManager useMainCamera];
+        isMainCamera = YES;
+    }
 }
 
 - (void) recordTypeSwitchChanged
 {
-    if(self.recordTypeSwitch.on){
+    if(self.recordTypeSwitch.selectedSegmentIndex == 0){
         self.recordType = SonicRecordTypeSoundFirst;
         [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];
     }
@@ -281,6 +326,7 @@ typedef enum SonicRecordType {
     [self.soundTimeSlider setMinimumValue:0.0];
     [self.soundTimeSlider setMaximumValue:SonicSoundMaxTime];
     [self.soundTimeSlider setUserInteractionEnabled:NO];
+    [self.soundTimeSlider setMinimumTrackTintColor:[UIColor redColor]];
     [self.view addSubview:self.soundTimeSlider];
     
 }
@@ -289,7 +335,8 @@ typedef enum SonicRecordType {
 {
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.cancelButton setFrame:[self cancelButtonFrame]];
-    [self.cancelButton setTitle:@"X" forState:UIControlStateNormal];
+    [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [self.cancelButton setTintColor:[UIColor whiteColor]];
     [self.cancelButton addTarget:self action:@selector(cancelButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.cancelButton];
 }
@@ -317,7 +364,7 @@ typedef enum SonicRecordType {
 {
     self.mediaManager = [[SonicraphMediaManager alloc] initWithView:self.cameraView];
     [self.mediaManager setDelegate:self];
-
+    isMainCamera = YES;
 }
 
 -(void)manager:(SonicraphMediaManager *)manager audioDataReady:(NSData *)data

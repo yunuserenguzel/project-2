@@ -10,6 +10,7 @@
 @property UIImageView* imageView;
 @property UIButton* saveButton;
 @property NMRangeSlider* soundSlider;
+@property UIButton* resetButton;
 
 @end
 
@@ -20,7 +21,27 @@
 
 - (CGRect) soundSliderFrame
 {
-    return CGRectMake(10.0, 450.0, 300.0, 20.0);
+    return CGRectMake(10.0, 350.0, 300.0, 80.0);
+}
+
+- (CGRect) imageViewFrame
+{
+    return CGRectMake(0.0, 10.0 + self.navigationController.navigationBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.width);
+}
+- (CGRect) resetButtonFrame
+{
+    CGRect frame = CGRectZero;
+    frame.size = CGSizeMake(160.0, 44.0);
+    frame.origin = CGPointMake(self.view.frame.size.width - frame.size.width, self.view.frame.size.height - frame.size.height);
+    return frame;
+}
+
+- (CGRect) replayButtonFrame
+{
+    CGRect frame = CGRectZero;
+    frame.size = CGSizeMake(160.0, 44.0);
+    frame.origin = CGPointMake(0.0, self.view.frame.size.height - frame.size.height);
+    return frame;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -36,11 +57,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:[UIColor blackColor]];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationItem setTitle:@"Trim Sound"];
     [self initializeImageView];
     [self initializeSoundSlider];
-    [self initializePlayPauseButton];
-    [self initializeDurationLabel];
+    [self initializeReplayButton];
+    [self initializeResetButton];
     UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(play)];
     [self.view addGestureRecognizer:tapGesture];
     
@@ -50,9 +74,14 @@
     
     UIBarButtonItem* rightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone    target:self action:@selector(doneEdit)];
     self.navigationItem.rightBarButtonItem = rightBarButton;
-   
+//   [self.view.subviews enumerateObjectsUsingBlock:^(UIView* view, NSUInteger idx, BOOL *stop) {
+//       view.layer.borderColor = [UIColor redColor].CGColor;
+//       view.layer.borderWidth = 2.0f;
+//   }];
 }
-
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
 - (void) doneEdit
 {
     __block SNCEditViewController* this = self;
@@ -65,15 +94,23 @@
         }
     }];
 }
+- (void) viewWillAppear:(BOOL)animated
+{
+    
+//    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.tabBarController.tabBar setHidden:YES];
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [audioPlayer stop];
+//    [self.navigationController setNavigationBarHidden:NO  animated:NO];
+    [self.tabBarController.tabBar setHidden:NO];
 }
 
 - (void) initializeImageView
 {
-    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 50.0 + self.navigationController.navigationBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.width)];
+    self.imageView = [[UIImageView alloc] initWithFrame:[self imageViewFrame]];
     [self.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [self.imageView.layer setShadowColor:[UIColor blackColor].CGColor];
     [self.imageView.layer setShadowOffset:CGSizeMake(0.0, 0.0)];
@@ -90,22 +127,54 @@
     [self.soundSlider setUpperValue:1.0];
     [self.soundSlider setMaximumValue:1.0];
     [self.soundSlider setMinimumRange:1.0];
+    [self.soundSlider setLowerHandleImageNormal:[UIImage imageNamed:@"TrimHandleBlue.png"]];
+    [self.soundSlider setUpperHandleImageNormal:[UIImage imageNamed:@"TrimHandleBlue.png"]];
+    [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBlue.png"]];
+    [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBlue.png"]];
     [self.view addSubview:self.soundSlider];
 }
 
-- (void) initializePlayPauseButton
+- (void) initializeResetButton
 {
-    self.playPauseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.playPauseButton setTitle:@"Play" forState:UIControlStateNormal];
-    [self.playPauseButton setFrame:CGRectMake(50.0, 400.0, 100.0, 50.0)];
-    [self.playPauseButton addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.playPauseButton];
+    self.resetButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.resetButton setTitle:@"Reset" forState:UIControlStateNormal];
+    [self.resetButton setBackgroundColor:[UIColor darkGrayColor]];
+    [self.resetButton.layer setBorderColor:[UIColor blackColor].CGColor];
+    [self.resetButton.layer setBorderWidth:1.0f];
+    [self.resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.resetButton setFrame:[self resetButtonFrame]];
+    [self.resetButton addTarget:self action:@selector(resetEdit) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.resetButton];
 }
 
-- (void) initializeDurationLabel
+- (void) initializeReplayButton
 {
-    self.durationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height - 20.0, 100.0, 20.0)];
-    [self.view addSubview:self.durationLabel];
+    self.replayButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.replayButton setTitle:@"Replay" forState:UIControlStateNormal];
+    [self.replayButton setBackgroundColor:[UIColor darkGrayColor]];
+    [self.replayButton.layer setBorderColor:[UIColor blackColor].CGColor];
+    [self.replayButton.layer setBorderWidth:1.0f];
+    [self.replayButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.replayButton setFrame:[self replayButtonFrame]];
+    [self.replayButton addTarget:self action:@selector(replay) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.replayButton];
+}
+
+- (void) resetEdit
+{
+    [self.soundSlider setUpperValue:audioPlayer.duration];
+    [self.soundSlider setUpperValue:[self.soundSlider maximumValue]];
+    [self.soundSlider setLowerValue:[self.soundSlider minimumValue]];
+}
+
+- (void) replay
+{
+    if(self.sonic){
+        [audioPlayer stop];
+        [audioPlayer setCurrentTime:[self.soundSlider minimumValue]];
+        [audioPlayer play];
+        
+    }
 }
 
 - (void) play
@@ -128,7 +197,6 @@
 {
     [self.imageView setImage:self.sonic.image];    [self.soundSlider setMaximumValue:audioPlayer.duration];
     [self.soundSlider setUpperValue:audioPlayer.duration];
-    [self.durationLabel setText:[NSString stringWithFormat:@"%f",audioPlayer.duration]];
 }
 
 - (void)setSonic:(SonicData *)sonic

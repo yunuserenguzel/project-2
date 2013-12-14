@@ -13,7 +13,8 @@
 @implementation UserManagedObject
 
 @dynamic image;
-@dynamic name;
+@dynamic username;
+@dynamic fullname;
 @dynamic userId;
 @dynamic sonics;
 
@@ -33,7 +34,8 @@
     if(user == nil){
         user = (UserManagedObject*)[[DatabaseManager sharedInstance] createEntity:@"User"];
         [user setUserId:userId];
-        [user setName:userName];
+        [user setUsername:userName];
+        [user setFullname:realName];
         [user setImage:image];
         [[DatabaseManager sharedInstance] saveContext];
     }

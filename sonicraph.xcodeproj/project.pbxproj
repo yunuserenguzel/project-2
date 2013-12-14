@@ -78,6 +78,10 @@
 		AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EED1801A39F000DF866 /* MKNetworkOperation.m */; };
 		AED56EFA1801A39F000DF866 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EF01801A39F000DF866 /* Reachability.m */; };
 		AED56F081801B425000DF866 /* SNCAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56F071801B425000DF866 /* SNCAPITest.m */; };
+		AEDAADD7185C8BE3001DD389 /* TrimHandleBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADD6185C8BE3001DD389 /* TrimHandleBlue@2x.png */; };
+		AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */; };
+		AEDAADDD185CA013001DD389 /* Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDC185CA013001DD389 /* Share@2x.png */; };
+		AEDAADDF185CA208001DD389 /* FacebookWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDE185CA208001DD389 /* FacebookWhite@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -201,6 +205,11 @@
 		AED56EF01801A39F000DF866 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		AED56F061801B425000DF866 /* SNCAPITest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCAPITest.h; path = test/SNCAPITest.h; sourceTree = "<group>"; };
 		AED56F071801B425000DF866 /* SNCAPITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SNCAPITest.m; path = test/SNCAPITest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		AEDAADD6185C8BE3001DD389 /* TrimHandleBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrimHandleBlue@2x.png"; sourceTree = "<group>"; };
+		AEDAADD9185C941C001DD389 /* Configurations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurations.h; sourceTree = "<group>"; };
+		AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraBackFrontWhite@2x.png"; sourceTree = "<group>"; };
+		AEDAADDC185CA013001DD389 /* Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Share@2x.png"; sourceTree = "<group>"; };
+		AEDAADDE185CA208001DD389 /* FacebookWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookWhite@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +245,10 @@
 		AE15965D18142C6300929D1D /* sonicraphcameramodeelementspng */ = {
 			isa = PBXGroup;
 			children = (
+				AEDAADDE185CA208001DD389 /* FacebookWhite@2x.png */,
+				AEDAADDC185CA013001DD389 /* Share@2x.png */,
+				AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */,
+				AEDAADD6185C8BE3001DD389 /* TrimHandleBlue@2x.png */,
 				AE159694181C15AE00929D1D /* Sound Button.png */,
 				AE15965E18142C6300929D1D /* Camera Button.png */,
 				AE15965F18142C6300929D1D /* Camera Flash@2x.png */,
@@ -306,6 +319,7 @@
 		AE86EE80182C0DD700F74F1D /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				AEDAADD9185C941C001DD389 /* Configurations.h */,
 				AE86EE81182C0DD700F74F1D /* TypeDefs.h */,
 			);
 			path = Common;
@@ -616,15 +630,19 @@
 				AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */,
 				AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */,
 				AE1596BA182452CF00929D1D /* slider-default7-handle.png in Resources */,
+				AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */,
+				AEDAADD7185C8BE3001DD389 /* TrimHandleBlue@2x.png in Resources */,
 				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
 				AE15966718142C6300929D1D /* Camera Button.png in Resources */,
 				AE1596BC182452CF00929D1D /* slider-default7-track.png in Resources */,
+				AEDAADDD185CA013001DD389 /* Share@2x.png in Resources */,
 				AE15966A18142C6300929D1D /* Cancel.png in Resources */,
 				AE15966E18142C6300929D1D /* Sound Bar Handle.png in Resources */,
 				AED56EB11801A35D000DF866 /* Main.storyboard in Resources */,
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
 				AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */,
 				AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */,
+				AEDAADDF185CA208001DD389 /* FacebookWhite@2x.png in Resources */,
 				AE86EECB18316CA800F74F1D /* AudioConverterKitforiOS.pdf in Resources */,
 				AE15966D18142C6300929D1D /* Polaroid.png in Resources */,
 				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,

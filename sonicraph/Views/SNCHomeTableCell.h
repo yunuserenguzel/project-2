@@ -15,13 +15,24 @@
 
 @property (nonatomic) Sonic* sonic;
 
+@property UIImageView* userImageView;
+@property UIImageView* userImageMaskView;
+@property UILabel* usernameLabel;
+@property UILabel* timestampLabel;
+
 @property UIButton* likeButton;
 @property UIButton* commentButton;
 @property UIButton* resonicButton;
 @property UIButton* shareButton;
 
-- (void) cellWonCenterOfTableView;
 
+@property UILabel* likesCountLabel;
+@property UILabel* commentsCountLabel;
+@property UILabel* resonicsCountLabel;
+
+
+- (void) cellWonCenterOfTableView;
 - (void) cellLostCenterOfTableView;
+
 
 @end

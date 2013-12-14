@@ -17,7 +17,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="GDs-1n-5VB"/>
+                    <navigationItem key="navigationItem" id="GDs-1n-5VB">
+                        <barButtonItem key="backBarButtonItem" title="Camera" id="Hpg-0T-28B"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="txA-4h-PAt" kind="push" identifier="PreviewSonicSegue" id="H9h-Ej-L8c"/>
                     </connections>
@@ -165,7 +167,7 @@
             </objects>
             <point key="canvasLocation" x="-203" y="-468"/>
         </scene>
-        <!--Edit View Controller-->
+        <!--Edit View Controller - Trim Sound-->
         <scene sceneID="MlE-0O-PWD">
             <objects>
                 <viewController id="txA-4h-PAt" customClass="SNCEditViewController" sceneMemberID="viewController">
@@ -178,7 +180,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="m77-2D-ake"/>
+                    <navigationItem key="navigationItem" title="Trim Sound" id="m77-2D-ake">
+                        <barButtonItem key="backBarButtonItem" title="Edit" id="v5w-hV-5gN"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="31v-bB-oHT" kind="push" identifier="ShareSonicSegue" id="g5g-YD-TA1"/>
                     </connections>

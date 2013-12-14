@@ -44,8 +44,6 @@ static SNCAppDelegate* sharedInstance = nil;
     
 //    [[SonicManagedObject last] deleteFromDatase];
     NSLog(@"%@",[Sonic getFrom:1 to:1]);
-//    [SNCAPIManager getLatestSonicsWithCompletionBlock:nil];
-    
     
 //    [SNCAPIManager registerWithUsername:@"yeguzel" email:@"exculuber@gmail.com" password:@"741285" andCompletionBlock:^(NSDictionary *responseDictionary) {
 //        NSString* validationCode = [responseDictionary objectForKey:@"validation_code"];
@@ -65,13 +63,19 @@ static SNCAppDelegate* sharedInstance = nil;
     
     //TEST
 //    [SNCAPITest start];
-
-    [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
-        [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-    } andErrorBlock:^(NSError *error) {
-        
-    }];
-    
+//
+//    [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
+//        [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//        
+//        [SNCAPIManager getUserSonics:user saveToDatabase:YES withCompletionBlock:^(NSArray *sonics) {
+//            
+//        } andErrorBlock:^(NSError *error) {
+//            
+//        }];
+//    } andErrorBlock:^(NSError *error) {
+//        
+//    }];
+//    
     
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        [[AuthenticationManager sharedInstance] checkAuthentication];

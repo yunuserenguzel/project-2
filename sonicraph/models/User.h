@@ -11,7 +11,7 @@
 
 @interface User : NSObject
 
-+ (User*) userWithId:(NSString*)userId andUsername:(NSString*)username andProfileImage:(NSString*)profile_image;
++ (User*) userWithId:(NSString*)userId andUsername:(NSString*)username andFullname:(NSString*)fullname andProfileImage:(NSString*)profile_image;
 
 + (User*) userWithManagedObject:(UserManagedObject*)userManagedObject;
 
@@ -26,6 +26,8 @@
 @property (nonatomic) NSString* fullName;
 
 @property (nonatomic) NSString* username;
+
+@property (nonatomic) NSString* profileImageUrl;
 
 @property (nonatomic) UserManagedObject* userManagedObject;
 

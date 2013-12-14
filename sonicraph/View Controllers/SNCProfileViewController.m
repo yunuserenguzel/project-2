@@ -50,14 +50,16 @@
     // Do any additional setup after loading the view.
     
 }
-
-- (void) setUser:(UserManagedObject *)user
-{
-    _user = user;
-    [SNCAPIManager getUserSonics:self.user withCompletionBlock:^(NSArray *sonics) {
-        
-    }];
-}
+//
+//- (void) setUser:(UserManagedObject *)user
+//{
+//    _user = user;
+//    [SNCAPIManager getUserSonics:self.user withCompletionBlock:^(NSArray *sonics) {
+//        
+//    }];
+//    
+//    [SNCAPIManager getUserSonics:<#(User *)#> saveToDatabase:<#(BOOL)#> withCompletionBlock:<#^(NSArray *sonics)completionBlock#> andErrorBlock:<#^(NSError *error)errorBlock#>]
+//}
 
 
 - (void) initializeSonicCollectionView

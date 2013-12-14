@@ -15,6 +15,5 @@
 @interface SNCEditViewController : UIViewController <AVAudioPlayerDelegate>
 
 @property (nonatomic) SonicData* sonic;
-@property (nonatomic) UIButton* playPauseButton;
-@property (nonatomic) UILabel* durationLabel;
+@property (nonatomic) UIButton* replayButton;
 @end

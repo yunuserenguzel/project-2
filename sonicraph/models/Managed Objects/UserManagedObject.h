@@ -14,7 +14,8 @@
 @interface UserManagedObject : NSManagedObject
 
 @property (nonatomic, retain) NSString * image;
-@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * fullname;
+@property (nonatomic, retain) NSString * username;
 @property (nonatomic, retain) NSString * userId;
 @property (nonatomic, retain) NSSet *sonics;
 

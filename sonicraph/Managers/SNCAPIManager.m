@@ -84,77 +84,77 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
      }];
 }
 
-+ (void) getUserSonics:(UserManagedObject*)user withCompletionBlock:(CompletionArrayBlock)completionBlock
-{
-    NSNumber* count = [NSNumber numberWithInt:20];
-    [SNCAPIManager
-     getSonicsWithParams:@{
-                           @"token":token,
-                           @"count":count,
-                           @"user":user.userId}
-     saveToDatabase:NO
-     withCompletionBlock:completionBlock];
-}
-
-+ (void) getSonicsBefore:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock
-{
-    NSNumber* count = [NSNumber numberWithInt:20];
-    [SNCAPIManager
-     getSonicsWithParams:@{
-                           @"token":token,
-                           @"before_sonic":sonicManagedObject.sonicId,
-                           @"count":count}
-     saveToDatabase:YES
-     withCompletionBlock:completionBlock];
-}
-
-+ (void) getSonicsAfter:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock
++ (void) getUserSonics:(User*)user saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     NSNumber* count = [NSNumber numberWithInt:20];
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
     [params setObject:token forKey:@"token"];
-    if(sonicManagedObject != nil){
-        [params setObject:sonicManagedObject.sonicId forKey:@"after_sonic"];
+    if(user != nil){
+        [params setObject:user.userId forKey:@"user"];
     }
     [params setObject:count forKey:@"count"];
-    [SNCAPIManager
-     getSonicsWithParams:params
-     saveToDatabase:YES
-     withCompletionBlock:completionBlock];
+    [SNCAPIManager getSonicsWithParams:params saveToDatabase:saveToDatabase withCompletionBlock:completionBlock andErrorBlock:errorBlock];
 }
 
-+ (void) getLatestSonicsWithCompletionBlock:(Block)completionBlock
++ (void) getSonicsBefore:(Sonic*)sonic withCompletionBlock:(Block)completionBlock
 {
-    SonicManagedObject* lastSonic = [SonicManagedObject last];
-    [SNCAPIManager getSonicsAfter:lastSonic withCompletionBlock:completionBlock];
+    NSNumber* count = [NSNumber numberWithInt:20];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    [params setObject:token forKey:@"token"];
+    if(sonic != nil){
+        [params setObject:sonic.sonicId forKey:@"before_sonic"];
+    }
+    [params setObject:count forKey:@"count"];
+    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
 }
 
-+ (void)getSonicsWithParams:(NSDictionary *)dictionary saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(Block)completionBlock
++ (void) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(Block)completionBlock
 {
-    NSString* operation = @"get_sonics";
+    NSNumber* count = [NSNumber numberWithInt:20];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    [params setObject:token forKey:@"token"];
+    if(sonic != nil){
+        [params setObject:sonic.sonicId forKey:@"after_sonic"];
+    }
+    [params setObject:count forKey:@"count"];
+    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
+}
+
++ (void) getSonicsWithCompletionBlock:(Block)completionBlock
+{
+    NSNumber* count = [NSNumber numberWithInt:20];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+
+    [params setObject:count forKey:@"count"];
+    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
+}
+
++ (void)getSonicsWithParams:(NSMutableDictionary *)params saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSString* operation = @"sonic/get_sonics";
+    [params setObject:[AuthenticationManager sharedInstance].token forKey:@"token"];
     [[SNCAPIConnector sharedInstance]
-     postRequestWithParams:dictionary
+     getRequestWithParams:params
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
+         NSMutableArray* sonics = [[NSMutableArray alloc] init];
          for (NSDictionary* sonicDict in [responseDictionary objectForKey:@"sonics"]) {
              if (saveToDatabase){
-                 [SNCAPIManager saveSonic:sonicDict];
+                 [sonics addObject:[SNCAPIManager sonicWithDictionary:sonicDict saveToDatabase:saveToDatabase]];
              }
          }
          [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicsAreLoaded object:nil];
          if(completionBlock){
-             completionBlock();
+             completionBlock(sonics);
          }
      }
-     andErrorBlock:^(NSError *error) {
-         
-     }];
+     andErrorBlock:errorBlock];
 }
 
 + (Sonic*) sonicWithDictionary:(NSDictionary*)sonicDict saveToDatabase:(BOOL)saveToDatabase
 {
     NSDictionary* userDict = [sonicDict objectForKey:@"user"];
-    User* user = [User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andProfileImage:nil];
+    User* user = [User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"realname"] andProfileImage:nil];
     if(saveToDatabase){
         [user saveToDatabase];
     }
@@ -178,25 +178,6 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
         [sonic saveToDatabase];
     }
     return sonic;
-}
-
-+ (SonicManagedObject*) saveSonic:(NSDictionary*)sonicDict
-{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    
-    NSDictionary* userDict = [sonicDict objectForKey:@"user"];
-    UserManagedObject* owner = [UserManagedObject createUserWith:[userDict objectForKey:@"id"] andUserName:[userDict objectForKey:@"username"] andRealName:[userDict objectForKey:@"realname"] andImage:[userDict objectForKey:@"profile_image"]];
-    NSLog(@"%@",sonicDict);
-    NSLog(@"%@",[formatter dateFromString:[sonicDict objectForKey:@"creation_date"]]);
-    return [SonicManagedObject
-            createWith:[sonicDict objectForKey:@"sonic_id"]
-            andLongitude:[NSNumber numberWithFloat:[[sonicDict objectForKey:@"longitude"] floatValue]]
-            andLatitude:[NSNumber numberWithFloat:[[sonicDict objectForKey:@"latitude"] floatValue]]
-            andIsPrivate:[NSNumber numberWithBool:[[sonicDict objectForKey:@"longitude"] boolValue]]
-            andCreationDate:[formatter dateFromString:[sonicDict objectForKey:@"creation_date"]]
-            andSonicUrl:[sonicDict objectForKey:@"sonic_url"]
-            andOwner:owner];
 }
 
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock
@@ -223,11 +204,6 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
                                                attributes:nil
                                                     error:nil];
     return cacheFolder;
-}
-
-+ (void) getSonicsWithCompletionBlock:(Block)completionBlock
-{
-
 }
 
 

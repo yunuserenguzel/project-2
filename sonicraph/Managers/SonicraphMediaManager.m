@@ -20,9 +20,11 @@
 @implementation SonicraphMediaManager
 {
     AVCaptureSession* session;
-    AVCaptureDevice* device;
+    
     AVCaptureStillImageOutput* stillImageOutput;
     AVAudioRecorder *audioRecorder;
+    AVCaptureDeviceInput* backCameraInput;
+    AVCaptureDeviceInput* frontCameraInput;
     
     Mp3ConverterInterface* mp3ConverterInterface;
     
@@ -46,18 +48,8 @@
 {
     
     session = [[AVCaptureSession alloc] init];
-    device = [[AVCaptureDevice devices] objectAtIndex:0];
-    
     session.sessionPreset = AVCaptureSessionPresetPhoto;
-    
-    AVCaptureDeviceInput *captureDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
-    
-    if ([session canAddInput:captureDeviceInput]) {
-        [session addInput:captureDeviceInput];
-    }
-    else {
-        // Handle the failure.
-    }
+    [self useMainCamera];
     
 //    AVCaptureDeviceInput* audioInput = [[AVCaptureDeviceInput alloc] initWithDevice:[[AVCaptureDevice devices] objectAtIndex:2] error:nil];
 //    if ([session canAddInput:audioInput]) {
@@ -148,6 +140,30 @@
          }
      }];
     
+}
+
+- (void)useFrontCamera
+{
+    [session removeInput:backCameraInput];
+    AVCaptureDevice* device = [AVCaptureDevice deviceWithUniqueID:@"com.apple.avfoundation.avcapturedevice.built-in_video:1"];
+    frontCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
+    if([session canAddInput:frontCameraInput]){
+        [session addInput:frontCameraInput];
+    }
+}
+
+- (void)useMainCamera
+{
+    [session removeInput:frontCameraInput];
+    AVCaptureDevice* device = [AVCaptureDevice deviceWithUniqueID:@"com.apple.avfoundation.avcapturedevice.built-in_video:0"];
+    backCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
+    if ([session canAddInput:backCameraInput]) {
+        [session addInput:backCameraInput];
+    }
+    else {
+        // Handle the failure.
+    }
+
 }
 
 - (void) startCamera

@@ -20,15 +20,13 @@ typedef void (^CompletionSonicBlock) (Sonic* sonic);
 
 + (void) createSonic:(SonicData *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock;
 
-+ (void) getUserSonics:(UserManagedObject*)user withCompletionBlock:(CompletionArrayBlock)completionBlock;
++ (void) getUserSonics:(User*)user saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
 
 + (void) getSonicsBefore:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
 
 + (void) getSonicsAfter:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
 
-+ (void) getLatestSonicsWithCompletionBlock:(Block)completionBlock;
-
-+ (void) getSonicsWithParams:(NSDictionary*)dictionary saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(Block)completionBlock;
++ (void)getSonicsWithParams:(NSMutableDictionary *)params saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
 
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock;
 

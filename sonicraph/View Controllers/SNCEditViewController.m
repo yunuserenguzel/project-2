@@ -26,7 +26,7 @@
 
 - (CGRect) imageViewFrame
 {
-    return CGRectMake(0.0, 10.0 + self.navigationController.navigationBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.width);
+    return CGRectMake(0.0, 66.0, self.view.frame.size.width, self.view.frame.size.width);
 }
 - (CGRect) resetButtonFrame
 {
@@ -171,7 +171,7 @@
 {
     if(self.sonic){
         [audioPlayer stop];
-        [audioPlayer setCurrentTime:[self.soundSlider minimumValue]];
+        [audioPlayer setCurrentTime:[self.soundSlider lowerValue]];
         [audioPlayer play];
         
     }
@@ -190,7 +190,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self play];
+    [self replay];
 }
 
 - (void) configureViews

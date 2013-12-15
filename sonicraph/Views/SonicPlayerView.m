@@ -10,6 +10,8 @@
 #import "SNCAPIManager.h"
 #import <AVFoundation/AVFoundation.h>
 
+#import "Configurations.h"
+
 @interface SonicPlayerView ()
 
 @property UIImageView* imageView;
@@ -23,17 +25,39 @@
     
 }
 
+- (CGRect) imageViewFrame
+{
+    CGRect frame = CGRectZero;
+    frame.size = SonicSize;
+    frame.origin = CGPointZero;
+    return frame;
+}
+
+- (id) initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]){
+        [self initViews];
+    }
+    return self;
+}
+
 - (id) init
 {
     if (self = [super init]){
         [self setFrame:CGRectMake(0.0, 0.0, 320.0, 320.0)];
-        [self initializeImageView];
+        [self initViews];
         
-        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
-        [tapGesture setNumberOfTapsRequired:1];
-        [self addGestureRecognizer:tapGesture];
     }
     return self;
+}
+
+- (void) initViews
+{
+    [self initializeImageView];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
+    [tapGesture setNumberOfTapsRequired:1];
+    [self addGestureRecognizer:tapGesture];
 }
 
 - (void) tapped
@@ -66,6 +90,7 @@
 
 - (void) initializeImageView
 {
+
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
     [self addSubview:self.imageView];
 }
@@ -79,8 +104,9 @@
 
 - (void)setFrame:(CGRect)frame
 {
+    frame.size = SonicPlayerViewSize;
     [super setFrame:frame];
-    [self.imageView setFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
+    
 }
 
 

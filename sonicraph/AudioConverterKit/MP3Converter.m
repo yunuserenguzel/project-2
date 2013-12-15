@@ -24,8 +24,8 @@ int PRESET_HIFI[] = {VBR,320,Highest,Stereo,BEST_QUALITY};
     NSTimeInterval _encodingStartInterval;
     NSTimeInterval _encodingEndInterval;
 
-    int _conversionStartPoint;
-    int _conversionLength;
+    CGFloat _conversionStartPoint;
+    CGFloat _conversionLength;
 }
 
 /* private methods */
@@ -160,8 +160,8 @@ int PRESET_HIFI[] = {VBR,320,Highest,Stereo,BEST_QUALITY};
     if (length > 10.0) length = 10.0;
 #endif
 
-    CMTime startTrimTime = CMTimeMakeWithSeconds(start, 1);
-    CMTime endTrimTime = CMTimeMakeWithSeconds(start+length, 1);
+    CMTime startTrimTime = CMTimeMakeWithSeconds(start, 100);
+    CMTime endTrimTime = CMTimeMakeWithSeconds(start+length, 100);
     CMTimeRange exportTimeRange = CMTimeRangeFromTimeToTime(startTrimTime, endTrimTime);
     assetReader.timeRange = exportTimeRange;
 

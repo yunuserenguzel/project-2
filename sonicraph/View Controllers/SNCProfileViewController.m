@@ -11,6 +11,7 @@
 #import "SNCEditViewController.h"
 #import "SonicData.h"
 #import "Sonic.h"
+#import "Configurations.h"
 
 
 @interface SNCProfileViewController ()
@@ -46,6 +47,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
     [self initializeSonicCollectionView];
     // Do any additional setup after loading the view.
     
@@ -64,6 +67,7 @@
 
 - (void) initializeSonicCollectionView
 {
+    
     self.sonicCollectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     [self.sonicCollectionViewFlowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     [self.sonicCollectionViewFlowLayout setItemSize:CGSizeMake(160.0, 160.0)];
@@ -73,6 +77,7 @@
     [self.sonicCollectionView setDataSource:self];
     [self.sonicCollectionView setDelegate:self];
     [self.sonicCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+    [self.sonicCollectionView setBackgroundColor:[UIColor lightGrayColor]];
 	[self.view addSubview:self.sonicCollectionView];
 }
 

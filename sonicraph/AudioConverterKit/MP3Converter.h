@@ -86,8 +86,8 @@ extern int PRESET_HIFI[];
 @property (nonatomic, assign) EncodingEngineQuality encodingEngineQuality; /* property for quality setting for internal LAME algorithms*/
 @property (nonatomic, assign) Channel channel; /* property for channel types for output audio */
 
-@property (nonatomic, assign) int conversionStartPoint; /* start point of conversion in sec. */
-@property (nonatomic, assign) int conversionLength; /* conversion length in sec. */
+@property (nonatomic, assign) CGFloat conversionStartPoint; /* start point of conversion in sec. */
+@property (nonatomic, assign) CGFloat conversionLength; /* conversion length in sec. */
 @property (nonatomic, readonly) long int elapsedTime; /* elapsed time for conversion in sec. */
 @property (nonatomic, readonly) long int fileSize; /* Output file size of conversion in sec. */
 @property (nonatomic, assign) NSObject<MP3ConverterDelegate> *delegate; /* delegate */

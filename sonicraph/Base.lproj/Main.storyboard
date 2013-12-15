@@ -21,7 +21,7 @@
                         <barButtonItem key="backBarButtonItem" title="Camera" id="Hpg-0T-28B"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="txA-4h-PAt" kind="push" identifier="PreviewSonicSegue" id="H9h-Ej-L8c"/>
+                        <segue destination="txA-4h-PAt" kind="push" identifier="EditSonicSegue" id="H9h-Ej-L8c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c0n-Ck-jzz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -32,7 +32,7 @@
         <scene sceneID="aE5-qH-bks">
             <objects>
                 <navigationController definesPresentationContext="YES" id="fCe-kc-u0K" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="tNX-4D-1BX"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="UserWhite.png" id="tNX-4D-1BX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xUP-FK-4jt">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -99,7 +99,7 @@
         <scene sceneID="hYG-yn-2P9">
             <objects>
                 <navigationController definesPresentationContext="YES" id="F0F-wh-NmK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" id="FTh-dn-qqH"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="EyeWhite.png" id="FTh-dn-qqH"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ILS-Fh-ei1">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -130,10 +130,10 @@
             </objects>
             <point key="canvasLocation" x="712" y="306"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tabbar Controller-->
         <scene sceneID="1ni-4e-taB">
             <objects>
-                <tabBarController definesPresentationContext="YES" id="d7G-lq-cZK" sceneMemberID="viewController">
+                <tabBarController definesPresentationContext="YES" id="d7G-lq-cZK" customClass="SNCTabbarController" sceneMemberID="viewController">
                     <keyCommands/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="NER-0T-Y3q">
@@ -155,7 +155,7 @@
         <scene sceneID="Nli-MK-1Y4">
             <objects>
                 <navigationController definesPresentationContext="YES" id="esE-xM-snl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Camera" id="SHW-Eb-fuJ"/>
+                    <tabBarItem key="tabBarItem" title="Camera" image="CameraTBWhite.png" id="SHW-Eb-fuJ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vwm-YA-u75">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -191,7 +191,7 @@
             </objects>
             <point key="canvasLocation" x="712" y="-468"/>
         </scene>
-        <!--Share View Controller-->
+        <!--Share View Controller - Share-->
         <scene sceneID="5FM-2n-fAS">
             <objects>
                 <viewController id="31v-bB-oHT" customClass="SNCShareViewController" sceneMemberID="viewController">
@@ -204,13 +204,18 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="9dz-xa-leY"/>
+                    <navigationItem key="navigationItem" title="Share" id="9dz-xa-leY"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HOR-Yg-0DX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1170" y="-468"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="CameraTBWhite.png" width="29" height="24"/>
+        <image name="EyeWhite.png" width="30" height="20"/>
+        <image name="UserWhite.png" width="24" height="24"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

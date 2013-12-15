@@ -9,11 +9,15 @@
 #ifndef sonicraph_TypeDefs_h
 #define sonicraph_TypeDefs_h
 
-#define PreviewSonicSegue @"PreviewSonicSegue"
+#define EditSonicSegue @"EditSonicSegue"
 #define ShareSonicSegue @"ShareSonicSegue"
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"
 
 #define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
 #define NotificationLikeSonic @"NotificationLikeSonic"
 #define NotificationDislikeSonic @"NotificationDislikeSonic"
+#define NotificationOpenCommentsOfSonic @"NotificationOpenCommentsOfSonic"
+
+UIColor* rgb(CGFloat red, CGFloat green, CGFloat blue);
+
 #endif

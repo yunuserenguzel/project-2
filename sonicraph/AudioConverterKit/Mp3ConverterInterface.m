@@ -55,8 +55,8 @@ static Mp3ConverterInterface* sharedInstance = nil;
     outputFileName = outputName;
     start = _start;
     length = _length;
-    if(length < 0 || start < 0 || start >= length){
-        @throw [NSException exceptionWithName:@"InvalidInput" reason:@"start and length should greater than zero and start must be smaller then length" userInfo:nil];
+    if(length < 0 || start < 0){
+        @throw [NSException exceptionWithName:@"InvalidInput" reason:@"start and length should greater than zero" userInfo:nil];
     }
     [self startConvertion];
 }

@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SNCEditViewController.h"
 #import "Configurations.h"
+#import "SNCTabbarController.h"
 
 #define SonicSoundMaxTime 30.0
 
@@ -99,7 +100,6 @@ typedef enum SonicRecordType {
     [self.view setBackgroundColor:[UIColor blackColor]];
     self.cameraView = [[UIView alloc] initWithFrame:[self cameraViewFrame]];
     [self.view addSubview:self.cameraView];
-    
     [[[NSThread alloc] initWithTarget:self selector:@selector(initializeMediaManager) object:nil] start];
     
     [self initializeMaskView];
@@ -136,7 +136,7 @@ typedef enum SonicRecordType {
     NSLog(@"preview Sonic");
     if(capturedImage != nil && capturedAudio != nil){
         NSLog(@"will preview sonic");
-        [self performSegueWithIdentifier:PreviewSonicSegue sender:self];
+        [self performSegueWithIdentifier:EditSonicSegue sender:self];
     }
 }
 
@@ -344,8 +344,7 @@ typedef enum SonicRecordType {
 - (void) cancelButtonTapped
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
-    SNCAppDelegate* appDelegate = (SNCAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate openPreviousTab];
+    [[SNCTabbarController sharedInstance] openPreviousTab];
 
 }
 

@@ -25,11 +25,9 @@
 @property UIButton* resonicButton;
 @property UIButton* shareButton;
 
-
 @property UILabel* likesCountLabel;
 @property UILabel* commentsCountLabel;
 @property UILabel* resonicsCountLabel;
-
 
 - (void) cellWonCenterOfTableView;
 - (void) cellLostCenterOfTableView;

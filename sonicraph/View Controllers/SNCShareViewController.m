@@ -42,7 +42,7 @@
 
 - (CGRect) sonicPlayerViewFrame
 {
-    return CGRectMake(0.0, 40.0, 320.0, 320.0);
+    return CGRectMake(0.0, 66.0, 320.0, 320.0);
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -68,6 +68,11 @@
     [self initializeFacebookAndTwitterButtons];
     [self initializeSonicPlayerView];
     [self configureViews];
+    
+    [self.view.subviews enumerateObjectsUsingBlock:^(UIView* view, NSUInteger idx, BOOL *stop) {
+        view.layer.borderColor = [UIColor redColor].CGColor;
+        view.layer.borderWidth = 2.0f;
+    }];
 }
 
 - (void) configureViews
@@ -82,6 +87,7 @@
 {
     self.sonicPlayerView = [[SonicPlayerView alloc]initWithFrame:[self sonicPlayerViewFrame]];
     [self.view addSubview:self.sonicPlayerView];
+    self.sonicPlayerView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void) initializeFacebookAndTwitterButtons
@@ -90,7 +96,7 @@
     self.twitterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebookButton setImage:[UIImage imageNamed:@"FacebookWhite.png"] forState:UIControlStateNormal];
     [self.facebookButton setTitle:@"Facebook" forState:UIControlStateNormal];
-    [self.twitterButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [self.twitterButton setImage:[UIImage imageNamed:@"Twitter.png"] forState:UIControlStateNormal];
     [self.twitterButton setTitle:@"Twitter" forState:UIControlStateNormal];
     self.twitterButton.frame = [self twitterButtonFrame];
     self.facebookButton.frame = [self facebookButtonFrame];
@@ -118,7 +124,6 @@
 
 - (void) shareSonic
 {
-    NSLog(@"Should share to server");
     
     [SNCAPIManager createSonic:self.sonic withCompletionBlock:^(Sonic* sonic) {
         

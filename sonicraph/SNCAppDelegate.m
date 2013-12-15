@@ -17,7 +17,6 @@
 
 #import "SonicManagedObject.h"
 
-static int previousTabIndex = 0;
 static SNCAppDelegate* sharedInstance = nil;
 
 @implementation SNCAppDelegate
@@ -38,9 +37,7 @@ static SNCAppDelegate* sharedInstance = nil;
 //    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
 //    SNCMasterViewController *controller = (SNCMasterViewController *)navigationController.topViewController;
 //    controller.managedObjectContext = self.managedObjectContext;
-    _tabbarController = (UITabBarController*) self.window.rootViewController;
-    [self.tabbarController setDelegate:self];
-    [self.tabbarController setSelectedIndex:0];
+
     
 //    [[SonicManagedObject last] deleteFromDatase];
     NSLog(@"%@",[Sonic getFrom:1 to:1]);
@@ -67,11 +64,11 @@ static SNCAppDelegate* sharedInstance = nil;
 //    [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
 //        [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
 //        
-//        [SNCAPIManager getUserSonics:user saveToDatabase:YES withCompletionBlock:^(NSArray *sonics) {
-//            
-//        } andErrorBlock:^(NSError *error) {
-//            
-//        }];
+        [SNCAPIManager getUserSonics:[[AuthenticationManager sharedInstance] authenticatedUser] saveToDatabase:YES withCompletionBlock:^(NSArray *sonics) {
+//
+        } andErrorBlock:^(NSError *error) {
+//
+        }];
 //    } andErrorBlock:^(NSError *error) {
 //        
 //    }];
@@ -84,17 +81,7 @@ static SNCAppDelegate* sharedInstance = nil;
     return YES;
 }
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
-{
-    previousTabIndex = tabBarController.selectedIndex;
-    return YES;
-}
 
-- (void)openPreviousTab
-{
-    UITabBarController* tabbarController = (UITabBarController*)self.window.rootViewController;
-    [tabbarController setSelectedIndex:previousTabIndex];
-}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

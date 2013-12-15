@@ -13,12 +13,14 @@
 #import "SNCAPIManager.h"
 
 #import "TypeDefs.h"
+#import "Configurations.h"
 
 #define ButtonsTop 385.0
 #define LabelsTop 365.0
 @interface SNCHomeTableCell ()
 
 @property SonicPlayerView* sonicPlayerView;
+@property UIView* cellSpacingView;
 
 @end
 
@@ -28,7 +30,10 @@
 {
     return  CGRectMake(10.0, 0.0, 44.0, 44.0);
 }
-
+- (CGRect) cellSpacingViewFrame
+{
+    return CGRectMake(0.0, 426.0, 320.0, 22.0);
+}
 - (CGRect) userImageMaskViewFrame
 {
     return [self userImageViewFrame];
@@ -84,6 +89,8 @@
     return CGRectMake(170.0, LabelsTop, 88.0, 22.0);
 }
 
+
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -119,35 +126,20 @@
     [self addSubview:self.sonicPlayerView];
     self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
     [self addSubview:self.usernameLabel];
-    
-    self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.likeButton setFrame:[self likeButtonFrame]];
-    [self.likeButton setTitle:@"Like" forState:UIControlStateNormal];
-    [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.likeButton];
-    
-    self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.commentButton setFrame:[self commentButtonFrame]];
-    [self.commentButton setTitle:@"Comment" forState:UIControlStateNormal];
-    [self.commentButton addTarget:self action:@selector(commentSonic) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.commentButton];
-    
-    self.resonicButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.resonicButton setFrame:[self resonicButtonFrame]];
-    [self.resonicButton setTitle:@"resonic" forState:UIControlStateNormal];
-    [self.resonicButton addTarget:self action:@selector(resonic) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.resonicButton];
-    
-    self.shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.shareButton setFrame:[self shareButtonFrame]];
-    [self.shareButton setTitle:@"share" forState:UIControlStateNormal];
-    [self.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.shareButton];
-    
+    [self initLabels];
+    [self initButtons];
 
+    self.cellSpacingView = [[UIView alloc] initWithFrame:[self cellSpacingViewFrame]];
+    [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
+    [self addSubview:self.cellSpacingView];
+
+}
+
+- (void) initLabels
+{
     self.likesCountLabel = [[UILabel alloc] initWithFrame:[self likesLabelFrame]];
-//    [self.likesCountLabel.layer setBorderColor:[UIColor redColor].CGColor];
-//    [self.likesCountLabel.layer setBorderWidth:1.0f];
+    //    [self.likesCountLabel.layer setBorderColor:[UIColor redColor].CGColor];
+    //    [self.likesCountLabel.layer setBorderWidth:1.0f];
     [self.likesCountLabel setText:@"Likes 99"];
     [self.likesCountLabel setFont:[self.likesCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.likesCountLabel];
@@ -161,7 +153,34 @@
     [self.resonicsCountLabel setText:@"Resonics 45"];
     [self.resonicsCountLabel setFont:[self.resonicsCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.resonicsCountLabel];
+}
+
+- (void) initButtons
+{
+    self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.likeButton setFrame:[self likeButtonFrame]];
+    [self.likeButton setImage:[UIImage imageNamed:@"LikeDarkGrey.png"] forState:UIControlStateNormal];
+    [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
     
+    self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.commentButton setFrame:[self commentButtonFrame]];
+    [self.commentButton setImage:[UIImage imageNamed:@"Comment.png"] forState:UIControlStateNormal];
+    [self.commentButton addTarget:self action:@selector(commentSonic) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.resonicButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.resonicButton setFrame:[self resonicButtonFrame]];
+    [self.resonicButton setImage:[UIImage imageNamed:@"ReSonicDarkGrey.png"] forState:UIControlStateNormal];
+    [self.resonicButton addTarget:self action:@selector(resonic) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.shareButton setFrame:[self shareButtonFrame]];
+    [self.shareButton setImage:[UIImage imageNamed:@"ShareWhite.png"] forState:UIControlStateNormal];
+    [self.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    
+    [@[self.likeButton,self.commentButton,self.resonicButton,self.shareButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
+        [button setTintColor:PinkColor];
+        [self addSubview:button];
+    }];
 }
 
 - (void) share
@@ -176,7 +195,7 @@
 
 - (void) commentSonic
 {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationOpenCommentsOfSonic object:self.sonic];
 }
 
 - (void)likeSonic

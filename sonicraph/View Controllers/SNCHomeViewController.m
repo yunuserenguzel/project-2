@@ -10,16 +10,19 @@
 #import "SNCHomeTableCell.h"
 #import "TypeDefs.h"
 #import "Sonic.h"
-
-#define HeightForHomeCell 424.0
+#import "Configurations.h"
 
 @interface SNCHomeViewController ()
+
 @property NSArray* sonics;
+
+@property UIRefreshControl* refreshControl;
 @end
 
 @implementation SNCHomeViewController
 {
     SNCHomeTableCell* cellWiningTheCenter;
+    NSInteger indexOfCellToBeIncreased;
 }
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -29,18 +32,41 @@
     }
     return self;
 }
+// 45, 173, 254
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    indexOfCellToBeIncreased = -1;
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
+    
+    [self.tableView setBackgroundColor:CellSpacingGrayColor];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refresh)
                                                  name:NotificationSonicsAreLoaded
                                                object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openCommentsOfSonic:) name:NotificationOpenCommentsOfSonic object:nil];
     self.sonics  = @[];
+    [self initRefreshController];
+}
+- (void) initRefreshController
+{
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl = self.refreshControl;
+    [self.refreshControl addTarget:self action:@selector(refreshFromServer) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void) refreshFromServer
+{
+    [self.refreshControl endRefreshing];
+}
+
+-(void) openCommentsOfSonic:(NSNotification*) notification
+{
+    
 }
 
 - (void) refresh
@@ -101,12 +127,17 @@
     NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
     if([indexPaths count] == 1){
         cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
-        [cellWiningTheCenter cellWonCenterOfTableView];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cellWiningTheCenter cellWonCenterOfTableView];
+        });
+
     }
     else {
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
             SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-            [cell cellLostCenterOfTableView];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cell cellLostCenterOfTableView];
+            });
         }];
     }
     
@@ -131,6 +162,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == indexOfCellToBeIncreased){
+        return HeightForHomeCell + 44.0;
+    }
     return HeightForHomeCell;
 }
 

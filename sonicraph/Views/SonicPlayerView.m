@@ -9,14 +9,18 @@
 #import "SonicPlayerView.h"
 #import "SNCAPIManager.h"
 #import <AVFoundation/AVFoundation.h>
-
+#import "SNCSoundSlider.h"
 #import "Configurations.h"
 
-@interface SonicPlayerView ()
+@interface SonicPlayerView () <AVAudioPlayerDelegate>
 
 @property UIImageView* imageView;
 
 @property AVAudioPlayer* audioPlayer;
+
+@property SNCSoundSlider* soundSlider;
+
+@property NSTimer* timer;
 
 @end
 
@@ -33,6 +37,11 @@
     return frame;
 }
 
+- (CGRect) soundSliderFrame
+{
+    return CGRectMake(0.0, 320.0, 320.0, 1.0);
+}
+
 - (id) initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]){
@@ -44,16 +53,27 @@
 - (id) init
 {
     if (self = [super init]){
-        [self setFrame:CGRectMake(0.0, 0.0, 320.0, 320.0)];
+        [self setFrame:CGRectMake(0.0, 0.0, 320.0, 321.0)];
         [self initViews];
         
     }
     return self;
 }
 
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    [self.timer invalidate];
+}
+
 - (void) initViews
 {
     [self initializeImageView];
+    
+    self.soundSlider = [[SNCSoundSlider alloc] init];
+    [self.soundSlider setFrame:[self soundSliderFrame]];
+    [self.soundSlider setMinimumValue:0.0];
+    [self.soundSlider setMaximumValue:0.1];
+    [self addSubview:self.soundSlider];
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
     [tapGesture setNumberOfTapsRequired:1];
@@ -63,10 +83,10 @@
 - (void) tapped
 {
     if([self.audioPlayer isPlaying]){
-        [self.audioPlayer pause];
+        [self pause];
     }
     else{
-        [self.audioPlayer play];
+        [self play];
     }
 }
 
@@ -90,8 +110,9 @@
 
 - (void) initializeImageView
 {
-
-    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
+    self.imageView = [[UIImageView alloc] initWithFrame:[self imageViewFrame]];
+    [self.imageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.imageView setClipsToBounds:YES];
     [self addSubview:self.imageView];
 }
 
@@ -100,28 +121,45 @@
     _sonic = sonic;
     self.imageView.image = self.sonic.image;
     self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:nil];
+    [self.soundSlider setMaximumValue:self.audioPlayer.duration];
+    [self.soundSlider setValue:0.0];
 }
 
 - (void)setFrame:(CGRect)frame
 {
     frame.size = SonicPlayerViewSize;
     [super setFrame:frame];
-    
 }
 
+- (void) timerUpdate
+{
+//    NSLog(@"%f",self.audioPlayer.currentTime);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.soundSlider setValue:self.audioPlayer.currentTime];
+    });
+    if(![self.audioPlayer isPlaying]){
+        [self.timer invalidate];
+    }
+}
 
 - (void)play
 {
     [self.audioPlayer play];
+    if(self.timer == nil || ![self.timer isValid]){
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
+        [self.timer setTolerance:0.01];
+    }
 }
 
 - (void)stop
 {
+    [self.timer invalidate];
     [self.audioPlayer stop];
 }
 
 - (void)pause
 {
+    [self.timer invalidate];
     [self.audioPlayer pause];
 }
 

@@ -97,6 +97,7 @@
 		AEDAAE06185DBD77001DD389 /* UIButton+StateProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */; };
 		AEDAAE09185DD5C6001DD389 /* SNCSonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE08185DD5C6001DD389 /* SNCSonicViewController.m */; };
 		AEDAAE0D185DDAFC001DD389 /* TypeDefs.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE0C185DDAFC001DD389 /* TypeDefs.m */; };
+		AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -243,6 +244,8 @@
 		AEDAAE07185DD5C6001DD389 /* SNCSonicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSonicViewController.h; sourceTree = "<group>"; };
 		AEDAAE08185DD5C6001DD389 /* SNCSonicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSonicViewController.m; sourceTree = "<group>"; };
 		AEDAAE0C185DDAFC001DD389 /* TypeDefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeDefs.m; sourceTree = "<group>"; };
+		AEDAAE0E18623B0F001DD389 /* SNCSoundSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSoundSlider.h; sourceTree = "<group>"; };
+		AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSoundSlider.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +351,8 @@
 				AE86EED61832E07600F74F1D /* SonicPlayerView.m */,
 				AE86EED81835590F00F74F1D /* SNCHomeTableCell.h */,
 				AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */,
+				AEDAAE0E18623B0F001DD389 /* SNCSoundSlider.h */,
+				AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -779,6 +784,7 @@
 				AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */,
 				AEDAAE06185DBD77001DD389 /* UIButton+StateProperties.m in Sources */,
 				AED56F081801B425000DF866 /* SNCAPITest.m in Sources */,
+				AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */,
 				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
 				AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */,

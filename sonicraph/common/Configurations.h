@@ -21,4 +21,6 @@
 #define NavigationBarBlueColor rgb(45.0, 173.0, 254.0)
 #define PinkColor rgb(244.0, 75.0, 122.0)
 #define CellSpacingGrayColor rgb(230.0, 230.0, 230.0) 
+
+#define SonicPlaceholderImage [UIImage imageNamed:@"PhotoBaseWithLogo.png"]
 #endif

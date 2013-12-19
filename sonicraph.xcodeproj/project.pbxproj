@@ -13,16 +13,9 @@
 		AE15966A18142C6300929D1D /* Cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966118142C6300929D1D /* Cancel.png */; };
 		AE15966B18142C6300929D1D /* Film.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966218142C6300929D1D /* Film.png */; };
 		AE15966C18142C6300929D1D /* Option.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966318142C6300929D1D /* Option.png */; };
-		AE15966D18142C6300929D1D /* Polaroid.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966418142C6300929D1D /* Polaroid.png */; };
-		AE15966E18142C6300929D1D /* Sound Bar Handle.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966518142C6300929D1D /* Sound Bar Handle.png */; };
-		AE15966F18142C6300929D1D /* Sound Bar.png in Resources */ = {isa = PBXBuildFile; fileRef = AE15966618142C6300929D1D /* Sound Bar.png */; };
 		AE15967B181BE95E00929D1D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967A181BE95E00929D1D /* AVFoundation.framework */; };
 		AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967C181BF64800929D1D /* AudioToolbox.framework */; };
 		AE159695181C15AE00929D1D /* Sound Button.png in Resources */ = {isa = PBXBuildFile; fileRef = AE159694181C15AE00929D1D /* Sound Button.png */; };
-		AE1596BA182452CF00929D1D /* slider-default7-handle.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B2182452CF00929D1D /* slider-default7-handle.png */; };
-		AE1596BB182452CF00929D1D /* slider-default7-handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B3182452CF00929D1D /* slider-default7-handle@2x.png */; };
-		AE1596BC182452CF00929D1D /* slider-default7-track.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B4182452CF00929D1D /* slider-default7-track.png */; };
-		AE1596BD182452CF00929D1D /* slider-default7-track@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B5182452CF00929D1D /* slider-default7-track@2x.png */; };
 		AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B6182452CF00929D1D /* slider-default7-trackBackground.png */; };
 		AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */; };
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
@@ -98,6 +91,9 @@
 		AEDAAE09185DD5C6001DD389 /* SNCSonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE08185DD5C6001DD389 /* SNCSonicViewController.m */; };
 		AEDAAE0D185DDAFC001DD389 /* TypeDefs.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE0C185DDAFC001DD389 /* TypeDefs.m */; };
 		AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */; };
+		AEDAAE1618639AF1001DD389 /* SecondsNumbers@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE1518639AF1001DD389 /* SecondsNumbers@2x.png */; };
+		AEDAAE191863A015001DD389 /* UIImage+imageForSoundData.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AEDAAE1B1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,16 +103,9 @@
 		AE15966118142C6300929D1D /* Cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cancel.png; sourceTree = "<group>"; };
 		AE15966218142C6300929D1D /* Film.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Film.png; sourceTree = "<group>"; };
 		AE15966318142C6300929D1D /* Option.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Option.png; sourceTree = "<group>"; };
-		AE15966418142C6300929D1D /* Polaroid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Polaroid.png; sourceTree = "<group>"; };
-		AE15966518142C6300929D1D /* Sound Bar Handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sound Bar Handle.png"; sourceTree = "<group>"; };
-		AE15966618142C6300929D1D /* Sound Bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sound Bar.png"; sourceTree = "<group>"; };
 		AE15967A181BE95E00929D1D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE15967C181BF64800929D1D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AE159694181C15AE00929D1D /* Sound Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sound Button.png"; sourceTree = "<group>"; };
-		AE1596B2182452CF00929D1D /* slider-default7-handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-handle.png"; sourceTree = "<group>"; };
-		AE1596B3182452CF00929D1D /* slider-default7-handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-handle@2x.png"; sourceTree = "<group>"; };
-		AE1596B4182452CF00929D1D /* slider-default7-track.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-track.png"; sourceTree = "<group>"; };
-		AE1596B5182452CF00929D1D /* slider-default7-track@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-track@2x.png"; sourceTree = "<group>"; };
 		AE1596B6182452CF00929D1D /* slider-default7-trackBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground.png"; sourceTree = "<group>"; };
 		AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground@2x.png"; sourceTree = "<group>"; };
 		AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver.png"; sourceTree = "<group>"; };
@@ -246,6 +235,10 @@
 		AEDAAE0C185DDAFC001DD389 /* TypeDefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeDefs.m; sourceTree = "<group>"; };
 		AEDAAE0E18623B0F001DD389 /* SNCSoundSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSoundSlider.h; sourceTree = "<group>"; };
 		AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSoundSlider.m; sourceTree = "<group>"; };
+		AEDAAE1518639AF1001DD389 /* SecondsNumbers@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SecondsNumbers@2x.png"; sourceTree = "<group>"; };
+		AEDAAE171863A015001DD389 /* UIImage+imageForSoundData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+imageForSoundData.h"; sourceTree = "<group>"; };
+		AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+imageForSoundData.m"; sourceTree = "<group>"; };
+		AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PhotoBaseWithLogo@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,6 +276,7 @@
 		AE15965D18142C6300929D1D /* sonicraphcameramodeelementspng */ = {
 			isa = PBXGroup;
 			children = (
+				AEDAAE1518639AF1001DD389 /* SecondsNumbers@2x.png */,
 				AEDAADDE185CA208001DD389 /* FacebookWhite@2x.png */,
 				AEDAADE0185DAB79001DD389 /* Twitter@2x.png */,
 				AEDAADDC185CA013001DD389 /* Share@2x.png */,
@@ -295,9 +289,6 @@
 				AE15966118142C6300929D1D /* Cancel.png */,
 				AE15966218142C6300929D1D /* Film.png */,
 				AE15966318142C6300929D1D /* Option.png */,
-				AE15966418142C6300929D1D /* Polaroid.png */,
-				AE15966518142C6300929D1D /* Sound Bar Handle.png */,
-				AE15966618142C6300929D1D /* Sound Bar.png */,
 			);
 			path = sonicraphcameramodeelementspng;
 			sourceTree = "<group>";
@@ -305,10 +296,6 @@
 		AE1596B1182452CF00929D1D /* rangeslider */ = {
 			isa = PBXGroup;
 			children = (
-				AE1596B2182452CF00929D1D /* slider-default7-handle.png */,
-				AE1596B3182452CF00929D1D /* slider-default7-handle@2x.png */,
-				AE1596B4182452CF00929D1D /* slider-default7-track.png */,
-				AE1596B5182452CF00929D1D /* slider-default7-track@2x.png */,
 				AE1596B6182452CF00929D1D /* slider-default7-trackBackground.png */,
 				AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */,
 				AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */,
@@ -379,6 +366,8 @@
 				AE86EE89182C0DF300F74F1D /* UIImage+scaleToSize.m */,
 				AEDAAE04185DBD77001DD389 /* UIButton+StateProperties.h */,
 				AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */,
+				AEDAAE171863A015001DD389 /* UIImage+imageForSoundData.h */,
+				AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -526,13 +515,13 @@
 				AE86EE77182C0DA800F74F1D /* Models */,
 				AE86EEAC18316BC500F74F1D /* Managers */,
 				AED56ED91801A39F000DF866 /* MKNetworkKit */,
-				AE15965C18142C6300929D1D /* images */,
 				AED56EAC1801A35D000DF866 /* SNCAppDelegate.h */,
 				AED56EAD1801A35D000DF866 /* SNCAppDelegate.m */,
 				AED56EAF1801A35D000DF866 /* Main.storyboard */,
 				AED56EBB1801A35D000DF866 /* Images.xcassets */,
 				AED56EB21801A35D000DF866 /* sonicraph.xcdatamodeld */,
 				AED56EA41801A35D000DF866 /* Supporting Files */,
+				AE15965C18142C6300929D1D /* images */,
 			);
 			path = sonicraph;
 			sourceTree = "<group>";
@@ -624,6 +613,7 @@
 		AEDAADEB185DB334001DD389 /* SonicCell */ = {
 			isa = PBXGroup;
 			children = (
+				AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */,
 				AEDAADEC185DB334001DD389 /* Comment@2x.png */,
 				AEDAADED185DB334001DD389 /* LikeDarkGrey@2x.png */,
 				AEDAADEE185DB334001DD389 /* ReSonicDarkGrey@2x.png */,
@@ -701,16 +691,14 @@
 				AE15966B18142C6300929D1D /* Film.png in Resources */,
 				AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */,
 				AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */,
-				AE1596BA182452CF00929D1D /* slider-default7-handle.png in Resources */,
 				AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */,
 				AEDAADD7185C8BE3001DD389 /* TrimHandleBlue@2x.png in Resources */,
 				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
 				AE15966718142C6300929D1D /* Camera Button.png in Resources */,
-				AE1596BC182452CF00929D1D /* slider-default7-track.png in Resources */,
+				AEDAAE1B1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png in Resources */,
 				AEDAADF2185DB334001DD389 /* ReSonicDarkGrey@2x.png in Resources */,
 				AEDAADDD185CA013001DD389 /* Share@2x.png in Resources */,
 				AE15966A18142C6300929D1D /* Cancel.png in Resources */,
-				AE15966E18142C6300929D1D /* Sound Bar Handle.png in Resources */,
 				AEDAADE1185DAB79001DD389 /* Twitter@2x.png in Resources */,
 				AEDAADF1185DB334001DD389 /* LikeDarkGrey@2x.png in Resources */,
 				AED56EB11801A35D000DF866 /* Main.storyboard in Resources */,
@@ -718,6 +706,7 @@
 				AEDAADFE185DB8A4001DD389 /* EyeWhite@2x.png in Resources */,
 				AEDAADFD185DB8A4001DD389 /* CameraTBWhite@2x.png in Resources */,
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
+				AEDAAE1618639AF1001DD389 /* SecondsNumbers@2x.png in Resources */,
 				AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */,
 				AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */,
 				AEDAAE01185DB8A4001DD389 /* SetignsWhite@2x.png in Resources */,
@@ -725,14 +714,10 @@
 				AEDAADDF185CA208001DD389 /* FacebookWhite@2x.png in Resources */,
 				AE86EECB18316CA800F74F1D /* AudioConverterKitforiOS.pdf in Resources */,
 				AEDAAE03185DB900001DD389 /* UserWhite@2x.png in Resources */,
-				AE15966D18142C6300929D1D /* Polaroid.png in Resources */,
 				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,
 				AE159695181C15AE00929D1D /* Sound Button.png in Resources */,
 				AE15966C18142C6300929D1D /* Option.png in Resources */,
-				AE15966F18142C6300929D1D /* Sound Bar.png in Resources */,
-				AE1596BD182452CF00929D1D /* slider-default7-track@2x.png in Resources */,
 				AEDAAE00185DB8A4001DD389 /* HeartWhite@2x.png in Resources */,
-				AE1596BB182452CF00929D1D /* slider-default7-handle@2x.png in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
 				AEDAADF3185DB334001DD389 /* ShareWhite@2x.png in Resources */,
 			);
@@ -776,6 +761,7 @@
 				AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */,
 				AEDAAE0D185DDAFC001DD389 /* TypeDefs.m in Sources */,
 				AE86EE9F1831547600F74F1D /* SonicManagedObject.m in Sources */,
+				AEDAAE191863A015001DD389 /* UIImage+imageForSoundData.m in Sources */,
 				AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */,
 				AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */,
 				AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */,

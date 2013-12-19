@@ -48,7 +48,7 @@
                                              selector:@selector(refresh)
                                                  name:NotificationSonicsAreLoaded
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openCommentsOfSonic:) name:NotificationOpenCommentsOfSonic object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openCommentsOfSonic:) name:NotificationOpenCommentsOfSonic object:nil];
     self.sonics  = @[];
     [self initRefreshController];
 }
@@ -63,11 +63,11 @@
 {
     [self.refreshControl endRefreshing];
 }
-
--(void) openCommentsOfSonic:(NSNotification*) notification
-{
-    
-}
+//
+//-(void) openCommentsOfSonic:(NSNotification*) notification
+//{
+//    
+//}
 
 - (void) refresh
 {
@@ -87,6 +87,12 @@
 {
     [self refresh];
 }
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [cellWiningTheCenter cellLostCenterOfTableView];
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

@@ -11,6 +11,7 @@
 #import "SNCEditViewController.h"
 #import "Configurations.h"
 #import "SNCTabbarController.h"
+#import "SNCSoundSlider.h"
 
 #define SonicSoundMaxTime 30.0
 
@@ -33,7 +34,7 @@ typedef enum SonicRecordType {
 @property UIView* cameraFeaturesBar;
 @property SonicRecordType recordType;
 
-@property UISlider* soundTimeSlider;
+@property SNCSoundSlider* soundTimeSlider;
 @property NSTimer* soundTimer;
 @property NSDate* soundTimerInitialFireDate;
 //@property UISwitch* recordTypeSwitch;
@@ -85,7 +86,7 @@ typedef enum SonicRecordType {
 
 -(CGRect) soundTimeSliderFrame
 {
-    return CGRectMake(10.0, 390.0, 300.0, 10.0);
+    return CGRectMake(0.0, 390.0, 320.0, 1.0);
 }
 
 -(CGRect) cancelButtonFrame
@@ -145,6 +146,7 @@ typedef enum SonicRecordType {
     [self.recordTypeSwitch setSelectedSegmentIndex:0];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.tabBarController.tabBar setHidden:YES];
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -153,7 +155,7 @@ typedef enum SonicRecordType {
 
     [self.recordTypeSwitch setHidden:NO];
     [self.activityIndicator stopAnimating];
-    [self.soundTimeSlider setValue:0.0 animated:YES];
+    [self.soundTimeSlider setValue:0.0];
     [self.recordButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.recordButton addTarget:self action:@selector(recordButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     if(self.recordType == SonicRecordTypeSoundFirst){
@@ -167,6 +169,7 @@ typedef enum SonicRecordType {
 {
     [self.navigationController setNavigationBarHidden:NO  animated:NO];
     [self.tabBarController.tabBar setHidden:NO];
+    [self.soundTimer invalidate];
 }
 
 - (void) takePicture
@@ -246,7 +249,7 @@ typedef enum SonicRecordType {
 {
     NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:self.soundTimerInitialFireDate];
     if(interval < MaximumSoundInterval){
-        self.soundTimeSlider.value = interval;
+        self.soundTimeSlider.value = self.mediaManager.audioRecorder.currentTime;
     }
     else {
         [self.soundTimer invalidate];
@@ -321,12 +324,12 @@ typedef enum SonicRecordType {
 
 - (void) initializeSoundTimeSlider
 {
-    self.soundTimeSlider = [[UISlider alloc] init];
+    self.soundTimeSlider = [[SNCSoundSlider alloc] init];
     [self.soundTimeSlider setFrame:[self soundTimeSliderFrame]];
     [self.soundTimeSlider setMinimumValue:0.0];
     [self.soundTimeSlider setMaximumValue:SonicSoundMaxTime];
-    [self.soundTimeSlider setUserInteractionEnabled:NO];
-    [self.soundTimeSlider setMinimumTrackTintColor:[UIColor redColor]];
+    [self.soundTimeSlider setFillColor:[UIColor redColor]];
+    [self.soundTimeSlider setBaseColor:[UIColor darkGrayColor]];
     [self.view addSubview:self.soundTimeSlider];
     
 }

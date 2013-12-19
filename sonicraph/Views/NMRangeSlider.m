@@ -455,7 +455,7 @@ NSUInteger DeviceSystemMajorVersion() {
     }
     
     trackBackgroundRect.origin = CGPointMake(2, (self.bounds.size.height/2.0f) - (trackBackgroundRect.size.height/2.0f));
-    
+    NSLog(@"trackBackgroundRect: %@",CGRectCreateDictionaryRepresentation(trackBackgroundRect));
     return trackBackgroundRect;
 }
 

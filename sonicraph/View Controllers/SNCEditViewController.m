@@ -21,7 +21,7 @@
 
 - (CGRect) soundSliderFrame
 {
-    return CGRectMake(10.0, 350.0, 300.0, 80.0);
+    return CGRectMake(0.0, [self imageViewFrame].origin.y + [self imageViewFrame].size.height, 300.0, 80.0);
 }
 
 - (CGRect) imageViewFrame
@@ -122,6 +122,8 @@
 - (void) initializeSoundSlider
 {
     self.soundSlider = [[NMRangeSlider alloc] initWithFrame:[self soundSliderFrame]];
+    [self.soundSlider setTrackBackgroundImage:[UIImage imageNamed:@"SecondsNumbers.png"]];
+    [self.soundSlider setTrackImage:nil];
     [self.soundSlider setMinimumValue:0.0];
     [self.soundSlider setLowerValue:0.0];
     [self.soundSlider setUpperValue:1.0];

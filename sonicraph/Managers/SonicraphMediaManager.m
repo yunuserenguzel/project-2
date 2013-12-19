@@ -8,6 +8,7 @@
 
 #import "SonicraphMediaManager.h"
 #import "UIImage+scaleToSize.h"
+#import "UIImage+imageForSoundData.h"
 
 #define TempSoundFileName @"sound.caf"
 #define TempConvertedSoundFileName @"converted_sound.caf"
@@ -22,7 +23,6 @@
     AVCaptureSession* session;
     
     AVCaptureStillImageOutput* stillImageOutput;
-    AVAudioRecorder *audioRecorder;
     AVCaptureDeviceInput* backCameraInput;
     AVCaptureDeviceInput* frontCameraInput;
     
@@ -51,13 +51,6 @@
     session.sessionPreset = AVCaptureSessionPresetPhoto;
     [self useMainCamera];
     
-//    AVCaptureDeviceInput* audioInput = [[AVCaptureDeviceInput alloc] initWithDevice:[[AVCaptureDevice devices] objectAtIndex:2] error:nil];
-//    if ([session canAddInput:audioInput]) {
-//        [session addInput:audioInput];
-//    }
-//    else {
-//        // Handle the failure.
-//    }
     AVCaptureVideoPreviewLayer* layer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
     [layer setFrame:CGRectMake(0.0, 0.0, self.cameraView.frame.size.width, self.cameraView.frame.size.height)];
     
@@ -89,19 +82,18 @@
             
             NSError *error = nil;
             
-            audioRecorder = [[AVAudioRecorder alloc]
+            _audioRecorder = [[AVAudioRecorder alloc]
                              initWithURL:[self tempSoundFileUrl]
                              settings:recordSettings
                              error:&error];
-            audioRecorder.delegate = self;
+            self.audioRecorder.delegate = self;
             if (error)
             {
                 NSLog(@"error: %@", [error localizedDescription]);
                 
             } else {
-                [audioRecorder prepareToRecord];
+                [self.audioRecorder prepareToRecord];
             }
-
         }
         else {
             // Microphone disabled code
@@ -163,6 +155,7 @@
     else {
         // Handle the failure.
     }
+    
 
 }
 
@@ -181,9 +174,9 @@
 
 - (void) startAuidoRecording
 {
-    if(!audioRecorder.isRecording){
+    if(!self.audioRecorder.isRecording){
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:NULL];
-        if([audioRecorder record]){
+        if([self.audioRecorder record]){
             NSLog(@"Audio recording is started");
             [self.delegate audioRecordStartedForManager:self];
         }
@@ -196,8 +189,8 @@
 - (void) stopAudioRecording
 {
     NSLog(@"SonicMediaManager: stopping auido record");
-    if(audioRecorder.isRecording){
-        [audioRecorder stop];
+    if(self.audioRecorder.isRecording){
+        [self.audioRecorder stop];
 //        mp3ConverterInterface = [[Mp3ConverterInterface alloc] init];
 //        [mp3ConverterInterface convertMp3FromFile:[self tempSoundFileUrl] toOutputName:TempConvertedSoundFileName andCompletionBlock:^{
 //            NSLog(@"SonicMediaManager: auido convert is done");
@@ -207,6 +200,9 @@
 //        }];
         NSData* soundData = [NSData dataWithContentsOfURL:[self tempSoundFileUrl]];
         [self.delegate manager:self audioDataReady:soundData];
+
+//        AVURLAsset* asset = [[AVURLAsset alloc] initWithURL:[self tempSoundFileUrl] options:@{}];
+//        UIImageWriteToSavedPhotosAlbum([UIImage imageWithSoundAsset:asset], nil, nil, nil);
     }
     else {
         NSLog(@"Audio recorder is not recording!!!");

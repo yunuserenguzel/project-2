@@ -29,6 +29,8 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 @property id<SonicraphMediaProtocol> delegate;
 
+@property (readonly) AVAudioRecorder *audioRecorder;
+
 - (id) initWithView:(UIView*)view;
 
 - (void) takePictureWithCompletionBlock:(ImageBlock)completionBlock;

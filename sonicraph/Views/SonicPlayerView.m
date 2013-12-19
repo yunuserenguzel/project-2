@@ -95,12 +95,12 @@
 {
     if([[self.sonicUrl path] isEqualToString:sonicUrl.path] != YES){
         _sonicUrl = sonicUrl;
-        self.imageView.image = nil;
+        [self setSonic:nil];
+        self.imageView.image = SonicPlaceholderImage;
         [SNCAPIManager getSonic:sonicUrl withSonicBlock:^(SonicData *sonic, NSError *error) {
-            if(self.sonicUrl == sonic.remoteSonicDataFileUrl){
+            if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.sonic = sonic;
-                    //                self.imageView.image = sonic.image;
                 });
             }
         }];
@@ -120,8 +120,14 @@
 {
     _sonic = sonic;
     self.imageView.image = self.sonic.image;
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:nil];
-    [self.soundSlider setMaximumValue:self.audioPlayer.duration];
+    if(sonic == nil){
+        [self.audioPlayer stop];
+        self.audioPlayer = nil;
+    }
+    else {
+        self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:nil];
+        [self.soundSlider setMaximumValue:self.audioPlayer.duration];
+    }
     [self.soundSlider setValue:0.0];
 }
 

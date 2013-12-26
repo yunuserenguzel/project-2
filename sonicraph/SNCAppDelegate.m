@@ -17,6 +17,9 @@
 
 #import "SonicManagedObject.h"
 
+#import "SNCSonicViewController.h"
+
+
 static SNCAppDelegate* sharedInstance = nil;
 
 @implementation SNCAppDelegate
@@ -61,13 +64,14 @@ static SNCAppDelegate* sharedInstance = nil;
     //TEST
 //    [SNCAPITest start];
 
-    [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
-        [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-        [SNCAPIManager getUserSonics:[[AuthenticationManager sharedInstance] authenticatedUser] saveToDatabase:YES withCompletionBlock:^(NSArray *sonics) {
-        } andErrorBlock:^(NSError *error) {
-        }];
-    } andErrorBlock:^(NSError *error) {
-    }];
+    
+//    [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
+//        [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//        [SNCAPIManager getUserSonics:[[AuthenticationManager sharedInstance] authenticatedUser] saveToDatabase:YES withCompletionBlock:^(NSArray *sonics) {
+//        } andErrorBlock:^(NSError *error) {
+//        }];
+//    } andErrorBlock:^(NSError *error) {
+//    }];
 
 
 //    dispatch_async(dispatch_get_main_queue(), ^{

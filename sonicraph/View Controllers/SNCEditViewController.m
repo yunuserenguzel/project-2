@@ -3,6 +3,8 @@
 #import <AudioToolbox/AudioServices.h>
 #import "NMRangeSlider.h"
 #import "SNCShareViewController.h"
+#import "UIImage+scaleToSize.h"
+#import "Configurations.h"
 
 
 @interface SNCEditViewController ()
@@ -21,7 +23,7 @@
 
 - (CGRect) soundSliderFrame
 {
-    return CGRectMake(0.0, [self imageViewFrame].origin.y + [self imageViewFrame].size.height, 300.0, 80.0);
+    return CGRectMake(22.0, [self imageViewFrame].origin.y + [self imageViewFrame].size.height, 276.0, 80.0);
 }
 
 - (CGRect) imageViewFrame
@@ -60,6 +62,7 @@
     [self.view setBackgroundColor:[UIColor blackColor]];
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+//    [self.navigationController.navigationBar setBarTintColor:[UIColor darkGrayColor]];
     [self.navigationItem setTitle:@"Trim Sound"];
     [self initializeImageView];
     [self initializeSoundSlider];
@@ -67,7 +70,7 @@
     [self initializeResetButton];
     UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(play)];
     [self.view addGestureRecognizer:tapGesture];
-    
+
     if(self.sonic != nil){
         [self configureViews];
     }
@@ -96,18 +99,27 @@
 }
 - (void) viewWillAppear:(BOOL)animated
 {
-    
-//    [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.tabBarController.tabBar setHidden:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [audioPlayer stop];
-//    [self.navigationController setNavigationBarHidden:NO  animated:NO];
+    
     [self.tabBarController.tabBar setHidden:NO];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    [self replay];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    
+}
 - (void) initializeImageView
 {
     self.imageView = [[UIImageView alloc] initWithFrame:[self imageViewFrame]];
@@ -122,17 +134,18 @@
 - (void) initializeSoundSlider
 {
     self.soundSlider = [[NMRangeSlider alloc] initWithFrame:[self soundSliderFrame]];
-    [self.soundSlider setTrackBackgroundImage:[UIImage imageNamed:@"SecondsNumbers.png"]];
-    [self.soundSlider setTrackImage:nil];
+//    [self.soundSlider setTrackBackgroundImage:[UIImage imageNamed:@"SecondsNumbers.png"]];
+    [self.soundSlider setTrackBackgroundImage:[UIImage imageWithColor:[PinkColor colorWithAlphaComponent:0.5] withSize:CGSizeMake(276.0, 3.0)]];
+    [self.soundSlider setTrackImage:[UIImage imageWithColor:[PinkColor colorWithAlphaComponent:1.0] withSize:CGSizeMake(276.0, 3.0)]];
     [self.soundSlider setMinimumValue:0.0];
     [self.soundSlider setLowerValue:0.0];
     [self.soundSlider setUpperValue:1.0];
     [self.soundSlider setMaximumValue:1.0];
     [self.soundSlider setMinimumRange:1.0];
-    [self.soundSlider setLowerHandleImageNormal:[UIImage imageNamed:@"TrimHandleBlue.png"]];
-    [self.soundSlider setUpperHandleImageNormal:[UIImage imageNamed:@"TrimHandleBlue.png"]];
-    [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBlue.png"]];
-    [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBlue.png"]];
+    [self.soundSlider setLowerHandleImageNormal:[UIImage imageNamed:@"TrimHandleBig.png"]];
+    [self.soundSlider setUpperHandleImageNormal:[UIImage imageNamed:@"TrimHandleBig.png"]];
+    [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBig.png"]];
+    [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBig.png"]];
     [self.view addSubview:self.soundSlider];
 }
 
@@ -190,10 +203,6 @@
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [self replay];
-}
 
 - (void) configureViews
 {

@@ -14,4 +14,6 @@
 
 - (UIImage*) cropForRect:(CGRect)rect;
 
++ (UIImage *)imageWithColor:(UIColor *)color withSize:(CGSize)size;
+
 @end

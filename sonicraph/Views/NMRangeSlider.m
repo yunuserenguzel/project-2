@@ -465,7 +465,7 @@ NSUInteger DeviceSystemMajorVersion() {
     CGRect thumbRect;
     UIEdgeInsets insets = thumbImage.capInsets;
 
-    thumbRect.size = CGSizeMake(thumbImage.size.width, thumbImage.size.height);
+    thumbRect.size = CGSizeMake(thumbImage.size.width * 2.0, thumbImage.size.height);
     
     if(insets.top || insets.bottom)
     {
@@ -501,11 +501,13 @@ NSUInteger DeviceSystemMajorVersion() {
     //------------------------------
     // Lower Handle Handle
     self.lowerHandle = [[UIImageView alloc] initWithImage:self.lowerHandleImageNormal highlightedImage:self.lowerHandleImageHighlighted];
+    [self.lowerHandle setContentMode:UIViewContentModeCenter];
     self.lowerHandle.frame = [self thumbRectForValue:_lowerValue image:self.lowerHandleImageNormal];
     
     //------------------------------
     // Upper Handle Handle
     self.upperHandle = [[UIImageView alloc] initWithImage:self.upperHandleImageNormal highlightedImage:self.upperHandleImageHighlighted];
+    [self.upperHandle setContentMode:UIViewContentModeCenter];
     self.upperHandle.frame = [self thumbRectForValue:_upperValue image:self.upperHandleImageNormal];
     
     [self addSubview:self.trackBackground];

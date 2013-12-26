@@ -7,28 +7,16 @@
 //
 
 #import "UIButton+StateProperties.h"
+#import "UIImage+scaleToSize.h"
 
 @implementation UIButton (StateProperties)
 
 - (void)setBackgroundImageWithColor:(UIColor *)backgroundColor forState:(UIControlState)state
 {
-    UIImage* background = [self imageWithColor:backgroundColor];
+    UIImage* background = [UIImage imageWithColor:backgroundColor withSize:CGSizeMake(44.0, 44.0)];
     [self setBackgroundImage:background forState:state];
     
 }
 
-- (UIImage *)imageWithColor:(UIColor *)color {
-    CGRect rect = CGRectMake(0.0f, 0.0f, 88.0, 44.0);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
 
 @end

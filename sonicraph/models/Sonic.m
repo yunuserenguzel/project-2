@@ -21,10 +21,8 @@
     sonic.creationDate = sonicManagedObject.creationDate;
     sonic.sonicUrl = sonicManagedObject.sonicUrl;
     sonic.owner = [User userWithManagedObject:sonicManagedObject.owner];
-    return sonic;
-    
+    return sonic;    
 }
-
 
 - (SonicData *)sonicData
 {
@@ -77,17 +75,13 @@
     sonicManagedObject.isPrivate = [NSNumber numberWithBool:self.isPrivate];
     sonicManagedObject.creationDate = self.creationDate;
     sonicManagedObject.sonicUrl = self.sonicUrl;
-//    sonicManagedObject.owner =
     [sonicManagedObject save];
-    
 }
 
 + (Sonic *)last
 {
     return [Sonic sonicWithSonicManagedObject:[SonicManagedObject last]];
 }
-
-
 
 + (NSArray *)getFrom:(NSInteger)from to:(NSInteger)to
 {
@@ -98,5 +92,11 @@
     }];
     
     return sonics;
+}
+
+- (void)deleteFromDatabase
+{
+    SonicManagedObject* sonicManagedObject = [SonicManagedObject getWithId:self.sonicId];
+    [sonicManagedObject deleteFromDatase];
 }
 @end

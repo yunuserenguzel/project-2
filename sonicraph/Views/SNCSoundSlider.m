@@ -80,12 +80,21 @@
     _value = value;
     CGFloat min = self.minimumValue;
     CGFloat max = self.maximumValue;
-    if (value > min && value <= max && max > min){
-        [self.fillView setHidden:NO];
-        [self.fillView setFrame:CGRectMake(0.0, 0.0, self.frame.size.width * (value) / (max - min), self.frame.size.height)];
-    } else {
+    if (value == 0.0){
         [self.fillView setHidden:YES];
     }
+    else if (value > min && value <= max && max > min){
+        [self.fillView setHidden:NO];
+        [self.fillView setFrame:CGRectMake(0.0, 0.0, self.frame.size.width * (value) / (max - min), self.frame.size.height)];
+    }
+//    else {
+//        [UIView animateWithDuration:0.5 animations:^{
+//            [self.fillView setAlpha:0.0];
+//        } completion:^(BOOL finished) {
+//            [self.fillView setHidden:YES];
+//            [self.fillView setAlpha:1.0];
+//        }];
+//    }
 }
 
 - (void)setFrame:(CGRect)frame

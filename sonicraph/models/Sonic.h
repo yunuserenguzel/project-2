@@ -39,5 +39,7 @@
 
 - (NSData*) getSound;
 
+- (void) deleteFromDatabase;
+
 
 @end

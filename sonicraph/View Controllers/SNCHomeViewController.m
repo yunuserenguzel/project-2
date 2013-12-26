@@ -11,6 +11,8 @@
 #import "TypeDefs.h"
 #import "Sonic.h"
 #import "Configurations.h"
+#import "SNCAPIManager.h"
+#import "SNCSonicViewController.h"
 
 @interface SNCHomeViewController ()
 
@@ -23,6 +25,7 @@
 {
     SNCHomeTableCell* cellWiningTheCenter;
     NSInteger indexOfCellToBeIncreased;
+    Sonic* sonicToBeViewed;
 }
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -39,6 +42,7 @@
     [super viewDidLoad];
     indexOfCellToBeIncreased = -1;
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
     
     [self.tableView setBackgroundColor:CellSpacingGrayColor];
@@ -48,7 +52,14 @@
                                              selector:@selector(refresh)
                                                  name:NotificationSonicsAreLoaded
                                                object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openCommentsOfSonic:) name:NotificationOpenCommentsOfSonic object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refresh)
+                                                 name:NotificationSonicDeleted
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(openCommentsOfSonic:)
+                                                 name:NotificationOpenCommentsOfSonic
+                                               object:nil];
     self.sonics  = @[];
     [self initRefreshController];
 }
@@ -61,18 +72,26 @@
 
 - (void) refreshFromServer
 {
-    [self.refreshControl endRefreshing];
+    [SNCAPIManager getSonicsAfter:[self.sonics objectAtIndex:0] withCompletionBlock:^(NSArray *sonics) {
+        [self.refreshControl endRefreshing];
+    } andErrorBlock:^(NSError *error) {
+        [self.refreshControl endRefreshing];
+    }];
 }
 //
-//-(void) openCommentsOfSonic:(NSNotification*) notification
-//{
-//    
-//}
+-(void) openCommentsOfSonic:(NSNotification*) notification
+{
+    sonicToBeViewed = notification.object;
+    [self performSegueWithIdentifier:ViewSonicSegue sender:self];
+
+}
 
 - (void) refresh
 {
+//    [self.tableView beginUpdates];
     self.sonics = [Sonic getFrom:10 to:20];
     [self.tableView reloadData];
+//    [self.tableView endUpdates];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,6 +105,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self refresh];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -173,56 +197,12 @@
     }
     return HeightForHomeCell;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:ViewSonicSegue]){
+        SNCSonicViewController* sonicViewController =  segue.destinationViewController;
+        [sonicViewController setSonic:sonicToBeViewed];
+    }
 }
-
- */
 
 @end

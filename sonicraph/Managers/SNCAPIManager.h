@@ -24,9 +24,10 @@ typedef void (^CompletionSonicBlock) (Sonic* sonic);
 
 + (void) getSonicsBefore:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
 
-+ (void) getSonicsAfter:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
-
-+ (void)getSonicsWithParams:(NSMutableDictionary *)params saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
++ (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params
+                            saveToDatabase:(BOOL)saveToDatabase
+                       withCompletionBlock:(CompletionArrayBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
 
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock;
 
@@ -56,4 +57,23 @@ typedef void (^CompletionSonicBlock) (Sonic* sonic);
                  withCompletionBlock:(CompletionSonicBlock)completionBlock
                        andErrorBlock:(ErrorBlock)errorBlock;
 
++ (MKNetworkOperation*) deleteSonic:(Sonic*)sonic
+                withCompletionBlock:(CompletionBoolBlock)completionBlock
+                      andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic
+                   withCompletionBlock:(CompletionArrayBlock)completionBlock
+                         andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getCommentsOfSonic:(Sonic*)sonic
+                       withCompletionBlock:(CompletionArrayBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getLikesOfSonic:(Sonic*)sonic
+                    withCompletionBlock:(CompletionArrayBlock)completionBlock
+                          andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getResonicsOfSonic:(Sonic*)sonic
+                       withCompletionBlock:(CompletionArrayBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
 @end

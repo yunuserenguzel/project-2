@@ -12,11 +12,13 @@
 #define EditSonicSegue @"EditSonicSegue"
 #define ShareSonicSegue @"ShareSonicSegue"
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"
+#define ViewSonicSegue @"ViewSonicSegue"
 
 #define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
 #define NotificationLikeSonic @"NotificationLikeSonic"
 #define NotificationDislikeSonic @"NotificationDislikeSonic"
 #define NotificationOpenCommentsOfSonic @"NotificationOpenCommentsOfSonic"
+#define NotificationSonicDeleted @"NotificationSonicDeleted"
 
 UIColor* rgb(CGFloat red, CGFloat green, CGFloat blue);
 

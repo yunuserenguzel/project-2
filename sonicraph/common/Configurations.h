@@ -16,7 +16,7 @@
 
 #define SonicPlayerViewSize CGSizeMake(320.0,322.0)
 
-#define HeightForHomeCell 446.0
+#define HeightForHomeCell 428.0
 
 #define NavigationBarBlueColor rgb(45.0, 173.0, 254.0)
 #define PinkColor rgb(244.0, 75.0, 122.0)

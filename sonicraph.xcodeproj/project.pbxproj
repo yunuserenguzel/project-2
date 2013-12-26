@@ -71,11 +71,8 @@
 		AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EED1801A39F000DF866 /* MKNetworkOperation.m */; };
 		AED56EFA1801A39F000DF866 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EF01801A39F000DF866 /* Reachability.m */; };
 		AED56F081801B425000DF866 /* SNCAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56F071801B425000DF866 /* SNCAPITest.m */; };
-		AEDAADD7185C8BE3001DD389 /* TrimHandleBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADD6185C8BE3001DD389 /* TrimHandleBlue@2x.png */; };
 		AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */; };
 		AEDAADDD185CA013001DD389 /* Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDC185CA013001DD389 /* Share@2x.png */; };
-		AEDAADDF185CA208001DD389 /* FacebookWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDE185CA208001DD389 /* FacebookWhite@2x.png */; };
-		AEDAADE1185DAB79001DD389 /* Twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADE0185DAB79001DD389 /* Twitter@2x.png */; };
 		AEDAADF0185DB334001DD389 /* Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADEC185DB334001DD389 /* Comment@2x.png */; };
 		AEDAADF1185DB334001DD389 /* LikeDarkGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADED185DB334001DD389 /* LikeDarkGrey@2x.png */; };
 		AEDAADF2185DB334001DD389 /* ReSonicDarkGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADEE185DB334001DD389 /* ReSonicDarkGrey@2x.png */; };
@@ -88,12 +85,20 @@
 		AEDAAE01185DB8A4001DD389 /* SetignsWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADFC185DB8A4001DD389 /* SetignsWhite@2x.png */; };
 		AEDAAE03185DB900001DD389 /* UserWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE02185DB900001DD389 /* UserWhite@2x.png */; };
 		AEDAAE06185DBD77001DD389 /* UIButton+StateProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */; };
-		AEDAAE09185DD5C6001DD389 /* SNCSonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE08185DD5C6001DD389 /* SNCSonicViewController.m */; };
 		AEDAAE0D185DDAFC001DD389 /* TypeDefs.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE0C185DDAFC001DD389 /* TypeDefs.m */; };
 		AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */; };
 		AEDAAE1618639AF1001DD389 /* SecondsNumbers@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE1518639AF1001DD389 /* SecondsNumbers@2x.png */; };
 		AEDAAE191863A015001DD389 /* UIImage+imageForSoundData.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AEDAAE1B1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */; };
+		AEDAAE1D1864CCB3001DD389 /* MicrophoneWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE1C1864CCB3001DD389 /* MicrophoneWhite@2x.png */; };
+		AEDAAE211864EA8C001DD389 /* dummy_profile_image@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE201864EA8C001DD389 /* dummy_profile_image@2x.jpg */; };
+		AEDAAE2418650B5B001DD389 /* NSDate+NVTimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */; };
+		AEDAAE2618657221001DD389 /* TrimHandleBig@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE2518657221001DD389 /* TrimHandleBig@2x.png */; };
+		AEDAAE2F186591BA001DD389 /* FacebookIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE2D186591BA001DD389 /* FacebookIcon@2x.png */; };
+		AEDAAE30186591BA001DD389 /* TwitterIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE2E186591BA001DD389 /* TwitterIcon@2x.png */; };
+		AEDAAE321865939C001DD389 /* Paused@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE311865939C001DD389 /* Paused@2x.png */; };
+		AEDAAE3418663176001DD389 /* AdCommentBoxWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE3318663176001DD389 /* AdCommentBoxWhite@2x.png */; };
+		AEDAAE371866D184001DD389 /* SNCSonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE361866D184001DD389 /* SNCSonicViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -210,12 +215,9 @@
 		AED56EF01801A39F000DF866 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		AED56F061801B425000DF866 /* SNCAPITest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCAPITest.h; path = test/SNCAPITest.h; sourceTree = "<group>"; };
 		AED56F071801B425000DF866 /* SNCAPITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SNCAPITest.m; path = test/SNCAPITest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		AEDAADD6185C8BE3001DD389 /* TrimHandleBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrimHandleBlue@2x.png"; sourceTree = "<group>"; };
 		AEDAADD9185C941C001DD389 /* Configurations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurations.h; sourceTree = "<group>"; };
 		AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraBackFrontWhite@2x.png"; sourceTree = "<group>"; };
 		AEDAADDC185CA013001DD389 /* Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Share@2x.png"; sourceTree = "<group>"; };
-		AEDAADDE185CA208001DD389 /* FacebookWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookWhite@2x.png"; sourceTree = "<group>"; };
-		AEDAADE0185DAB79001DD389 /* Twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Twitter@2x.png"; sourceTree = "<group>"; };
 		AEDAADEC185DB334001DD389 /* Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Comment@2x.png"; sourceTree = "<group>"; };
 		AEDAADED185DB334001DD389 /* LikeDarkGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LikeDarkGrey@2x.png"; sourceTree = "<group>"; };
 		AEDAADEE185DB334001DD389 /* ReSonicDarkGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReSonicDarkGrey@2x.png"; sourceTree = "<group>"; };
@@ -230,8 +232,6 @@
 		AEDAAE02185DB900001DD389 /* UserWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UserWhite@2x.png"; sourceTree = "<group>"; };
 		AEDAAE04185DBD77001DD389 /* UIButton+StateProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+StateProperties.h"; sourceTree = "<group>"; };
 		AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+StateProperties.m"; sourceTree = "<group>"; };
-		AEDAAE07185DD5C6001DD389 /* SNCSonicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSonicViewController.h; sourceTree = "<group>"; };
-		AEDAAE08185DD5C6001DD389 /* SNCSonicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSonicViewController.m; sourceTree = "<group>"; };
 		AEDAAE0C185DDAFC001DD389 /* TypeDefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeDefs.m; sourceTree = "<group>"; };
 		AEDAAE0E18623B0F001DD389 /* SNCSoundSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSoundSlider.h; sourceTree = "<group>"; };
 		AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSoundSlider.m; sourceTree = "<group>"; };
@@ -239,6 +239,17 @@
 		AEDAAE171863A015001DD389 /* UIImage+imageForSoundData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+imageForSoundData.h"; sourceTree = "<group>"; };
 		AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+imageForSoundData.m"; sourceTree = "<group>"; };
 		AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PhotoBaseWithLogo@2x.png"; sourceTree = "<group>"; };
+		AEDAAE1C1864CCB3001DD389 /* MicrophoneWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MicrophoneWhite@2x.png"; sourceTree = "<group>"; };
+		AEDAAE201864EA8C001DD389 /* dummy_profile_image@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dummy_profile_image@2x.jpg"; sourceTree = "<group>"; };
+		AEDAAE2218650B5B001DD389 /* NSDate+NVTimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NVTimeAgo.h"; sourceTree = "<group>"; };
+		AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NVTimeAgo.m"; sourceTree = "<group>"; };
+		AEDAAE2518657221001DD389 /* TrimHandleBig@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrimHandleBig@2x.png"; sourceTree = "<group>"; };
+		AEDAAE2D186591BA001DD389 /* FacebookIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookIcon@2x.png"; sourceTree = "<group>"; };
+		AEDAAE2E186591BA001DD389 /* TwitterIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TwitterIcon@2x.png"; sourceTree = "<group>"; };
+		AEDAAE311865939C001DD389 /* Paused@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Paused@2x.png"; path = "../sonicraphcameramodeelementspng/Paused@2x.png"; sourceTree = "<group>"; };
+		AEDAAE3318663176001DD389 /* AdCommentBoxWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AdCommentBoxWhite@2x.png"; sourceTree = "<group>"; };
+		AEDAAE351866D184001DD389 /* SNCSonicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSonicViewController.h; sourceTree = "<group>"; };
+		AEDAAE361866D184001DD389 /* SNCSonicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSonicViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,12 +287,14 @@
 		AE15965D18142C6300929D1D /* sonicraphcameramodeelementspng */ = {
 			isa = PBXGroup;
 			children = (
+				AEDAAE3318663176001DD389 /* AdCommentBoxWhite@2x.png */,
+				AEDAAE2D186591BA001DD389 /* FacebookIcon@2x.png */,
+				AEDAAE2E186591BA001DD389 /* TwitterIcon@2x.png */,
+				AEDAAE2518657221001DD389 /* TrimHandleBig@2x.png */,
+				AEDAAE1C1864CCB3001DD389 /* MicrophoneWhite@2x.png */,
 				AEDAAE1518639AF1001DD389 /* SecondsNumbers@2x.png */,
-				AEDAADDE185CA208001DD389 /* FacebookWhite@2x.png */,
-				AEDAADE0185DAB79001DD389 /* Twitter@2x.png */,
 				AEDAADDC185CA013001DD389 /* Share@2x.png */,
 				AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */,
-				AEDAADD6185C8BE3001DD389 /* TrimHandleBlue@2x.png */,
 				AE159694181C15AE00929D1D /* Sound Button.png */,
 				AE15965E18142C6300929D1D /* Camera Button.png */,
 				AE15965F18142C6300929D1D /* Camera Flash@2x.png */,
@@ -357,6 +370,8 @@
 		AE86EE82182C0DF300F74F1D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AEDAAE2218650B5B001DD389 /* NSDate+NVTimeAgo.h */,
+				AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */,
 				AE86EE9A182E741900F74F1D /* NSData+Base64.h */,
 				AE86EE9B182E741900F74F1D /* NSData+Base64.m */,
 				AE86EE83182C0DF300F74F1D /* JSONKit */,
@@ -398,8 +413,8 @@
 				AE86EED31832C69600F74F1D /* SNCHomeViewController.m */,
 				AEDAADF4185DB802001DD389 /* SNCTabbarController.h */,
 				AEDAADF5185DB802001DD389 /* SNCTabbarController.m */,
-				AEDAAE07185DD5C6001DD389 /* SNCSonicViewController.h */,
-				AEDAAE08185DD5C6001DD389 /* SNCSonicViewController.m */,
+				AEDAAE351866D184001DD389 /* SNCSonicViewController.h */,
+				AEDAAE361866D184001DD389 /* SNCSonicViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -509,11 +524,11 @@
 			children = (
 				AE86EEB618316CA700F74F1D /* AudioConverterKit */,
 				AE86EE8D182C0E0E00F74F1D /* View Controllers */,
+				AE86EE7C182C0DC000F74F1D /* Views */,
+				AE86EEAC18316BC500F74F1D /* Managers */,
 				AE86EE82182C0DF300F74F1D /* Lib */,
 				AE86EE80182C0DD700F74F1D /* Common */,
-				AE86EE7C182C0DC000F74F1D /* Views */,
 				AE86EE77182C0DA800F74F1D /* Models */,
-				AE86EEAC18316BC500F74F1D /* Managers */,
 				AED56ED91801A39F000DF866 /* MKNetworkKit */,
 				AED56EAC1801A35D000DF866 /* SNCAppDelegate.h */,
 				AED56EAD1801A35D000DF866 /* SNCAppDelegate.m */,
@@ -613,6 +628,8 @@
 		AEDAADEB185DB334001DD389 /* SonicCell */ = {
 			isa = PBXGroup;
 			children = (
+				AEDAAE311865939C001DD389 /* Paused@2x.png */,
+				AEDAAE201864EA8C001DD389 /* dummy_profile_image@2x.jpg */,
 				AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */,
 				AEDAADEC185DB334001DD389 /* Comment@2x.png */,
 				AEDAADED185DB334001DD389 /* LikeDarkGrey@2x.png */,
@@ -664,6 +681,11 @@
 				CLASSPREFIX = SNC;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Yunus Eren Guzel";
+				TargetAttributes = {
+					AED56E971801A35D000DF866 = {
+						DevelopmentTeam = 34NB4E9B4B;
+					};
+				};
 			};
 			buildConfigurationList = AED56E931801A35D000DF866 /* Build configuration list for PBXProject "sonicraph" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -691,27 +713,29 @@
 				AE15966B18142C6300929D1D /* Film.png in Resources */,
 				AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */,
 				AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */,
+				AEDAAE1D1864CCB3001DD389 /* MicrophoneWhite@2x.png in Resources */,
 				AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */,
-				AEDAADD7185C8BE3001DD389 /* TrimHandleBlue@2x.png in Resources */,
 				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
 				AE15966718142C6300929D1D /* Camera Button.png in Resources */,
+				AEDAAE2F186591BA001DD389 /* FacebookIcon@2x.png in Resources */,
+				AEDAAE321865939C001DD389 /* Paused@2x.png in Resources */,
 				AEDAAE1B1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png in Resources */,
 				AEDAADF2185DB334001DD389 /* ReSonicDarkGrey@2x.png in Resources */,
 				AEDAADDD185CA013001DD389 /* Share@2x.png in Resources */,
 				AE15966A18142C6300929D1D /* Cancel.png in Resources */,
-				AEDAADE1185DAB79001DD389 /* Twitter@2x.png in Resources */,
 				AEDAADF1185DB334001DD389 /* LikeDarkGrey@2x.png in Resources */,
 				AED56EB11801A35D000DF866 /* Main.storyboard in Resources */,
 				AEDAADF0185DB334001DD389 /* Comment@2x.png in Resources */,
+				AEDAAE2618657221001DD389 /* TrimHandleBig@2x.png in Resources */,
 				AEDAADFE185DB8A4001DD389 /* EyeWhite@2x.png in Resources */,
 				AEDAADFD185DB8A4001DD389 /* CameraTBWhite@2x.png in Resources */,
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
+				AEDAAE211864EA8C001DD389 /* dummy_profile_image@2x.jpg in Resources */,
 				AEDAAE1618639AF1001DD389 /* SecondsNumbers@2x.png in Resources */,
 				AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */,
 				AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */,
 				AEDAAE01185DB8A4001DD389 /* SetignsWhite@2x.png in Resources */,
 				AEDAADFF185DB8A4001DD389 /* GlobeWhite@2x.png in Resources */,
-				AEDAADDF185CA208001DD389 /* FacebookWhite@2x.png in Resources */,
 				AE86EECB18316CA800F74F1D /* AudioConverterKitforiOS.pdf in Resources */,
 				AEDAAE03185DB900001DD389 /* UserWhite@2x.png in Resources */,
 				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,
@@ -719,7 +743,9 @@
 				AE15966C18142C6300929D1D /* Option.png in Resources */,
 				AEDAAE00185DB8A4001DD389 /* HeartWhite@2x.png in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
+				AEDAAE30186591BA001DD389 /* TwitterIcon@2x.png in Resources */,
 				AEDAADF3185DB334001DD389 /* ShareWhite@2x.png in Resources */,
+				AEDAAE3418663176001DD389 /* AdCommentBoxWhite@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,11 +772,12 @@
 				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
 				AE86EECA18316CA800F74F1D /* AudioConverter.m in Sources */,
 				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
-				AEDAAE09185DD5C6001DD389 /* SNCSonicViewController.m in Sources */,
 				AE86EEA8183158D300F74F1D /* UserManagedObject.m in Sources */,
 				AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */,
 				AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */,
 				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
+				AEDAAE371866D184001DD389 /* SNCSonicViewController.m in Sources */,
+				AEDAAE2418650B5B001DD389 /* NSDate+NVTimeAgo.m in Sources */,
 				AEDAADF6185DB802001DD389 /* SNCTabbarController.m in Sources */,
 				AED56EB41801A35D000DF866 /* sonicraph.xcdatamodeld in Sources */,
 				AE86EED71832E07600F74F1D /* SonicPlayerView.m in Sources */,
@@ -887,6 +914,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
 				INFOPLIST_FILE = "sonicraph/sonicraph-Info.plist";
@@ -897,6 +925,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -909,6 +938,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
 				INFOPLIST_FILE = "sonicraph/sonicraph-Info.plist";
@@ -921,6 +951,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

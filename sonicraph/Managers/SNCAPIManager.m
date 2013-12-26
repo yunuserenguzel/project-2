@@ -27,6 +27,20 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     return connector;
 }
 
++ (MKNetworkOperation*) deleteSonic:(Sonic*)sonic withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"sonic": sonic.sonicId,
+                             @"token":[[AuthenticationManager sharedInstance] token]};
+    
+    [sonic deleteFromDatabase];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicDeleted object:sonic];
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"sonic/delete_sonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
+        if(completionBlock){
+            completionBlock(YES);
+        }
+    } andErrorBlock:errorBlock];
+}
+
 + (MKNetworkOperation*) likeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     NSDictionary* params = @{@"sonic": sonic.sonicId,
@@ -77,6 +91,7 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          NSDictionary* sonicDict = [responseDictionary objectForKey:@"sonic"];
          Sonic* sonic = [SNCAPIManager sonicWithDictionary:sonicDict saveToDatabase:YES];
+         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicsAreLoaded object:nil];
          completionBlock(sonic);
      }
      andErrorBlock:^(NSError *error) {
@@ -108,7 +123,7 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
 }
 
-+ (void) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(Block)completionBlock
++ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     NSNumber* count = [NSNumber numberWithInt:20];
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
@@ -117,7 +132,11 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
         [params setObject:sonic.sonicId forKey:@"after_sonic"];
     }
     [params setObject:count forKey:@"count"];
-    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
+    
+    return [SNCAPIManager getSonicsWithParams:params
+                               saveToDatabase:YES
+                          withCompletionBlock:completionBlock
+                                andErrorBlock:errorBlock];
 }
 
 + (void) getSonicsWithCompletionBlock:(Block)completionBlock
@@ -126,14 +145,19 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
 
     [params setObject:count forKey:@"count"];
-    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
+    [SNCAPIManager getSonicsWithParams:params
+                        saveToDatabase:YES
+                   withCompletionBlock:completionBlock andErrorBlock:nil];
 }
 
-+ (void)getSonicsWithParams:(NSMutableDictionary *)params saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
++ (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params
+                            saveToDatabase:(BOOL)saveToDatabase
+                       withCompletionBlock:(CompletionArrayBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock
 {
     NSString* operation = @"sonic/get_sonics";
     [params setObject:[AuthenticationManager sharedInstance].token forKey:@"token"];
-    [[SNCAPIConnector sharedInstance]
+    return [[SNCAPIConnector sharedInstance]
      getRequestWithParams:params
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
@@ -166,12 +190,15 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     NSNumber* isPrivate = [sonicDict objectForKey:@"is_private" ];
     isPrivate = [isPrivate isKindOfClass:[NSNull class]] ? nil : isPrivate;
     NSString* sonicId = [NSString stringWithFormat:@"%@",[sonicDict objectForKey:@"id"]];
-    
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+    NSDate* createdAt = [dateFormatter dateFromString:[sonicDict objectForKey:@"created_at"]];
     Sonic* sonic = [Sonic sonicWith:sonicId
                        andLongitude:longitude
                         andLatitude:latitude
                        andIsPrivate:isPrivate
-                    andCreationDate:nil
+                    andCreationDate:createdAt
                         andSonicUrl:[sonicDict objectForKey:@"sonic_data"]
                            andOwner:user];
     if(saveToDatabase){
@@ -271,6 +298,25 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
             completionBlock(YES);
         }
     } andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)getLikesOfSonic:(Sonic *)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    
+    NSDictionary* params = @{@"sonic":sonic.sonicId,
+                             @"token":[[AuthenticationManager sharedInstance] token]};
+    
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            andOperation:@"sonic/likes"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSMutableArray* users = [[NSMutableArray alloc] init];
+                [[responseDictionary objectForKey:@"users"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
+                    NSLog(@"%@",responseDictionary);
+                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
+                }];
+                completionBlock(users);
+            } andErrorBlock:errorBlock];
 }
 
 

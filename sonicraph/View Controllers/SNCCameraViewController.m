@@ -55,17 +55,17 @@ typedef enum SonicRecordType {
 
 -(CGRect) flashButtonFrame
 {
-    return CGRectMake(0.0, 0.0, 44.0, 44.0);
+    return CGRectMake(0.0, 10.0, 44.0, 44.0);
 }
 
 - (CGRect) cameraTypeToggleButtonFrame
 {
-    return CGRectMake(self.view.frame.size.width - 44.0, 0.0, 44.0, 44.0);
+    return CGRectMake(self.view.frame.size.width - 44.0, 10.0, 44.0, 44.0);
 }
 
 - (CGRect) recordTypeSwitchFrame
 {
-    return CGRectMake(70.0, 5.0, 180.0, 32.0);
+    return CGRectMake(70.0, 15.0, 180.0, 32.0);
 }
 - (CGRect) cameraFeaturesBarFrame
 {
@@ -237,7 +237,6 @@ typedef enum SonicRecordType {
     //    self.soundTimer = [[NSTimer alloc] initWithFireDate:[NSDate date] interval:0.01 target:self selector:@selector(updateSoundTimer:) userInfo:nil repeats:YES];
     self.soundTimerInitialFireDate = [NSDate date];
     self.soundTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSoundTimer:) userInfo:nil repeats:YES];
-    [self.soundTimer fire];
     if(self.recordType == SonicRecordTypeSoundFirst){
         [self.recordButton removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
         [self.recordButton setImage:RecordButtonCameraImage forState:UIControlStateNormal];
@@ -346,6 +345,10 @@ typedef enum SonicRecordType {
 
 - (void) cancelButtonTapped
 {
+    capturedAudio = nil;
+    capturedImage = nil;
+    [self.soundTimer invalidate];
+    [self.mediaManager stopAudioRecording];
     [self.navigationController popToRootViewControllerAnimated:YES];
     [[SNCTabbarController sharedInstance] openPreviousTab];
 

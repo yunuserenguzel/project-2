@@ -86,4 +86,21 @@
     return croppedImage;
 }
 
++ (UIImage *)imageWithColor:(UIColor *)color withSize:(CGSize)size
+{
+    CGRect rect = CGRectZero;
+    rect.size = size;
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
+
 @end

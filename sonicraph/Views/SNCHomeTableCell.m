@@ -14,10 +14,13 @@
 
 #import "TypeDefs.h"
 #import "Configurations.h"
+#import "NSDate+NVTimeAgo.h"
 
-#define ButtonsTop 385.0
-#define LabelsTop 365.0
-@interface SNCHomeTableCell ()
+#define DeleteConfirmAlertViewTag 10001
+
+#define ButtonsTop 377.0
+#define LabelsTop 377.0
+@interface SNCHomeTableCell () <UIActionSheetDelegate,UIAlertViewDelegate>
 
 @property SonicPlayerView* sonicPlayerView;
 @property UIView* cellSpacingView;
@@ -28,11 +31,11 @@
 
 - (CGRect) userImageViewFrame
 {
-    return  CGRectMake(10.0, 0.0, 44.0, 44.0);
+    return  CGRectMake(10.0, 6.0, 44.0, 44.0);
 }
 - (CGRect) cellSpacingViewFrame
 {
-    return CGRectMake(0.0, 426.0, 320.0, 22.0);
+    return CGRectMake(0.0, 438.0, 320.0, 22.0);
 }
 - (CGRect) userImageMaskViewFrame
 {
@@ -41,17 +44,17 @@
 
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(0.0, 0.0, 320.0, 44.0);
+    return CGRectMake(64.0, 6.0, 320.0, 44.0);
 }
 
 - (CGRect) timestampLabelFrame
 {
-    return CGRectMake(260.0, 0.0, 60.0, 22.0);
+    return CGRectMake(200.0, 0.0, 110.0, 22.0);
 }
 
 - (CGRect) sonicPlayerViewFrame
 {
-    return CGRectMake(0.0, 44.0, 320.0, 320.0);
+    return CGRectMake(0.0, 56.0, 320.0, 320.0);
 }
 
 - (CGRect) likeButtonFrame
@@ -76,17 +79,17 @@
 
 - (CGRect) likesLabelFrame
 {
-    return CGRectMake(10.0, LabelsTop, 88.0, 22.0);
+    return CGRectMake(0.0, LabelsTop, 88.0, 22.0);
 }
 
 - (CGRect) commentsLabelFrame
 {
-    return CGRectMake(90.0, LabelsTop, 88.0, 22.0);
+    return CGRectMake(80.0, LabelsTop, 88.0, 22.0);
 }
 
 - (CGRect) resonicsLabelFrame
 {
-    return CGRectMake(170.0, LabelsTop, 88.0, 22.0);
+    return CGRectMake(160.0, LabelsTop, 88.0, 22.0);
 }
 
 
@@ -110,15 +113,26 @@
 //    [self.layer setBorderWidth:1.0f];
     
     self.userImageView = [[UIImageView alloc] initWithFrame:[self userImageViewFrame]];
+    [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.userImageView setImage:[UIImage imageNamed:@"dummy_profile_image.jpg"]];
+    [self.userImageView setClipsToBounds:YES];
+    [self.userImageView.layer setCornerRadius:self.userImageView.frame.size.height * 0.5];
+    [self.userImageView.layer setShouldRasterize:YES];
+    [self.userImageView.layer setRasterizationScale:2.0];
     [self addSubview:self.userImageView];
     
     self.userImageMaskView = [[UIImageView alloc] initWithFrame:[self userImageMaskViewFrame]];
     [self addSubview:self.userImageMaskView];
     
     self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
+    [self.usernameLabel setText:@"yeguzel"];
+    [self.usernameLabel setFont:[self.usernameLabel.font fontWithSize:14.0]];
     [self addSubview:self.usernameLabel];
     
     self.timestampLabel = [[UILabel alloc] initWithFrame:[self timestampLabelFrame]];
+    [self.timestampLabel setFont:[self.timestampLabel.font fontWithSize:9.0]];
+    [self.timestampLabel setTextColor:[UIColor darkGrayColor]];
+    [self.timestampLabel setTextAlignment:NSTextAlignmentRight];
     [self addSubview:self.timestampLabel];
     
     self.sonicPlayerView = [[SonicPlayerView alloc] init];
@@ -138,19 +152,25 @@
 - (void) initLabels
 {
     self.likesCountLabel = [[UILabel alloc] initWithFrame:[self likesLabelFrame]];
-    //    [self.likesCountLabel.layer setBorderColor:[UIColor redColor].CGColor];
-    //    [self.likesCountLabel.layer setBorderWidth:1.0f];
-    [self.likesCountLabel setText:@"Likes 99"];
+//    [self.likesCountLabel.layer setBorderColor:[UIColor redColor].CGColor];
+//    [self.likesCountLabel.layer setBorderWidth:1.0f];
+    [self.likesCountLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.likesCountLabel setText:@"3 Likes"];
     [self.likesCountLabel setFont:[self.likesCountLabel.font fontWithSize:11.0]];
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openLikes)];
+    [self.likesCountLabel addGestureRecognizer:tapGesture];
+    [self.likesCountLabel setUserInteractionEnabled:YES];
     [self addSubview:self.likesCountLabel];
-    
+
     self.commentsCountLabel = [[UILabel alloc] initWithFrame:[self commentsLabelFrame]];
-    [self.commentsCountLabel setText:@"Comments 15"];
+    [self.commentsCountLabel setText:@"5 Comments"];
+    [self.commentsCountLabel setTextAlignment:NSTextAlignmentCenter];
     [self.commentsCountLabel setFont:[self.commentsCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.commentsCountLabel];
     
     self.resonicsCountLabel = [[UILabel alloc] initWithFrame:[self resonicsLabelFrame]];
-    [self.resonicsCountLabel setText:@"Resonics 45"];
+    [self.resonicsCountLabel setText:@"2 Resonics"];
+    [self.resonicsCountLabel setTextAlignment:NSTextAlignmentCenter];
     [self.resonicsCountLabel setFont:[self.resonicsCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.resonicsCountLabel];
 }
@@ -161,7 +181,7 @@
     [self.likeButton setFrame:[self likeButtonFrame]];
     [self.likeButton setImage:[UIImage imageNamed:@"LikeDarkGrey.png"] forState:UIControlStateNormal];
     [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
-    
+
     self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.commentButton setFrame:[self commentButtonFrame]];
     [self.commentButton setImage:[UIImage imageNamed:@"Comment.png"] forState:UIControlStateNormal];
@@ -171,7 +191,7 @@
     [self.resonicButton setFrame:[self resonicButtonFrame]];
     [self.resonicButton setImage:[UIImage imageNamed:@"ReSonicDarkGrey.png"] forState:UIControlStateNormal];
     [self.resonicButton addTarget:self action:@selector(resonic) forControlEvents:UIControlEventTouchUpInside];
-    
+
     self.shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.shareButton setFrame:[self shareButtonFrame]];
     [self.shareButton setImage:[UIImage imageNamed:@"ShareWhite.png"] forState:UIControlStateNormal];
@@ -179,18 +199,63 @@
     
     [@[self.likeButton,self.commentButton,self.resonicButton,self.shareButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
         [button setTintColor:PinkColor];
+        [button addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:nil];
         [self addSubview:button];
     }];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if([object isKindOfClass:[UIButton class]]){
+        UIButton* button = object;
+        if([button state] == UIControlStateHighlighted){
+            [button setTintColor:[PinkColor colorWithAlphaComponent:0.5]];
+        } else {
+            [button setTintColor:PinkColor];
+        }
+    }
+}
+
 - (void) share
 {
-    
+    [[[UIActionSheet alloc] initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Share on Facebook",@"Share on Twitter",@"Copy URL", nil] showInView:self];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0){
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+        alert.tag = DeleteConfirmAlertViewTag;
+        [alert show];
+        
+
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"%d",buttonIndex);
+    if(alertView.tag == DeleteConfirmAlertViewTag){
+        if(buttonIndex == 0){
+            [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
+        }
+    }
 }
 
 - (void) resonic
 {
-    
+    [[[UIAlertView alloc]
+      initWithTitle:@"Resonic"
+      message:@"Do you want to resonic this?"
+      delegate:self
+      cancelButtonTitle:@"Cancel"
+      otherButtonTitles:@"Resonic!", nil]
+     show];
+}
+
+- (void) openLikes
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationOpenCommentsOfSonic object:self.sonic];
 }
 
 - (void) commentSonic
@@ -237,7 +302,7 @@
         _sonic = sonic;
         [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrl]];
         [self.usernameLabel setText:[self.sonic.owner fullName]];
-        [self.timestampLabel setText:[[self.sonic creationDate] description]];
+        [self.timestampLabel setText:[[self.sonic creationDate] formattedAsTimeAgo]];
     }
 }
 

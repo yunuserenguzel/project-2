@@ -22,6 +22,8 @@
 
 @property NSTimer* timer;
 
+@property UIImageView* pausedImageView;
+
 @end
 
 @implementation SonicPlayerView
@@ -39,7 +41,13 @@
 
 - (CGRect) soundSliderFrame
 {
-    return CGRectMake(0.0, 320.0, 320.0, 1.0);
+    return CGRectMake(0.0, 320.0, 320.0, 1.5);
+}
+
+- (CGRect) pausedImageViewFrame
+{
+    CGFloat w = 70.0 / 1.5, h = 74.0 / 1.5;
+    return CGRectMake(160.0-(w*0.5), 160.0-(h*0.5), w, h);
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -68,22 +76,55 @@
 - (void) initViews
 {
     [self initializeImageView];
+    [self setBackgroundColor:[UIColor clearColor]];
     
     self.soundSlider = [[SNCSoundSlider alloc] init];
     [self.soundSlider setFrame:[self soundSliderFrame]];
     [self.soundSlider setMinimumValue:0.0];
     [self.soundSlider setMaximumValue:0.1];
+    [self.soundSlider setBaseColor:[UIColor clearColor]];
     [self addSubview:self.soundSlider];
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
     [tapGesture setNumberOfTapsRequired:1];
     [self addGestureRecognizer:tapGesture];
+    
+    self.pausedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Paused.png"]];
+    [self.pausedImageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.pausedImageView setFrame:[self pausedImageViewFrame]];
+    [self.pausedImageView setHidden:YES];
+    [self.imageView addSubview:self.pausedImageView];
+
+}
+
+- (void) showPausedImageView
+{
+    [self.pausedImageView setAlpha:0.25];
+    [self.pausedImageView setHidden:NO];
+    CGFloat duration = 0.5;
+    [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        self.pausedImageView.transform = CGAffineTransformMakeScale(1.5, 1.5);
+    } completion:^(BOOL finished) {
+    }];
+    
+    [UIView animateWithDuration:duration * 0.4 animations:^{
+        [self.pausedImageView setAlpha:0.6];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:duration * 0.4 animations:^{
+            [self.pausedImageView setAlpha:0.25];
+        } completion:^(BOOL finished) {
+            self.pausedImageView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            [self.pausedImageView setHidden:YES];
+        }];
+    }];
+
 }
 
 - (void) tapped
 {
     if([self.audioPlayer isPlaying]){
         [self pause];
+        [self showPausedImageView];
     }
     else{
         [self play];
@@ -133,8 +174,11 @@
 
 - (void)setFrame:(CGRect)frame
 {
-    frame.size = SonicPlayerViewSize;
+//    frame.size = SonicPlayerViewSize;
     [super setFrame:frame];
+    CGRect imageViewframe = [self imageViewFrame];;
+    imageViewframe.size = frame.size;
+    [self.imageView setFrame:imageViewframe];
 }
 
 - (void) timerUpdate
@@ -150,6 +194,7 @@
 
 - (void)play
 {
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:NULL];
     [self.audioPlayer play];
     if(self.timer == nil || ![self.timer isValid]){
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];

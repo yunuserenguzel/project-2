@@ -18,7 +18,7 @@
 
 #define DeleteConfirmAlertViewTag 10001
 
-#define ButtonsTop 377.0
+#define ButtonsTop 397.0
 #define LabelsTop 377.0
 @interface SNCHomeTableCell () <UIActionSheetDelegate,UIAlertViewDelegate>
 
@@ -114,7 +114,7 @@
     
     self.userImageView = [[UIImageView alloc] initWithFrame:[self userImageViewFrame]];
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self.userImageView setImage:[UIImage imageNamed:@"dummy_profile_image.jpg"]];
+    [self.userImageView setImage:[UIImage imageNamed:@"2013-11-07 09.52.53.jpg"]];
     [self.userImageView setClipsToBounds:YES];
     [self.userImageView.layer setCornerRadius:self.userImageView.frame.size.height * 0.5];
     [self.userImageView.layer setShouldRasterize:YES];

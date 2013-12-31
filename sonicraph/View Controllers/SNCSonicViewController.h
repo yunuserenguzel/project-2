@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Sonic.h"
 
-@interface SNCSonicViewController : UITableViewController
+@interface SNCSonicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) Sonic* sonic;
 

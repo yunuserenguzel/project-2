@@ -91,7 +91,7 @@
                         <barButtonItem key="backBarButtonItem" title="Home" id="kaH-Zw-nft"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="SBe-4C-oJQ" kind="push" identifier="ViewSonicSegue" id="Jw4-mc-zK5"/>
+                        <segue destination="N56-gF-1FD" kind="push" identifier="ViewSonicSegue" id="6rP-k5-zGF"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uBg-5r-JB6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -99,31 +99,21 @@
             <point key="canvasLocation" x="256" y="1064"/>
         </scene>
         <!--Sonic View Controller-->
-        <scene sceneID="59x-oB-y7l">
+        <scene sceneID="5vf-Bv-5ay">
             <objects>
-                <tableViewController id="SBe-4C-oJQ" customClass="SNCSonicViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2O6-jG-Q2m">
+                <viewController id="N56-gF-1FD" customClass="SNCSonicViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EG2-UR-2Ig"/>
+                        <viewControllerLayoutGuide type="bottom" id="a3g-iN-MI0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iCv-Sq-eXZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="S1A-3f-nME">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S1A-3f-nME" id="cwA-UL-H3I">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="SBe-4C-oJQ" id="HkO-Eq-m6b"/>
-                            <outlet property="delegate" destination="SBe-4C-oJQ" id="zum-Zb-PEA"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="fMb-fy-vFK"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SGo-Lv-kcI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="lRQ-vt-j4V"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GIz-gu-0wJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="712" y="1064"/>
         </scene>

@@ -11,179 +11,17 @@
 #import "SNCAPIManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TypeDefs.h"
-
-#define LikesTabButtonTag 5111
-#define CommentsTabButtonTag 5112
-#define ResonicsTabButtonTag 5113
-
-#define HeaderViewMaxHeight 440.0
-#define HeaderViewMinHeight 88.0
-
-@interface SonicViewControllerHeaderView : UIView
-
-@property SonicPlayerView* sonicPlayerView;
-@property UILabel* usernameLabel;
-@property UIImageView* profileImageView;
-
-@property UIView* tabsView;
-@property UIButton* likesTabButton;
-@property UIButton* commentsTabButton;
-@property UIButton* resonicsTabButton;
-
-@property Sonic* sonic;
-
-@end
-
-@implementation SonicViewControllerHeaderView
-{
-    BOOL isInitCalled;
-}
-- (CGRect) sonicPlayerViewMaxFrame
-{
-    return CGRectMake(0.0, 66.0, 320.0, 320.0);
-}
--(CGRect) sonicPlayerViewMinFrame
-{
-    return CGRectMake(320 - 55.0, 0.0, 55.0, 55.0);
-}
-
-- (CGRect) profileImageMaxFrame
-{
-    return CGRectMake(10.0, 11.0, 44.0, 44.0);
-}
-- (CGRect) profileImageMinFrame
-{
-    return CGRectMake(10.0, 2.0, 44.0, 44.0);
-}
-
--(CGRect) usernameLabelMaxFrame
-{
-    return CGRectMake(64.0, 11.0, 244.0, 44.0);
-}
-
--(CGRect) usernameLabelMinFrame
-{
-    return CGRectMake(64.0, 2.0, 244.0, 44.0);
-}
-
-- (CGRect) tabsViewMaxFrame
-{
-    return CGRectMake(0.0, 396.0, 320.0, 44.0);
-}
-- (CGRect) tabsViewMinFrame
-{
-    return CGRectMake(0.0, 44.0, 320.0, 44.0);
-}
-
-- (CGRect) likesButtonFrame
-{
-    return CGRectMake(0.0, 0.0, 320.0 / 3.0, 44.0);
-}
-- (CGRect) commentsButtonFrame
-{
-    return CGRectMake(320.0*1.0/3.0, 0.0, 320.0 / 3.0, 44.0);
-}
-- (CGRect) resonicsButtonFrame
-{
-    return CGRectMake(320.0*2.0/3.0, 0.0, 320.0 / 3.0, 44.0);
-}
-
-- (id)init
-{
-    if(self = [super init]){
-        [self initViews];
-    }
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame
-{
-    if(self = [super initWithFrame:frame]){
-        [self initViews];
-    }
-    return self;
-}
-
-- (void) initViews
-{
-    if(isInitCalled){
-        return;
-    } else {
-        isInitCalled = YES;
-    }
-    [self setBackgroundColor:[UIColor whiteColor]];
-    [self setUserInteractionEnabled:YES];
-    [self inititalizeTab];
-    [self initSonicPlayerView];
-    [self initUserViews];
-}
-- (void) initSonicPlayerView
-{
-    self.sonicPlayerView = [[SonicPlayerView alloc] initWithFrame:[self sonicPlayerViewMaxFrame]];
-    [self addSubview:self.sonicPlayerView];
-}
-
-- (void) initUserViews
-{
-    self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageMaxFrame]];
-    [self.profileImageView.layer setCornerRadius:22.0];
-    [self.profileImageView.layer setRasterizationScale:2.0];
-    [self.profileImageView.layer setShouldRasterize:YES];
-    [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self.profileImageView setClipsToBounds:YES];
-    [self addSubview:self.profileImageView];
-    
-    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelMaxFrame]];
-    [self addSubview:self.usernameLabel];
-}
-- (void) inititalizeTab
-{
-    self.tabsView = [[UIView alloc] initWithFrame:[self tabsViewMaxFrame]];
-    [self.tabsView setUserInteractionEnabled:YES];
-    [self addSubview:self.tabsView];
-    
-    self.likesTabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.likesTabButton.frame = [self likesButtonFrame];
-    [self.likesTabButton setTitle:@"Likes" forState:UIControlStateNormal];
-    self.likesTabButton.tag = LikesTabButtonTag;
-    
-    self.commentsTabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.commentsTabButton.frame = [self commentsButtonFrame];
-    [self.commentsTabButton setTitle:@"Comments" forState:UIControlStateNormal];
-    self.commentsTabButton.tag = CommentsTabButtonTag;
-    
-    self.resonicsTabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.resonicsTabButton.frame = [self resonicsButtonFrame];
-    [self.resonicsTabButton setTitle:@"Resonics" forState:UIControlStateNormal];
-    self.resonicsTabButton.tag = ResonicsTabButtonTag;
-    [@[self.likesTabButton,self.commentsTabButton,self.resonicsTabButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
-        [self.tabsView addSubview:button];
-    }];
-}
-
-- (void)setFrame:(CGRect)frame
-{
-    [super setFrame:frame];
-    
-    CGFloat height = frame.size.height;
-    CGFloat ratio = (height-HeaderViewMinHeight) / (HeaderViewMaxHeight - HeaderViewMinHeight);
-//    ratio = ratio < 0 ? 0 : (ratio > 1 ? 1 : ratio);
-    
-    [self.sonicPlayerView setFrame:CGRectByRatio([self sonicPlayerViewMaxFrame], [self sonicPlayerViewMinFrame], ratio)];
-    [self.profileImageView setFrame:CGRectByRatio([self profileImageMaxFrame], [self profileImageMinFrame], ratio)];
-    [self.usernameLabel setFrame:CGRectByRatio([self usernameLabelMaxFrame], [self usernameLabelMinFrame], ratio)];
-    [self.tabsView setFrame:CGRectByRatio([self tabsViewMaxFrame], [self tabsViewMinFrame], ratio)];
-    
-}
+#import "SonicViewControllerHeaderView.h"
+#import "SonicComment.h"
+#import "Configurations.h"
 
 
-- (void) eventListener:(id)listener selector:(SEL) selector
-{
-    [@[self.likesTabButton,self.commentsTabButton,self.resonicsTabButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
-        [button addTarget:listener action:selector forControlEvents:UIControlEventTouchUpInside];
-    }];
-}
-@end
+typedef enum ContentType {
+    ContentTypeNone,
+    ContentTypeComments,
+    ContentTypeLikes,
+    ContentTypeResonics
+} ContentType;
 
 @interface SNCSonicViewController ()
 
@@ -193,10 +31,16 @@
 @property NSArray* commentsContent;
 @property NSArray* resonicsContent;
 
+@property UIView* tabActionBarView;
+
 @property UITextField* commentField;
 @property UIButton* commentSubmitButton;
 @property UIView* writeCommentView;
 @property UITableView* tableView;
+
+@property UIView* keyboardCloser;
+
+@property SonicViewControllerInitiationType initiationType;
 
 
 @end
@@ -204,21 +48,49 @@
 
 @implementation SNCSonicViewController
 {
-    UIButton* selectedTabButton;
-    NSArray* currentContent;
+    ContentType currentContentType;
+    BOOL keyboardIsShown;
 }
 
+- (CGRect) tabbarMaxFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
+}
+
+- (CGRect) tabbarMinFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
+}
+- (CGRect) keyBoardCloserFrame
+{
+    return CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
+}
 - (CGRect) tableHeaderViewFrame
+{
+    return CGRectMake(0.0, 0.0, 320.0, HeaderViewMaxHeight + self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height);
+}
+- (CGRect) headerViewFrame
 {
     return CGRectMake(0.0, self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height, 320.0, HeaderViewMaxHeight);
 }
 - (CGRect) writeCommentViewFrame
 {
-    return CGRectMake(0.0, self.view.frame.size.height - 88.0, 320.0, 44.0);
+    return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
+
+- (CGRect) tabActionBarViewMaxFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height + 88.0, 320.0, 44.0);
+}
+
+- (CGRect) tabActionBarViewMinFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height - 44.0, 320.0, 44.0);
+}
+
 - (CGRect) commentFieldFrame
 {
-    return CGRectMake(0.0, 0.0, 260.0, 44.0);
+    return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
 
 - (CGRect) commentSubmitButtonFrame
@@ -226,52 +98,109 @@
     return CGRectMake(260.0, 0.0, 60.0, 44.0);
 }
 
+- (NSArray*) currentContent
+{
+    switch (currentContentType) {
+        case ContentTypeLikes:
+            return self.likesContent;
+        case ContentTypeComments:
+            return self.commentsContent;
+        case ContentTypeResonics:
+            return self.resonicsContent;
+        default:
+            return nil;
+    }
+}
+
+- (void) setCurrentContentType:(ContentType)contentType
+{
+    currentContentType = contentType;
+    switch (currentContentType) {
+        case ContentTypeComments:
+            [self.navigationItem setTitle:@"Comments"];
+            break;
+        case ContentTypeLikes:
+            [self.navigationItem setTitle:@"Likes"];
+            break;
+        case ContentTypeResonics:
+            [self.navigationItem setTitle:@"Resonics"];
+            break;
+        default:
+            [self.navigationItem setTitle:@""];
+            break;
+    }
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.commentsContent = @[];
+    self.likesContent = @[];
+    self.resonicsContent = @[];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, HeaderViewMaxHeight * 2.0, 0.0)];
+    [self.tableView setShowsVerticalScrollIndicator:NO];
+    [self.tableView setShowsHorizontalScrollIndicator:NO];
     [self.view addSubview:self.tableView];
-    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.view.frame));
-    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.tableView.frame));
-    
+//    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.view.frame));
+//    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.tableView.frame));
+
     [self.tableView setTableHeaderView:[[UIView alloc] initWithFrame:[self tableHeaderViewFrame]]];
+//    [self.tableView.tableHeaderView setClipsToBounds:YES];
     [self.tableView.tableHeaderView setUserInteractionEnabled:YES];
-    self.headerView = [[SonicViewControllerHeaderView alloc] init];
     
-    [self.headerView setFrame:[self tableHeaderViewFrame]];
+    self.headerView = [[SonicViewControllerHeaderView alloc] init];
+    [self.headerView setFrame:[self headerViewFrame]];
+    [self.headerView setButtonTargets:self selector:@selector(changeTabForButton:)];
     [self.tableView.tableHeaderView addSubview:self.headerView];
     
+    self.tabActionBarView = [[UIView alloc] initWithFrame:[self tabActionBarViewMaxFrame]];
+    [self.view addSubview:self.tabActionBarView];
+    
     self.writeCommentView = [[UIView alloc] initWithFrame:[self writeCommentViewFrame]];
-    [self.writeCommentView setBackgroundColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.5]];
-    [self.view addSubview:self.writeCommentView];
+    [self.writeCommentView setBackgroundColor:[UIColor whiteColor]];
+    [self.self.tabActionBarView addSubview:self.writeCommentView];
     
     self.commentField = [[UITextField alloc] initWithFrame:[self commentFieldFrame]];
-    [self.commentField.layer setBorderColor:[UIColor redColor].CGColor];
+    [self.commentField.layer setBorderColor:NavigationBarBlueColor.CGColor];
     [self.commentField.layer setBorderWidth:1.0];
     [self.commentField.layer setCornerRadius:5.0];
+    [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)]];
+    [self.commentField setPlaceholder:@"Write comment"];
     [self.writeCommentView addSubview:self.commentField];
     
     self.commentSubmitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.commentSubmitButton setTitle:@"Submit" forState:UIControlStateNormal];
     [self.commentSubmitButton setFrame:[self commentSubmitButtonFrame]];
+    [self.commentSubmitButton addTarget:self action:@selector(writeComment) forControlEvents:UIControlEventTouchUpInside];
+    self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
     [self.writeCommentView addSubview:self.commentSubmitButton];
     
 //    self.refreshControl = [[UIRefreshControl alloc] init];
 //    self.refreshControl = self.refreshControl;
 //    [self.refreshControl addTarget:self action:@selector(refreshContent) forControlEvents:UIControlEventValueChanged];
     
-//    selectedTabButton = self.likesTabButton;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:self.view.window];
+    // register for keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:self.view.window];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItrem = self.editButtonItem;
     [self configureViews];
+
+}
+
+- (void) initiateFor:(SonicViewControllerInitiationType)initiationType
+{
+    self.initiationType = initiationType;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -281,47 +210,37 @@
         navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
     CGFloat topOffset = scrollView.contentOffset.y ;
-    NSLog(@"topoffset: %f",topOffset);
+//    NSLog(@"topoffset: %f",topOffset);
     CGFloat height = HeaderViewMaxHeight - topOffset;
     height = height < HeaderViewMinHeight ? HeaderViewMinHeight : height;
-    if (height == HeaderViewMinHeight){
-        topOffset = 0.0;
+    CGFloat ratio = (height-HeaderViewMinHeight) / (HeaderViewMaxHeight - HeaderViewMinHeight);
+    [self.headerView reorganizeForRatio:ratio];
+    if(height == HeaderViewMinHeight){
+        if (self.headerView.superview != self.view){
+            [self.view addSubview:self.headerView];
+        }
+        CGRect frame = [self headerViewFrame];
+        frame.origin.y = navigationHeight + HeaderViewMinHeight - HeaderViewMaxHeight;
+        [self.headerView setFrame:frame];
+    } else {
+        if(self.headerView.superview != self.tableView.tableHeaderView){
+            [self.tableView.tableHeaderView addSubview:self.headerView];
+        }
+        [self.headerView setFrame:[self headerViewFrame]];
     }
-        
-    [self.headerView setFrame:CGRectMake(0.0, [self tableHeaderViewFrame].origin.y + topOffset , 320.0, height)];
-
-
-//    if(topOffset <= 0){
-//        topOffset = 0.0;
-//        [self.sonicPlayerView setUserInteractionEnabled:YES];
-//    }
-//    if(topOffset >= 0.0 && topOffset < 321.0){
-//        
-//        
-//    } else if ( topOffset >= 321.0){
-//        CGRect sonicPlayerViewFrame = [self sonicPlayerViewFrame];
-//        CGFloat change = 320.0 - (320.0 / 320.0)*66.0;
-//        sonicPlayerViewFrame.origin.y += change + topOffset - 321.0;
-//        sonicPlayerViewFrame.origin.x = change;
-//        sonicPlayerViewFrame.size.height -= change;
-//        sonicPlayerViewFrame.size.width -= change;
-//        [self.sonicPlayerView setFrame:sonicPlayerViewFrame];
-//    }
-//    if (topOffset >= 0){
-//        CGRect profileImageView = [self profileImageFrame];
-//        profileImageView.origin.y += topOffset;
-//        [self.profileImageView setFrame:profileImageView];
-//        
-//        CGRect usernameLabelFrame = [self usernameLabelFrame];
-//        usernameLabelFrame.origin.y += topOffset;
-//        [self.usernameLabel setFrame:usernameLabelFrame];
-//
-//    }
+    
+//    NSLog(@"last point of header view: %f height: %f", topOffset + height, height);
+    [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self tabActionBarViewMinFrame], ratio)];
+    if(ratio > 1.0){
+        [self.tabBarController.tabBar setFrame:[self tabbarMaxFrame]];
+    }else {
+        [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio)];
+    }
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
-    NSLog(@"%f",scrollView.decelerationRate);
+//    NSLog(@"%f",scrollView.decelerationRate);
 }
 
 - (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -329,7 +248,7 @@
     if (velocity.y != 0.0){
         return;
     }
-    NSLog(@"velocity: %f, %f",velocity.x,velocity.y);
+//    NSLog(@"velocity: %f, %f",velocity.x,velocity.y);
     static CGFloat navigationHeight = -1.0;
     if(navigationHeight == -1.0){
         navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
@@ -348,7 +267,6 @@
     if(!decelerate){
         return;
     }
-    
 }
 
 - (void) configureViews
@@ -360,9 +278,14 @@
         return;
     }
     
+    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
+        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+        [self setCurrentContentType:ContentTypeComments];
+    }
+    
     [self refreshContent];
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
-    [self.headerView.profileImageView setImage:[UIImage imageNamed:@"dummy_profile_image.jpg"]];
+    [self.headerView.profileImageView setImage:[UIImage imageNamed:@"2013-11-07 09.52.53.jpg"]];
     [self.headerView.usernameLabel setText:@"yeguzel"];
 }
 
@@ -381,37 +304,35 @@
 - (void) changeTabForButton:(UIButton*)button
 {
     if(button.tag == LikesTabButtonTag){
-        if(self.likesContent == nil){
-            
-        }
+        [self setCurrentContentType:ContentTypeLikes];
     }
     else if(button.tag == CommentsTabButtonTag){
-        
+        [self setCurrentContentType:ContentTypeComments];
     }
     else if(button.tag == ResonicsTabButtonTag){
-        
+        [self setCurrentContentType:ContentTypeResonics];
     }
-    selectedTabButton = button;
     [self.tableView reloadData];
 }
 
 - (void) refreshContent
 {
-    if(selectedTabButton.tag == LikesTabButtonTag){
-        [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
-            self.likesContent = users;
-            [self.tableView reloadData];
-            
-        } andErrorBlock:^(NSError *error) {
-            
-        }];
+    if(currentContentType == ContentTypeLikes){
+//        [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
+//            self.likesContent = users;
+//            [self.tableView reloadData];
+//            
+//        } andErrorBlock:^(NSError *error) {
+//            
+//        }];
     }
-    else if(selectedTabButton.tag == CommentsTabButtonTag){
+    else if(currentContentType == ContentTypeComments){
+//        [SNCAPIManager get]
+    }
+    else if(currentContentType == ContentTypeResonics){
         
     }
-    else if(selectedTabButton.tag == ResonicsTabButtonTag){
-        
-    }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -424,78 +345,124 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    return 10;
     // Return the number of rows in the section.
-    return 100;
-    if(currentContent){
-        return [currentContent count];
+    if([self currentContent]){
+        return [[self currentContent] count];
     } else {
         return 0;
     }
+}
+
+- (void) writeComment
+{
+
+    [SNCAPIManager writeCommentToSonic:self.sonic withText:self.commentField.text withCompletionBlock:^(id object) {
+        self.commentsContent = [self.commentsContent arrayByAddingObject:object];
+        [self.tableView reloadData];
+        [self.commentField setText:@""];
+        [self closeKeyboard];
+        //        [self refreshContent];
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-//    id currentObject = [currentContent objectAtIndex:indexPath.row];
-//    if(selectedTabButton.tag == LikesTabButtonTag){
+//    id currentObject = [[self currentContent] objectAtIndex:indexPath.row];
+    [cell.textLabel setText:[NSString stringWithFormat:@"r: %d",indexPath.row]];
+    if(currentContentType == ContentTypeLikes){
 //        User* user = currentObject;
 //        [cell.textLabel setText:user.username];
-//    }
+        
+    } else if (currentContentType == ContentTypeComments){
+//        SonicComment* comment = currentObject;
+//        [cell.textLabel setText:comment.text];
+    }
     return cell;
 }
 
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)viewDidUnload {
+    
+    // unregister for keyboard notifications while not visible.
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    // unregister for keyboard notifications while not visible.
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+    
 }
 
- */
+- (void)dealloc {
+    
+    // unregister for keyboard notifications while not visible.
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    // unregister for keyboard notifications while not visible.
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+    
+}
+
+- (void)keyboardWillHide:(NSNotification *)n
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    // The kKeyboardAnimationDuration I am using is 0.3
+    [UIView setAnimationDuration:0.3];
+//    [self.tags setFrame:[self tagsFrame]];
+    [self.tabActionBarView setFrame:[self tabActionBarViewMinFrame]];
+    self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
+    [UIView commitAnimations];
+    
+    keyboardIsShown = NO;
+}
+
+- (void)keyboardWillShow:(NSNotification *)n
+{
+    if (keyboardIsShown) {
+        return;
+    }
+    
+    self.keyboardCloser = [[UIView alloc] initWithFrame:[self keyBoardCloserFrame]];
+    //    [self.keyboardCloser setAlpha:0.0];
+    [self.keyboardCloser setUserInteractionEnabled:YES];
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.keyboardCloser addGestureRecognizer:tapGesture];
+    [self.view insertSubview:self.keyboardCloser belowSubview:self.tabActionBarView];
+    
+    NSDictionary* userInfo = [n userInfo];
+    
+    // get the size of the keyboard
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    // The kKeyboardAnimationDuration I am using is 0.3
+    [UIView setAnimationDuration:0.3];
+    CGRect frame = [self tabActionBarViewMinFrame];
+    frame.origin.y = self.view.frame.size.height - keyboardSize.height - frame.size.height;
+    [self.tabActionBarView setFrame:frame];
+    self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
+    [UIView commitAnimations];
+    
+    keyboardIsShown = YES;
+}
+
+- (void) closeKeyboard
+{
+    [self.keyboardCloser removeFromSuperview];
+    [self.commentField resignFirstResponder];
+}
 
 @end

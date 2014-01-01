@@ -72,11 +72,11 @@
 
 - (void) refreshFromServer
 {
-    [SNCAPIManager getSonicsAfter:[self.sonics objectAtIndex:0] withCompletionBlock:^(NSArray *sonics) {
-        [self.refreshControl endRefreshing];
-    } andErrorBlock:^(NSError *error) {
-        [self.refreshControl endRefreshing];
-    }];
+//    [SNCAPIManager getSonicsAfter:[self.sonics objectAtIndex:0] withCompletionBlock:^(NSArray *sonics) {
+//        [self.refreshControl endRefreshing];
+//    } andErrorBlock:^(NSError *error) {
+//        [self.refreshControl endRefreshing];
+//    }];
 }
 //
 -(void) openCommentsOfSonic:(NSNotification*) notification
@@ -202,6 +202,7 @@
     if([segue.identifier isEqualToString:ViewSonicSegue]){
         SNCSonicViewController* sonicViewController =  segue.destinationViewController;
         [sonicViewController setSonic:sonicToBeViewed];
+        [sonicViewController initiateFor:SonicViewControllerInitiationTypeCommentWrite];
     }
 }
 

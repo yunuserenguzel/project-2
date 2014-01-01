@@ -72,6 +72,8 @@ static SNCAppDelegate* sharedInstance = nil;
 //        }];
 //    } andErrorBlock:^(NSError *error) {
 //    }];
+    
+    NSLog(@"token: %@",[[AuthenticationManager sharedInstance] token]);
 
 
 //    dispatch_async(dispatch_get_main_queue(), ^{
@@ -97,7 +99,7 @@ static SNCAppDelegate* sharedInstance = nil;
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [[AuthenticationManager sharedInstance] checkAuthentication];
+//    [[AuthenticationManager sharedInstance] checkAuthentication];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

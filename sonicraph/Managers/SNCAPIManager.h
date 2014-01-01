@@ -14,6 +14,7 @@ typedef void (^CompletionArrayBlock) (NSArray *sonics);
 typedef void (^CompletionUserBlock) (User *user,NSString* token);
 typedef void (^CompletionBoolBlock) (BOOL successful);
 typedef void (^CompletionSonicBlock) (Sonic* sonic);
+typedef void (^CompletionIdBlock) (id object);
 
 
 @interface SNCAPIManager : NSObject
@@ -68,6 +69,13 @@ typedef void (^CompletionSonicBlock) (Sonic* sonic);
 + (MKNetworkOperation*) getCommentsOfSonic:(Sonic*)sonic
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) writeCommentToSonic:(Sonic*)sonic
+                                   withText:(NSString*)text
+                       withCompletionBlock:(CompletionIdBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
+
+
 
 + (MKNetworkOperation*) getLikesOfSonic:(Sonic*)sonic
                     withCompletionBlock:(CompletionArrayBlock)completionBlock

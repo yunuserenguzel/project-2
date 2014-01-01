@@ -14,17 +14,58 @@
 #import "TypeDefs.h"
 #import "User.h"
 #import "AuthenticationManager.h"
+#import "SonicComment.h"
+
+NSDate* dateFromServerString(NSString* dateString)
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+    return [dateFormatter dateFromString:dateString];
+}
+
+SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
+{
+    SonicComment* sonicComment = [[SonicComment alloc] init];
+    sonicComment.text = [dictionary objectForKey:@"text"];
+    sonicComment.createdAt = dateFromServerString([dictionary objectForKey:@"created_at"]);
+    return sonicComment;
+}
+
 @implementation SNCAPIManager
 
-NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
-
-+ (SNCAPIConnector*)connector
++ (MKNetworkOperation *)getCommentsOfSonic:(Sonic *)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    static SNCAPIConnector* connector = nil;
-    if(connector == nil){
-        connector = [SNCAPIConnector sharedInstance];
-    }
-    return connector;
+    NSDictionary* params = @{@"sonic": sonic.sonicId,
+                             @"token":[[AuthenticationManager sharedInstance] token]};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            andOperation:@"sonic/comments"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                
+            } andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)writeCommentToSonic:(Sonic *)sonic withText:(NSString *)text withCompletionBlock:(CompletionIdBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"sonic": sonic.sonicId,
+                             @"text": text,
+                             @"token" : [[AuthenticationManager sharedInstance] token]};
+    return [[SNCAPIConnector sharedInstance]
+            postRequestWithParams:params
+            andOperation:@"sonic/write_comment"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                SonicComment* sonicComment = sonicCommentFromServerDictionary([responseDictionary objectForKey:@"comment"]);
+                sonicComment.sonic = sonic;
+                sonicComment.user = [[AuthenticationManager sharedInstance] authenticatedUser];
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:NotificationCommentWrittenToSonic
+                 object:sonicComment];
+                if(completionBlock){
+                    completionBlock(sonicComment);
+                }
+            }
+            andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation*) deleteSonic:(Sonic*)sonic withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
@@ -103,41 +144,41 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
 {
     NSNumber* count = [NSNumber numberWithInt:20];
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    [params setObject:token forKey:@"token"];
+    [params setObject:[[AuthenticationManager sharedInstance] token] forKey:@"token"];
     if(user != nil){
         [params setObject:user.userId forKey:@"user"];
     }
     [params setObject:count forKey:@"count"];
     [SNCAPIManager getSonicsWithParams:params saveToDatabase:saveToDatabase withCompletionBlock:completionBlock andErrorBlock:errorBlock];
 }
-
-+ (void) getSonicsBefore:(Sonic*)sonic withCompletionBlock:(Block)completionBlock
-{
-    NSNumber* count = [NSNumber numberWithInt:20];
-    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    [params setObject:token forKey:@"token"];
-    if(sonic != nil){
-        [params setObject:sonic.sonicId forKey:@"before_sonic"];
-    }
-    [params setObject:count forKey:@"count"];
-    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
-}
-
-+ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
-{
-    NSNumber* count = [NSNumber numberWithInt:20];
-    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    [params setObject:token forKey:@"token"];
-    if(sonic != nil){
-        [params setObject:sonic.sonicId forKey:@"after_sonic"];
-    }
-    [params setObject:count forKey:@"count"];
-    
-    return [SNCAPIManager getSonicsWithParams:params
-                               saveToDatabase:YES
-                          withCompletionBlock:completionBlock
-                                andErrorBlock:errorBlock];
-}
+//
+//+ (void) getSonicsBefore:(Sonic*)sonic withCompletionBlock:(Block)completionBlock
+//{
+//    NSNumber* count = [NSNumber numberWithInt:20];
+//    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+//    [params setObject:token forKey:@"token"];
+//    if(sonic != nil){
+//        [params setObject:sonic.sonicId forKey:@"before_sonic"];
+//    }
+//    [params setObject:count forKey:@"count"];
+//    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
+//}
+//
+//+ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+//{
+//    NSNumber* count = [NSNumber numberWithInt:20];
+//    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+//    [params setObject:token forKey:@"token"];
+//    if(sonic != nil){
+//        [params setObject:sonic.sonicId forKey:@"after_sonic"];
+//    }
+//    [params setObject:count forKey:@"count"];
+//    
+//    return [SNCAPIManager getSonicsWithParams:params
+//                               saveToDatabase:YES
+//                          withCompletionBlock:completionBlock
+//                                andErrorBlock:errorBlock];
+//}
 
 + (void) getSonicsWithCompletionBlock:(Block)completionBlock
 {
@@ -190,10 +231,7 @@ NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     NSNumber* isPrivate = [sonicDict objectForKey:@"is_private" ];
     isPrivate = [isPrivate isKindOfClass:[NSNull class]] ? nil : isPrivate;
     NSString* sonicId = [NSString stringWithFormat:@"%@",[sonicDict objectForKey:@"id"]];
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
-    NSDate* createdAt = [dateFormatter dateFromString:[sonicDict objectForKey:@"created_at"]];
+    NSDate* createdAt = dateFromServerString([sonicDict objectForKey:@"created_at"]);
     Sonic* sonic = [Sonic sonicWith:sonicId
                        andLongitude:longitude
                         andLatitude:latitude

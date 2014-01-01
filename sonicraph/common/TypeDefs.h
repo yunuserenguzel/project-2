@@ -19,6 +19,7 @@
 #define NotificationDislikeSonic @"NotificationDislikeSonic"
 #define NotificationOpenCommentsOfSonic @"NotificationOpenCommentsOfSonic"
 #define NotificationSonicDeleted @"NotificationSonicDeleted"
+#define NotificationCommentWrittenToSonic @"NotificationCommentWrittenToSonic"
 
 UIColor* rgb(CGFloat red, CGFloat green, CGFloat blue);
 

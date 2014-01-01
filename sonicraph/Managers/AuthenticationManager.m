@@ -32,6 +32,7 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (id)init
 {
+    [[NSUserDefaults standardUserDefaults] synchronize];
     if(self = [super init]){
         if(self.token){
             _isUserAuthenticated = YES;
@@ -127,6 +128,7 @@ static AuthenticationManager* sharedInstance = nil;
 - (void) saveToUserDefaults:(NSString*)value forKey:(NSString*)key
 {
     [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void) checkAuthentication

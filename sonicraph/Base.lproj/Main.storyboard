@@ -133,10 +133,10 @@
             </objects>
             <point key="canvasLocation" x="-203" y="1064"/>
         </scene>
-        <!--Edit View Controller - Preview Sonic-->
+        <!--Sonic View Controller - Preview Sonic-->
         <scene sceneID="BfV-Wz-2kw">
             <objects>
-                <viewController id="9VH-Ip-L4V" customClass="SNCEditViewController" sceneMemberID="viewController">
+                <viewController id="9VH-Ip-L4V" customClass="SNCSonicViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="d3q-9R-b63"/>
                         <viewControllerLayoutGuide type="bottom" id="zoA-3C-M0L"/>

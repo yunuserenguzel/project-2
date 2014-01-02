@@ -61,7 +61,7 @@
                                                  name:NotificationOpenCommentsOfSonic
                                                object:nil];
     self.sonics  = @[];
-    [self initRefreshController];
+//    [self initRefreshController];
 }
 - (void) initRefreshController
 {
@@ -72,11 +72,11 @@
 
 - (void) refreshFromServer
 {
-//    [SNCAPIManager getSonicsAfter:[self.sonics objectAtIndex:0] withCompletionBlock:^(NSArray *sonics) {
-//        [self.refreshControl endRefreshing];
-//    } andErrorBlock:^(NSError *error) {
-//        [self.refreshControl endRefreshing];
-//    }];
+    [SNCAPIManager getSonicsAfter:[self.sonics objectAtIndex:0] withCompletionBlock:^(NSArray *sonics) {
+        [self.refreshControl endRefreshing];
+    } andErrorBlock:^(NSError *error) {
+        [self.refreshControl endRefreshing];
+    }];
 }
 //
 -(void) openCommentsOfSonic:(NSNotification*) notification

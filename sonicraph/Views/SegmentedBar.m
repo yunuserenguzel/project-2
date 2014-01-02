@@ -116,6 +116,7 @@
     
     return button;
 }
+
 - (void)setSelectedIndex:(NSInteger)index
 {
     for (int i=0; i< buttons.count; i++) {

@@ -27,7 +27,7 @@
 
 - (CGRect) tabbarMinFrame
 {
-    return CGRectMake(0.0, self.view.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
+    return CGRectMake(0.0, self.view.frame.size.height + self.tabBarController.tabBar.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
 }
 - (CGRect) keyBoardCloserFrame
 {
@@ -145,6 +145,7 @@
                                                object:self.view.window];
     
     [self configureViews];
+    
 
 }
 
@@ -264,11 +265,8 @@
     }
     
     [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self tabActionBarViewMinFrame], ratio)];
-    if(ratio > 1.0){
-        [self.tabBarController.tabBar setFrame:[self tabbarMaxFrame]];
-    }else {
-        [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio)];
-    }
+
+    [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio > 1.0 ? 1.0 : ratio)];
 }
 
 - (CGFloat) extractRatioFromTopOffset:(CGFloat)topOffset andHeight:(inout CGFloat*)height
@@ -328,6 +326,8 @@
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
     [self.headerView.profileImageView setImage:[UIImage imageNamed:@"2013-11-07 09.52.53.jpg"]];
     [self.headerView.usernameLabel setText:@"yeguzel"];
+    
+    /*TEST*/
 }
 
 - (void)setSonic:(Sonic *)sonic
@@ -373,7 +373,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
     // Return the number of rows in the section.
     if([self currentContent]){
         return [[self currentContent] count];
@@ -400,15 +399,15 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-//    id currentObject = [[self currentContent] objectAtIndex:indexPath.row];
-    [cell.textLabel setText:[NSString stringWithFormat:@"r: %d",indexPath.row]];
+    id currentObject = [[self currentContent] objectAtIndex:indexPath.row];
+//    [cell.textLabel setText:[NSString stringWithFormat:@"r: %d",indexPath.row]];
     if(currentContentType == ContentTypeLikes){
-//        User* user = currentObject;
-//        [cell.textLabel setText:user.username];
+        User* user = currentObject;
+        [cell.textLabel setText:user.username];
         
     } else if (currentContentType == ContentTypeComments){
-//        SonicComment* comment = currentObject;
-//        [cell.textLabel setText:comment.text];
+        SonicComment* comment = currentObject;
+        [cell.textLabel setText:comment.text];
     }
     return cell;
 }

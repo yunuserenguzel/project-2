@@ -74,10 +74,14 @@
     }
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setUserInteractionEnabled:YES];
-    [self inititalizeTab];
-    [self initSonicPlayerView];
     [self initUserViews];
+    [self initSonicPlayerView];
+    [self inititalizeTab];
     
+    self.tapToTopView = [[UIView alloc] initWithFrame:[self sonicPlayerViewMinFrame]];
+    [self.tapToTopView setHidden:YES];
+    [self.tapToTopView setUserInteractionEnabled:YES];
+    [self insertSubview:self.tapToTopView aboveSubview:self.sonicPlayerView];
 
 }
 - (void) initSonicPlayerView
@@ -121,6 +125,11 @@
     [self.segmentedBar setItems:segmentItems];
 
 }
+- (void) addTargetForTapToTop:(id)target action:(SEL)selector
+{
+    UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:target action:selector];
+    [self.tapToTopView addGestureRecognizer:tapGesture];
+}
 
 - (void) reorganizeForRatio:(CGFloat)ratio
 {   
@@ -128,6 +137,15 @@
     [self.profileImageView setFrame:CGRectByRatio([self profileImageMaxFrame], [self profileImageMinFrame], ratio)];
     [self.usernameLabel setFrame:CGRectByRatio([self usernameLabelMaxFrame], [self usernameLabelMinFrame], ratio)];
     [self.segmentedBar setFrame:CGRectByRatio([self segmentedBarMaxFrame], [self segmentedBarMinFrame], ratio)];
+    if(ratio < 1.0){
+        [self.sonicPlayerView stop];
+        [self.tapToTopView setHidden:NO];
+        [self.sonicPlayerView setUserInteractionEnabled:NO];
+    }
+    else {
+        [self.tapToTopView setHidden:YES];
+        [self.sonicPlayerView setUserInteractionEnabled:YES];
+    }
 }
 
 

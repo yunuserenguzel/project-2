@@ -15,7 +15,6 @@
 #define CommentsTabButtonTag 5112
 #define ResonicsTabButtonTag 5113
 
-
 #define HeaderViewMaxHeight 448.0
 #define HeaderViewMinHeight 127.0
 
@@ -30,8 +29,10 @@
 @property UIButton* commentsTabButton;
 @property UIButton* resonicsTabButton;
 
+@property UIView* tapToTopView;
+
 @property Sonic* sonic;
 
-
 - (void) reorganizeForRatio:(CGFloat)ratio;
+- (void) addTargetForTapToTop:(id)target action:(SEL)selector;
 @end

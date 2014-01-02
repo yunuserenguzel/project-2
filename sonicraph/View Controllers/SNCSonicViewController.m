@@ -9,42 +9,10 @@
 #import "SNCSonicViewController.h"
 #import "SonicPlayerView.h"
 #import "SNCAPIManager.h"
-#import <QuartzCore/QuartzCore.h>
 #import "TypeDefs.h"
 #import "SonicComment.h"
 #import "Configurations.h"
-
-
-typedef enum ContentType {
-    ContentTypeNone,
-    ContentTypeComments,
-    ContentTypeLikes,
-    ContentTypeResonics
-} ContentType;
-
-@interface SNCSonicViewController ()
-
-@property SonicViewControllerHeaderView* headerView;
-@property UIImageView* headerViewShadow;
-
-@property NSArray* likesContent;
-@property NSArray* commentsContent;
-@property NSArray* resonicsContent;
-
-@property UIView* tabActionBarView;
-
-@property UITextField* commentField;
-@property UIButton* commentSubmitButton;
-@property UIView* writeCommentView;
-@property UITableView* tableView;
-
-@property UIView* keyboardCloser;
-
-@property SonicViewControllerInitiationType initiationType;
-
-
-@end
-
+#import "UIButton+StateProperties.h"
 
 @implementation SNCSonicViewController
 {
@@ -73,7 +41,7 @@ typedef enum ContentType {
 {
     return CGRectMake(0.0, self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height, 320.0, HeaderViewMaxHeight);
 }
-- (CGRect) writeCommentViewFrame
+- (CGRect) tabActionBarContentFrame
 {
     return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
@@ -115,15 +83,21 @@ typedef enum ContentType {
 - (void) setCurrentContentType:(ContentType)contentType
 {
     currentContentType = contentType;
+    for (UIView* subview in self.tabActionBarView.subviews) {
+        [subview removeFromSuperview];
+    }
     switch (currentContentType) {
         case ContentTypeComments:
             [self.navigationItem setTitle:@"Comments"];
+            [self.tabActionBarView addSubview:self.writeCommentView];
             break;
         case ContentTypeLikes:
             [self.navigationItem setTitle:@"Likes"];
+            [self.tabActionBarView addSubview:self.likeButton];
             break;
         case ContentTypeResonics:
             [self.navigationItem setTitle:@"Resonics"];
+            [self.tabActionBarView addSubview:self.resonicButton];
             break;
         default:
             [self.navigationItem setTitle:@""];
@@ -131,13 +105,15 @@ typedef enum ContentType {
     }
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.commentsContent = @[];
     self.likesContent = @[];
     self.resonicsContent = @[];
+    
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MoreWhite.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openActionsMenu)]];
+    
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
@@ -145,45 +121,14 @@ typedef enum ContentType {
     [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, HeaderViewMaxHeight * 2.0, 0.0)];
     [self.tableView setShowsVerticalScrollIndicator:NO];
     [self.tableView setShowsHorizontalScrollIndicator:NO];
+    [self.tableView setTableFooterView:[UIView new]];
+//    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.tableView];
 //    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.view.frame));
 //    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.tableView.frame));
-
-    [self.tableView setTableHeaderView:[[UIView alloc] initWithFrame:[self tableHeaderViewFrame]]];
-//    [self.tableView.tableHeaderView setClipsToBounds:YES];
-    [self.tableView.tableHeaderView setUserInteractionEnabled:YES];
     
-    
-    self.headerView = [[SonicViewControllerHeaderView alloc] init];
-    [self.headerView setFrame:[self headerViewFrame]];
-    [self.tableView.tableHeaderView addSubview:self.headerView];
-    
-    self.headerViewShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Shadow.png"]];
-    [self.headerViewShadow setFrame:CGRectMake(0.0, [self headerViewFrame].size.height, self.view.frame.size.width, self.headerViewShadow.image.size.height)];
-    self.headerView.segmentedBar.delegate = self;
-    [self.headerView addSubview:self.headerViewShadow];
-    
-    self.tabActionBarView = [[UIView alloc] initWithFrame:[self tabActionBarViewMaxFrame]];
-    [self.view addSubview:self.tabActionBarView];
-    
-    self.writeCommentView = [[UIView alloc] initWithFrame:[self writeCommentViewFrame]];
-    [self.writeCommentView setBackgroundColor:[UIColor whiteColor]];
-    [self.self.tabActionBarView addSubview:self.writeCommentView];
-    
-    self.commentField = [[UITextField alloc] initWithFrame:[self commentFieldFrame]];
-    [self.commentField.layer setBorderColor:NavigationBarBlueColor.CGColor];
-    [self.commentField.layer setBorderWidth:1.0];
-    [self.commentField.layer setCornerRadius:5.0];
-    [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 44.0)]];
-    [self.commentField setPlaceholder:@"Write comment"];
-    [self.writeCommentView addSubview:self.commentField];
-    
-    self.commentSubmitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.commentSubmitButton setTitle:@"Submit" forState:UIControlStateNormal];
-    [self.commentSubmitButton setFrame:[self commentSubmitButtonFrame]];
-    [self.commentSubmitButton addTarget:self action:@selector(writeComment) forControlEvents:UIControlEventTouchUpInside];
-    self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
-    [self.writeCommentView addSubview:self.commentSubmitButton];
+    [self initHeaderViews];
+    [self initTabsViews];
     
 //    self.refreshControl = [[UIRefreshControl alloc] init];
 //    self.refreshControl = self.refreshControl;
@@ -203,22 +148,84 @@ typedef enum ContentType {
 
 }
 
-- (void)segmentedBar:(SegmentedBar *)segmentedBar selectedItemAtIndex:(NSInteger)index
+- (void) initTabsViews
 {
-    switch (index) {
-        case 0:
-            [self setCurrentContentType:ContentTypeLikes];
-            break;
-        case 1:
-            [self setCurrentContentType:ContentTypeComments];
-            break;
-        case 2:
-            [self setCurrentContentType:ContentTypeResonics];
-            break;
-            
-        default:
-            break;
-    }
+    self.tabActionBarView = [[UIView alloc] initWithFrame:[self tabActionBarViewMaxFrame]];
+    [self.view addSubview:self.tabActionBarView];
+    
+    self.writeCommentView = [[UIView alloc] initWithFrame:[self tabActionBarContentFrame]];
+    [self.writeCommentView setBackgroundColor:[UIColor whiteColor]];
+    
+    self.commentField = [[UITextField alloc] initWithFrame:[self commentFieldFrame]];
+    [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 44.0)]];
+    [self.commentField setPlaceholder:@"Write comment"];
+    [self.writeCommentView addSubview:self.commentField];
+    
+    self.commentSubmitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.commentSubmitButton setTitle:@"Submit" forState:UIControlStateNormal];
+    [self.commentSubmitButton setFrame:[self commentSubmitButtonFrame]];
+    [self.commentSubmitButton addTarget:self action:@selector(writeComment) forControlEvents:UIControlEventTouchUpInside];
+    self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
+    [self.writeCommentView addSubview:self.commentSubmitButton];
+    
+    self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.likeButton setTitle:@"Like" forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"HeartPink.png"] forState:UIControlStateNormal];
+    
+    self.resonicButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.resonicButton setTitle:@"Resonic" forState:UIControlStateNormal];
+    [self.resonicButton setImage:[UIImage imageNamed:@"ReSonicPink.png"] forState:UIControlStateNormal];
+    [@[self.likeButton, self.resonicButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
+        [button setFrame:[self tabActionBarContentFrame]];
+        [button setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 40.0)];
+        button.titleLabel.font = [button.titleLabel.font fontWithSize:18.0];
+        [button setBackgroundImageWithColor:NavigationBarBlueColor forState:UIControlStateNormal];
+    }];
+    
+    [@[self.commentField,self.likeButton,self.resonicButton] enumerateObjectsUsingBlock:^(UIView* view, NSUInteger idx, BOOL *stop) {
+        [view.layer setBorderColor:NavigationBarBlueColor.CGColor];
+        [view.layer setBorderWidth:1.0];
+        [view.layer setCornerRadius:5.0];
+    }];
+
+}
+
+- (void) initHeaderViews
+{
+    [self.tableView setTableHeaderView:[[UIView alloc] initWithFrame:[self tableHeaderViewFrame]]];
+    //    [self.tableView.tableHeaderView setClipsToBounds:YES];
+    [self.tableView.tableHeaderView setUserInteractionEnabled:YES];
+    
+    
+    self.headerView = [[SonicViewControllerHeaderView alloc] init];
+    [self.headerView setFrame:[self headerViewFrame]];
+    [self.tableView.tableHeaderView addSubview:self.headerView];
+    
+    self.headerViewShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Shadow.png"]];
+    [self.headerViewShadow setFrame:CGRectMake(0.0, [self headerViewFrame].size.height, self.view.frame.size.width, self.headerViewShadow.image.size.height)];
+    self.headerView.segmentedBar.delegate = self;
+    [self.headerView addTargetForTapToTop:self action:@selector(scrollToTop)];
+    [self.headerView addSubview:self.headerViewShadow];
+
+}
+
+- (void) openActionsMenu
+{
+    
+}
+
+- (void) scrollToTop
+{
+    [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    CGFloat duration = animated ? 0.3 : 0.0;
+    [UIView animateWithDuration:duration animations:^{
+        [self.tabBarController.tabBar setFrame:[self tabbarMaxFrame]];
+    }];
 }
 
 - (void) initiateFor:(SonicViewControllerInitiationType)initiationType
@@ -232,12 +239,11 @@ typedef enum ContentType {
     if(navigationHeight == -1.0){
         navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
-    CGFloat topOffset = scrollView.contentOffset.y ;
-    CGFloat height = HeaderViewMaxHeight - topOffset;
-    height = height < HeaderViewMinHeight ? HeaderViewMinHeight : height;
-    CGFloat ratio = (height-HeaderViewMinHeight) / (HeaderViewMaxHeight - HeaderViewMinHeight);
+    CGFloat height;
+    CGFloat ratio = [self extractRatioFromTopOffset:scrollView.contentOffset.y  andHeight:&height];
+    ratio = ratio > 0.0 ? ratio : 0.0;
     [self.headerView reorganizeForRatio:ratio];
-    if(height == HeaderViewMinHeight){
+    if(height <= HeaderViewMinHeight){
         if (self.headerView.superview != self.view){
             [self.view addSubview:self.headerView];
         }
@@ -251,8 +257,8 @@ typedef enum ContentType {
         [self.headerView setFrame:[self headerViewFrame]];
     }
     
-    if (ratio < 0.1){
-        self.headerViewShadow.alpha = 1.0 - (ratio/0.1)*1.0;
+    if (ratio < 0.05){
+        self.headerViewShadow.alpha = 1.0 - (ratio/0.05)*1.0;
     } else {
         self.headerViewShadow.alpha = 0.0;
     }
@@ -265,9 +271,32 @@ typedef enum ContentType {
     }
 }
 
+- (CGFloat) extractRatioFromTopOffset:(CGFloat)topOffset andHeight:(inout CGFloat*)height
+{
+    CGFloat tempHeight = HeaderViewMaxHeight - topOffset;
+    if(height){
+        *height = tempHeight;
+    }
+    return (tempHeight-HeaderViewMinHeight) / (HeaderViewMaxHeight - HeaderViewMinHeight);
+}
+
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
-//    NSLog(@"%f",scrollView.decelerationRate);
+    [self calculateAndAnimateToContentOffset];
+}
+
+- (void) calculateAndAnimateToContentOffset
+{
+    CGFloat height;
+    CGFloat ratio = [self extractRatioFromTopOffset:self.tableView.contentOffset.y andHeight:&height];
+    if(ratio > 0.0 && ratio < 1.0){
+        CGFloat velocityY = [self.tableView.panGestureRecognizer velocityInView:self.tableView].y;
+        if(velocityY > 0.0){
+            [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+        } else {
+            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight) animated:YES];
+        }
+    }
 }
 
 - (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -275,26 +304,10 @@ typedef enum ContentType {
     if (velocity.y != 0.0){
         return;
     }
-//    NSLog(@"velocity: %f, %f",velocity.x,velocity.y);
-    static CGFloat navigationHeight = -1.0;
-    if(navigationHeight == -1.0){
-        navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-    }
-    
-    CGFloat topOffset = scrollView.contentOffset.y + navigationHeight;
-    if(topOffset > 0.0 && topOffset <= [self tableHeaderViewFrame].size.height * 0.5){
-        *targetContentOffset = CGPointMake(0.0, -navigationHeight);
-    } else if(topOffset >= [self tableHeaderViewFrame].size.height * 0.5 && topOffset < 321.0){
-        *targetContentOffset = CGPointMake(0.0, 254.0);
-    }
+    [self calculateAndAnimateToContentOffset];
+
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if(!decelerate){
-        return;
-    }
-}
 
 - (void) configureViews
 {
@@ -329,19 +342,6 @@ typedef enum ContentType {
     // Dispose of any resources that can be recreated.
 }
 
-- (void) changeTabForButton:(UIButton*)button
-{
-    if(button.tag == LikesTabButtonTag){
-        [self setCurrentContentType:ContentTypeLikes];
-    }
-    else if(button.tag == CommentsTabButtonTag){
-        [self setCurrentContentType:ContentTypeComments];
-    }
-    else if(button.tag == ResonicsTabButtonTag){
-        [self setCurrentContentType:ContentTypeResonics];
-    }
-    [self.tableView reloadData];
-}
 
 - (void) refreshContent
 {
@@ -373,7 +373,7 @@ typedef enum ContentType {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return 1;
     // Return the number of rows in the section.
     if([self currentContent]){
         return [[self currentContent] count];
@@ -413,6 +413,25 @@ typedef enum ContentType {
     return cell;
 }
 
+
+- (void)segmentedBar:(SegmentedBar *)segmentedBar selectedItemAtIndex:(NSInteger)index
+{
+    [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
+    switch (index) {
+        case 0:
+            [self setCurrentContentType:ContentTypeLikes];
+            break;
+        case 1:
+            [self setCurrentContentType:ContentTypeComments];
+            break;
+        case 2:
+            [self setCurrentContentType:ContentTypeResonics];
+            break;
+            
+        default:
+            break;
+    }
+}
 
 - (void)viewDidUnload {
     

@@ -206,6 +206,7 @@
 {
     [self.timer invalidate];
     [self.audioPlayer stop];
+    [self.soundSlider setValue:0.0];
 }
 
 - (void)pause

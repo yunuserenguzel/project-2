@@ -61,6 +61,7 @@
 		AEB945A51874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A41874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png */; };
 		AEB945A71874F08000FCE111 /* 44PXLabelWithShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */; };
 		AEB945A91874F32800FCE111 /* Shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A81874F32800FCE111 /* Shadow@2x.png */; };
+		AEB945AB1875064D00FCE111 /* MoreWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945AA1875064D00FCE111 /* MoreWhite@2x.png */; };
 		AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECBA6401856408600DE8EDE /* SNCLoginViewController.m */; };
 		AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBA64218564D9D00DE8EDE /* QuartzCore.framework */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
@@ -196,6 +197,7 @@
 		AEB945A41874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SegmentedButtonBarSeperator@2x.png"; sourceTree = "<group>"; };
 		AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "44PXLabelWithShadow@2x.png"; sourceTree = "<group>"; };
 		AEB945A81874F32800FCE111 /* Shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shadow@2x.png"; sourceTree = "<group>"; };
+		AEB945AA1875064D00FCE111 /* MoreWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoreWhite@2x.png"; sourceTree = "<group>"; };
 		AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCLoginViewController.h; path = ../Views/SNCLoginViewController.h; sourceTree = "<group>"; };
 		AECBA6401856408600DE8EDE /* SNCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNCLoginViewController.m; path = ../Views/SNCLoginViewController.m; sourceTree = "<group>"; };
 		AECBA64218564D9D00DE8EDE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -655,6 +657,7 @@
 		AEDAADEB185DB334001DD389 /* SonicCell */ = {
 			isa = PBXGroup;
 			children = (
+				AEB945AA1875064D00FCE111 /* MoreWhite@2x.png */,
 				AEB945A81874F32800FCE111 /* Shadow@2x.png */,
 				AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */,
 				AEB945A41874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png */,
@@ -764,6 +767,7 @@
 				AEDAADFD185DB8A4001DD389 /* CameraTBWhite@2x.png in Resources */,
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
 				AEB945971874D2D000FCE111 /* CommentPink@2x.png in Resources */,
+				AEB945AB1875064D00FCE111 /* MoreWhite@2x.png in Resources */,
 				AEB945A71874F08000FCE111 /* 44PXLabelWithShadow@2x.png in Resources */,
 				AEDAAE1618639AF1001DD389 /* SecondsNumbers@2x.png in Resources */,
 				AEB945A51874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png in Resources */,

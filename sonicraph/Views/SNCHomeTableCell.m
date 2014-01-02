@@ -23,7 +23,7 @@
 @interface SNCHomeTableCell () <UIActionSheetDelegate,UIAlertViewDelegate>
 
 @property SonicPlayerView* sonicPlayerView;
-@property UIView* cellSpacingView;
+@property UIImageView* cellSpacingView;
 
 @end
 
@@ -143,8 +143,9 @@
     [self initLabels];
     [self initButtons];
 
-    self.cellSpacingView = [[UIView alloc] initWithFrame:[self cellSpacingViewFrame]];
-    [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
+    self.cellSpacingView = [[UIImageView alloc] initWithFrame:[self cellSpacingViewFrame]];
+    [self.cellSpacingView setImage:[UIImage imageNamed:@"44PXLabelWithShadow@2x"]];
+//    [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
     [self addSubview:self.cellSpacingView];
 
 }
@@ -179,17 +180,17 @@
 {
     self.likeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.likeButton setFrame:[self likeButtonFrame]];
-    [self.likeButton setImage:[UIImage imageNamed:@"LikeDarkGrey.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"HeartPink.png"] forState:UIControlStateNormal];
     [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
 
     self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.commentButton setFrame:[self commentButtonFrame]];
-    [self.commentButton setImage:[UIImage imageNamed:@"Comment.png"] forState:UIControlStateNormal];
+    [self.commentButton setImage:[UIImage imageNamed:@"CommentPink.png"] forState:UIControlStateNormal];
     [self.commentButton addTarget:self action:@selector(commentSonic) forControlEvents:UIControlEventTouchUpInside];
     
     self.resonicButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.resonicButton setFrame:[self resonicButtonFrame]];
-    [self.resonicButton setImage:[UIImage imageNamed:@"ReSonicDarkGrey.png"] forState:UIControlStateNormal];
+    [self.resonicButton setImage:[UIImage imageNamed:@"ReSonicPink.png"] forState:UIControlStateNormal];
     [self.resonicButton addTarget:self action:@selector(resonic) forControlEvents:UIControlEventTouchUpInside];
 
     self.shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];

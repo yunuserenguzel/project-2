@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Sonic.h"
+#import "SonicViewControllerHeaderView.h"
 
 typedef enum SonicViewControllerInitiationType {
     SonicViewControllerInitiationTypeCommentWrite = 101,
@@ -16,7 +17,7 @@ typedef enum SonicViewControllerInitiationType {
     SonicViewControllerInitiationTypeResonicRead = 104
 } SonicViewControllerInitiationType;
 
-@interface SNCSonicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface SNCSonicViewController : UIViewController <SegmentedBarDelegate,UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic) Sonic* sonic;
 

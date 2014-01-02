@@ -51,6 +51,16 @@
 		AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDC1837EA3E00F74F1D /* Sonic.m */; };
 		AE86EEE01837EA7E00F74F1D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDF1837EA7E00F74F1D /* User.m */; };
 		AE977196186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg */; };
+		AEB945961874D2D000FCE111 /* CommentGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945901874D2D000FCE111 /* CommentGrey@2x.png */; };
+		AEB945971874D2D000FCE111 /* CommentPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945911874D2D000FCE111 /* CommentPink@2x.png */; };
+		AEB945981874D2D000FCE111 /* HeartGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945921874D2D000FCE111 /* HeartGrey@2x.png */; };
+		AEB945991874D2D000FCE111 /* HeartPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945931874D2D000FCE111 /* HeartPink@2x.png */; };
+		AEB9459A1874D2D000FCE111 /* ReSonicGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945941874D2D000FCE111 /* ReSonicGrey@2x.png */; };
+		AEB9459B1874D2D000FCE111 /* ReSonicPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945951874D2D000FCE111 /* ReSonicPink@2x.png */; };
+		AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945A01874DA3200FCE111 /* SegmentedBar.m */; };
+		AEB945A51874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A41874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png */; };
+		AEB945A71874F08000FCE111 /* 44PXLabelWithShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */; };
+		AEB945A91874F32800FCE111 /* Shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A81874F32800FCE111 /* Shadow@2x.png */; };
 		AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECBA6401856408600DE8EDE /* SNCLoginViewController.m */; };
 		AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBA64218564D9D00DE8EDE /* QuartzCore.framework */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
@@ -76,9 +86,6 @@
 		AED56F081801B425000DF866 /* SNCAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56F071801B425000DF866 /* SNCAPITest.m */; };
 		AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */; };
 		AEDAADDD185CA013001DD389 /* Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADDC185CA013001DD389 /* Share@2x.png */; };
-		AEDAADF0185DB334001DD389 /* Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADEC185DB334001DD389 /* Comment@2x.png */; };
-		AEDAADF1185DB334001DD389 /* LikeDarkGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADED185DB334001DD389 /* LikeDarkGrey@2x.png */; };
-		AEDAADF2185DB334001DD389 /* ReSonicDarkGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADEE185DB334001DD389 /* ReSonicDarkGrey@2x.png */; };
 		AEDAADF3185DB334001DD389 /* ShareWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADEF185DB334001DD389 /* ShareWhite@2x.png */; };
 		AEDAADF6185DB802001DD389 /* SNCTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAADF5185DB802001DD389 /* SNCTabbarController.m */; };
 		AEDAADFD185DB8A4001DD389 /* CameraTBWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAADF8185DB8A4001DD389 /* CameraTBWhite@2x.png */; };
@@ -178,6 +185,17 @@
 		AE86EEDE1837EA7E00F74F1D /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		AE86EEDF1837EA7E00F74F1D /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2013-11-07 09.52.53.jpg"; sourceTree = "<group>"; };
+		AEB945901874D2D000FCE111 /* CommentGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CommentGrey@2x.png"; sourceTree = "<group>"; };
+		AEB945911874D2D000FCE111 /* CommentPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CommentPink@2x.png"; sourceTree = "<group>"; };
+		AEB945921874D2D000FCE111 /* HeartGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeartGrey@2x.png"; sourceTree = "<group>"; };
+		AEB945931874D2D000FCE111 /* HeartPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeartPink@2x.png"; sourceTree = "<group>"; };
+		AEB945941874D2D000FCE111 /* ReSonicGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReSonicGrey@2x.png"; sourceTree = "<group>"; };
+		AEB945951874D2D000FCE111 /* ReSonicPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReSonicPink@2x.png"; sourceTree = "<group>"; };
+		AEB9459F1874DA3200FCE111 /* SegmentedBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedBar.h; sourceTree = "<group>"; };
+		AEB945A01874DA3200FCE111 /* SegmentedBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedBar.m; sourceTree = "<group>"; };
+		AEB945A41874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SegmentedButtonBarSeperator@2x.png"; sourceTree = "<group>"; };
+		AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "44PXLabelWithShadow@2x.png"; sourceTree = "<group>"; };
+		AEB945A81874F32800FCE111 /* Shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shadow@2x.png"; sourceTree = "<group>"; };
 		AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCLoginViewController.h; path = ../Views/SNCLoginViewController.h; sourceTree = "<group>"; };
 		AECBA6401856408600DE8EDE /* SNCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNCLoginViewController.m; path = ../Views/SNCLoginViewController.m; sourceTree = "<group>"; };
 		AECBA64218564D9D00DE8EDE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -225,9 +243,6 @@
 		AEDAADD9185C941C001DD389 /* Configurations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurations.h; sourceTree = "<group>"; };
 		AEDAADDA185C9A41001DD389 /* CameraBackFrontWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraBackFrontWhite@2x.png"; sourceTree = "<group>"; };
 		AEDAADDC185CA013001DD389 /* Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Share@2x.png"; sourceTree = "<group>"; };
-		AEDAADEC185DB334001DD389 /* Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Comment@2x.png"; sourceTree = "<group>"; };
-		AEDAADED185DB334001DD389 /* LikeDarkGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LikeDarkGrey@2x.png"; sourceTree = "<group>"; };
-		AEDAADEE185DB334001DD389 /* ReSonicDarkGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReSonicDarkGrey@2x.png"; sourceTree = "<group>"; };
 		AEDAADEF185DB334001DD389 /* ShareWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShareWhite@2x.png"; sourceTree = "<group>"; };
 		AEDAADF4185DB802001DD389 /* SNCTabbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCTabbarController.h; sourceTree = "<group>"; };
 		AEDAADF5185DB802001DD389 /* SNCTabbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCTabbarController.m; sourceTree = "<group>"; };
@@ -363,6 +378,8 @@
 				AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */,
 				AE2B4E7B18737677006BD456 /* SonicViewControllerHeaderView.h */,
 				AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */,
+				AEB9459F1874DA3200FCE111 /* SegmentedBar.h */,
+				AEB945A01874DA3200FCE111 /* SegmentedBar.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -638,12 +655,18 @@
 		AEDAADEB185DB334001DD389 /* SonicCell */ = {
 			isa = PBXGroup;
 			children = (
+				AEB945A81874F32800FCE111 /* Shadow@2x.png */,
+				AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */,
+				AEB945A41874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png */,
+				AEB945901874D2D000FCE111 /* CommentGrey@2x.png */,
+				AEB945911874D2D000FCE111 /* CommentPink@2x.png */,
+				AEB945921874D2D000FCE111 /* HeartGrey@2x.png */,
+				AEB945931874D2D000FCE111 /* HeartPink@2x.png */,
+				AEB945941874D2D000FCE111 /* ReSonicGrey@2x.png */,
+				AEB945951874D2D000FCE111 /* ReSonicPink@2x.png */,
 				AEDAAE311865939C001DD389 /* Paused@2x.png */,
 				AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg */,
 				AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */,
-				AEDAADEC185DB334001DD389 /* Comment@2x.png */,
-				AEDAADED185DB334001DD389 /* LikeDarkGrey@2x.png */,
-				AEDAADEE185DB334001DD389 /* ReSonicDarkGrey@2x.png */,
 				AEDAADEF185DB334001DD389 /* ShareWhite@2x.png */,
 			);
 			path = SonicCell;
@@ -724,23 +747,26 @@
 				AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */,
 				AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */,
 				AEDAAE1D1864CCB3001DD389 /* MicrophoneWhite@2x.png in Resources */,
+				AEB945A91874F32800FCE111 /* Shadow@2x.png in Resources */,
 				AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */,
 				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
 				AE15966718142C6300929D1D /* Camera Button.png in Resources */,
 				AEDAAE2F186591BA001DD389 /* FacebookIcon@2x.png in Resources */,
 				AEDAAE321865939C001DD389 /* Paused@2x.png in Resources */,
+				AEB945961874D2D000FCE111 /* CommentGrey@2x.png in Resources */,
 				AEDAAE1B1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png in Resources */,
-				AEDAADF2185DB334001DD389 /* ReSonicDarkGrey@2x.png in Resources */,
+				AEB9459B1874D2D000FCE111 /* ReSonicPink@2x.png in Resources */,
 				AEDAADDD185CA013001DD389 /* Share@2x.png in Resources */,
 				AE15966A18142C6300929D1D /* Cancel.png in Resources */,
-				AEDAADF1185DB334001DD389 /* LikeDarkGrey@2x.png in Resources */,
 				AED56EB11801A35D000DF866 /* Main.storyboard in Resources */,
-				AEDAADF0185DB334001DD389 /* Comment@2x.png in Resources */,
 				AEDAAE2618657221001DD389 /* TrimHandleBig@2x.png in Resources */,
 				AEDAADFE185DB8A4001DD389 /* EyeWhite@2x.png in Resources */,
 				AEDAADFD185DB8A4001DD389 /* CameraTBWhite@2x.png in Resources */,
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
+				AEB945971874D2D000FCE111 /* CommentPink@2x.png in Resources */,
+				AEB945A71874F08000FCE111 /* 44PXLabelWithShadow@2x.png in Resources */,
 				AEDAAE1618639AF1001DD389 /* SecondsNumbers@2x.png in Resources */,
+				AEB945A51874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png in Resources */,
 				AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */,
 				AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */,
 				AEDAAE01185DB8A4001DD389 /* SetignsWhite@2x.png in Resources */,
@@ -749,13 +775,16 @@
 				AEDAAE03185DB900001DD389 /* UserWhite@2x.png in Resources */,
 				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,
 				AE159695181C15AE00929D1D /* Sound Button.png in Resources */,
+				AEB945991874D2D000FCE111 /* HeartPink@2x.png in Resources */,
 				AE15966C18142C6300929D1D /* Option.png in Resources */,
 				AEDAAE00185DB8A4001DD389 /* HeartWhite@2x.png in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
 				AEDAAE30186591BA001DD389 /* TwitterIcon@2x.png in Resources */,
+				AEB945981874D2D000FCE111 /* HeartGrey@2x.png in Resources */,
 				AE977196186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg in Resources */,
 				AEDAADF3185DB334001DD389 /* ShareWhite@2x.png in Resources */,
 				AEDAAE3418663176001DD389 /* AdCommentBoxWhite@2x.png in Resources */,
+				AEB9459A1874D2D000FCE111 /* ReSonicGrey@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -810,6 +839,7 @@
 				AED56F081801B425000DF866 /* SNCAPITest.m in Sources */,
 				AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */,
 				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
+				AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */,
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
 				AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */,

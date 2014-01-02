@@ -27,9 +27,9 @@
 {
     return CGRectMake(0.0, 66.0, 320.0, 320.0);
 }
-- (CGRect) tabsViewMaxFrame
+- (CGRect) segmentedBarMaxFrame
 {
-    return CGRectMake(0.0, 386.0, 320.0, 44.0);
+    return CGRectMake(0.0, 386.0, 320.0, 61.0);
 }
 
 - (CGRect) profileImageMinFrame
@@ -44,22 +44,9 @@
 {
     return CGRectMake(255.0, 321.0, 66.0, 66.0);
 }
-- (CGRect) tabsViewMinFrame
+- (CGRect) segmentedBarMinFrame
 {
-    return CGRectMake(0.0, 387.0, 320.0, 44.0);
-}
-
-- (CGRect) likesButtonFrame
-{
-    return CGRectMake(0.0, 0.0, 320.0 / 3.0, 44.0);
-}
-- (CGRect) commentsButtonFrame
-{
-    return CGRectMake(320.0*1.0/3.0, 0.0, 320.0 / 3.0, 44.0);
-}
-- (CGRect) resonicsButtonFrame
-{
-    return CGRectMake(320.0*2.0/3.0, 0.0, 320.0 / 3.0, 44.0);
+    return CGRectMake(0.0, 387.0, 320.0, 61.0);
 }
 
 - (id)init
@@ -90,6 +77,8 @@
     [self inititalizeTab];
     [self initSonicPlayerView];
     [self initUserViews];
+    
+
 }
 - (void) initSonicPlayerView
 {
@@ -112,27 +101,25 @@
 }
 - (void) inititalizeTab
 {
-    self.tabsView = [[UIView alloc] initWithFrame:[self tabsViewMaxFrame]];
-    [self.tabsView setUserInteractionEnabled:YES];
-    [self addSubview:self.tabsView];
+    self.segmentedBar = [[SegmentedBar alloc] initWithFrame:[self segmentedBarMaxFrame]];
+    [self addSubview:self.segmentedBar];
     
-    self.likesTabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.likesTabButton.frame = [self likesButtonFrame];
-    [self.likesTabButton setTitle:@"Likes" forState:UIControlStateNormal];
-    self.likesTabButton.tag = LikesTabButtonTag;
-    
-    self.commentsTabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.commentsTabButton.frame = [self commentsButtonFrame];
-    [self.commentsTabButton setTitle:@"Comments" forState:UIControlStateNormal];
-    self.commentsTabButton.tag = CommentsTabButtonTag;
-    
-    self.resonicsTabButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.resonicsTabButton.frame = [self resonicsButtonFrame];
-    [self.resonicsTabButton setTitle:@"Resonics" forState:UIControlStateNormal];
-    self.resonicsTabButton.tag = ResonicsTabButtonTag;
-    [@[self.likesTabButton,self.commentsTabButton,self.resonicsTabButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
-        [self.tabsView addSubview:button];
-    }];
+    NSArray* segmentItems = @[
+      [SegmentedBarItem itemWithNormalImage:[UIImage imageNamed:@"HeartGrey.png"]
+                              selectedImage:[UIImage imageNamed:@"HeartPink.png"]
+                                      title:@"Likes"
+                                   subtitle:@"215"],
+      [SegmentedBarItem itemWithNormalImage:[UIImage imageNamed:@"CommentGrey.png"]
+                              selectedImage:[UIImage imageNamed:@"CommentPink.png"]
+                                      title:@"Comments"
+                                   subtitle:@"215"],
+      [SegmentedBarItem itemWithNormalImage:[UIImage imageNamed:@"ReSonicGrey.png"]
+                              selectedImage:[UIImage imageNamed:@"ReSonicPink.png"]
+                                      title:@"Resonics"
+                                   subtitle:@"215"],
+    ];
+    [self.segmentedBar setItems:segmentItems];
+
 }
 
 - (void) reorganizeForRatio:(CGFloat)ratio
@@ -140,13 +127,8 @@
     [self.sonicPlayerView setFrame:CGRectByRatio([self sonicPlayerViewMaxFrame], [self sonicPlayerViewMinFrame], ratio)];
     [self.profileImageView setFrame:CGRectByRatio([self profileImageMaxFrame], [self profileImageMinFrame], ratio)];
     [self.usernameLabel setFrame:CGRectByRatio([self usernameLabelMaxFrame], [self usernameLabelMinFrame], ratio)];
-    [self.tabsView setFrame:CGRectByRatio([self tabsViewMaxFrame], [self tabsViewMinFrame], ratio)];
+    [self.segmentedBar setFrame:CGRectByRatio([self segmentedBarMaxFrame], [self segmentedBarMinFrame], ratio)];
 }
 
-- (void) setButtonTargets:(id)target selector:(SEL) selector
-{
-    [@[self.likesTabButton,self.commentsTabButton,self.resonicsTabButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
-        [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    }];
-}
+
 @end

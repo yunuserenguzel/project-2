@@ -11,7 +11,6 @@
 #import "SNCAPIManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TypeDefs.h"
-#import "SonicViewControllerHeaderView.h"
 #import "SonicComment.h"
 #import "Configurations.h"
 
@@ -26,6 +25,7 @@ typedef enum ContentType {
 @interface SNCSonicViewController ()
 
 @property SonicViewControllerHeaderView* headerView;
+@property UIImageView* headerViewShadow;
 
 @property NSArray* likesContent;
 @property NSArray* commentsContent;
@@ -153,10 +153,15 @@ typedef enum ContentType {
 //    [self.tableView.tableHeaderView setClipsToBounds:YES];
     [self.tableView.tableHeaderView setUserInteractionEnabled:YES];
     
+    
     self.headerView = [[SonicViewControllerHeaderView alloc] init];
     [self.headerView setFrame:[self headerViewFrame]];
-    [self.headerView setButtonTargets:self selector:@selector(changeTabForButton:)];
     [self.tableView.tableHeaderView addSubview:self.headerView];
+    
+    self.headerViewShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Shadow.png"]];
+    [self.headerViewShadow setFrame:CGRectMake(0.0, [self headerViewFrame].size.height, self.view.frame.size.width, self.headerViewShadow.image.size.height)];
+    self.headerView.segmentedBar.delegate = self;
+    [self.headerView addSubview:self.headerViewShadow];
     
     self.tabActionBarView = [[UIView alloc] initWithFrame:[self tabActionBarViewMaxFrame]];
     [self.view addSubview:self.tabActionBarView];
@@ -169,7 +174,7 @@ typedef enum ContentType {
     [self.commentField.layer setBorderColor:NavigationBarBlueColor.CGColor];
     [self.commentField.layer setBorderWidth:1.0];
     [self.commentField.layer setCornerRadius:5.0];
-    [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)]];
+    [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 44.0)]];
     [self.commentField setPlaceholder:@"Write comment"];
     [self.writeCommentView addSubview:self.commentField];
     
@@ -198,6 +203,24 @@ typedef enum ContentType {
 
 }
 
+- (void)segmentedBar:(SegmentedBar *)segmentedBar selectedItemAtIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            [self setCurrentContentType:ContentTypeLikes];
+            break;
+        case 1:
+            [self setCurrentContentType:ContentTypeComments];
+            break;
+        case 2:
+            [self setCurrentContentType:ContentTypeResonics];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 - (void) initiateFor:(SonicViewControllerInitiationType)initiationType
 {
     self.initiationType = initiationType;
@@ -210,7 +233,6 @@ typedef enum ContentType {
         navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
     CGFloat topOffset = scrollView.contentOffset.y ;
-//    NSLog(@"topoffset: %f",topOffset);
     CGFloat height = HeaderViewMaxHeight - topOffset;
     height = height < HeaderViewMinHeight ? HeaderViewMinHeight : height;
     CGFloat ratio = (height-HeaderViewMinHeight) / (HeaderViewMaxHeight - HeaderViewMinHeight);
@@ -229,7 +251,12 @@ typedef enum ContentType {
         [self.headerView setFrame:[self headerViewFrame]];
     }
     
-//    NSLog(@"last point of header view: %f height: %f", topOffset + height, height);
+    if (ratio < 0.1){
+        self.headerViewShadow.alpha = 1.0 - (ratio/0.1)*1.0;
+    } else {
+        self.headerViewShadow.alpha = 0.0;
+    }
+    
     [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self tabActionBarViewMinFrame], ratio)];
     if(ratio > 1.0){
         [self.tabBarController.tabBar setFrame:[self tabbarMaxFrame]];
@@ -281,6 +308,7 @@ typedef enum ContentType {
     if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
         [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeComments];
+        [self.headerView.segmentedBar setSelectedIndex:1];
     }
     
     [self refreshContent];

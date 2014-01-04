@@ -29,7 +29,7 @@
 }
 - (CGRect) segmentedBarMaxFrame
 {
-    return CGRectMake(0.0, 386.0, 320.0, 61.0);
+    return CGRectMake(0.0, 386.0, 320.0, 60.0);
 }
 
 - (CGRect) profileImageMinFrame
@@ -46,7 +46,7 @@
 }
 - (CGRect) segmentedBarMinFrame
 {
-    return CGRectMake(0.0, 387.0, 320.0, 61.0);
+    return CGRectMake(0.0, 386.0, 320.0, 60.0);
 }
 
 - (id)init

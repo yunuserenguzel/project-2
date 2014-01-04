@@ -89,6 +89,10 @@
     [tapGesture setNumberOfTapsRequired:1];
     [self addGestureRecognizer:tapGesture];
     
+    UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    [longPressGesture setMinimumPressDuration:1.5];
+    [self addGestureRecognizer:longPressGesture];
+    
     self.pausedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Paused.png"]];
     [self.pausedImageView setContentMode:UIViewContentModeScaleAspectFit];
     [self.pausedImageView setFrame:[self pausedImageViewFrame]];
@@ -96,7 +100,14 @@
     [self.imageView addSubview:self.pausedImageView];
 
 }
-
+- (void) longPress:(UILongPressGestureRecognizer* )longGesture
+{
+    NSLog(@"state: %d", longGesture.state);
+    if([longGesture state] == UIGestureRecognizerStateBegan){
+        [self stop];
+        [self play];
+    }
+}
 - (void) showPausedImageView
 {
     [self.pausedImageView setAlpha:0.25];
@@ -147,7 +158,6 @@
         }];
     }
 }
-
 
 - (void) initializeImageView
 {
@@ -206,6 +216,7 @@
 {
     [self.timer invalidate];
     [self.audioPlayer stop];
+    [self.audioPlayer setCurrentTime:0.0];
     [self.soundSlider setValue:0.0];
 }
 

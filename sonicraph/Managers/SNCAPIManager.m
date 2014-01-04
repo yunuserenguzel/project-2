@@ -29,6 +29,11 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
     SonicComment* sonicComment = [[SonicComment alloc] init];
     sonicComment.text = [dictionary objectForKey:@"text"];
     sonicComment.createdAt = dateFromServerString([dictionary objectForKey:@"created_at"]);
+    User* user = [[User alloc] init];
+    [user setUsername:[dictionary objectForKey:@"username"]];
+    [user setProfileImageUrl:[dictionary objectForKey:@"profile_image"]];
+    [user setUserId: [dictionary objectForKey:@"user_id"]];
+    sonicComment.user = user;
     return sonicComment;
 }
 
@@ -42,7 +47,15 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
             getRequestWithParams:params
             andOperation:@"sonic/comments"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
-                
+                NSMutableArray* comments = [NSMutableArray new];
+                [[responseDictionary objectForKey:@"comments"] enumerateObjectsUsingBlock:^(NSDictionary* commentDict, NSUInteger idx, BOOL *stop) {
+                    SonicComment* comment = sonicCommentFromServerDictionary(commentDict);
+                    comment.sonic = sonic;
+                    [comments addObject:comment];
+                }];
+                if(completionBlock){
+                    completionBlock(comments);
+                }
             } andErrorBlock:errorBlock];
 }
 

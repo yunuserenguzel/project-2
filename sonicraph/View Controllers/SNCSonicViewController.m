@@ -13,6 +13,9 @@
 #import "SonicComment.h"
 #import "Configurations.h"
 #import "UIButton+StateProperties.h"
+#import "SonicCommentCell.h"
+
+#define CellIdentifierSonicComment @"CellIdentifierSonicComment"
 
 @implementation SNCSonicViewController
 {
@@ -105,27 +108,17 @@
     }
 }
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.commentsContent = @[];
     self.likesContent = @[];
     self.resonicsContent = @[];
+    [self initTableView];
     
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MoreWhite.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openActionsMenu)]];
-    
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
-    [self.tableView setDelegate:self];
-    [self.tableView setDataSource:self];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, HeaderViewMaxHeight * 2.0, 0.0)];
-    [self.tableView setShowsVerticalScrollIndicator:NO];
-    [self.tableView setShowsHorizontalScrollIndicator:NO];
-    [self.tableView setTableFooterView:[UIView new]];
-//    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [self.view addSubview:self.tableView];
-//    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.view.frame));
-//    NSLog(@"%@",CGRectCreateDictionaryRepresentation(self.tableView.frame));
     
     [self initHeaderViews];
     [self initTabsViews];
@@ -147,6 +140,23 @@
     [self configureViews];
     
 
+}
+- (void) initTableView
+{
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+    [self.tableView setDelegate:self];
+    [self.tableView setDataSource:self];
+    [self.tableView registerClass:[SonicCommentCell class] forCellReuseIdentifier:CellIdentifierSonicComment];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, HeaderViewMaxHeight * 2.0, 0.0)];
+    [self.tableView setShowsVerticalScrollIndicator:NO];
+    [self.tableView setShowsHorizontalScrollIndicator:NO];
+    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 64.0, 0.0, 0.0)];
+    [self.tableView setTableFooterView:[UIView new]];
+    
+    //    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.view addSubview:self.tableView];
+    
 }
 
 - (void) initTabsViews
@@ -257,11 +267,13 @@
         }
         [self.headerView setFrame:[self headerViewFrame]];
     }
-    
-    if (ratio < 0.05){
-        self.headerViewShadow.alpha = 1.0 - (ratio/0.05)*1.0;
+    [self.headerViewShadow setAlpha:0.0];
+    if (ratio < 0.3){
+//        self.headerViewShadow.alpha = 1.0 - (ratio/0.05)*1.0;
+        [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:1.0 - (ratio/0.3)*1.0]];
     } else {
-        self.headerViewShadow.alpha = 0.0;
+//        self.headerViewShadow.alpha = 0.0;
+        [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:0.0]];
     }
     
     [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self tabActionBarViewMinFrame], ratio)];
@@ -355,7 +367,12 @@
 //        }];
     }
     else if(currentContentType == ContentTypeComments){
-//        [SNCAPIManager get]
+        [SNCAPIManager getCommentsOfSonic:self.sonic withCompletionBlock:^(NSArray *comments) {
+            self.commentsContent = comments;
+            [self.tableView reloadData];
+        } andErrorBlock:^(NSError *error) {
+            
+        }];
     }
     else if(currentContentType == ContentTypeResonics){
         
@@ -381,33 +398,40 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 64.0;
+}
+
 - (void) writeComment
 {
 
+    [self.commentField setEnabled:NO];
+    [self closeKeyboard];
     [SNCAPIManager writeCommentToSonic:self.sonic withText:self.commentField.text withCompletionBlock:^(id object) {
         self.commentsContent = [self.commentsContent arrayByAddingObject:object];
         [self.tableView reloadData];
         [self.commentField setText:@""];
-        [self closeKeyboard];
+        [self.commentField setEnabled:YES];
         //        [self refreshContent];
     } andErrorBlock:^(NSError *error) {
-        
+        [self.commentField setEnabled:YES];
     }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell;
+    if(currentContentType == ContentTypeComments){
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSonicComment forIndexPath:indexPath];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    }
     id currentObject = [[self currentContent] objectAtIndex:indexPath.row];
-//    [cell.textLabel setText:[NSString stringWithFormat:@"r: %d",indexPath.row]];
     if(currentContentType == ContentTypeLikes){
-        User* user = currentObject;
-        [cell.textLabel setText:user.username];
-        
+        [cell.textLabel setText:((User*)currentObject).username];
     } else if (currentContentType == ContentTypeComments){
-        SonicComment* comment = currentObject;
-        [cell.textLabel setText:comment.text];
+        [(SonicCommentCell*)cell setSonicComment:currentObject];
     }
     return cell;
 }

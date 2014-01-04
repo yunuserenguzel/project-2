@@ -46,11 +46,9 @@ typedef enum ContentType {
 @property UIButton* likeButton;
 @property UIButton* resonicButton;
 
-
 @property UIView* keyboardCloser;
 
 @property SonicViewControllerInitiationType initiationType;
-
 
 - (void) initiateFor:(SonicViewControllerInitiationType)initiationType;
 

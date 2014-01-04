@@ -58,7 +58,7 @@
     } else {
         isInitCalled = YES;
     }
-    [self setBackgroundColor:[UIColor whiteColor]];
+//    [self setBackgroundColor:[UIColor whiteColor]];
     [self setUserInteractionEnabled:YES];
 }
 - (void)setFrame:(CGRect)frame

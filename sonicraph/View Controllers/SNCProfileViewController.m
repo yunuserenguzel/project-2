@@ -13,7 +13,7 @@
 #import "Sonic.h"
 #import "Configurations.h"
 #import "SNCSonicViewController.h"
-
+#import "SNCHomeTableCell.h"
 
 @interface SNCProfileViewController ()
 
@@ -26,13 +26,18 @@
     Sonic* selectedSonic;
 }
 
+- (CGRect) profileHeaderViewFrame
+{
+    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, 320.0, 180.0);
+}
+
+
 - (CGRect) sonicCollectionViewFrame
 {
-    CGFloat y = self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat y =  [self profileHeaderViewFrame].origin.y;
     CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height - y;
     return CGRectMake(0.0, y, 320.0, h);
 }
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -43,18 +48,21 @@
     return self;
 }
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
     [self initializeSonicCollectionView];
-    // Do any additional setup after loading the view.
+    [self initializeSonicListTableView];
+
     
+    self.profileHeaderView = [[ProfileHeaderView alloc] initWithFrame:[self profileHeaderViewFrame]];
+    [self.view addSubview:self.profileHeaderView];
+    [self.profileHeaderView.gridViewButton addTarget:self action:@selector(setGridViewModeOn) forControlEvents:UIControlEventTouchUpInside];
+    [self.profileHeaderView.listViewButton addTarget:self action:@selector(setListViewModeOn) forControlEvents:UIControlEventTouchUpInside];
 }
-//
+
 //- (void) setUser:(UserManagedObject *)user
 //{
 //    _user = user;
@@ -65,6 +73,17 @@
 //    [SNCAPIManager getUserSonics:<#(User *)#> saveToDatabase:<#(BOOL)#> withCompletionBlock:<#^(NSArray *sonics)completionBlock#> andErrorBlock:<#^(NSError *error)errorBlock#>]
 //}
 
+- (void) setGridViewModeOn
+{
+    [self.sonicCollectionView setHidden:YES];
+    [self.sonicListTableView setHidden:NO];
+}
+
+- (void) setListViewModeOn
+{
+    [self.sonicCollectionView setHidden:NO];
+    [self.sonicListTableView setHidden:YES];
+}
 
 - (void) initializeSonicCollectionView
 {
@@ -77,9 +96,64 @@
     self.sonicCollectionView = [[UICollectionView alloc] initWithFrame:[self sonicCollectionViewFrame] collectionViewLayout:self.sonicCollectionViewFlowLayout];
     [self.sonicCollectionView setDataSource:self];
     [self.sonicCollectionView setDelegate:self];
+    [self.sonicCollectionView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 0.0, 0.0)];
     [self.sonicCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.sonicCollectionView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.sonicCollectionView setShowsVerticalScrollIndicator:NO];
+    
 	[self.view addSubview:self.sonicCollectionView];
+    
+    [self.sonicCollectionView setHidden:YES];
+}
+
+- (void) initializeSonicListTableView
+{
+    self.sonicListTableView = [[UITableView alloc] initWithFrame:[self sonicCollectionViewFrame] style:UITableViewStylePlain];
+    [self.view addSubview:self.sonicListTableView];
+    [self.sonicListTableView setHidden:NO];
+    [self.sonicListTableView setDataSource:self];
+    [self.sonicListTableView setDelegate:self];
+    [self.sonicListTableView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 0.0, 0.0)];
+    [self.sonicListTableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.sonics ? self.sonics.count : 0;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SNCHomeTableCell* cell = [tableView dequeueReusableCellWithIdentifier:HomeTableCellIdentifier];
+    [cell setSonic:[[self sonics] objectAtIndex:indexPath.row]];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return HeightForHomeCell;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat topOffset = scrollView.contentOffset.y + scrollView.contentInset.top;
+    NSLog(@"topOffset: %f",topOffset);
+    if(topOffset < scrollView.contentInset.top){
+        CGRect frame = [self profileHeaderViewFrame];
+        frame.origin.y -= topOffset;
+        [self.profileHeaderView setFrame:frame];
+    } else if ( topOffset <= 0) {
+        [self.profileHeaderView setFrame:[self profileHeaderViewFrame]];
+    } else {
+        CGRect frame = [self profileHeaderViewFrame];
+        frame.origin.y -= scrollView.contentInset.top;
+        [self.profileHeaderView setFrame:frame];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -127,9 +201,6 @@
     }];
     
     [cell addSubview:imageView];
-    
-    
-    
     return cell;
 }
 

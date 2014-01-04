@@ -50,7 +50,7 @@
 		AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */; };
 		AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDC1837EA3E00F74F1D /* Sonic.m */; };
 		AE86EEE01837EA7E00F74F1D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDF1837EA7E00F74F1D /* User.m */; };
-		AE977196186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg */; };
+		AE977196186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg */; };
 		AEB945961874D2D000FCE111 /* CommentGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945901874D2D000FCE111 /* CommentGrey@2x.png */; };
 		AEB945971874D2D000FCE111 /* CommentPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945911874D2D000FCE111 /* CommentPink@2x.png */; };
 		AEB945981874D2D000FCE111 /* HeartGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945921874D2D000FCE111 /* HeartGrey@2x.png */; };
@@ -62,6 +62,12 @@
 		AEB945A71874F08000FCE111 /* 44PXLabelWithShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */; };
 		AEB945A91874F32800FCE111 /* Shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945A81874F32800FCE111 /* Shadow@2x.png */; };
 		AEB945AB1875064D00FCE111 /* MoreWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945AA1875064D00FCE111 /* MoreWhite@2x.png */; };
+		AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945EE1876047900FCE111 /* SonicCommentCell.m */; };
+		AEB945F91877566D00FCE111 /* ViewListDarkGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945F51877566D00FCE111 /* ViewListDarkGrey@2x.png */; };
+		AEB945FA1877566D00FCE111 /* ViewListPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945F61877566D00FCE111 /* ViewListPink@2x.png */; };
+		AEB945FB1877566D00FCE111 /* ViewThumbnailDarkGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945F71877566D00FCE111 /* ViewThumbnailDarkGrey@2x.png */; };
+		AEB945FC1877566D00FCE111 /* ViewThumbnailPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945F81877566D00FCE111 /* ViewThumbnailPink@2x.png */; };
+		AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB946001877571B00FCE111 /* ProfileHeaderView.m */; };
 		AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECBA6401856408600DE8EDE /* SNCLoginViewController.m */; };
 		AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBA64218564D9D00DE8EDE /* QuartzCore.framework */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
@@ -185,7 +191,7 @@
 		AE86EEDC1837EA3E00F74F1D /* Sonic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sonic.m; sourceTree = "<group>"; };
 		AE86EEDE1837EA7E00F74F1D /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		AE86EEDF1837EA7E00F74F1D /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2013-11-07 09.52.53.jpg"; sourceTree = "<group>"; };
+		AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2013-11-07 09.52.53@2x.jpg"; sourceTree = "<group>"; };
 		AEB945901874D2D000FCE111 /* CommentGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CommentGrey@2x.png"; sourceTree = "<group>"; };
 		AEB945911874D2D000FCE111 /* CommentPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CommentPink@2x.png"; sourceTree = "<group>"; };
 		AEB945921874D2D000FCE111 /* HeartGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeartGrey@2x.png"; sourceTree = "<group>"; };
@@ -198,6 +204,14 @@
 		AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "44PXLabelWithShadow@2x.png"; sourceTree = "<group>"; };
 		AEB945A81874F32800FCE111 /* Shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shadow@2x.png"; sourceTree = "<group>"; };
 		AEB945AA1875064D00FCE111 /* MoreWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoreWhite@2x.png"; sourceTree = "<group>"; };
+		AEB945ED1876047900FCE111 /* SonicCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicCommentCell.h; sourceTree = "<group>"; };
+		AEB945EE1876047900FCE111 /* SonicCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicCommentCell.m; sourceTree = "<group>"; };
+		AEB945F51877566D00FCE111 /* ViewListDarkGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewListDarkGrey@2x.png"; sourceTree = "<group>"; };
+		AEB945F61877566D00FCE111 /* ViewListPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewListPink@2x.png"; sourceTree = "<group>"; };
+		AEB945F71877566D00FCE111 /* ViewThumbnailDarkGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewThumbnailDarkGrey@2x.png"; sourceTree = "<group>"; };
+		AEB945F81877566D00FCE111 /* ViewThumbnailPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewThumbnailPink@2x.png"; sourceTree = "<group>"; };
+		AEB945FF1877571B00FCE111 /* ProfileHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileHeaderView.h; sourceTree = "<group>"; };
+		AEB946001877571B00FCE111 /* ProfileHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileHeaderView.m; sourceTree = "<group>"; };
 		AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCLoginViewController.h; path = ../Views/SNCLoginViewController.h; sourceTree = "<group>"; };
 		AECBA6401856408600DE8EDE /* SNCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNCLoginViewController.m; path = ../Views/SNCLoginViewController.m; sourceTree = "<group>"; };
 		AECBA64218564D9D00DE8EDE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -299,6 +313,7 @@
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				AEB945F41877566D00FCE111 /* profile */,
 				AEDAADF7185DB8A4001DD389 /* Tabbar */,
 				AEDAADEB185DB334001DD389 /* SonicCell */,
 				AE1596B1182452CF00929D1D /* rangeslider */,
@@ -370,6 +385,8 @@
 		AE86EE7C182C0DC000F74F1D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AEB945FE187756F100FCE111 /* Sonic Controller Views */,
+				AEB945F0187750BE00FCE111 /* Profile Views */,
 				AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */,
 				AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */,
 				AE86EED51832E07600F74F1D /* SonicPlayerView.h */,
@@ -378,10 +395,6 @@
 				AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */,
 				AEDAAE0E18623B0F001DD389 /* SNCSoundSlider.h */,
 				AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */,
-				AE2B4E7B18737677006BD456 /* SonicViewControllerHeaderView.h */,
-				AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */,
-				AEB9459F1874DA3200FCE111 /* SegmentedBar.h */,
-				AEB945A01874DA3200FCE111 /* SegmentedBar.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -513,6 +526,39 @@
 				AE86EEC118316CA800F74F1D /* AudioConverterKitforiOS.pdf */,
 			);
 			path = Documentation;
+			sourceTree = "<group>";
+		};
+		AEB945F0187750BE00FCE111 /* Profile Views */ = {
+			isa = PBXGroup;
+			children = (
+				AEB945FF1877571B00FCE111 /* ProfileHeaderView.h */,
+				AEB946001877571B00FCE111 /* ProfileHeaderView.m */,
+			);
+			name = "Profile Views";
+			sourceTree = "<group>";
+		};
+		AEB945F41877566D00FCE111 /* profile */ = {
+			isa = PBXGroup;
+			children = (
+				AEB945F51877566D00FCE111 /* ViewListDarkGrey@2x.png */,
+				AEB945F61877566D00FCE111 /* ViewListPink@2x.png */,
+				AEB945F71877566D00FCE111 /* ViewThumbnailDarkGrey@2x.png */,
+				AEB945F81877566D00FCE111 /* ViewThumbnailPink@2x.png */,
+			);
+			path = profile;
+			sourceTree = "<group>";
+		};
+		AEB945FE187756F100FCE111 /* Sonic Controller Views */ = {
+			isa = PBXGroup;
+			children = (
+				AE2B4E7B18737677006BD456 /* SonicViewControllerHeaderView.h */,
+				AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */,
+				AEB9459F1874DA3200FCE111 /* SegmentedBar.h */,
+				AEB945A01874DA3200FCE111 /* SegmentedBar.m */,
+				AEB945ED1876047900FCE111 /* SonicCommentCell.h */,
+				AEB945EE1876047900FCE111 /* SonicCommentCell.m */,
+			);
+			name = "Sonic Controller Views";
 			sourceTree = "<group>";
 		};
 		AED56E8F1801A35D000DF866 = {
@@ -668,7 +714,7 @@
 				AEB945941874D2D000FCE111 /* ReSonicGrey@2x.png */,
 				AEB945951874D2D000FCE111 /* ReSonicPink@2x.png */,
 				AEDAAE311865939C001DD389 /* Paused@2x.png */,
-				AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg */,
+				AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg */,
 				AEDAAE1A1863AEE1001DD389 /* PhotoBaseWithLogo@2x.png */,
 				AEDAADEF185DB334001DD389 /* ShareWhite@2x.png */,
 			);
@@ -766,6 +812,7 @@
 				AEDAADFE185DB8A4001DD389 /* EyeWhite@2x.png in Resources */,
 				AEDAADFD185DB8A4001DD389 /* CameraTBWhite@2x.png in Resources */,
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
+				AEB945F91877566D00FCE111 /* ViewListDarkGrey@2x.png in Resources */,
 				AEB945971874D2D000FCE111 /* CommentPink@2x.png in Resources */,
 				AEB945AB1875064D00FCE111 /* MoreWhite@2x.png in Resources */,
 				AEB945A71874F08000FCE111 /* 44PXLabelWithShadow@2x.png in Resources */,
@@ -773,19 +820,22 @@
 				AEB945A51874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png in Resources */,
 				AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */,
 				AE15966918142C6300929D1D /* Camera Front and Back.png in Resources */,
+				AEB945FC1877566D00FCE111 /* ViewThumbnailPink@2x.png in Resources */,
 				AEDAAE01185DB8A4001DD389 /* SetignsWhite@2x.png in Resources */,
 				AEDAADFF185DB8A4001DD389 /* GlobeWhite@2x.png in Resources */,
 				AE86EECB18316CA800F74F1D /* AudioConverterKitforiOS.pdf in Resources */,
 				AEDAAE03185DB900001DD389 /* UserWhite@2x.png in Resources */,
 				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,
+				AEB945FA1877566D00FCE111 /* ViewListPink@2x.png in Resources */,
 				AE159695181C15AE00929D1D /* Sound Button.png in Resources */,
 				AEB945991874D2D000FCE111 /* HeartPink@2x.png in Resources */,
 				AE15966C18142C6300929D1D /* Option.png in Resources */,
 				AEDAAE00185DB8A4001DD389 /* HeartWhite@2x.png in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
+				AEB945FB1877566D00FCE111 /* ViewThumbnailDarkGrey@2x.png in Resources */,
 				AEDAAE30186591BA001DD389 /* TwitterIcon@2x.png in Resources */,
 				AEB945981874D2D000FCE111 /* HeartGrey@2x.png in Resources */,
-				AE977196186DD2CC009D0298 /* 2013-11-07 09.52.53.jpg in Resources */,
+				AE977196186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg in Resources */,
 				AEDAADF3185DB334001DD389 /* ShareWhite@2x.png in Resources */,
 				AEDAAE3418663176001DD389 /* AdCommentBoxWhite@2x.png in Resources */,
 				AEB9459A1874D2D000FCE111 /* ReSonicGrey@2x.png in Resources */,
@@ -813,6 +863,7 @@
 				AED56EFA1801A39F000DF866 /* Reachability.m in Sources */,
 				AE86EECE18316CA800F74F1D /* Mp3ConverterInterface.m in Sources */,
 				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
+				AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */,
 				AE86EECA18316CA800F74F1D /* AudioConverter.m in Sources */,
 				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
 				AE86EEA8183158D300F74F1D /* UserManagedObject.m in Sources */,
@@ -847,6 +898,7 @@
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
 				AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */,
+				AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */,
 				AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

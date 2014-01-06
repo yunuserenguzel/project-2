@@ -258,6 +258,20 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
     return sonic;
 }
 
++ (void) getImage:(NSURL*)imageUrl withCompletionBlock:(CompletionIdBlock)completionBlock
+{
+    NSString* localFileUrl = [[SNCAPIManager imageCacheDirectory] stringByAppendingPathComponent:imageUrl.lastPathComponent];
+    Block dispatchBlock = ^ {
+        if(![[NSFileManager defaultManager] fileExistsAtPath:localFileUrl]){
+            NSData* data = [NSData dataWithContentsOfURL:imageUrl];
+            [data writeToFile:localFileUrl atomically:YES];
+        }
+        UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfFile:localFileUrl]];
+        completionBlock(image);
+    };
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),dispatchBlock);
+}
+
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock
 {
     NSString* localFileUrl = [[SNCAPIManager sonicCacheDirectory] stringByAppendingPathComponent:sonicUrl.lastPathComponent];
@@ -276,6 +290,17 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
 {
     
     NSString* cacheFolder = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"cached_sonics"];
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath:cacheFolder
+                              withIntermediateDirectories:NO
+                                               attributes:nil
+                                                    error:nil];
+    return cacheFolder;
+}
+
++ (NSString*) imageCacheDirectory
+{
+    NSString* cacheFolder = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"cached_images"];
     
     [[NSFileManager defaultManager] createDirectoryAtPath:cacheFolder
                               withIntermediateDirectories:NO

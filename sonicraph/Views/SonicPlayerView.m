@@ -34,8 +34,7 @@
 - (CGRect) imageViewFrame
 {
     CGRect frame = CGRectZero;
-    frame.size = SonicSize;
-    frame.origin = CGPointZero;
+    frame.size = self.frame.size;
     return frame;
 }
 
@@ -53,20 +52,12 @@
 - (id) initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]){
+//        NSLog(@"sonicplayerviewframe: %@", CGRectCreateDictionaryRepresentation(frame));
         [self initViews];
     }
     return self;
 }
 
-- (id) init
-{
-    if (self = [super init]){
-        [self setFrame:CGRectMake(0.0, 0.0, 320.0, 321.0)];
-        [self initViews];
-        
-    }
-    return self;
-}
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
@@ -102,7 +93,7 @@
 }
 - (void) longPress:(UILongPressGestureRecognizer* )longGesture
 {
-    NSLog(@"state: %d", longGesture.state);
+//    NSLog(@"state: %d", longGesture.state);
     if([longGesture state] == UIGestureRecognizerStateBegan){
         [self stop];
         [self play];
@@ -189,6 +180,7 @@
     CGRect imageViewframe = [self imageViewFrame];;
     imageViewframe.size = frame.size;
     [self.imageView setFrame:imageViewframe];
+//    NSLog(@"imageViewFrame: %@",CGRectCreateDictionaryRepresentation(self.imageView.frame));
 }
 
 - (void) timerUpdate

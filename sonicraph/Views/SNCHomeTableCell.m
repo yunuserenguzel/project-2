@@ -35,7 +35,7 @@
 }
 - (CGRect) cellSpacingViewFrame
 {
-    return CGRectMake(0.0, 438.0, 320.0, 22.0);
+    return CGRectMake(0.0, 450.0, 320.0, 1.0);
 }
 - (CGRect) userImageMaskViewFrame
 {
@@ -142,13 +142,14 @@
     [self addSubview:self.usernameLabel];
     [self initLabels];
     [self initButtons];
-
     self.cellSpacingView = [[UIImageView alloc] initWithFrame:[self cellSpacingViewFrame]];
-    [self.cellSpacingView setImage:[UIImage imageNamed:@"44PXLabelWithShadow@2x"]];
-//    [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
+//    [self.cellSpacingView setImage:[UIImage imageNamed:@"44PXLabelWithShadow@
+    [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
     [self addSubview:self.cellSpacingView];
 
 }
+
+
 
 - (void) initLabels
 {
@@ -228,8 +229,6 @@
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
         alert.tag = DeleteConfirmAlertViewTag;
         [alert show];
-        
-
     }
 }
 
@@ -256,12 +255,12 @@
 
 - (void) openLikes
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationOpenCommentsOfSonic object:self.sonic];
+    [self.delegate sonic:self.sonic actionFired:SNCHomeTableCellActionTypeOpenLikes];
 }
 
 - (void) commentSonic
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationOpenCommentsOfSonic object:self.sonic];
+    [self.delegate sonic:self.sonic actionFired:SNCHomeTableCellActionTypeComment];
 }
 
 - (void)likeSonic

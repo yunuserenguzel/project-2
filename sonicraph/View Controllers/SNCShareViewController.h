@@ -10,5 +10,7 @@
 #import "SonicData.h"
 
 @interface SNCShareViewController : UIViewController
+
 @property (nonatomic) SonicData* sonic;
+
 @end

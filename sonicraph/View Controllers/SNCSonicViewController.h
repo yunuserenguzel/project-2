@@ -31,7 +31,6 @@ typedef enum ContentType {
 @property (nonatomic) Sonic* sonic;
 
 @property SonicViewControllerHeaderView* headerView;
-@property UIImageView* headerViewShadow;
 
 @property NSArray* likesContent;
 @property NSArray* commentsContent;

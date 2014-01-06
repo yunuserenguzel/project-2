@@ -207,16 +207,12 @@
     //    [self.tableView.tableHeaderView setClipsToBounds:YES];
     [self.tableView.tableHeaderView setUserInteractionEnabled:YES];
     
-    
     self.headerView = [[SonicViewControllerHeaderView alloc] init];
     [self.headerView setFrame:[self headerViewFrame]];
     [self.tableView.tableHeaderView addSubview:self.headerView];
     
-    self.headerViewShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Shadow.png"]];
-    [self.headerViewShadow setFrame:CGRectMake(0.0, [self headerViewFrame].size.height, self.view.frame.size.width, self.headerViewShadow.image.size.height)];
     self.headerView.segmentedBar.delegate = self;
     [self.headerView addTargetForTapToTop:self action:@selector(scrollToTop)];
-    [self.headerView addSubview:self.headerViewShadow];
 
 }
 
@@ -267,12 +263,9 @@
         }
         [self.headerView setFrame:[self headerViewFrame]];
     }
-    [self.headerViewShadow setAlpha:0.0];
     if (ratio < 0.3){
-//        self.headerViewShadow.alpha = 1.0 - (ratio/0.05)*1.0;
         [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:1.0 - (ratio/0.3)*1.0]];
     } else {
-//        self.headerViewShadow.alpha = 0.0;
         [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:0.0]];
     }
     

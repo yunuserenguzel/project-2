@@ -51,6 +51,9 @@
 		AE86EEDD1837EA3E00F74F1D /* Sonic.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDC1837EA3E00F74F1D /* Sonic.m */; };
 		AE86EEE01837EA7E00F74F1D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEDF1837EA7E00F74F1D /* User.m */; };
 		AE977196186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg */; };
+		AE9ABCF818797E15008FE96B /* SonicCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9ABCF718797E15008FE96B /* SonicCollectionViewCell.m */; };
+		AE9ABCFB18799E71008FE96B /* SNCFollowerFollowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9ABCFA18799E71008FE96B /* SNCFollowerFollowingViewController.m */; };
+		AE9ABCFE187A0DC9008FE96B /* SNCPersonTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9ABCFD187A0DC9008FE96B /* SNCPersonTableCell.m */; };
 		AEB945961874D2D000FCE111 /* CommentGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945901874D2D000FCE111 /* CommentGrey@2x.png */; };
 		AEB945971874D2D000FCE111 /* CommentPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945911874D2D000FCE111 /* CommentPink@2x.png */; };
 		AEB945981874D2D000FCE111 /* HeartGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB945921874D2D000FCE111 /* HeartGrey@2x.png */; };
@@ -192,6 +195,12 @@
 		AE86EEDE1837EA7E00F74F1D /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		AE86EEDF1837EA7E00F74F1D /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		AE977195186DD2CC009D0298 /* 2013-11-07 09.52.53@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2013-11-07 09.52.53@2x.jpg"; sourceTree = "<group>"; };
+		AE9ABCF618797E15008FE96B /* SonicCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicCollectionViewCell.h; sourceTree = "<group>"; };
+		AE9ABCF718797E15008FE96B /* SonicCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicCollectionViewCell.m; sourceTree = "<group>"; };
+		AE9ABCF918799E71008FE96B /* SNCFollowerFollowingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCFollowerFollowingViewController.h; sourceTree = "<group>"; };
+		AE9ABCFA18799E71008FE96B /* SNCFollowerFollowingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCFollowerFollowingViewController.m; sourceTree = "<group>"; };
+		AE9ABCFC187A0DC9008FE96B /* SNCPersonTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCPersonTableCell.h; sourceTree = "<group>"; };
+		AE9ABCFD187A0DC9008FE96B /* SNCPersonTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCPersonTableCell.m; sourceTree = "<group>"; };
 		AEB945901874D2D000FCE111 /* CommentGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CommentGrey@2x.png"; sourceTree = "<group>"; };
 		AEB945911874D2D000FCE111 /* CommentPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CommentPink@2x.png"; sourceTree = "<group>"; };
 		AEB945921874D2D000FCE111 /* HeartGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeartGrey@2x.png"; sourceTree = "<group>"; };
@@ -395,6 +404,8 @@
 				AE86EED91835590F00F74F1D /* SNCHomeTableCell.m */,
 				AEDAAE0E18623B0F001DD389 /* SNCSoundSlider.h */,
 				AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */,
+				AE9ABCFC187A0DC9008FE96B /* SNCPersonTableCell.h */,
+				AE9ABCFD187A0DC9008FE96B /* SNCPersonTableCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -457,6 +468,8 @@
 				AEDAADF5185DB802001DD389 /* SNCTabbarController.m */,
 				AEDAAE351866D184001DD389 /* SNCSonicViewController.h */,
 				AEDAAE361866D184001DD389 /* SNCSonicViewController.m */,
+				AE9ABCF918799E71008FE96B /* SNCFollowerFollowingViewController.h */,
+				AE9ABCFA18799E71008FE96B /* SNCFollowerFollowingViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -533,6 +546,8 @@
 			children = (
 				AEB945FF1877571B00FCE111 /* ProfileHeaderView.h */,
 				AEB946001877571B00FCE111 /* ProfileHeaderView.m */,
+				AE9ABCF618797E15008FE96B /* SonicCollectionViewCell.h */,
+				AE9ABCF718797E15008FE96B /* SonicCollectionViewCell.m */,
 			);
 			name = "Profile Views";
 			sourceTree = "<group>";
@@ -854,12 +869,14 @@
 				AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */,
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
+				AE9ABCFB18799E71008FE96B /* SNCFollowerFollowingViewController.m in Sources */,
 				AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */,
 				AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */,
 				AE86EE8C182C0DF300F74F1D /* UIImage+scaleToSize.m in Sources */,
 				AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */,
 				AED56EF71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
 				AE86EE8B182C0DF300F74F1D /* SNCAPIConnector.m in Sources */,
+				AE9ABCF818797E15008FE96B /* SonicCollectionViewCell.m in Sources */,
 				AED56EFA1801A39F000DF866 /* Reachability.m in Sources */,
 				AE86EECE18316CA800F74F1D /* Mp3ConverterInterface.m in Sources */,
 				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
@@ -877,6 +894,7 @@
 				AE2B4E80187457E6006BD456 /* SonicComment.m in Sources */,
 				AE86EED71832E07600F74F1D /* SonicPlayerView.m in Sources */,
 				AE86EEB518316BC500F74F1D /* SonicraphMediaManager.m in Sources */,
+				AE9ABCFE187A0DC9008FE96B /* SNCPersonTableCell.m in Sources */,
 				AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */,

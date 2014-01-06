@@ -19,7 +19,7 @@
 @property (nonatomic) BOOL isPrivate;
 @property (nonatomic) NSDate * creationDate;
 @property (nonatomic) NSString * sonicUrl;
-@property (nonatomic) User *owner;
+@property (nonatomic) User* owner;
 @property (nonatomic) SonicData* sonicData;
 
 

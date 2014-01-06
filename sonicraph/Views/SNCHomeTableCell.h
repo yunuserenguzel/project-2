@@ -10,8 +10,27 @@
 #import "Sonic.h"
 
 #define HomeTableCellIdentifier @"HomeTableCellIdentifier"
+@class SNCHomeTableCell;
+
+typedef enum SNCHomeTableCellActionType {
+    SNCHomeTableCellActionTypeComment,
+    SNCHomeTableCellActionTypeLike,
+    SNCHomeTableCellActionTypeOpenLikes,
+    SNCHomeTableCellActionTypeOpenComments,
+    SNCHomeTableCellActionTypeResonic,
+    SNCHomeTableCellActionTypeOpenResonics
+}
+SNCHomeTableCellActionType;
+
+@protocol SNCHomeTableCellProtocol
+
+- (void) sonic:(Sonic*)sonic actionFired:(SNCHomeTableCellActionType) actionType;
+
+@end
 
 @interface SNCHomeTableCell : UITableViewCell
+
+@property id<SNCHomeTableCellProtocol> delegate;
 
 @property (nonatomic) Sonic* sonic;
 

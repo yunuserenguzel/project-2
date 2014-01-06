@@ -14,6 +14,7 @@
 #import "Configurations.h"
 #import "SNCSonicViewController.h"
 #import "SNCHomeTableCell.h"
+#import "SonicCollectionViewCell.h"
 
 @interface SNCProfileViewController ()
 
@@ -29,6 +30,13 @@
 - (CGRect) profileHeaderViewFrame
 {
     return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, 320.0, 180.0);
+}
+
+- (CGRect) scrollContentHeaderFrame
+{
+    CGRect frame = [self profileHeaderViewFrame];
+    frame.origin = CGPointZero;
+    return frame;
 }
 
 
@@ -53,6 +61,7 @@
     [super viewDidLoad];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [self initializeSonicCollectionView];
     [self initializeSonicListTableView];
 
@@ -61,46 +70,63 @@
     [self.view addSubview:self.profileHeaderView];
     [self.profileHeaderView.gridViewButton addTarget:self action:@selector(setGridViewModeOn) forControlEvents:UIControlEventTouchUpInside];
     [self.profileHeaderView.listViewButton addTarget:self action:@selector(setListViewModeOn) forControlEvents:UIControlEventTouchUpInside];
+    [self setGridViewModeOn];
+    UIGestureRecognizer* tapGestureRecognizer;
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [self.profileHeaderView.followersLabel addGestureRecognizer:tapGestureRecognizer];
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [self.profileHeaderView.followingsLabel addGestureRecognizer:tapGestureRecognizer];
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [self.profileHeaderView.numberOfFollowersLabel addGestureRecognizer:tapGestureRecognizer];
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [self.profileHeaderView.numberOfFollowingsLabel addGestureRecognizer:tapGestureRecognizer];
 }
 
-//- (void) setUser:(UserManagedObject *)user
-//{
-//    _user = user;
-//    [SNCAPIManager getUserSonics:self.user withCompletionBlock:^(NSArray *sonics) {
-//        
-//    }];
-//    
-//    [SNCAPIManager getUserSonics:<#(User *)#> saveToDatabase:<#(BOOL)#> withCompletionBlock:<#^(NSArray *sonics)completionBlock#> andErrorBlock:<#^(NSError *error)errorBlock#>]
-//}
-
-- (void) setGridViewModeOn
+- (void) tapGesture:(UIGestureRecognizer*)tapGesture
 {
-    [self.sonicCollectionView setHidden:YES];
-    [self.sonicListTableView setHidden:NO];
+    if(tapGesture.view == self.profileHeaderView.followersLabel || tapGesture.view == self.profileHeaderView.numberOfFollowersLabel){
+        [self performSegueWithIdentifier:ProfileToFollowerFollowingSegue sender:self];
+    }
+    else if (tapGesture.view == self.profileHeaderView.followingsLabel || tapGesture.view == self.profileHeaderView.numberOfFollowingsLabel){
+        [self performSegueWithIdentifier:ProfileToFollowerFollowingSegue sender:self];
+    }
 }
 
 - (void) setListViewModeOn
 {
-    [self.sonicCollectionView setHidden:NO];
-    [self.sonicListTableView setHidden:YES];
+    if([self.sonicListTableView isHidden] == YES){
+        [self.sonicCollectionView setHidden:YES];
+        [self.sonicListTableView setHidden:NO];
+        [self.sonicListTableView setContentOffset:self.sonicCollectionView.contentOffset];
+        [self scrollViewDidScroll:self.sonicListTableView];
+    }
+}
+
+- (void) setGridViewModeOn
+{
+    if([self.sonicCollectionView isHidden] == YES){
+        [self.sonicCollectionView setHidden:NO];
+        [self.sonicListTableView setHidden:YES];
+        [self.sonicCollectionView setContentOffset:self.sonicListTableView.contentOffset];
+        [self scrollViewDidScroll:self.sonicCollectionView];
+    }
 }
 
 - (void) initializeSonicCollectionView
 {
-    
     self.sonicCollectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     [self.sonicCollectionViewFlowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    [self.sonicCollectionViewFlowLayout setItemSize:CGSizeMake(160.0, 160.0)];
+    [self.sonicCollectionViewFlowLayout setItemSize:CGSizeMake(106.0, 106.0)];
     [self.sonicCollectionViewFlowLayout setMinimumLineSpacing:1.0];
-    [self.sonicCollectionViewFlowLayout setMinimumInteritemSpacing:0.0];
+    [self.sonicCollectionViewFlowLayout setMinimumInteritemSpacing:1.0];
     self.sonicCollectionView = [[UICollectionView alloc] initWithFrame:[self sonicCollectionViewFrame] collectionViewLayout:self.sonicCollectionViewFlowLayout];
     [self.sonicCollectionView setDataSource:self];
     [self.sonicCollectionView setDelegate:self];
     [self.sonicCollectionView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 0.0, 0.0)];
-    [self.sonicCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+    [self.sonicCollectionView registerClass:[SonicCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.sonicCollectionView setBackgroundColor:[UIColor lightGrayColor]];
     [self.sonicCollectionView setShowsVerticalScrollIndicator:NO];
-    
+
 	[self.view addSubview:self.sonicCollectionView];
     
     [self.sonicCollectionView setHidden:YES];
@@ -113,6 +139,7 @@
     [self.sonicListTableView setHidden:NO];
     [self.sonicListTableView setDataSource:self];
     [self.sonicListTableView setDelegate:self];
+    [self.sonicListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.sonicListTableView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 0.0, 0.0)];
     [self.sonicListTableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
 }
@@ -126,11 +153,21 @@
 {
     return 1;
 }
-
+- (void)sonic:(Sonic *)sonic actionFired:(SNCHomeTableCellActionType)actionType
+{
+    selectedSonic = sonic;
+    if(actionType == SNCHomeTableCellActionTypeComment){
+        [self performSegueWithIdentifier:ProfileToPreviewSegue sender:self];
+    }
+    
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SNCHomeTableCell* cell = [tableView dequeueReusableCellWithIdentifier:HomeTableCellIdentifier];
-    [cell setSonic:[[self sonics] objectAtIndex:indexPath.row]];
+    if(cell.sonic != [[self sonics] objectAtIndex:indexPath.row]){
+        [cell setDelegate:self];
+        [cell setSonic:[[self sonics] objectAtIndex:indexPath.row]];
+    }
     return cell;
 }
 
@@ -142,10 +179,10 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat topOffset = scrollView.contentOffset.y + scrollView.contentInset.top;
-    NSLog(@"topOffset: %f",topOffset);
+//    NSLog(@"topOffset: %f",topOffset);
     if(topOffset < scrollView.contentInset.top){
         CGRect frame = [self profileHeaderViewFrame];
-        frame.origin.y -= topOffset;
+        frame.origin.y -= topOffset  ;
         [self.profileHeaderView setFrame:frame];
     } else if ( topOffset <= 0) {
         [self.profileHeaderView setFrame:[self profileHeaderViewFrame]];
@@ -186,21 +223,9 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor whiteColor];
+    SonicCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     Sonic* sonic = [self.sonics objectAtIndex:indexPath.row];
-//    UIImageView* imageView = [[UIImageView alloc] initWithImage:[sonicManagedObject getImage]];
-    UIImageView* imageView = [[UIImageView alloc] init];
-    imageView.frame = CGRectMake(0.0, 0.0, cell.frame.size.width, cell.frame.size.height);
-    [imageView setUserInteractionEnabled:NO];
-    NSURL*  url = [NSURL URLWithString:[sonic sonicUrl]];
-    [SNCAPIManager getSonic:url withSonicBlock:^(SonicData *sonic, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            imageView.image = sonic.image;
-        });
-    }];
-    
-    [cell addSubview:imageView];
+    [cell setSonic:sonic];
     return cell;
 }
 
@@ -214,7 +239,6 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"indexPath.row: %d",indexPath.row);
     selectedSonic = [self.sonics objectAtIndex:indexPath.row];
     [self performSegueWithIdentifier:ProfileToPreviewSegue sender:self];
     

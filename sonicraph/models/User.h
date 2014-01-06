@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @class UserManagedObject;
 
 @interface User : NSObject
@@ -18,7 +19,6 @@
 + (User*) userWithId:(NSString*)userId;
 
 - (void) saveToDatabase;
-
 
 
 @property (nonatomic) NSString* userId;

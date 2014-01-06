@@ -13,6 +13,7 @@
 #define ShareSonicSegue @"ShareSonicSegue"
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"
 #define ViewSonicSegue @"ViewSonicSegue"
+#define ProfileToFollowerFollowingSegue @"ProfileToFollowerFollowingSegue"
 
 #define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
 #define NotificationLikeSonic @"NotificationLikeSonic"

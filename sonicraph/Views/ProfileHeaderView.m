@@ -129,6 +129,7 @@
         [@[self.numberOfSonicsLabel,self.numberOfFollowingsLabel,self.numberOfFollowersLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
             [self addSubview:label];
             label.font = [UIFont boldSystemFontOfSize:14.0];
+            [label setUserInteractionEnabled:YES];
 //            if(idx < 2){
 //                UIImageView* seperator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SegmentedButtonBarSeperator.png"]];
 //                [seperator setContentMode:UIViewContentModeCenter];
@@ -150,6 +151,7 @@
             [self addSubview:label];
             label.font = [label.font fontWithSize:14.0];
             [label setTextColor:[UIColor darkGrayColor]];
+            [label setUserInteractionEnabled:YES];
         }];
         
         self.buttonHolderView = [[UIView alloc] initWithFrame:[self buttonHolderViewFrame]];

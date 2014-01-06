@@ -7,7 +7,6 @@
 //
 
 #import "SNCHomeViewController.h"
-#import "SNCHomeTableCell.h"
 #import "TypeDefs.h"
 #import "Sonic.h"
 #import "Configurations.h"
@@ -56,10 +55,6 @@
                                              selector:@selector(refresh)
                                                  name:NotificationSonicDeleted
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(openCommentsOfSonic:)
-                                                 name:NotificationOpenCommentsOfSonic
-                                               object:nil];
     self.sonics  = @[];
 //    [self initRefreshController];
 }
@@ -78,12 +73,12 @@
         [self.refreshControl endRefreshing];
     }];
 }
-//
--(void) openCommentsOfSonic:(NSNotification*) notification
-{
-    sonicToBeViewed = notification.object;
-    [self performSegueWithIdentifier:ViewSonicSegue sender:self];
 
+- (void)sonic:(Sonic *)sonic actionFired:(SNCHomeTableCellActionType)actionType
+{
+    sonicToBeViewed = sonic;
+    [self performSegueWithIdentifier:ViewSonicSegue sender:self];
+    
 }
 
 - (void) refresh
@@ -138,6 +133,7 @@
     Sonic* sonic = [self.sonics objectAtIndex:indexPath.row];
     if(sonic != cell.sonic){
         [cell setSonic:[self.sonics objectAtIndex:indexPath.row]];
+        cell.delegate = self;
     }
     
     // Configure the cell...

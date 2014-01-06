@@ -8,6 +8,8 @@
 
 #import "User.h"
 #import "UserManagedObject.h"
+
+
 @implementation User
 
 + (User*) userWithId:(NSString*)userId andUsername:(NSString*)username andFullname:(NSString*)fullname andProfileImage:(NSString*)profile_image;
@@ -59,5 +61,6 @@
     self.userManagedObject.image = self.profileImageUrl;
     [self.userManagedObject save];
 }
+
 
 @end

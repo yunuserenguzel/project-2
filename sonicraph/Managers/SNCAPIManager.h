@@ -31,6 +31,7 @@ typedef void (^CompletionIdBlock) (id object);
                              andErrorBlock:(ErrorBlock)errorBlock;
 
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock;
++ (void) getImage:(NSURL*)imageUrl withCompletionBlock:(CompletionIdBlock)completionBlock;
 
 + (void) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 

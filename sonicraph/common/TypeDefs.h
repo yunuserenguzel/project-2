@@ -14,6 +14,10 @@
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"
 #define ViewSonicSegue @"ViewSonicSegue"
 #define ProfileToFollowerFollowingSegue @"ProfileToFollowerFollowingSegue"
+#define ProfileToSettingsSegue @"ProfileToSettingsSegue"
+#define TabbarToLoginRegisterSegue @"TabbarToLoginRegisterSegue"
+#define LoginToRegisterSegue @"LoginToRegisterSegue"
+
 
 #define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
 #define NotificationLikeSonic @"NotificationLikeSonic"
@@ -21,6 +25,7 @@
 #define NotificationOpenCommentsOfSonic @"NotificationOpenCommentsOfSonic"
 #define NotificationSonicDeleted @"NotificationSonicDeleted"
 #define NotificationCommentWrittenToSonic @"NotificationCommentWrittenToSonic"
+#define NotificationUserLoggedIn @"NotificationUserLoggedIn"
 
 UIColor* rgb(CGFloat red, CGFloat green, CGFloat blue);
 

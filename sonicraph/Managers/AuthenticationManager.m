@@ -9,6 +9,8 @@
 #import "AuthenticationManager.h"
 #import "SNCAppDelegate.h"
 #import "SNCLoginViewController.h"
+#import "DatabaseManager.h"
+#import "TypeDefs.h"
 
 #define AuthenticationManagerUserDefaultsTokenKey @"AuthenticationManagerUserDefaultsTokenKey"
 #define AuthenticationManagerUserDefaultsUsernameKey @"AuthenticationManagerUserDefaultsUsernameKey"
@@ -49,15 +51,17 @@ static AuthenticationManager* sharedInstance = nil;
              withCompletionBlock:(CompletionUserBlock)block
                    andErrorBlock:(ErrorBlock)errorBlock
 {
-    self.shouldRemember = shouldRemember;
-    self.username = username;
-    self.password = password;
     
-    [SNCAPIManager loginWithUsername:@"yeguzel" andPassword:@"741285" withCompletionBlock:^(User *user,NSString* token) {
+    [SNCAPIManager loginWithUsername:username andPassword:password withCompletionBlock:^(User *user,NSString* token) {
         NSLog(@"%@",user);
+        if(shouldRemember){
+            self.username = username;
+            self.password = password;
+        }
         self.token = token;
         self.authenticatedUser = user;
         _isUserAuthenticated = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
         if(block){
             block(user,token);
         }
@@ -131,12 +135,22 @@ static AuthenticationManager* sharedInstance = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (void)logout
+{
+//    [self setUsername:nil];
+//    [self setPassword:nil];
+    [self setToken:nil];
+    [self setAuthenticatedUser:nil];
+    [[DatabaseManager sharedInstance] flushDatabase];
+    [self checkAuthentication];
+}
+
 - (void) checkAuthentication
 {
 //    Actual Code
-//    if(self.token == nil){
-//        [self displayAuthenticationView];
-//    }
+    if(self.token == nil){
+        [self displayAuthenticationView];
+    }
     
 //    Test Code
 //    [self authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user) {
@@ -149,12 +163,12 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (void) displayAuthenticationView
 {
-    SNCLoginViewController* loginViewController = [[SNCLoginViewController alloc] init];
-    
-    [[[SNCAppDelegate sharedInstance] tabbarController] presentViewController:loginViewController animated:YES completion:^{
-        loginViewController.username = self.username;
-        loginViewController.password = self.password;
+    UITabBarController* tabbarController = [[SNCAppDelegate sharedInstance] tabbarController];
+    [[tabbarController viewControllers] enumerateObjectsUsingBlock:^(UINavigationController* navController, NSUInteger idx, BOOL *stop) {
+        [navController popToRootViewControllerAnimated:NO];
     }];
+    
+    [tabbarController performSegueWithIdentifier:TabbarToLoginRegisterSegue sender:tabbarController];
 }
 
 @end

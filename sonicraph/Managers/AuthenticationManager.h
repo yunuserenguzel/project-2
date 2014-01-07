@@ -27,4 +27,6 @@
 
 - (void) checkAuthentication;
 
+- (void) logout;
+
 @end

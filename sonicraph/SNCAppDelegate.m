@@ -36,14 +36,9 @@ static SNCAppDelegate* sharedInstance = nil;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     sharedInstance = self;
-    // Override point for customization after application launch.
-//    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-//    SNCMasterViewController *controller = (SNCMasterViewController *)navigationController.topViewController;
-//    controller.managedObjectContext = self.managedObjectContext;
-
+    _tabbarController = (UITabBarController *)self.window.rootViewController;
     
-//    [[SonicManagedObject last] deleteFromDatase];
-    NSLog(@"%@",[Sonic getFrom:1 to:1]);
+//    NSLog(@"%@",[Sonic getFrom:1 to:1]);
     
 //    [SNCAPIManager registerWithUsername:@"yeguzel" email:@"exculuber@gmail.com" password:@"741285" andCompletionBlock:^(NSDictionary *responseDictionary) {
 //        NSString* validationCode = [responseDictionary objectForKey:@"validation_code"];
@@ -72,15 +67,29 @@ static SNCAppDelegate* sharedInstance = nil;
 //        }];
 //    } andErrorBlock:^(NSError *error) {
 //    }];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(userLoggedIn)
+     name:NotificationUserLoggedIn
+     object:nil];
     
     NSLog(@"token: %@",[[AuthenticationManager sharedInstance] token]);
 
 
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [[AuthenticationManager sharedInstance] checkAuthentication];
-//    });
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[AuthenticationManager sharedInstance] checkAuthentication];
+    });
     
     return YES;
+}
+
+- (void) userLoggedIn
+{
+    [SNCAPIManager getSonicsAfter:nil withCompletionBlock:^(NSArray *sonics) {
+        
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
 }
 
 
@@ -99,7 +108,7 @@ static SNCAppDelegate* sharedInstance = nil;
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-//    [[AuthenticationManager sharedInstance] checkAuthentication];
+    [[AuthenticationManager sharedInstance] checkAuthentication];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

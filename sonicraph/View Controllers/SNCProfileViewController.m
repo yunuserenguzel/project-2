@@ -80,6 +80,14 @@
     [self.profileHeaderView.numberOfFollowersLabel addGestureRecognizer:tapGestureRecognizer];
     tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
     [self.profileHeaderView.numberOfFollowingsLabel addGestureRecognizer:tapGestureRecognizer];
+    
+    UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
+    [self.navigationItem setRightBarButtonItem:barButtonItem];
+}
+
+- (void) openSettings
+{
+    [self performSegueWithIdentifier:ProfileToSettingsSegue sender:self];
 }
 
 - (void) tapGesture:(UIGestureRecognizer*)tapGesture

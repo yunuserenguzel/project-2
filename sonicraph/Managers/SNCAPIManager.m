@@ -177,21 +177,21 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
 //    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
 //}
 //
-//+ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
-//{
-//    NSNumber* count = [NSNumber numberWithInt:20];
-//    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-//    [params setObject:token forKey:@"token"];
-//    if(sonic != nil){
-//        [params setObject:sonic.sonicId forKey:@"after_sonic"];
-//    }
-//    [params setObject:count forKey:@"count"];
-//    
-//    return [SNCAPIManager getSonicsWithParams:params
-//                               saveToDatabase:YES
-//                          withCompletionBlock:completionBlock
-//                                andErrorBlock:errorBlock];
-//}
++ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSNumber* count = [NSNumber numberWithInt:20];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    [params setObject:[[AuthenticationManager sharedInstance] token] forKey:@"token"];
+    if(sonic != nil){
+        [params setObject:sonic.sonicId forKey:@"after_sonic"];
+    }
+    [params setObject:count forKey:@"count"];
+    
+    return [SNCAPIManager getSonicsWithParams:params
+                               saveToDatabase:YES
+                          withCompletionBlock:completionBlock
+                                andErrorBlock:errorBlock];
+}
 
 + (void) getSonicsWithCompletionBlock:(Block)completionBlock
 {

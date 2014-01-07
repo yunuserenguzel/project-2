@@ -56,7 +56,7 @@
                                                  name:NotificationSonicDeleted
                                                object:nil];
     self.sonics  = @[];
-//    [self initRefreshController];
+    [self initRefreshController];
 }
 - (void) initRefreshController
 {

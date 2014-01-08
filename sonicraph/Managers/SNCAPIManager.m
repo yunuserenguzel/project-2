@@ -29,12 +29,32 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
     SonicComment* sonicComment = [[SonicComment alloc] init];
     sonicComment.text = [dictionary objectForKey:@"text"];
     sonicComment.createdAt = dateFromServerString([dictionary objectForKey:@"created_at"]);
-    User* user = [[User alloc] init];
+    User* user = [User userWithId:[dictionary objectForKey:@"user_id"]];
+    if(user == nil){
+        user = [[User alloc] init];
+        user.userId = [dictionary objectForKey:@"user_id"];
+    }
     [user setUsername:[dictionary objectForKey:@"username"]];
     [user setProfileImageUrl:[dictionary objectForKey:@"profile_image"]];
-    [user setUserId: [dictionary objectForKey:@"user_id"]];
     sonicComment.user = user;
     return sonicComment;
+}
+
+id asClass(id object, Class class){
+    return [object isKindOfClass:class] ? object : nil;
+}
+
+User* userFromServerDictionary(NSDictionary* dictionary){
+    
+    User* user = [User userWithId:[dictionary objectForKey:@"id"]];
+    if(user == nil){
+        user = [[User alloc] init];
+        user.userId = [dictionary objectForKey:@"id"];
+    }
+    user.username = asClass([dictionary objectForKey:@"username"], [NSString class]);
+    user.fullName = asClass([dictionary objectForKey:@"fullname"], [NSString class]);
+    user.profileImageUrl = asClass([dictionary objectForKey:@"profile_image"], [NSString class]);
+    return user;
 }
 
 @implementation SNCAPIManager
@@ -337,14 +357,8 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
     
     return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"user/login"andCompletionBlock:^(NSDictionary *responseDictionary) {
         
-        NSString* userId = [[responseDictionary objectForKey:@"user"] objectForKey:@"id"];
         NSString* token = [responseDictionary objectForKey:@"token"];
-        User* user = [User userWithId:userId];
-        if(user == nil){
-            user = [[User alloc] init];
-            user.userId = userId;
-        }
-        user.username = [[responseDictionary objectForKey:@"user"] objectForKey:@"username"];
+        User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
         [user saveToDatabase];
         if(completionBlock != nil){
             completionBlock(user,token);
@@ -353,14 +367,17 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
 }
 
 
-+ (MKNetworkOperation *)registerWithUsername:(NSString *)username email:(NSString *)email password:(NSString *)password andCompletionBlock:(CompletionBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
++ (MKNetworkOperation *)registerWithUsername:(NSString *)username email:(NSString *)email password:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     NSDictionary* params = @{@"username": username,
                              @"email":email,
                              @"password":password};
     return [[SNCAPIConnector sharedInstance] postRequestWithParams:params andOperation:@"user/register"andCompletionBlock:^(NSDictionary *responseDictionary) {
+        NSString* token = [responseDictionary objectForKey:@"token"];
+        User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
+        [user saveToDatabase];
         if(completionBlock != nil){
-            completionBlock(responseDictionary);
+            completionBlock(user,token);
         }
     } andErrorBlock:errorBlock];
 }

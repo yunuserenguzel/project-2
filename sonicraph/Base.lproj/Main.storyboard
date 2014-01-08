@@ -44,10 +44,10 @@
             </objects>
             <point key="canvasLocation" x="-211" y="806"/>
         </scene>
-        <!--Profile View Controller - Profile-->
+        <!--My Profile View Controller - Profile-->
         <scene sceneID="V6O-T1-EQc">
             <objects>
-                <viewController id="ox5-bD-DPe" customClass="SNCProfileViewController" sceneMemberID="viewController">
+                <viewController id="ox5-bD-DPe" customClass="SNCMyProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gxL-Po-8MC"/>
                         <viewControllerLayoutGuide type="bottom" id="SvH-u6-gPW"/>

@@ -85,6 +85,15 @@
     [self.navigationItem setRightBarButtonItem:barButtonItem];
 }
 
+- (void)setUser:(User *)user
+{
+    _user = user;
+    [SNCAPIManager getImage:[NSURL URLWithString:user.profileImageUrl] withCompletionBlock:^(id object) {
+        self.profileHeaderView.userProfileImageView.image = (UIImage*) object;
+    }];
+    self.profileHeaderView.usernamelabel.text = user.username;
+}
+
 - (void) openSettings
 {
     [self performSegueWithIdentifier:ProfileToSettingsSegue sender:self];

@@ -67,7 +67,8 @@
 
 - (void) refreshFromServer
 {
-    [SNCAPIManager getSonicsAfter:[self.sonics objectAtIndex:0] withCompletionBlock:^(NSArray *sonics) {
+    Sonic* lastSonic = self.sonics.count > 0 ? [self.sonics objectAtIndex:0] : nil;
+    [SNCAPIManager getSonicsAfter:lastSonic withCompletionBlock:^(NSArray *sonics) {
         [self.refreshControl endRefreshing];
     } andErrorBlock:^(NSError *error) {
         [self.refreshControl endRefreshing];

@@ -81,7 +81,6 @@ static SNCLoginViewController* sharedInstance = nil;
     UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Register" style:UIBarButtonItemStylePlain target:self action:@selector(openRegisterForm)];
     [self.navigationItem setRightBarButtonItem:barButtonItem];
     
-    
 }
 - (void) openRegisterForm
 {

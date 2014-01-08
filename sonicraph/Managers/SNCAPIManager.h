@@ -38,7 +38,7 @@ typedef void (^CompletionIdBlock) (id object);
 + (MKNetworkOperation *) registerWithUsername:(NSString*)username
                                         email:(NSString*)email
                                      password:(NSString*)password
-                           andCompletionBlock:(CompletionBlock)completionBlock
+                           andCompletionBlock:(CompletionUserBlock)completionBlock
                                 andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation *) loginWithUsername:(NSString*) username

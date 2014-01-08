@@ -15,6 +15,7 @@
 #define AuthenticationManagerUserDefaultsTokenKey @"AuthenticationManagerUserDefaultsTokenKey"
 #define AuthenticationManagerUserDefaultsUsernameKey @"AuthenticationManagerUserDefaultsUsernameKey"
 #define AuthenticationManagerUserDefaultsPasswordKey @"AuthenticationManagerUserDefaultsPasswordKey"
+#define AuthenticationManagerUserDefaultsUserIdKey @"AuthenticationManagerUserDefaultsUserIdKey"
 
 static AuthenticationManager* sharedInstance = nil;
 
@@ -23,6 +24,7 @@ static AuthenticationManager* sharedInstance = nil;
     NSString* _token;
     NSString* _username;
     NSString* _password;
+    NSString* _userId;
 }
 + (AuthenticationManager *)sharedInstance
 {
@@ -45,6 +47,28 @@ static AuthenticationManager* sharedInstance = nil;
     return self;
 }
 
+
+- (void)registerUserWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    [SNCAPIManager registerWithUsername:username email:email password:password andCompletionBlock:^(User *user, NSString *token) {
+        self.token = token;
+        self.userId = user.userId;
+        _isUserAuthenticated = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
+        if(completionBlock){
+            completionBlock(user,token);
+        }
+    } andErrorBlock:^(NSError *error) {
+        if(error.code == 300){
+            _isUserAuthenticated = NO;
+        }
+        if(errorBlock){
+            errorBlock(error);
+        }
+    }];
+}
+
+
 - (void)authenticateWithUsername:(NSString *)username
                      andPassword:(NSString *)password
                   shouldRemember:(BOOL)shouldRemember
@@ -59,7 +83,7 @@ static AuthenticationManager* sharedInstance = nil;
             self.password = password;
         }
         self.token = token;
-        self.authenticatedUser = user;
+        self.userId = user.userId;
         _isUserAuthenticated = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
         if(block){
@@ -89,6 +113,21 @@ static AuthenticationManager* sharedInstance = nil;
         _token = [[NSUserDefaults standardUserDefaults] stringForKey:AuthenticationManagerUserDefaultsTokenKey];
     }
     return _token;
+}
+
+- (NSString *)userId
+{
+    if(_userId == nil){
+        _userId = [[NSUserDefaults standardUserDefaults] stringForKey:AuthenticationManagerUserDefaultsUserIdKey];
+    }
+    return _userId;
+}
+
+- (void)setUserId:(NSString *)userId
+{
+    _userId = userId;
+    [self saveToUserDefaults:userId forKey:AuthenticationManagerUserDefaultsUserIdKey];
+
 }
 
 
@@ -129,6 +168,14 @@ static AuthenticationManager* sharedInstance = nil;
     return _password;
 }
 
+- (User *)authenticatedUser
+{
+    if(_authenticatedUser == nil){
+        self.authenticatedUser = [User userWithId:self.userId];
+    }
+    return _authenticatedUser;
+}
+
 - (void) saveToUserDefaults:(NSString*)value forKey:(NSString*)key
 {
     [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
@@ -139,6 +186,7 @@ static AuthenticationManager* sharedInstance = nil;
 {
 //    [self setUsername:nil];
 //    [self setPassword:nil];
+    [self setUserId:nil];
     [self setToken:nil];
     [self setAuthenticatedUser:nil];
     [[DatabaseManager sharedInstance] flushDatabase];

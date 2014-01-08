@@ -74,6 +74,7 @@
 		AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB9F7AC187B34EC005F4988 /* SNCSettingsViewController.m */; };
 		AEB9F7B2187B442E005F4988 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEB9F7B1187B442E005F4988 /* Settings@2x.png */; };
 		AEB9F7B9187B521F005F4988 /* SNCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB9F7B8187B521F005F4988 /* SNCRegisterViewController.m */; };
+		AEB9F7BC187CA955005F4988 /* SNCMyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB9F7BB187CA955005F4988 /* SNCMyProfileViewController.m */; };
 		AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECBA6401856408600DE8EDE /* SNCLoginViewController.m */; };
 		AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBA64218564D9D00DE8EDE /* QuartzCore.framework */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
@@ -229,6 +230,8 @@
 		AEB9F7B1187B442E005F4988 /* Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Settings@2x.png"; sourceTree = "<group>"; };
 		AEB9F7B7187B521F005F4988 /* SNCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCRegisterViewController.h; sourceTree = "<group>"; };
 		AEB9F7B8187B521F005F4988 /* SNCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCRegisterViewController.m; sourceTree = "<group>"; };
+		AEB9F7BA187CA955005F4988 /* SNCMyProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCMyProfileViewController.h; sourceTree = "<group>"; };
+		AEB9F7BB187CA955005F4988 /* SNCMyProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCMyProfileViewController.m; sourceTree = "<group>"; };
 		AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCLoginViewController.h; path = ../Views/SNCLoginViewController.h; sourceTree = "<group>"; };
 		AECBA6401856408600DE8EDE /* SNCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNCLoginViewController.m; path = ../Views/SNCLoginViewController.m; sourceTree = "<group>"; };
 		AECBA64218564D9D00DE8EDE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -479,6 +482,8 @@
 				AE9ABCFA18799E71008FE96B /* SNCFollowerFollowingViewController.m */,
 				AEB9F7AB187B34EC005F4988 /* SNCSettingsViewController.h */,
 				AEB9F7AC187B34EC005F4988 /* SNCSettingsViewController.m */,
+				AEB9F7BA187CA955005F4988 /* SNCMyProfileViewController.h */,
+				AEB9F7BB187CA955005F4988 /* SNCMyProfileViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -936,6 +941,7 @@
 				AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */,
 				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
 				AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */,
+				AEB9F7BC187CA955005F4988 /* SNCMyProfileViewController.m in Sources */,
 				AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */,
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,

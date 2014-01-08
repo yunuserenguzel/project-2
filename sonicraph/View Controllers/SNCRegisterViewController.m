@@ -98,27 +98,15 @@
 
 - (void) registerUser
 {
-    [SNCAPIManager
-     registerWithUsername:self.usernameField.text
-     email:self.emailField.text
-     password:self.passwordField.text
-     andCompletionBlock:^(NSDictionary *responseDictionary) {
-         [[AuthenticationManager sharedInstance]
-          authenticateWithUsername:self.usernameField.text
-          andPassword:self.passwordField.text
-          shouldRemember:YES
-          withCompletionBlock:^(User *user, NSString *token) {
-              [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                  
-              }];
-          }
-          andErrorBlock:^(NSError *error) {
-              
-          }];
-     }
-     andErrorBlock:^(NSError *error) {
-         
-     }];
+    
+    [[AuthenticationManager sharedInstance] registerUserWithEmail:self.emailField.text andUsername:self.usernameField.text andPassword:self.passwordField.text andCompletionBlock:^(User *user, NSString *token) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning

@@ -54,7 +54,9 @@ static AuthenticationManager* sharedInstance = nil;
         self.token = token;
         self.userId = user.userId;
         _isUserAuthenticated = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
+        });
         if(completionBlock){
             completionBlock(user,token);
         }
@@ -85,7 +87,9 @@ static AuthenticationManager* sharedInstance = nil;
         self.token = token;
         self.userId = user.userId;
         _isUserAuthenticated = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:user];
+        });
         if(block){
             block(user,token);
         }

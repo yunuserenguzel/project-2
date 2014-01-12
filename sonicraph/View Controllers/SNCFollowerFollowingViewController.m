@@ -7,14 +7,19 @@
 //
 
 #import "SNCFollowerFollowingViewController.h"
-#import "SNCPersonTableCell.h"
+#import "SNCAPIManager.h"
+#import "Configurations.h"
 
 @interface SNCFollowerFollowingViewController ()
 
 @end
 
 @implementation SNCFollowerFollowingViewController
-
+{
+    NSArray* followers;
+    NSArray* followings;
+    BOOL showFollowers;
+}
 
 - (CGRect) tableViewFrame
 {
@@ -43,9 +48,36 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    showFollowers = YES;
     [self initializeTableView];
     [self initializeSegmentedControl];
+    
+    [self configureViews];
+    
+}
+- (void)setUser:(User *)user
+{
+    _user = user;
+    [self configureViews];
+}
+
+- (void) configureViews
+{
+    if(![self isViewLoaded]) return;
+    if(!self.user)return;
+    [SNCAPIManager getFollowersOfUser:self.user withCompletionBlock:^(NSArray *users) {
+        followers = users;
+        [self.tableView reloadData];
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
+    [SNCAPIManager getFollowingsOfUser:self.user withCompletionBlock:^(NSArray *users) {
+        followings = users;
+        [self.tableView reloadData];
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
+    
 }
 
 - (void) initializeTableView
@@ -54,7 +86,7 @@
     [self.view addSubview:self.tableView];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
-    [self.tableView registerClass:[SNCPersonTableCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView registerClass:[SNCPersonFollowableTableCell class] forCellReuseIdentifier:@"Cell"];
 }
 
 - (void) initializeSegmentedControl
@@ -62,22 +94,24 @@
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Followers",@"Followings"]];
     [self.segmentedControl setFrame:[self segmentedControlFrame]];
     [self.view addSubview:self.segmentedControl];
-    [self.segmentedControl addTarget:self action:@selector(segmentChanged:) forControlEvents:UIControlEventTouchUpInside];
+    [self.segmentedControl addTarget:self action:@selector(segmentChanged:) forControlEvents:UIControlEventValueChanged];
     [self.segmentedControl setSelectedSegmentIndex:0];
 }
 
 - (void) segmentChanged:(UISegmentedControl*)segmentedControl
 {
     if([segmentedControl selectedSegmentIndex] == 0){
+        showFollowers = YES;
         
     } else if([segmentedControl selectedSegmentIndex] == 1){
-        
+        showFollowers = NO;
     }
+    [[self tableView] reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return showFollowers ? followers.count : followings.count;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -87,9 +121,40 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SNCPersonTableCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    [cell setUser:nil];
+    SNCPersonFollowableTableCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    NSArray* array = showFollowers ? followers : followings;
+    [cell setUser:[array objectAtIndex:indexPath.row]];
+    [cell setDelegate:self];
     return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return PersonTableCellHeight;
+}
+
+- (void)followUser:(User *)user
+{
+    user.isBeingFollowed = YES;
+    [self.tableView reloadData];
+    [SNCAPIManager followUser:user withCompletionBlock:^(BOOL successful) {
+        
+    } andErrorBlock:^(NSError *error) {
+        user.isBeingFollowed = NO;
+        [self.tableView reloadData];
+    }];
+}
+
+- (void)unfollowUser:(User *)user
+{
+    user.isBeingFollowed = NO;
+    [self.tableView reloadData];
+    [SNCAPIManager unfollowUser:user withCompletionBlock:^(BOOL successful) {
+        
+    } andErrorBlock:^(NSError *error) {
+        user.isBeingFollowed = YES;
+        [self.tableView reloadData];
+    }];
 }
 
 

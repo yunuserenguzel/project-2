@@ -17,6 +17,12 @@
 @dynamic fullname;
 @dynamic userId;
 @dynamic sonics;
+@dynamic followerCount;
+@dynamic followingCount;
+@dynamic sonicCount;
+@dynamic bio;
+@dynamic location;
+@dynamic website;
 
 + (UserManagedObject*) createOrFetchWithId:(NSString*)userId
 {
@@ -26,20 +32,6 @@
         userManagedObject.userId = userId;
     }
     return userManagedObject;
-}
-
-+ (UserManagedObject *)createUserWith:(NSString *)userId andUserName:(NSString *)userName andRealName:(NSString *)realName andImage:(NSString *)image
-{
-    UserManagedObject* user = [UserManagedObject getUser:userId];
-    if(user == nil){
-        user = (UserManagedObject*)[[DatabaseManager sharedInstance] createEntity:@"User"];
-        [user setUserId:userId];
-        [user setUsername:userName];
-        [user setFullname:realName];
-        [user setImage:image];
-        [[DatabaseManager sharedInstance] saveContext];
-    }
-    return user;
 }
 
 

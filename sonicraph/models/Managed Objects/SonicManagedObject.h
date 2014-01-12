@@ -18,6 +18,11 @@
 @property (nonatomic, retain) NSNumber * longitude;
 @property (nonatomic, retain) NSNumber * latitude;
 @property (nonatomic, retain) NSNumber * isPrivate;
+@property (nonatomic, retain) NSNumber * isLikedByMe;
+@property (nonatomic, retain) NSNumber * isResonicedByMe;
+@property (nonatomic, retain) NSNumber * likeCount;
+@property (nonatomic, retain) NSNumber * resonicCount;
+@property (nonatomic, retain) NSNumber * commentCount;
 @property (nonatomic, retain) NSDate * creationDate;
 @property (nonatomic, retain) NSString * sonicUrl;
 @property (nonatomic, retain) UserManagedObject *owner;

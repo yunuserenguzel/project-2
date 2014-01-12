@@ -27,18 +27,17 @@
 {
     [super viewDidLoad];
     [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshForNewLogin) name:NotificationUserLoggedIn object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshForNewLogin:) name:NotificationUserLoggedIn object:nil];
 }
 
-- (void) refreshForNewLogin
+- (void) refreshForNewLogin:(NSNotification*)notification
 {
     [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

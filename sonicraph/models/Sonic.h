@@ -21,6 +21,11 @@
 @property (nonatomic) NSString * sonicUrl;
 @property (nonatomic) User* owner;
 @property (nonatomic) SonicData* sonicData;
+@property (nonatomic) BOOL isLikedByMe;
+@property (nonatomic) BOOL isResonicedByMe;
+@property (nonatomic) NSInteger resonicCount;
+@property (nonatomic) NSInteger likeCount;
+@property (nonatomic) NSInteger commentCount;
 
 
 - (void) saveToDatabase;

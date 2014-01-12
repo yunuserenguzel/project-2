@@ -15,6 +15,7 @@
 #import "SNCSonicViewController.h"
 #import "SNCHomeTableCell.h"
 #import "SonicCollectionViewCell.h"
+#import "SNCFollowerFollowingViewController.h"
 
 @interface SNCProfileViewController ()
 
@@ -38,7 +39,6 @@
     frame.origin = CGPointZero;
     return frame;
 }
-
 
 - (CGRect) sonicCollectionViewFrame
 {
@@ -83,15 +83,38 @@
     
     UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
     [self.navigationItem setRightBarButtonItem:barButtonItem];
+    
+    [self refresh];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refresh)
+     name:NotificationSonicsAreLoaded
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refreshUser:)
+     name:NotificationUserSaved
+     object:nil];
 }
 
 - (void)setUser:(User *)user
 {
     _user = user;
-    [SNCAPIManager getImage:[NSURL URLWithString:user.profileImageUrl] withCompletionBlock:^(id object) {
-        self.profileHeaderView.userProfileImageView.image = (UIImage*) object;
+    [self configureViews];
+}
+
+- (void) configureViews
+{
+    self.profileHeaderView.userProfileImageView.image = SonicPlaceholderImage;
+    [SNCAPIManager getImage:[NSURL URLWithString:self.user.profileImageUrl] withCompletionBlock:^(id object) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.profileHeaderView.userProfileImageView.image = (UIImage*) object;
+        });
     }];
-    self.profileHeaderView.usernamelabel.text = user.username;
+    self.profileHeaderView.usernamelabel.text = self.user.username;
+    self.profileHeaderView.numberOfSonicsLabel.text = [NSString stringWithFormat:@"%d",self.user.sonicCount];
+    self.profileHeaderView.numberOfFollowersLabel.text = [NSString stringWithFormat:@"%d",self.user.followerCount];
+    self.profileHeaderView.numberOfFollowingsLabel.text = [NSString stringWithFormat:@"%d",self.user.followingCount];
 }
 
 - (void) openSettings
@@ -212,22 +235,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self refresh];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refresh)
-                                                 name:NotificationSonicsAreLoaded
-                                               object:nil];
+    
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:nil
-                                                  object:nil];
-}
 
 - (void) refresh
-{   
+{
     self.sonics = [Sonic getFrom:0 to:20];
     [self.sonicCollectionView reloadData];
 }
@@ -244,6 +257,14 @@
     Sonic* sonic = [self.sonics objectAtIndex:indexPath.row];
     [cell setSonic:sonic];
     return cell;
+}
+
+- (void) refreshUser:(NSNotification*) notification
+{
+    User* user = notification.object;
+    if([self.user.userId isEqualToString:user.userId]){
+        self.user = user;
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -263,10 +284,21 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:ProfileToPreviewSegue]){
+    NSString* segueIdentifier = [segue identifier];
+    if ([segueIdentifier isEqualToString:ProfileToPreviewSegue]){
         SNCSonicViewController* preview = segue.destinationViewController;
         [preview setSonic:selectedSonic];
+    }else if([segueIdentifier isEqualToString:ProfileToFollowerFollowingSegue]){
+        SNCFollowerFollowingViewController* follow = segue.destinationViewController;
+        [follow setUser:self.user];
     }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:nil
+                                                  object:nil];
 }
 
 @end

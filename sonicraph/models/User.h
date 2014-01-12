@@ -27,8 +27,19 @@
 
 @property (nonatomic) NSString* username;
 
+@property NSString* bio;
+@property NSString* website;
+@property NSString* location;
+
 @property (nonatomic) NSString* profileImageUrl;
 
 @property (nonatomic) UserManagedObject* userManagedObject;
+
+@property (nonatomic) BOOL isBeingFollowed;
+
+@property NSInteger sonicCount;
+@property NSInteger followerCount;
+@property NSInteger followingCount;
+
 
 @end

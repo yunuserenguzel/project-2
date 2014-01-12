@@ -20,16 +20,19 @@ typedef void (^ErrorBlock) (NSError *error);
 
 
 - (MKNetworkOperation *) postRequestWithParams:(NSDictionary*) params
+                                     useToken:(BOOL)useToken
                                   andOperation:(NSString*)opearation
                             andCompletionBlock:(CompletionBlock) completionBlock
                                  andErrorBlock:(ErrorBlock)errorBlock;
 
 - (MKNetworkOperation*) getRequestWithParams:(NSDictionary*) params
+                                   useToken:(BOOL)useToken
                                 andOperation:(NSString*)opearation
                           andCompletionBlock:(CompletionBlock) completionBlock
                                andErrorBlock:(ErrorBlock)errorBlock;
 
 - (MKNetworkOperation*) uploadFileRequestWithParams:(NSDictionary*) params
+                                          useToken:(BOOL)useToken
                                            andFiles:(NSArray*) files
                                        andOperation:(NSString*)opearation
                                  andCompletionBlock:(CompletionBlock) completionBlock

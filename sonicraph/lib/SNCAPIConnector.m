@@ -7,6 +7,7 @@
 //
 
 #import "SNCAPIConnector.h"
+#import "AuthenticationManager.h"
 
 @implementation SNCAPIConnector
 
@@ -22,39 +23,53 @@
 }
 
 - (MKNetworkOperation *) postRequestWithParams:(NSDictionary*) params
+                                     useToken:(BOOL)useToken
                   andOperation:(NSString*) opearation
             andCompletionBlock:(CompletionBlock) completionBlock
                  andErrorBlock:(ErrorBlock) errorBlock
 {
     
     MKNetworkOperation* op = [self requestWithMethod:@"POST"
-                         andParams:params
-                      andOperation:opearation
-                andCompletionBlock:completionBlock
-                     andErrorBlock:errorBlock];
-    [self enqueueOperation:op];
+                                           useToken:(BOOL)useToken
+                                           andParams:params.mutableCopy
+                                        andOperation:opearation
+                                  andCompletionBlock:completionBlock
+                                       andErrorBlock:errorBlock];
+    if(op){
+        [self enqueueOperation:op];
+    }
     return op;
     
 }
 
 - (MKNetworkOperation *)getRequestWithParams:(NSDictionary *)params
+                                   useToken:(BOOL)useToken
                                 andOperation:(NSString *)opearation
                           andCompletionBlock:(CompletionBlock)completionBlock
                                andErrorBlock:(ErrorBlock)errorBlock
 {
     MKNetworkOperation* op = [self requestWithMethod:@"GET"
-                         andParams:params
-                      andOperation:opearation
-                andCompletionBlock:completionBlock
-                     andErrorBlock:errorBlock];
-    [self enqueueOperation:op];
+                                           useToken:(BOOL)useToken
+                                           andParams:params.mutableCopy
+                                        andOperation:opearation
+                                  andCompletionBlock:completionBlock
+                                       andErrorBlock:errorBlock];
+    if(op){
+        [self enqueueOperation:op];
+    }
     return op;
 }
 
-- (MKNetworkOperation *)uploadFileRequestWithParams:(NSDictionary *)params andFiles:(NSArray *)files andOperation:(NSString *)opearation andCompletionBlock:(CompletionBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+- (MKNetworkOperation *)uploadFileRequestWithParams:(NSDictionary *)params
+                                          useToken:(BOOL)useToken
+                                           andFiles:(NSArray *)files
+                                       andOperation:(NSString *)opearation
+                                 andCompletionBlock:(CompletionBlock)completionBlock
+                                      andErrorBlock:(ErrorBlock)errorBlock
 {
     MKNetworkOperation* op = [self requestWithMethod:@"POST"
-                                           andParams:params
+                                           useToken:(BOOL)useToken
+                                           andParams:params.mutableCopy
                                         andOperation:opearation
                                   andCompletionBlock:completionBlock
                                        andErrorBlock:errorBlock];
@@ -65,16 +80,32 @@
             [op addFile:[fileDict objectForKey:@"file"] forKey:[fileDict objectForKey:@"key"]];
         }
     }
-    [self enqueueOperation:op];
+    if(op){
+        [self enqueueOperation:op];
+    }
     return op;
 }
 
 - (MKNetworkOperation *)requestWithMethod:(NSString*)method
-                                andParams:(NSDictionary*)params
+                                useToken:(BOOL)useToken
+                                andParams:(NSMutableDictionary*)params
                              andOperation:(NSString*)operation
                        andCompletionBlock:(CompletionBlock)completionBlock
                             andErrorBlock:(ErrorBlock)errorBlock
 {
+    if(useToken){
+        NSString* token = [[AuthenticationManager sharedInstance] token];
+        if(token == nil){
+            NSLog(@"Operation %@ could not be completed required token!",operation);
+            if(errorBlock != nil)
+                errorBlock([NSError errorWithDomain:@"TokenRequired"
+                                               code:0
+                                           userInfo:nil]);
+            return nil;
+        } else {
+            [params setObject:token forKey:@"token"];
+        }
+    }
     operation = [operation stringByAppendingString:@".json"];
     MKNetworkOperation* op = [self operationWithPath:operation
                                               params:params

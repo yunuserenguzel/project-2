@@ -44,27 +44,126 @@ id asClass(id object, Class class){
     return [object isKindOfClass:class] ? object : nil;
 }
 
-User* userFromServerDictionary(NSDictionary* dictionary){
+User* userFromServerDictionary(NSDictionary* dictionary, BOOL saveToDatabase){
     
     User* user = [User userWithId:[dictionary objectForKey:@"id"]];
     if(user == nil){
         user = [[User alloc] init];
         user.userId = [dictionary objectForKey:@"id"];
     }
+    user.isBeingFollowed = [[dictionary objectForKey:@"is_being_followed"] boolValue];
     user.username = asClass([dictionary objectForKey:@"username"], [NSString class]);
     user.fullName = asClass([dictionary objectForKey:@"fullname"], [NSString class]);
     user.profileImageUrl = asClass([dictionary objectForKey:@"profile_image"], [NSString class]);
+    user.website = asClass([dictionary objectForKey:@"website"], [NSString class]);
+    user.bio = asClass([dictionary objectForKey:@"bio"], [NSString class]);
+    user.location = asClass([dictionary objectForKey:@"location"], [NSString class]);
+    user.sonicCount = [asClass([dictionary objectForKey:@"sonic_count"], [NSNumber class]) integerValue];
+    user.followerCount = [asClass([dictionary objectForKey:@"follower_count"], [NSNumber class]) integerValue];
+    user.followingCount = [asClass([dictionary objectForKey:@"following_count"], [NSNumber class]) integerValue];
+    if(saveToDatabase){
+        [user saveToDatabase];
+    }
     return user;
 }
 
+Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
+    NSDictionary* userDict = [sonicDict objectForKey:@"user"];
+    User* user = userFromServerDictionary(userDict, saveToDatabase);
+    Sonic* sonic = [Sonic getWithId:[sonicDict objectForKey:@"id"]];
+    if(sonic == nil) {
+        sonic = [[Sonic alloc] init];
+    }
+    sonic.sonicId = asClass([sonicDict objectForKey:@"id"], [NSString class]);
+    sonic.sonicUrl = asClass([sonicDict objectForKey:@"sonic_data"], [NSString class]);
+    sonic.latitude = [asClass([sonicDict objectForKey:@"latitude"], [NSNumber class]) floatValue];
+    sonic.longitude= [asClass([sonicDict objectForKey:@"longitude"],[NSNumber class]) floatValue];
+    sonic.isPrivate = [asClass([sonicDict objectForKey:@"is_private" ], [NSNumber class]) boolValue];
+    sonic.creationDate = dateFromServerString([sonicDict objectForKey:@"created_at"]);
+    sonic.owner = user;
+    sonic.likeCount = [asClass([sonicDict objectForKey:@"like_count"], [NSNumber class]) integerValue];
+    sonic.resonicCount = [asClass([sonicDict objectForKey:@"resonic_count"], [NSNumber class]) integerValue];
+    sonic.commentCount = [asClass([sonicDict objectForKey:@"comment_count"], [NSNumber class]) integerValue];
+    sonic.isLikedByMe = [asClass([sonicDict objectForKey:@"liked_by_me"], [NSNumber class]) boolValue];
+    sonic.isResonicedByMe = [asClass([sonicDict objectForKey:@"resoniced_by_me"], [NSNumber class]) boolValue];
+    if(saveToDatabase){
+        [sonic saveToDatabase];
+    }
+    return sonic;
+}
+
 @implementation SNCAPIManager
++ (MKNetworkOperation *)followUser:(User *)user withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"user": user.userId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"user/follow"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                userFromServerDictionary([responseDictionary objectForKey:@"authenticated_user"], YES);
+                if(completionBlock){
+                    completionBlock(YES);
+                }
+            } andErrorBlock:errorBlock];
+}
++ (MKNetworkOperation *)unfollowUser:(User *)user withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"user": user.userId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"user/unfollow"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                userFromServerDictionary([responseDictionary objectForKey:@"authenticated_user"], YES);
+                if(completionBlock){
+                    completionBlock(YES);
+                }
+            } andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)getFollowingsOfUser:(User *)user withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"user" : user.userId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"user/followings"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSMutableArray* users = [[NSMutableArray alloc] init];
+                [[responseDictionary objectForKey:@"followings"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
+                    [users addObject:userFromServerDictionary(userDict,NO)];
+                }];
+                if(completionBlock){
+                    completionBlock(users);
+                }
+            } andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)getFollowersOfUser:(User *)user withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"user" : user.userId};
+    return  [[SNCAPIConnector sharedInstance]
+             getRequestWithParams:params
+             useToken:YES
+             andOperation:@"user/followers"
+             andCompletionBlock:^(NSDictionary *responseDictionary) {
+                 NSMutableArray* users = [[NSMutableArray alloc] init];
+                 [[responseDictionary objectForKey:@"followers"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
+                     [users addObject:userFromServerDictionary(userDict,NO)];
+                 }];
+                 if(completionBlock){
+                     completionBlock(users);
+                 }
+             } andErrorBlock:errorBlock];
+}
 
 + (MKNetworkOperation *)getCommentsOfSonic:(Sonic *)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSDictionary* params = @{@"sonic": sonic.sonicId,
-                             @"token":[[AuthenticationManager sharedInstance] token]};
+    NSDictionary* params = @{@"sonic": sonic.sonicId};
     return [[SNCAPIConnector sharedInstance]
             getRequestWithParams:params
+            useToken:YES
             andOperation:@"sonic/comments"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 NSMutableArray* comments = [NSMutableArray new];
@@ -82,10 +181,10 @@ User* userFromServerDictionary(NSDictionary* dictionary){
 + (MKNetworkOperation *)writeCommentToSonic:(Sonic *)sonic withText:(NSString *)text withCompletionBlock:(CompletionIdBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     NSDictionary* params = @{@"sonic": sonic.sonicId,
-                             @"text": text,
-                             @"token" : [[AuthenticationManager sharedInstance] token]};
+                             @"text": text};
     return [[SNCAPIConnector sharedInstance]
             postRequestWithParams:params
+            useToken:YES
             andOperation:@"sonic/write_comment"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 SonicComment* sonicComment = sonicCommentFromServerDictionary([responseDictionary objectForKey:@"comment"]);
@@ -103,51 +202,69 @@ User* userFromServerDictionary(NSDictionary* dictionary){
 
 + (MKNetworkOperation*) deleteSonic:(Sonic*)sonic withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSDictionary* params = @{@"sonic": sonic.sonicId,
-                             @"token":[[AuthenticationManager sharedInstance] token]};
+    NSDictionary* params = @{@"sonic": sonic.sonicId};
     
     [sonic deleteFromDatabase];
     [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicDeleted object:sonic];
-    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"sonic/delete_sonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
-        if(completionBlock){
-            completionBlock(YES);
-        }
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"sonic/delete_sonic"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                if(completionBlock){
+                    completionBlock(YES);
+                }
     } andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation*) likeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSDictionary* params = @{@"sonic": sonic.sonicId,
-                             @"token": [[AuthenticationManager sharedInstance] token]};
-    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"sonic/like_sonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
-        Sonic* sonic = [SNCAPIManager sonicWithDictionary:[responseDictionary objectForKey:@"sonic"] saveToDatabase:NO];
-        
-        dispatch_async(dispatch_get_main_queue(),^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationLikeSonic object:sonic];
-        });
-        
-        if(completionBlock){
-            completionBlock(sonic);
-        }
+    NSDictionary* params = @{@"sonic": sonic.sonicId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"sonic/like_sonic"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                dispatch_async(dispatch_get_main_queue(),^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationLikeSonic object:sonic];
+                });
+                if(completionBlock){
+                    completionBlock(sonic);
+                }
     } andErrorBlock:errorBlock];
 }
 + (MKNetworkOperation*) dislikeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSDictionary* params = @{@"sonic": sonic.sonicId,
-                             @"token": [[AuthenticationManager sharedInstance] token]};
-    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"sonic/dislike_sonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
-        Sonic* sonic = [SNCAPIManager sonicWithDictionary:[responseDictionary objectForKey:@"sonic"] saveToDatabase:NO];
-        
-        dispatch_async(dispatch_get_main_queue(),^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationDislikeSonic object:sonic];
-        });
-        
-        if(completionBlock){
-            completionBlock(sonic);
-        }
+    NSDictionary* params = @{@"sonic": sonic.sonicId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"sonic/dislike_sonic"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                dispatch_async(dispatch_get_main_queue(),^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationDislikeSonic object:sonic];
+                });
+                
+                if(completionBlock){
+                    completionBlock(sonic);
+                }
     } andErrorBlock:errorBlock];
 }
 
++ (MKNetworkOperation *)resonicSonic:(Sonic *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"sonic":sonic.sonicId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params useToken:YES andOperation:@"sonic/resonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
+                Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
+                if([Sonic getWithId:sonic.sonicId]){
+                    [sonic saveToDatabase];
+                }
+                if(completionBlock){
+                    completionBlock(sonic);
+                }
+            } andErrorBlock:errorBlock];
+}
 
 
 + (void)createSonic:(SonicData *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock
@@ -159,12 +276,13 @@ User* userFromServerDictionary(NSDictionary* dictionary){
     
     NSString* operation = @"sonic/create_sonic";
     [[SNCAPIConnector sharedInstance]
-     uploadFileRequestWithParams:@{@"token":[[AuthenticationManager sharedInstance] token], @"latitude":[NSNumber numberWithFloat:sonic.latitude], @"longitude":[NSNumber numberWithFloat:sonic.longitude]}
+     uploadFileRequestWithParams:@{ @"latitude":[NSNumber numberWithFloat:sonic.latitude], @"longitude":[NSNumber numberWithFloat:sonic.longitude]}
+     useToken:YES
      andFiles:@[@{@"file":tempFile,@"key":@"sonic_data"}]
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          NSDictionary* sonicDict = [responseDictionary objectForKey:@"sonic"];
-         Sonic* sonic = [SNCAPIManager sonicWithDictionary:sonicDict saveToDatabase:YES];
+         Sonic* sonic = sonicFromServerDictionary(sonicDict, YES);
          [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicsAreLoaded object:nil];
          completionBlock(sonic);
      }
@@ -177,7 +295,6 @@ User* userFromServerDictionary(NSDictionary* dictionary){
 {
     NSNumber* count = [NSNumber numberWithInt:20];
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    [params setObject:[[AuthenticationManager sharedInstance] token] forKey:@"token"];
     if(user != nil){
         [params setObject:user.userId forKey:@"user"];
     }
@@ -201,7 +318,6 @@ User* userFromServerDictionary(NSDictionary* dictionary){
 {
     NSNumber* count = [NSNumber numberWithInt:20];
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    [params setObject:[[AuthenticationManager sharedInstance] token] forKey:@"token"];
     if(sonic != nil){
         [params setObject:sonic.sonicId forKey:@"after_sonic"];
     }
@@ -230,53 +346,25 @@ User* userFromServerDictionary(NSDictionary* dictionary){
                              andErrorBlock:(ErrorBlock)errorBlock
 {
     NSString* operation = @"sonic/get_sonics";
-    [params setObject:[AuthenticationManager sharedInstance].token forKey:@"token"];
     return [[SNCAPIConnector sharedInstance]
-     getRequestWithParams:params
-     andOperation:operation
-     andCompletionBlock:^(NSDictionary *responseDictionary) {
-         NSMutableArray* sonics = [[NSMutableArray alloc] init];
-         for (NSDictionary* sonicDict in [responseDictionary objectForKey:@"sonics"]) {
-             if (saveToDatabase){
-                 [sonics addObject:[SNCAPIManager sonicWithDictionary:sonicDict saveToDatabase:saveToDatabase]];
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:operation
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+             NSMutableArray* sonics = [[NSMutableArray alloc] init];
+             for (NSDictionary* sonicDict in [responseDictionary objectForKey:@"sonics"]) {
+                 if (saveToDatabase){
+                     [sonics addObject:sonicFromServerDictionary(sonicDict, saveToDatabase)];
+                 }
              }
-         }
-         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicsAreLoaded object:nil];
-         if(completionBlock){
-             completionBlock(sonics);
-         }
-     }
-     andErrorBlock:errorBlock];
+             [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicsAreLoaded object:nil];
+             if(completionBlock){
+                 completionBlock(sonics);
+             }
+            }
+            andErrorBlock:errorBlock];
 }
 
-+ (Sonic*) sonicWithDictionary:(NSDictionary*)sonicDict saveToDatabase:(BOOL)saveToDatabase
-{
-    NSDictionary* userDict = [sonicDict objectForKey:@"user"];
-    User* user = [User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"realname"] andProfileImage:nil];
-    if(saveToDatabase){
-        [user saveToDatabase];
-    }
-    
-    NSNumber* longitude = [sonicDict objectForKey:@"longitude"];
-    longitude = [longitude isKindOfClass:[NSNull class]] ? nil : longitude;
-    NSNumber* latitude = [sonicDict objectForKey:@"latitude"];
-    latitude = [latitude isKindOfClass:[NSNull class]] ? nil :latitude;
-    NSNumber* isPrivate = [sonicDict objectForKey:@"is_private" ];
-    isPrivate = [isPrivate isKindOfClass:[NSNull class]] ? nil : isPrivate;
-    NSString* sonicId = [NSString stringWithFormat:@"%@",[sonicDict objectForKey:@"id"]];
-    NSDate* createdAt = dateFromServerString([sonicDict objectForKey:@"created_at"]);
-    Sonic* sonic = [Sonic sonicWith:sonicId
-                       andLongitude:longitude
-                        andLatitude:latitude
-                       andIsPrivate:isPrivate
-                    andCreationDate:createdAt
-                        andSonicUrl:[sonicDict objectForKey:@"sonic_data"]
-                           andOwner:user];
-    if(saveToDatabase){
-        [sonic saveToDatabase];
-    }
-    return sonic;
-}
 
 + (void) getImage:(NSURL*)imageUrl withCompletionBlock:(CompletionIdBlock)completionBlock
 {
@@ -333,6 +421,7 @@ User* userFromServerDictionary(NSDictionary* dictionary){
 + (void) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 {
     [[SNCAPIConnector sharedInstance] getRequestWithParams:@{@"token": token}
+                                                  useToken:NO
                                               andOperation:@"check_is_valid_token"
                                         andCompletionBlock:^(NSDictionary *responseDictionary) {
                                             NSString* userId = [[responseDictionary objectForKey:@"user"] objectForKey:@"id"];
@@ -355,14 +444,16 @@ User* userFromServerDictionary(NSDictionary* dictionary){
     NSDictionary* params = @{@"username": username,
                              @"password": password};
     
-    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"user/login"andCompletionBlock:^(NSDictionary *responseDictionary) {
-        
-        NSString* token = [responseDictionary objectForKey:@"token"];
-        User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
-        [user saveToDatabase];
-        if(completionBlock != nil){
-            completionBlock(user,token);
-        }
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:NO
+            andOperation:@"user/login"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSString* token = [responseDictionary objectForKey:@"token"];
+                User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"],YES);
+                if(completionBlock != nil){
+                    completionBlock(user,token);
+                }
     } andErrorBlock:errorBlock];
 }
 
@@ -372,41 +463,36 @@ User* userFromServerDictionary(NSDictionary* dictionary){
     NSDictionary* params = @{@"username": username,
                              @"email":email,
                              @"password":password};
-    return [[SNCAPIConnector sharedInstance] postRequestWithParams:params andOperation:@"user/register"andCompletionBlock:^(NSDictionary *responseDictionary) {
-        NSString* token = [responseDictionary objectForKey:@"token"];
-        User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
-        [user saveToDatabase];
-        if(completionBlock != nil){
-            completionBlock(user,token);
-        }
-    } andErrorBlock:errorBlock];
+    return [[SNCAPIConnector sharedInstance]
+            postRequestWithParams:params
+            useToken:NO
+            andOperation:@"user/register"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSString* token = [responseDictionary objectForKey:@"token"];
+                User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"],YES);
+                if(completionBlock != nil){
+                    completionBlock(user,token);
+                }
+            } andErrorBlock:errorBlock];
 }
 
-+ (MKNetworkOperation *)validateWithEmail:(NSString *)email andValidationCode:(NSString *)validationCode withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
-{
-    NSDictionary* params = @{@"email": email,
-                             @"validation_code": validationCode};
-    return [[SNCAPIConnector sharedInstance] getRequestWithParams:params andOperation:@"user/validate"andCompletionBlock:^(NSDictionary *responseDictionary) {
-        if(completionBlock != nil){
-            completionBlock(YES);
-        }
-    } andErrorBlock:errorBlock];
-}
+
 
 + (MKNetworkOperation *)getLikesOfSonic:(Sonic *)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     
-    NSDictionary* params = @{@"sonic":sonic.sonicId,
-                             @"token":[[AuthenticationManager sharedInstance] token]};
+    NSDictionary* params = @{@"sonic":sonic.sonicId};
     
     return [[SNCAPIConnector sharedInstance]
             getRequestWithParams:params
+            useToken:YES
             andOperation:@"sonic/likes"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 NSMutableArray* users = [[NSMutableArray alloc] init];
                 [[responseDictionary objectForKey:@"users"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
                     NSLog(@"%@",responseDictionary);
-                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
+                    [users addObject:userFromServerDictionary(userDict, NO)];
+//                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
                 }];
                 completionBlock(users);
             } andErrorBlock:errorBlock];

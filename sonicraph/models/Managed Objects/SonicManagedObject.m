@@ -19,6 +19,11 @@
 @dynamic creationDate;
 @dynamic sonicUrl;
 @dynamic owner;
+@dynamic isLikedByMe;
+@dynamic isResonicedByMe;
+@dynamic likeCount;
+@dynamic resonicCount;
+@dynamic commentCount;
 
 
 + (SonicManagedObject *)last

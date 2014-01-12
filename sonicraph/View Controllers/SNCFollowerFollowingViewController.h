@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "User.h"
+#import "SNCPersonTableCell.h"
 
-@interface SNCFollowerFollowingViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
+@interface SNCFollowerFollowingViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,SNCPersonFollowableTableCellProtocol>
 
 @property (nonatomic) User* user;
 

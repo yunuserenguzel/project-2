@@ -16,11 +16,16 @@
 @property (nonatomic, retain) NSString * image;
 @property (nonatomic, retain) NSString * fullname;
 @property (nonatomic, retain) NSString * username;
+@property (nonatomic, retain) NSString * location;
+@property (nonatomic, retain) NSString * website;
+@property (nonatomic, retain) NSString * bio;
 @property (nonatomic, retain) NSString * userId;
+@property (nonatomic, retain) NSNumber * sonicCount;
+@property (nonatomic, retain) NSNumber * followerCount;
+@property (nonatomic, retain) NSNumber * followingCount;
 @property (nonatomic, retain) NSSet *sonics;
 
 + (UserManagedObject*) createOrFetchWithId:(NSString*)userId;
-+ (UserManagedObject*) createUserWith:(NSString*)userId andUserName:(NSString*)userName andRealName:(NSString*)realName andImage:(NSString*)image;
 
 + (UserManagedObject*) getUser:(NSString*)userId;
 

@@ -67,15 +67,7 @@ static SNCAppDelegate* sharedInstance = nil;
 //        }];
 //    } andErrorBlock:^(NSError *error) {
 //    }];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(userLoggedIn)
-     name:NotificationUserLoggedIn
-     object:nil];
-    
     NSLog(@"token: %@",[[AuthenticationManager sharedInstance] token]);
-
-
     dispatch_async(dispatch_get_main_queue(), ^{
         [[AuthenticationManager sharedInstance] checkAuthentication];
     });

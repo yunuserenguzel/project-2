@@ -9,15 +9,23 @@
 #import "Sonic.h"
 #import "SonicData.h"
 #import "SonicManagedObject.h"
+#import "TypeDefs.h"
+
 @implementation Sonic
 
 + (Sonic *)sonicWithSonicManagedObject:(SonicManagedObject *)sonicManagedObject
 {
+    if(sonicManagedObject == nil) return nil;
     Sonic* sonic = [[Sonic alloc] init];
     sonic.sonicId = sonicManagedObject.sonicId;
     sonic.longitude = [sonicManagedObject.longitude floatValue];
     sonic.latitude = [sonicManagedObject.latitude floatValue];
     sonic.isPrivate = [sonicManagedObject.isPrivate boolValue];
+    sonic.isLikedByMe = [sonicManagedObject.isLikedByMe boolValue];
+    sonic.isResonicedByMe = [sonicManagedObject.isResonicedByMe boolValue];
+    sonic.likeCount = [sonicManagedObject.likeCount integerValue];
+    sonic.commentCount = [sonicManagedObject.commentCount integerValue];
+    sonic.resonicCount = [sonicManagedObject.resonicCount integerValue];
     sonic.creationDate = sonicManagedObject.creationDate;
     sonic.sonicUrl = sonicManagedObject.sonicUrl;
     sonic.owner = [User userWithManagedObject:sonicManagedObject.owner];
@@ -40,12 +48,14 @@
 
 +(Sonic *)getWithId:(NSString *)sonicId
 {
-    return nil;
+    return [Sonic sonicWithSonicManagedObject:[SonicManagedObject getWithId:sonicId]];
 }
 
 + (Sonic *)sonicWith:(NSString *)sonicId andLongitude:(NSNumber *)longitude andLatitude:(NSNumber *)latitude andIsPrivate:(NSNumber *)isPrivate andCreationDate:(NSDate *)creationDate andSonicUrl:(NSString *)sonicUrl andOwner:(User *)user
 {
-    Sonic* sonic = [[Sonic alloc] init];
+    
+    Sonic* sonic = [Sonic getWithId:sonicId];
+    if(!sonic) sonic = [[Sonic alloc] init];
     sonic.sonicId = sonicId;
     sonic.longitude = [longitude floatValue];
     sonic.latitude = [latitude floatValue];
@@ -73,9 +83,19 @@
     sonicManagedObject.latitude = [NSNumber numberWithFloat:self.latitude];
     sonicManagedObject.longitude = [NSNumber numberWithFloat:self.longitude];
     sonicManagedObject.isPrivate = [NSNumber numberWithBool:self.isPrivate];
+    sonicManagedObject.isLikedByMe = [NSNumber numberWithBool:self.isLikedByMe];
+    sonicManagedObject.isResonicedByMe = [NSNumber numberWithBool:self.isResonicedByMe];
+    sonicManagedObject.likeCount = [NSNumber numberWithInteger:self.likeCount];
+    sonicManagedObject.commentCount = [NSNumber numberWithInteger:self.commentCount];
+    sonicManagedObject.resonicCount = [NSNumber numberWithInteger:self.resonicCount];
     sonicManagedObject.creationDate = self.creationDate;
     sonicManagedObject.sonicUrl = self.sonicUrl;
+    [self.owner saveToDatabase];
+    sonicManagedObject.owner = self.owner.userManagedObject;
     [sonicManagedObject save];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:NotificationSonicSaved
+     object:self];
 }
 
 + (Sonic *)last

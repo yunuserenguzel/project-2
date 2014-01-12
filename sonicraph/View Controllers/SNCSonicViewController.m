@@ -14,6 +14,7 @@
 #import "Configurations.h"
 #import "UIButton+StateProperties.h"
 #import "SonicCommentCell.h"
+#import "SNCPersonTableCell.h"
 
 #define CellIdentifierSonicComment @"CellIdentifierSonicComment"
 
@@ -106,6 +107,7 @@
             [self.navigationItem setTitle:@""];
             break;
     }
+    [self.tableView reloadData];
 }
 
 
@@ -147,7 +149,7 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView registerClass:[SonicCommentCell class] forCellReuseIdentifier:CellIdentifierSonicComment];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView registerClass:[SNCPersonTableCell class] forCellReuseIdentifier:SNCPersonTableCellIdentifier];
     [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, HeaderViewMaxHeight * 2.0, 0.0)];
     [self.tableView setShowsVerticalScrollIndicator:NO];
     [self.tableView setShowsHorizontalScrollIndicator:NO];
@@ -329,10 +331,11 @@
     
     [self refreshContent];
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
-    [self.headerView.profileImageView setImage:[UIImage imageNamed:@"2013-11-07 09.52.53.jpg"]];
-    [self.headerView.usernameLabel setText:@"yeguzel"];
-    
-    /*TEST*/
+    self.headerView.usernameLabel.text = self.sonic.owner.username;
+    [self.headerView.profileImageView setImage:SonicPlaceholderImage];
+    [SNCAPIManager getImage:[NSURL URLWithString:self.sonic.owner.profileImageUrl] withCompletionBlock:^(id object) {
+        self.headerView.profileImageView.image = (UIImage*) object;
+    }];
 }
 
 - (void)setSonic:(Sonic *)sonic
@@ -351,13 +354,13 @@
 - (void) refreshContent
 {
     if(currentContentType == ContentTypeLikes){
-//        [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
-//            self.likesContent = users;
-//            [self.tableView reloadData];
-//            
-//        } andErrorBlock:^(NSError *error) {
-//            
-//        }];
+        [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
+            self.likesContent = users;
+            [self.tableView reloadData];
+            
+        } andErrorBlock:^(NSError *error) {
+            
+        }];
     }
     else if(currentContentType == ContentTypeComments){
         [SNCAPIManager getCommentsOfSonic:self.sonic withCompletionBlock:^(NSArray *comments) {
@@ -418,11 +421,11 @@
     if(currentContentType == ContentTypeComments){
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSonicComment forIndexPath:indexPath];
     } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:SNCPersonTableCellIdentifier forIndexPath:indexPath];
     }
     id currentObject = [[self currentContent] objectAtIndex:indexPath.row];
     if(currentContentType == ContentTypeLikes){
-        [cell.textLabel setText:((User*)currentObject).username];
+        [(SNCPersonTableCell*)cell setUser:currentObject];
     } else if (currentContentType == ContentTypeComments){
         [(SonicCommentCell*)cell setSonicComment:currentObject];
     }
@@ -436,9 +439,15 @@
     switch (index) {
         case 0:
             [self setCurrentContentType:ContentTypeLikes];
+            if(self.likesContent == nil|| self.likesContent.count == 0){
+                [self refreshContent];
+            }
             break;
         case 1:
             [self setCurrentContentType:ContentTypeComments];
+            if(self.commentsContent == nil || self.commentsContent.count == 0){
+                [self refreshContent];
+            }
             break;
         case 2:
             [self setCurrentContentType:ContentTypeResonics];

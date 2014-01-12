@@ -55,8 +55,10 @@
                                              selector:@selector(refresh)
                                                  name:NotificationSonicDeleted
                                                object:nil];
+    
     self.sonics  = @[];
     [self initRefreshController];
+    [self refreshFromServer];
 }
 - (void) initRefreshController
 {
@@ -103,11 +105,6 @@
     [self refresh];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-
-}
-
 - (void) viewWillDisappear:(BOOL)animated
 {
     [cellWiningTheCenter cellLostCenterOfTableView];
@@ -130,14 +127,11 @@
 {
     static NSString *CellIdentifier = HomeTableCellIdentifier;
     SNCHomeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     Sonic* sonic = [self.sonics objectAtIndex:indexPath.row];
     if(sonic != cell.sonic){
         [cell setSonic:[self.sonics objectAtIndex:indexPath.row]];
         cell.delegate = self;
     }
-    
-    // Configure the cell...
 
     return cell;
 }

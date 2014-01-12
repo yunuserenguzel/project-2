@@ -17,6 +17,7 @@
 #import "NSDate+NVTimeAgo.h"
 
 #define DeleteConfirmAlertViewTag 10001
+#define ResonicConfirmAlertViewTag 20020
 
 #define ButtonsTop 397.0
 #define LabelsTop 377.0
@@ -111,10 +112,10 @@
 {
 //    [self.layer setBorderColor:[UIColor redColor].CGColor];
 //    [self.layer setBorderWidth:1.0f];
-    
+    NSLog(@"%@",self);
     self.userImageView = [[UIImageView alloc] initWithFrame:[self userImageViewFrame]];
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self.userImageView setImage:[UIImage imageNamed:@"2013-11-07 09.52.53.jpg"]];
+    [self.userImageView setImage:SonicPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
     [self.userImageView.layer setCornerRadius:self.userImageView.frame.size.height * 0.5];
     [self.userImageView.layer setShouldRasterize:YES];
@@ -138,7 +139,6 @@
     self.sonicPlayerView = [[SonicPlayerView alloc] init];
     [self.sonicPlayerView setFrame:[self sonicPlayerViewFrame]];
     [self addSubview:self.sonicPlayerView];
-    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
     [self addSubview:self.usernameLabel];
     [self initLabels];
     [self initButtons];
@@ -146,10 +146,18 @@
 //    [self.cellSpacingView setImage:[UIImage imageNamed:@"44PXLabelWithShadow@
     [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
     [self addSubview:self.cellSpacingView];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSonicNotification:) name:NotificationSonicSaved object:nil];
+    
 }
 
-
+- (void) refreshSonicNotification:(NSNotification*)notification
+{
+    Sonic* sonic = notification.object;
+    if([self.sonic.sonicId isEqualToString:sonic.sonicId]){
+        self.sonic = sonic;
+    }
+}
 
 - (void) initLabels
 {
@@ -231,7 +239,17 @@
         [alert show];
     }
 }
-
+- (void) resonic
+{
+    UIAlertView* alert = [[UIAlertView alloc]
+      initWithTitle:@"Resonic"
+      message:@"Do you want to resonic this?"
+      delegate:self
+      cancelButtonTitle:@"Cancel"
+      otherButtonTitles:@"Resonic!", nil];
+    alert.tag = ResonicConfirmAlertViewTag;
+    [alert show];
+}
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSLog(@"%d",buttonIndex);
@@ -240,18 +258,14 @@
             [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
         }
     }
+    else if(alertView.tag == ResonicConfirmAlertViewTag){
+        if(buttonIndex == 1){
+            [SNCAPIManager resonicSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
+        }
+    }
 }
 
-- (void) resonic
-{
-    [[[UIAlertView alloc]
-      initWithTitle:@"Resonic"
-      message:@"Do you want to resonic this?"
-      delegate:self
-      cancelButtonTitle:@"Cancel"
-      otherButtonTitles:@"Resonic!", nil]
-     show];
-}
+
 
 - (void) openLikes
 {
@@ -300,10 +314,23 @@
 {
     if(_sonic != sonic){
         _sonic = sonic;
-        [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrl]];
-        [self.usernameLabel setText:[self.sonic.owner fullName]];
-        [self.timestampLabel setText:[[self.sonic creationDate] formattedAsTimeAgo]];
+        [self configureViews];
     }
+}
+
+- (void) configureViews
+{
+    [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
+    [self.usernameLabel setText:[self.sonic.owner username]];
+    [self.userImageView setImage:SonicPlaceholderImage];
+    [SNCAPIManager getImage:[NSURL URLWithString:self.sonic.owner.profileImageUrl] withCompletionBlock:^(id object) {
+        if(object){
+            [self.userImageView setImage:(UIImage *)object];
+        }
+    }];
+    [self.timestampLabel setText:[[self.sonic creationDate] formattedAsTimeAgo]];
+    [self.resonicButton setSelected:self.sonic.isResonicedByMe];
+    [self.likeButton setSelected:self.sonic.isLikedByMe];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

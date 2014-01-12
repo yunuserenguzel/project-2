@@ -8,7 +8,7 @@
 
 #import "User.h"
 #import "UserManagedObject.h"
-
+#import "TypeDefs.h"
 
 @implementation User
 
@@ -37,6 +37,12 @@
     user.username = userManagedObject.username;
     user.userId = userManagedObject.userId;
     user.profileImageUrl = userManagedObject.image;
+    user.followingCount = [userManagedObject.followingCount integerValue];
+    user.followerCount = [userManagedObject.followerCount integerValue];
+    user.sonicCount = [userManagedObject.sonicCount integerValue];
+    user.website = userManagedObject.website;
+    user.bio = userManagedObject.bio;
+    user.location = userManagedObject.location;
     return user;
 }
 
@@ -59,7 +65,15 @@
     self.userManagedObject.username = self.username;
     self.userManagedObject.fullname = self.fullName;
     self.userManagedObject.image = self.profileImageUrl;
+    self.userManagedObject.bio = self.bio;
+    self.userManagedObject.website = self.website;
+    self.userManagedObject.location = self.location;
+    self.userManagedObject.followerCount = [NSNumber numberWithInteger:self.followerCount];
+    self.userManagedObject.followingCount = [NSNumber numberWithInteger:self.followingCount];
+    self.userManagedObject.sonicCount = [NSNumber numberWithInteger:self.sonicCount];
     [self.userManagedObject save];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserSaved object:self];
 }
 
 

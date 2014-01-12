@@ -18,17 +18,17 @@ static SNCLoginViewController* sharedInstance = nil;
 
 - (CGRect) usernameFieldFrame
 {
-    return CGRectMake(10.0, 100.0, 300.0, 50.0);
+    return CGRectMake(10.0, 80.0, 300.0, 50.0);
 }
 
 - (CGRect) passwordFieldFrame
 {
-    return CGRectMake(10.0, 170.0, 300.0, 50.0);
+    return CGRectMake(10.0, 140.0, 300.0, 50.0);
 }
 
 - (CGRect) loginButtonFrame
 {
-    return CGRectMake(10.0, 240.0, 300.0, 50.0);
+    return CGRectMake(10.0, 200.0, 300.0, 50.0);
 }
 
 + (SNCLoginViewController *)sharedInstance

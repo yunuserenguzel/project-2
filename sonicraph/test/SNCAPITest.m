@@ -75,6 +75,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"user":username,@"password":password,@"platform":platform}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          if([responseDictionary objectForKey:@"token"]){
@@ -101,6 +102,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"token": token, @"user_id":userId}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          if([responseDictionary objectForKey:@"success"] && [[responseDictionary objectForKey:@"success"] boolValue]){
@@ -121,6 +123,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"token": token, @"user_id":userId}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          if([responseDictionary objectForKey:@"success"] && [[responseDictionary objectForKey:@"success"] boolValue]){
@@ -143,6 +146,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"token":token,@"page_number":[NSNumber numberWithInt:pageNumber],@"page_count":[NSNumber numberWithInt:pageCount]}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          NSLog(@"%@",responseDictionary);
@@ -160,6 +164,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"token":token,@"page_number":pageNumber,@"page_count":pageCount}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          
@@ -179,6 +184,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"token":token, @"operation":operation, @"latitude":latitude, @"longitude":longitude, @"sonic":sonic}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          
@@ -196,6 +202,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"token":token,@"page_number":pageNumber,@"page_count":pageCount}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          
@@ -213,6 +220,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"token":token,@"page_count":pageCount,@"page_number":pageNumber}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          
@@ -229,6 +237,7 @@ static NSString* token = @"SNCKL001527bedc56798a527bedc568b28527bedc56ac69";
     
     [[SNCAPIConnector sharedInstance]
      postRequestWithParams:@{@"sonic_id":sonicId,@"token":token}
+     useToken:NO
      andOperation:operation
      andCompletionBlock:^(NSDictionary *responseDictionary) {
          

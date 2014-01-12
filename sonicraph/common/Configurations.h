@@ -23,4 +23,6 @@
 #define CellSpacingGrayColor rgb(230.0, 230.0, 230.0) 
 
 #define SonicPlaceholderImage [UIImage imageNamed:@"PhotoBaseWithLogo.png"]
+
+#define PersonTableCellHeight 66.0
 #endif

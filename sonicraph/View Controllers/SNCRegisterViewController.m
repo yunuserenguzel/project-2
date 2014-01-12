@@ -66,9 +66,9 @@
     [self.usernameField setPlaceholder:@"username"];
     [self.passwordField setPlaceholder:@"password"];
     
-    [self.emailField setText:@"test@test.com"];
-    [self.usernameField setText:@"test1"];
-    [self.passwordField setText:@"12345"];
+//    [self.emailField setText:@"test@test.com"];
+//    [self.usernameField setText:@"test1"];
+//    [self.passwordField setText:@"12345"];
     
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
     [self.passwordField setSecureTextEntry:YES];

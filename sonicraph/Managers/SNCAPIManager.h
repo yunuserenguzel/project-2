@@ -19,7 +19,8 @@ typedef void (^CompletionIdBlock) (id object);
 
 @interface SNCAPIManager : NSObject
 
-+ (void) createSonic:(SonicData *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock;
++ (void) createSonic:(SonicData *)sonic
+ withCompletionBlock:(CompletionSonicBlock)completionBlock;
 
 + (void) getUserSonics:(User*)user saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
 
@@ -46,16 +47,14 @@ typedef void (^CompletionIdBlock) (id object);
                        withCompletionBlock:(CompletionUserBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
 
-+ (MKNetworkOperation *) validateWithEmail:(NSString*)email
-                         andValidationCode:(NSString*)validationCode
-                       withCompletionBlock:(CompletionBoolBlock)completionBlock
-                             andErrorBlock:(ErrorBlock)errorBlock;
-
 + (MKNetworkOperation*) likeSonic:(Sonic*)sonic
               withCompletionBlock:(CompletionSonicBlock)completionBlock
                     andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation*) dislikeSonic:(Sonic*)sonic
+                 withCompletionBlock:(CompletionSonicBlock)completionBlock
+                       andErrorBlock:(ErrorBlock)errorBlock;
++ (MKNetworkOperation*) resonicSonic:(Sonic*)sonic
                  withCompletionBlock:(CompletionSonicBlock)completionBlock
                        andErrorBlock:(ErrorBlock)errorBlock;
 
@@ -76,8 +75,6 @@ typedef void (^CompletionIdBlock) (id object);
                        withCompletionBlock:(CompletionIdBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
 
-
-
 + (MKNetworkOperation*) getLikesOfSonic:(Sonic*)sonic
                     withCompletionBlock:(CompletionArrayBlock)completionBlock
                           andErrorBlock:(ErrorBlock)errorBlock;
@@ -85,4 +82,21 @@ typedef void (^CompletionIdBlock) (id object);
 + (MKNetworkOperation*) getResonicsOfSonic:(Sonic*)sonic
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getFollowersOfUser:(User*) user
+                       withCompletionBlock:(CompletionArrayBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getFollowingsOfUser:(User*) user
+                        withCompletionBlock:(CompletionArrayBlock)completionBlock
+                              andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) followUser:(User*)user
+               withCompletionBlock:(CompletionBoolBlock)completionBlock
+                     andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) unfollowUser:(User*)user
+                 withCompletionBlock:(CompletionBoolBlock)completionBlock
+                       andErrorBlock:(ErrorBlock)errorBlock;
+
 @end

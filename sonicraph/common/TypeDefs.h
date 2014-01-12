@@ -26,6 +26,9 @@
 #define NotificationSonicDeleted @"NotificationSonicDeleted"
 #define NotificationCommentWrittenToSonic @"NotificationCommentWrittenToSonic"
 #define NotificationUserLoggedIn @"NotificationUserLoggedIn"
+#define NotificationUserSaved @"NotificationUserSaved"
+#define NotificationSonicResoniced @"NotificationSonicResoniced"
+#define NotificationSonicSaved @"NotificationSonicSaved"
 
 UIColor* rgb(CGFloat red, CGFloat green, CGFloat blue);
 

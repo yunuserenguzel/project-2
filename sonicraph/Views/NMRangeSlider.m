@@ -440,7 +440,7 @@ NSUInteger DeviceSystemMajorVersion() {
 //returns the rect for the background image
  -(CGRect) trackBackgroundRect
 {
-    CGRect trackBackgroundRect;
+    CGRect trackBackgroundRect = CGRectZero;
     
     trackBackgroundRect.size = CGSizeMake(_trackBackgroundImage.size.width-4, _trackBackgroundImage.size.height);
     
@@ -455,7 +455,7 @@ NSUInteger DeviceSystemMajorVersion() {
     }
     
     trackBackgroundRect.origin = CGPointMake(2, (self.bounds.size.height/2.0f) - (trackBackgroundRect.size.height/2.0f));
-    NSLog(@"trackBackgroundRect: %@",CGRectCreateDictionaryRepresentation(trackBackgroundRect));
+//    NSLog(@"trackBackgroundRect: %@",CGRectCreateDictionaryRepresentation(trackBackgroundRect));
     return trackBackgroundRect;
 }
 

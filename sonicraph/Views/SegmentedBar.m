@@ -25,6 +25,17 @@
     return item;
 }
 
+- (void)setSubtitle:(NSString *)subtitle
+{
+    _subtitle = subtitle;
+    [self.button setTitle:[SegmentedBarItem buttonTextWithTitle:self.title andSubTitle:self.subtitle] forState:UIControlStateNormal];
+}
+
++ (NSString*) buttonTextWithTitle:(NSString*)title andSubTitle:(NSString*)subtitle
+{
+    return [NSString stringWithFormat:@"%@\n%@",title,subtitle];
+}
+
 @end
 
 
@@ -104,9 +115,10 @@
 - (UIButton*) buttonForSegmentedBarItem:(SegmentedBarItem*)segmentedBarItem
 {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    segmentedBarItem.button = button;
     [button setImage:segmentedBarItem.normalImage forState:UIControlStateNormal];
     [button setImage:segmentedBarItem.selectedImage forState:UIControlStateSelected];
-    [button setTitle:[NSString stringWithFormat:@"%@\n%@",segmentedBarItem.title,segmentedBarItem.subtitle] forState:UIControlStateNormal];
+    [button setTitle:[SegmentedBarItem buttonTextWithTitle:segmentedBarItem.title andSubTitle:segmentedBarItem.subtitle] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateSelected];
     [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];

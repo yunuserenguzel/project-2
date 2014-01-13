@@ -19,8 +19,13 @@
 #define DeleteConfirmAlertViewTag 10001
 #define ResonicConfirmAlertViewTag 20020
 
+#define SonicActionSheetTag 121212
+#define DeleteResonicActionSheetTag 123123
+
 #define ButtonsTop 397.0
 #define LabelsTop 377.0
+
+
 @interface SNCHomeTableCell () <UIActionSheetDelegate,UIAlertViewDelegate>
 
 @property SonicPlayerView* sonicPlayerView;
@@ -165,7 +170,6 @@
 //    [self.likesCountLabel.layer setBorderColor:[UIColor redColor].CGColor];
 //    [self.likesCountLabel.layer setBorderWidth:1.0f];
     [self.likesCountLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.likesCountLabel setText:@"3 Likes"];
     [self.likesCountLabel setFont:[self.likesCountLabel.font fontWithSize:11.0]];
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openLikes)];
     [self.likesCountLabel addGestureRecognizer:tapGesture];
@@ -173,13 +177,11 @@
     [self addSubview:self.likesCountLabel];
 
     self.commentsCountLabel = [[UILabel alloc] initWithFrame:[self commentsLabelFrame]];
-    [self.commentsCountLabel setText:@"5 Comments"];
     [self.commentsCountLabel setTextAlignment:NSTextAlignmentCenter];
     [self.commentsCountLabel setFont:[self.commentsCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.commentsCountLabel];
     
     self.resonicsCountLabel = [[UILabel alloc] initWithFrame:[self resonicsLabelFrame]];
-    [self.resonicsCountLabel setText:@"2 Resonics"];
     [self.resonicsCountLabel setTextAlignment:NSTextAlignmentCenter];
     [self.resonicsCountLabel setFont:[self.resonicsCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.resonicsCountLabel];
@@ -228,27 +230,43 @@
 
 - (void) share
 {
-    [[[UIActionSheet alloc] initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Share on Facebook",@"Share on Twitter",@"Copy URL", nil] showInView:self];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Share on Facebook",@"Share on Twitter",@"Copy URL",@"Open Details", nil];
+    actionSheet.tag = SonicActionSheetTag;
+    [actionSheet showInView:self];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0){
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
-        alert.tag = DeleteConfirmAlertViewTag;
-        [alert show];
+    if(actionSheet.tag == SonicActionSheetTag){
+        if(buttonIndex == 0){
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+            alert.tag = DeleteConfirmAlertViewTag;
+            [alert show];
+        }
+    } else if(actionSheet.tag == DeleteResonicActionSheetTag){
+        if(buttonIndex == 0) {
+            [SNCAPIManager deleteResonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
+        }
     }
+    
 }
 - (void) resonic
 {
-    UIAlertView* alert = [[UIAlertView alloc]
-      initWithTitle:@"Resonic"
-      message:@"Do you want to resonic this?"
-      delegate:self
-      cancelButtonTitle:@"Cancel"
-      otherButtonTitles:@"Resonic!", nil];
-    alert.tag = ResonicConfirmAlertViewTag;
-    [alert show];
+    if(self.sonic.isResonicedByMe){
+        UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Delete resonic" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+        actionSheet.tag = DeleteResonicActionSheetTag;
+        [actionSheet showInView:self];
+        
+    } else {
+        UIAlertView* alert = [[UIAlertView alloc]
+                              initWithTitle:@"Resonic"
+                              message:@"Do you want to resonic this?"
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Resonic!", nil];
+        alert.tag = ResonicConfirmAlertViewTag;
+        [alert show];
+    }
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -331,6 +349,9 @@
     [self.timestampLabel setText:[[self.sonic creationDate] formattedAsTimeAgo]];
     [self.resonicButton setSelected:self.sonic.isResonicedByMe];
     [self.likeButton setSelected:self.sonic.isLikedByMe];
+    self.likesCountLabel.text = [NSString stringWithFormat:@"%d %@",self.sonic.likeCount,LikesText];
+    self.commentsCountLabel.text = [NSString stringWithFormat:@"%d %@",self.sonic.commentCount,CommentsText];
+    self.resonicsCountLabel.text = [NSString stringWithFormat:@"%d %@",self.sonic.resonicCount,ResonicsText];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

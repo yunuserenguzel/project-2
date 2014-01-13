@@ -37,7 +37,32 @@ static SNCAppDelegate* sharedInstance = nil;
 {
     sharedInstance = self;
     _tabbarController = (UITabBarController *)self.window.rootViewController;
+    CGRect frame = CGRectMake(0.0, 0.0, 320, 48);//Setting a Frame.
     
+    UIView* myTabView = [[UIView alloc] initWithFrame:frame];//Making Tab View
+    
+    // not supported on iOS4
+    UITabBar *tabBarr = [self.tabbarController tabBar];
+    if ([tabBarr respondsToSelector:@selector(setBackgroundImage:)])
+    {
+        // set it just for this instance
+        [tabBarr setBackgroundImage:[UIImage imageNamed:@"2013-11-07 09.52.53.png"]];
+        
+        
+        // set for all
+        // [[UITabBar appearance] setBackgroundImage: ...
+    }
+    else
+    {
+        // ios 4 code here
+        //[tabBarr setBackgroundColor:c];
+    }
+    
+    //[myTabView  setBackgroundColor:c];//Setting Color Of TaBar.
+    
+    [myTabView  setAlpha:0.8];//Setting Alpha of TabView.
+    
+    [[self.tabbarController tabBar] insertSubview:myTabView  atIndex:0];//Insert
 //    NSLog(@"%@",[Sonic getFrom:1 to:1]);
     
 //    [SNCAPIManager registerWithUsername:@"yeguzel" email:@"exculuber@gmail.com" password:@"741285" andCompletionBlock:^(NSDictionary *responseDictionary) {

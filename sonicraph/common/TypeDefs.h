@@ -9,6 +9,7 @@
 #ifndef sonicraph_TypeDefs_h
 #define sonicraph_TypeDefs_h
 
+
 #define EditSonicSegue @"EditSonicSegue"
 #define ShareSonicSegue @"ShareSonicSegue"
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"
@@ -18,6 +19,10 @@
 #define TabbarToLoginRegisterSegue @"TabbarToLoginRegisterSegue"
 #define LoginToRegisterSegue @"LoginToRegisterSegue"
 
+
+#define CommentsText @"Comments"
+#define LikesText @"Likes"
+#define ResonicsText @"Resonics"
 
 #define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
 #define NotificationLikeSonic @"NotificationLikeSonic"

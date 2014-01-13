@@ -24,7 +24,7 @@
 - (CGRect) tableViewFrame
 {
     CGRect frame = self.view.frame;
-    frame.origin.y = [self segmentedControlFrame].origin.y + [self segmentedControlFrame].size.height + 5.0;
+    frame.origin.y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
     frame.size.height -= frame.origin.y;
     return frame;
 }
@@ -93,9 +93,10 @@
 {
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Followers",@"Followings"]];
     [self.segmentedControl setFrame:[self segmentedControlFrame]];
-    [self.view addSubview:self.segmentedControl];
     [self.segmentedControl addTarget:self action:@selector(segmentChanged:) forControlEvents:UIControlEventValueChanged];
     [self.segmentedControl setSelectedSegmentIndex:0];
+    [self.segmentedControl sizeToFit];
+    self.navigationItem.titleView = self.segmentedControl;
 }
 
 - (void) segmentChanged:(UISegmentedControl*)segmentedControl

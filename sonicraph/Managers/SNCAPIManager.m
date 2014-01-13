@@ -81,9 +81,9 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
     sonic.isPrivate = [asClass([sonicDict objectForKey:@"is_private" ], [NSNumber class]) boolValue];
     sonic.creationDate = dateFromServerString([sonicDict objectForKey:@"created_at"]);
     sonic.owner = user;
-    sonic.likeCount = [asClass([sonicDict objectForKey:@"like_count"], [NSNumber class]) integerValue];
-    sonic.resonicCount = [asClass([sonicDict objectForKey:@"resonic_count"], [NSNumber class]) integerValue];
-    sonic.commentCount = [asClass([sonicDict objectForKey:@"comment_count"], [NSNumber class]) integerValue];
+    sonic.likeCount = [asClass([sonicDict objectForKey:@"likes_count"], [NSNumber class]) integerValue];
+    sonic.resonicCount = [asClass([sonicDict objectForKey:@"resonics_count"], [NSNumber class]) integerValue];
+    sonic.commentCount = [asClass([sonicDict objectForKey:@"comments_count"], [NSNumber class]) integerValue];
     sonic.isLikedByMe = [asClass([sonicDict objectForKey:@"liked_by_me"], [NSNumber class]) boolValue];
     sonic.isResonicedByMe = [asClass([sonicDict objectForKey:@"resoniced_by_me"], [NSNumber class]) boolValue];
     if(saveToDatabase){
@@ -266,6 +266,20 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
             } andErrorBlock:errorBlock];
 }
 
++ (MKNetworkOperation *)deleteResonic:(Sonic *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"sonic": sonic.sonicId};
+    return  [[SNCAPIConnector sharedInstance]
+             getRequestWithParams:params useToken:YES andOperation:@"sonic/delete_resonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
+                 Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
+                 if([Sonic getWithId:sonic.sonicId]){
+                     [sonic saveToDatabase];
+                 }
+                 if(completionBlock){
+                     completionBlock(sonic);
+                 }
+             } andErrorBlock:errorBlock];
+}
 
 + (void)createSonic:(SonicData *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock
 {

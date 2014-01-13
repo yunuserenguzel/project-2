@@ -92,15 +92,15 @@
     }
     switch (currentContentType) {
         case ContentTypeComments:
-            [self.navigationItem setTitle:@"Comments"];
+            [self.navigationItem setTitle:CommentsText];
             [self.tabActionBarView addSubview:self.writeCommentView];
             break;
         case ContentTypeLikes:
-            [self.navigationItem setTitle:@"Likes"];
+            [self.navigationItem setTitle:LikesText];
             [self.tabActionBarView addSubview:self.likeButton];
             break;
         case ContentTypeResonics:
-            [self.navigationItem setTitle:@"Resonics"];
+            [self.navigationItem setTitle:ResonicsText];
             [self.tabActionBarView addSubview:self.resonicButton];
             break;
         default:
@@ -108,6 +108,7 @@
             break;
     }
     [self.tableView reloadData];
+    
 }
 
 
@@ -336,6 +337,9 @@
     [SNCAPIManager getImage:[NSURL URLWithString:self.sonic.owner.profileImageUrl] withCompletionBlock:^(id object) {
         self.headerView.profileImageView.image = (UIImage*) object;
     }];
+    [self.headerView.likesBarItem setSubtitle:[NSString stringWithFormat:@"%d",self.sonic.likeCount]];
+    [self.headerView.commentsBarItem setSubtitle:[NSString stringWithFormat:@"%d",self.sonic.commentCount]];
+    [self.headerView.resonicsBarItem setSubtitle:[NSString stringWithFormat:@"%d",self.sonic.resonicCount]];
 }
 
 - (void)setSonic:(Sonic *)sonic

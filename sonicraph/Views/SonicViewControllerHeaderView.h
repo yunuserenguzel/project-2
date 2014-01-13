@@ -25,9 +25,9 @@
 @property UIImageView* profileImageView;
 
 @property SegmentedBar* segmentedBar;
-@property UIButton* likesTabButton;
-@property UIButton* commentsTabButton;
-@property UIButton* resonicsTabButton;
+@property SegmentedBarItem* likesBarItem;
+@property SegmentedBarItem* commentsBarItem;
+@property SegmentedBarItem* resonicsBarItem;
 
 @property UIView* tapToTopView;
 

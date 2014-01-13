@@ -108,22 +108,29 @@
     self.segmentedBar = [[SegmentedBar alloc] initWithFrame:[self segmentedBarMaxFrame]];
     [self addSubview:self.segmentedBar];
     
-    NSArray* segmentItems = @[
-      [SegmentedBarItem itemWithNormalImage:[UIImage imageNamed:@"HeartGrey.png"]
-                              selectedImage:[UIImage imageNamed:@"HeartPink.png"]
-                                      title:@"Likes"
-                                   subtitle:@"215"],
-      [SegmentedBarItem itemWithNormalImage:[UIImage imageNamed:@"CommentGrey.png"]
-                              selectedImage:[UIImage imageNamed:@"CommentPink.png"]
-                                      title:@"Comments"
-                                   subtitle:@"215"],
-      [SegmentedBarItem itemWithNormalImage:[UIImage imageNamed:@"ReSonicGrey.png"]
-                              selectedImage:[UIImage imageNamed:@"ReSonicPink.png"]
-                                      title:@"Resonics"
-                                   subtitle:@"215"],
-    ];
-    [self.segmentedBar setItems:segmentItems];
+    self.likesBarItem = [SegmentedBarItem
+                         itemWithNormalImage:[UIImage imageNamed:@"HeartGrey.png"]
+                         selectedImage:[UIImage imageNamed:@"HeartPink.png"]
+                         title:@"Likes"
+                         subtitle:@"215"];
+    
+    self.commentsBarItem = [SegmentedBarItem
+                            itemWithNormalImage:[UIImage imageNamed:@"CommentGrey.png"]
+                            selectedImage:[UIImage imageNamed:@"CommentPink.png"]
+                            title:@"Comments"
+                            subtitle:@"215"];
+    
+    self.resonicsBarItem = [SegmentedBarItem
+                            itemWithNormalImage:[UIImage imageNamed:@"ReSonicGrey.png"]
+                            selectedImage:[UIImage imageNamed:@"ReSonicPink.png"]
+                            title:@"Resonics"
+                            subtitle:@"215"];
 
+    NSArray* segmentItems = @[self.likesBarItem,
+                              self.commentsBarItem,
+                              self.resonicsBarItem];
+    
+    [self.segmentedBar setItems:segmentItems];
 }
 - (void) addTargetForTapToTop:(id)target action:(SEL)selector
 {

@@ -55,6 +55,14 @@ static int previousTabIndex = 0;
     [self.tabBar setBarStyle:UIBarStyleDefault];
     [self.tabBar setBarTintColor:[UIColor whiteColor]];
     [self.tabBar setTintColor:NavigationBarBlueColor];
+    self.tabBar.backgroundColor = [UIColor clearColor];
+    [[self.tabBar.subviews objectAtIndex:0] setAlpha:0.1];
+    self.tabBar.superview.backgroundColor = [UIColor clearColor];
+    [self.tabBar.layer setBackgroundColor:[UIColor clearColor].CGColor];
+    self.tabBar.superview.superview.backgroundColor = [UIColor clearColor];
+    for (UIView* view in self.tabBar.subviews) {
+        [view setBackgroundColor:[UIColor clearColor]];
+    }
     
 //    [self.tabBar.items enumerateObjectsUsingBlock:^(UITabBarItem* item, NSUInteger idx, BOOL *stop) {
 //

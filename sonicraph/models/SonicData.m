@@ -26,7 +26,6 @@
 //    if(error){
 //        return nil;
 //    }
-//    
 //    return [Sonic sonicWithJsonDataString:sonicDataString];
 //}
 
@@ -37,7 +36,7 @@
     NSData* sound = [NSData dataFromBase64String:[sonicDict objectForKey:@"sound"]];
     SonicData* sonic = [[SonicData alloc] initWithImage:image andSound:sound];
     return sonic;
-}
+}                       
 
 - (NSDictionary*)dictionaryFromSonicData
 {

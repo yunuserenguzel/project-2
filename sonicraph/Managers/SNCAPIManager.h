@@ -54,9 +54,14 @@ typedef void (^CompletionIdBlock) (id object);
 + (MKNetworkOperation*) dislikeSonic:(Sonic*)sonic
                  withCompletionBlock:(CompletionSonicBlock)completionBlock
                        andErrorBlock:(ErrorBlock)errorBlock;
+
 + (MKNetworkOperation*) resonicSonic:(Sonic*)sonic
                  withCompletionBlock:(CompletionSonicBlock)completionBlock
                        andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) deleteResonic:(Sonic*)sonic
+                  withCompletionBlock:(CompletionSonicBlock)completionBlock
+                        andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation*) deleteSonic:(Sonic*)sonic
                 withCompletionBlock:(CompletionBoolBlock)completionBlock

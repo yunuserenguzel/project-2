@@ -18,15 +18,18 @@
 
 @interface SegmentedBarItem : NSObject
 
-@property UIImage* normalImage;
-@property UIImage* selectedImage;
-@property NSString* title;
-@property NSString* subtitle;
+@property (nonatomic) UIImage* normalImage;
+@property (nonatomic) UIImage* selectedImage;
+@property (nonatomic) NSString* title;
+@property (nonatomic) NSString* subtitle;
+@property (nonatomic) UIButton* button;
 
 + (SegmentedBarItem*) itemWithNormalImage:(UIImage*) normalImage
                             selectedImage:(UIImage*) selectedImage
                                     title:(NSString*) title
                                  subtitle:(NSString*) subtitle;
+
++ (NSString*) buttonTextWithTitle:(NSString*)title andSubTitle:(NSString*)subtitle;
 
 @end
 

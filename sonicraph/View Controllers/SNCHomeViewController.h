@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SNCHomeTableCell.h"
-
-@interface SNCHomeViewController : UITableViewController <UIScrollViewDelegate,SNCHomeTableCellProtocol>
+#import "TypeDefs.h"
+@interface SNCHomeViewController : UITableViewController <UIScrollViewDelegate,SNCHomeTableCellProtocol,OpenProfileProtocol>
 
 @end

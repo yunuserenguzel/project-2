@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SonicComment.h"
-
+#import "TypeDefs.h"
 @interface SonicCommentCell : UITableViewCell
 
 @property (nonatomic) SonicComment* sonicComment;
@@ -16,4 +16,7 @@
 @property UILabel* usernameLabel;
 @property UILabel* commentTextLabel;
 @property UIImageView* userProfileImageView;
+
+@property id<OpenProfileProtocol> delegate;
+
 @end

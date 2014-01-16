@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Sonic.h"
 #import "SonicViewControllerHeaderView.h"
+#import "SNCProfileViewController.h"
+#import "TypeDefs.h"
 
 typedef enum SonicViewControllerInitiationType {
     SonicViewControllerInitiationTypeCommentWrite = 101,
@@ -25,7 +27,7 @@ typedef enum ContentType {
     ContentTypeResonics
 } ContentType;
 
-@interface SNCSonicViewController : UIViewController <SegmentedBarDelegate,UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface SNCSonicViewController : UIViewController <SegmentedBarDelegate,UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol>
 
 @property UITableView* tableView;
 @property (nonatomic) Sonic* sonic;

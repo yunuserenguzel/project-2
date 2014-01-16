@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "User.h"
+#import "TypeDefs.h"
 
 #define SNCPersonTableCellIdentifier @"SNCPersonTableCellIdentifier"
 @class SNCPersonTableCell;
@@ -19,13 +20,14 @@
 
 @end
 
+
 @interface SNCPersonTableCell : UITableViewCell
 
 @property (nonatomic) User* user;
 
 @property UILabel* usernameLabel;
 @property UIImageView* profileImageView;
-
+@property id<OpenProfileProtocol> delegate;
 - (void) initViews;
 
 @end
@@ -38,6 +40,6 @@
 
 @property UIButton* unfollowButton;
 
-@property id<SNCPersonFollowableTableCellProtocol> delegate;
+@property id<SNCPersonFollowableTableCellProtocol,OpenProfileProtocol> delegate;
 
 @end

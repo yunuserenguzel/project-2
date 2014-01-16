@@ -154,6 +154,20 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSonicNotification:) name:NotificationSonicSaved object:nil];
     
+    
+    [self.usernameLabel setUserInteractionEnabled:YES];
+    [self.userImageView setUserInteractionEnabled:YES];
+    
+    UIGestureRecognizer* tapGesture;
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.usernameLabel addGestureRecognizer:tapGesture];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.userImageView addGestureRecognizer:tapGesture];
+}
+
+- (void) tapGesture
+{
+    [self.delegate openProfileForUser:self.sonic.owner];
 }
 
 - (void) refreshSonicNotification:(NSNotification*)notification
@@ -341,11 +355,11 @@
     [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
     [self.usernameLabel setText:[self.sonic.owner username]];
     [self.userImageView setImage:SonicPlaceholderImage];
-    [SNCAPIManager getImage:[NSURL URLWithString:self.sonic.owner.profileImageUrl] withCompletionBlock:^(id object) {
-        if(object){
-            [self.userImageView setImage:(UIImage *)object];
-        }
-    }];
+//    [SNCAPIManager getImage:[NSURL URLWithString:self.sonic.owner.profileImageUrl] withCompletionBlock:^(id object) {
+//        if(object){
+//            [self.userImageView setImage:(UIImage *)object];
+//        }
+//    }];
     [self.timestampLabel setText:[[self.sonic creationDate] formattedAsTimeAgo]];
     [self.resonicButton setSelected:self.sonic.isResonicedByMe];
     [self.likeButton setSelected:self.sonic.isLikedByMe];

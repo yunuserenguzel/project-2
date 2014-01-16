@@ -190,9 +190,16 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
                 SonicComment* sonicComment = sonicCommentFromServerDictionary([responseDictionary objectForKey:@"comment"]);
                 sonicComment.sonic = sonic;
                 sonicComment.user = [[AuthenticationManager sharedInstance] authenticatedUser];
-                [[NSNotificationCenter defaultCenter]
-                 postNotificationName:NotificationCommentWrittenToSonic
-                 object:sonicComment];
+//                [[NSNotificationCenter defaultCenter]
+//                 postNotificationName:NotificationCommentWrittenToSonic
+//                 object:sonicComment];
+//                if(completionBlock){
+//                    completionBlock(sonicComment);
+//                }
+                Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
+                if([Sonic getWithId:sonic.sonicId]){
+                    [sonic saveToDatabase];
+                }
                 if(completionBlock){
                     completionBlock(sonicComment);
                 }
@@ -225,12 +232,19 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
             useToken:YES
             andOperation:@"sonic/like_sonic"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
-                dispatch_async(dispatch_get_main_queue(),^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationLikeSonic object:sonic];
-                });
+                Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
+                if([Sonic getWithId:sonic.sonicId]){
+                    [sonic saveToDatabase];
+                }
                 if(completionBlock){
                     completionBlock(sonic);
                 }
+//                dispatch_async(dispatch_get_main_queue(),^{
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationLikeSonic object:sonic];
+//                });
+//                if(completionBlock){
+//                    completionBlock(sonic);
+//                }
     } andErrorBlock:errorBlock];
 }
 + (MKNetworkOperation*) dislikeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
@@ -241,13 +255,20 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
             useToken:YES
             andOperation:@"sonic/dislike_sonic"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
-                dispatch_async(dispatch_get_main_queue(),^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationDislikeSonic object:sonic];
-                });
-                
+                Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
+                if([Sonic getWithId:sonic.sonicId]){
+                    [sonic saveToDatabase];
+                }
                 if(completionBlock){
                     completionBlock(sonic);
                 }
+//                dispatch_async(dispatch_get_main_queue(),^{
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationDislikeSonic object:sonic];
+//                });
+//                
+//                if(completionBlock){
+//                    completionBlock(sonic);
+//                }
     } andErrorBlock:errorBlock];
 }
 
@@ -510,6 +531,25 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
                 }];
                 completionBlock(users);
             } andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)getResonicsOfSonic:(Sonic *)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"sonic":sonic.sonicId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"sonic/resonics"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSMutableArray* users = [[NSMutableArray alloc] init];
+                [[responseDictionary objectForKey:@"users"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
+                    NSLog(@"%@",responseDictionary);
+                    [users addObject:userFromServerDictionary(userDict, NO)];
+                    //                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
+                }];
+                completionBlock(users);
+            } andErrorBlock:errorBlock];
+
 }
 
 

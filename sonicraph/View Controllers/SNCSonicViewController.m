@@ -314,7 +314,6 @@
 
 }
 
-
 - (void) configureViews
 {
     if( ! [self isViewLoaded]){
@@ -375,7 +374,13 @@
         }];
     }
     else if(currentContentType == ContentTypeResonics){
-        
+        [SNCAPIManager getResonicsOfSonic:self.sonic withCompletionBlock:^(NSArray *resonics) {
+            self.resonicsContent = resonics;
+            [self.tableView reloadData];
+        } andErrorBlock:^(NSError *error) {
+            
+        }];
+
     }
     [self.tableView reloadData];
 }
@@ -405,7 +410,6 @@
 
 - (void) writeComment
 {
-
     [self.commentField setEnabled:NO];
     [self closeKeyboard];
     [SNCAPIManager writeCommentToSonic:self.sonic withText:self.commentField.text withCompletionBlock:^(id object) {
@@ -430,8 +434,13 @@
     id currentObject = [[self currentContent] objectAtIndex:indexPath.row];
     if(currentContentType == ContentTypeLikes){
         [(SNCPersonTableCell*)cell setUser:currentObject];
+        [(SNCPersonTableCell*)cell setDelegate:self];
     } else if (currentContentType == ContentTypeComments){
         [(SonicCommentCell*)cell setSonicComment:currentObject];
+        [(SonicCommentCell*)cell setDelegate:self];
+    } else if (currentContentType == ContentTypeResonics){
+        [(SNCPersonTableCell*)cell setUser:currentObject];
+        [(SNCPersonTableCell*)cell setDelegate:self];
     }
     return cell;
 }
@@ -455,6 +464,9 @@
             break;
         case 2:
             [self setCurrentContentType:ContentTypeResonics];
+            if(self.resonicsContent == nil || self.resonicsContent.count == 0){
+                [self refreshContent];
+            }
             break;
             
         default:
@@ -539,6 +551,13 @@
 {
     [self.keyboardCloser removeFromSuperview];
     [self.commentField resignFirstResponder];
+}
+
+- (void) openProfileForUser:(User *)user
+{
+    SNCProfileViewController* profile = [[SNCProfileViewController alloc] init];
+    [profile setUser:user];
+    [self.navigationController pushViewController:profile animated:YES];    
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Sonic.h"
+#import "TypeDefs.h"
 
 #define HomeTableCellIdentifier @"HomeTableCellIdentifier"
 @class SNCHomeTableCell;
@@ -30,7 +31,7 @@ SNCHomeTableCellActionType;
 
 @interface SNCHomeTableCell : UITableViewCell
 
-@property id<SNCHomeTableCellProtocol> delegate;
+@property id<SNCHomeTableCellProtocol,OpenProfileProtocol> delegate;
 
 @property (nonatomic) Sonic* sonic;
 

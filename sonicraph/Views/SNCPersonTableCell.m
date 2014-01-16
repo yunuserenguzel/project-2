@@ -34,14 +34,28 @@
 {
     self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
     [self.usernameLabel setTextColor:[UIColor darkGrayColor]];
+    [self.usernameLabel setUserInteractionEnabled:YES];
     [self.contentView addSubview:self.usernameLabel];
+    
     self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageViewFrame]];
     [self.profileImageView setFrame:[self profileImageViewFrame]];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
     [self.profileImageView.layer setCornerRadius:5.0];
+    [self.profileImageView setUserInteractionEnabled:YES];
     [self.profileImageView setImage:[UIImage imageNamed:@"PhotoBaseWithLogo.png"]];
     [self.contentView addSubview:self.profileImageView];
+    
+    UIGestureRecognizer* tapGesture;
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.usernameLabel addGestureRecognizer:tapGesture];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.profileImageView addGestureRecognizer:tapGesture];
+}
+
+- (void) tapGesture
+{
+    [self.delegate openProfileForUser:self.user];
 }
 
 - (void) setUser:(User *)user

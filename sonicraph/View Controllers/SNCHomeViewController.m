@@ -138,29 +138,29 @@
 
 - (void) autoPlay:(UIScrollView*)scrollView
 {
-//    CGFloat x = self.tableView.contentOffset.x;
-//    CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
-//    CGFloat width = self.tableView.frame.size.width;
-//    CGFloat height = HeightForHomeCell * 0.4;
-//    y -= height * 0.5;
-//    CGRect rect = CGRectMake(x, y, width, height);
-//    
-//    NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
-//    if([indexPaths count] == 1){
-//        cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [cellWiningTheCenter cellWonCenterOfTableView];
-//        });
-//
-//    }
-//    else {
-//        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
-//            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [cell cellLostCenterOfTableView];
-//            });
-//        }];
-//    }
+    CGFloat x = self.tableView.contentOffset.x;
+    CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
+    CGFloat width = self.tableView.frame.size.width;
+    CGFloat height = HeightForHomeCell * 0.4;
+    y -= height * 0.5;
+    CGRect rect = CGRectMake(x, y, width, height);
+    
+    NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
+    if([indexPaths count] == 1){
+        cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cellWiningTheCenter cellWonCenterOfTableView];
+        });
+
+    }
+    else {
+        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
+            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cell cellLostCenterOfTableView];
+            });
+        }];
+    }
     
 }
 
@@ -199,6 +199,13 @@
         [sonicViewController setSonic:sonicToBeViewed];
         [sonicViewController initiateFor:SonicViewControllerInitiationTypeCommentWrite];
     }
+}
+
+- (void) openProfileForUser:(User *)user
+{
+    SNCProfileViewController* profile = [[SNCProfileViewController alloc] init];
+    [profile setUser:user];
+    [self.navigationController pushViewController:profile animated:YES];
 }
 
 @end

@@ -101,6 +101,9 @@
 {
     _user = user;
     [self configureViews];
+    [SNCAPIManager getUserSonics:user saveToDatabase:NO withCompletionBlock:^(NSArray *sonics) {
+        self.sonics = sonics;
+    } andErrorBlock:nil];
 }
 
 - (void) configureViews
@@ -184,12 +187,12 @@
     [self.sonicListTableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.sonics ? self.sonics.count : 0;
 }
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
@@ -211,12 +214,12 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return HeightForHomeCell;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat topOffset = scrollView.contentOffset.y + scrollView.contentInset.top;
 //    NSLog(@"topOffset: %f",topOffset);
@@ -233,7 +236,7 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void) viewWillAppear:(BOOL)animated
 {
     
 }

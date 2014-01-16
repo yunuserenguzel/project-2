@@ -44,22 +44,33 @@
     self.userProfileImageView = [[UIImageView alloc] initWithFrame:[self userProfileImageViewFrame]];
     [self.contentView addSubview:self.userProfileImageView];
     [self.userProfileImageView setClipsToBounds:YES];
+    [self.userProfileImageView setUserInteractionEnabled:YES];
     [self.userProfileImageView.layer setCornerRadius:6.0];
     [self.userProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
-    
     self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
+    [self.usernameLabel setUserInteractionEnabled:YES];
     [self.contentView addSubview:self.usernameLabel];
 //    self.usernameLabel.font = [self.usernameLabel.font fontWithSize:12.0];
     self.usernameLabel.font = [UIFont boldSystemFontOfSize:14.0];
     self.usernameLabel.textColor = NavigationBarBlueColor;
     self.usernameLabel.numberOfLines = 1;
-    
     self.commentTextLabel = [[UILabel alloc] initWithFrame:[self textLabelFrame]];
     [self.contentView addSubview:self.commentTextLabel];
     [self.commentTextLabel setTextColor:[UIColor darkGrayColor]];
     self.commentTextLabel.font = [self.commentTextLabel.font fontWithSize:14.0];
     self.commentTextLabel.numberOfLines = 0;
     
+    
+    UIGestureRecognizer* tapGesture;
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.usernameLabel addGestureRecognizer:tapGesture];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.userProfileImageView addGestureRecognizer:tapGesture];
+}
+
+- (void) tapGesture
+{
+    [self.delegate openProfileForUser:self.sonicComment.user];
 }
 
 - (void)setSonicComment:(SonicComment *)sonicComment

@@ -7,19 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TypeDefs.h"
 
-@class UserManagedObject;
 
 @interface User : NSObject
-
-+ (User*) userWithId:(NSString*)userId andUsername:(NSString*)username andFullname:(NSString*)fullname andProfileImage:(NSString*)profile_image;
-
-+ (User*) userWithManagedObject:(UserManagedObject*)userManagedObject;
-
-+ (User*) userWithId:(NSString*)userId;
-
-- (void) saveToDatabase;
-
 
 @property (nonatomic) NSString* userId;
 
@@ -27,13 +18,11 @@
 
 @property (nonatomic) NSString* username;
 
-@property NSString* bio;
 @property NSString* website;
 @property NSString* location;
 
 @property (nonatomic) NSString* profileImageUrl;
-
-@property (nonatomic) UserManagedObject* userManagedObject;
+@property (nonatomic) UIImage* thumbnailProfileImage;
 
 @property (nonatomic) BOOL isBeingFollowed;
 
@@ -41,5 +30,7 @@
 @property NSInteger followerCount;
 @property NSInteger followingCount;
 
+- (void) getThumbnailProfileImageWithCompletionBlock:(CompletionIdBlock)completionBlock;
+- (void) updateWithUser:(User*)user;
 
 @end

@@ -9,12 +9,11 @@
 #import "SNCAPIManager.h"
 #import "JSONKit.h"
 #import "SonicData.h"
-#import "SonicManagedObject.h"
-#import "UserManagedObject.h"
 #import "TypeDefs.h"
 #import "User.h"
 #import "AuthenticationManager.h"
 #import "SonicComment.h"
+#import "UserPool.h"
 
 NSDate* dateFromServerString(NSString* dateString)
 {
@@ -29,11 +28,8 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
     SonicComment* sonicComment = [[SonicComment alloc] init];
     sonicComment.text = [dictionary objectForKey:@"text"];
     sonicComment.createdAt = dateFromServerString([dictionary objectForKey:@"created_at"]);
-    User* user = [User userWithId:[dictionary objectForKey:@"user_id"]];
-    if(user == nil){
-        user = [[User alloc] init];
-        user.userId = [dictionary objectForKey:@"user_id"];
-    }
+    User* user = [[User alloc] init];
+    user.userId = [dictionary objectForKey:@"user_id"];
     [user setUsername:[dictionary objectForKey:@"username"]];
     [user setProfileImageUrl:[dictionary objectForKey:@"profile_image"]];
     sonicComment.user = user;
@@ -46,34 +42,26 @@ id asClass(id object, Class class){
 
 User* userFromServerDictionary(NSDictionary* dictionary, BOOL saveToDatabase){
     
-    User* user = [User userWithId:[dictionary objectForKey:@"id"]];
-    if(user == nil){
-        user = [[User alloc] init];
-        user.userId = [dictionary objectForKey:@"id"];
-    }
+    User* user = [[User alloc] init];
+    user.userId = [dictionary objectForKey:@"id"];
     user.isBeingFollowed = [[dictionary objectForKey:@"is_being_followed"] boolValue];
     user.username = asClass([dictionary objectForKey:@"username"], [NSString class]);
     user.fullName = asClass([dictionary objectForKey:@"fullname"], [NSString class]);
     user.profileImageUrl = asClass([dictionary objectForKey:@"profile_image"], [NSString class]);
     user.website = asClass([dictionary objectForKey:@"website"], [NSString class]);
-    user.bio = asClass([dictionary objectForKey:@"bio"], [NSString class]);
+//    user.bio = asClass([dictionary objectForKey:@"bio"], [NSString class]);
     user.location = asClass([dictionary objectForKey:@"location"], [NSString class]);
     user.sonicCount = [asClass([dictionary objectForKey:@"sonic_count"], [NSNumber class]) integerValue];
     user.followerCount = [asClass([dictionary objectForKey:@"follower_count"], [NSNumber class]) integerValue];
     user.followingCount = [asClass([dictionary objectForKey:@"following_count"], [NSNumber class]) integerValue];
-    if(saveToDatabase){
-        [user saveToDatabase];
-    }
-    return user;
+    return [[UserPool sharedPool] addOrUpdateUser:user];
+    
 }
 
 Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
     NSDictionary* userDict = [sonicDict objectForKey:@"user"];
     User* user = userFromServerDictionary(userDict, saveToDatabase);
-    Sonic* sonic = [Sonic getWithId:[sonicDict objectForKey:@"id"]];
-    if(sonic == nil) {
-        sonic = [[Sonic alloc] init];
-    }
+    Sonic* sonic = [[Sonic alloc] init];
     sonic.sonicId = asClass([sonicDict objectForKey:@"id"], [NSString class]);
     sonic.sonicUrl = asClass([sonicDict objectForKey:@"sonic_data"], [NSString class]);
     sonic.latitude = [asClass([sonicDict objectForKey:@"latitude"], [NSNumber class]) floatValue];
@@ -86,9 +74,6 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
     sonic.commentCount = [asClass([sonicDict objectForKey:@"comments_count"], [NSNumber class]) integerValue];
     sonic.isLikedByMe = [asClass([sonicDict objectForKey:@"liked_by_me"], [NSNumber class]) boolValue];
     sonic.isResonicedByMe = [asClass([sonicDict objectForKey:@"resoniced_by_me"], [NSNumber class]) boolValue];
-    if(saveToDatabase){
-        [sonic saveToDatabase];
-    }
     return sonic;
 }
 
@@ -197,9 +182,6 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
 //                    completionBlock(sonicComment);
 //                }
                 Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
-                if([Sonic getWithId:sonic.sonicId]){
-                    [sonic saveToDatabase];
-                }
                 if(completionBlock){
                     completionBlock(sonicComment);
                 }
@@ -233,9 +215,6 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
             andOperation:@"sonic/like_sonic"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
-                if([Sonic getWithId:sonic.sonicId]){
-                    [sonic saveToDatabase];
-                }
                 if(completionBlock){
                     completionBlock(sonic);
                 }
@@ -256,9 +235,6 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
             andOperation:@"sonic/dislike_sonic"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
-                if([Sonic getWithId:sonic.sonicId]){
-                    [sonic saveToDatabase];
-                }
                 if(completionBlock){
                     completionBlock(sonic);
                 }
@@ -278,9 +254,6 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
     return [[SNCAPIConnector sharedInstance]
             getRequestWithParams:params useToken:YES andOperation:@"sonic/resonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
                 Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
-                if([Sonic getWithId:sonic.sonicId]){
-                    [sonic saveToDatabase];
-                }
                 if(completionBlock){
                     completionBlock(sonic);
                 }
@@ -293,9 +266,6 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
     return  [[SNCAPIConnector sharedInstance]
              getRequestWithParams:params useToken:YES andOperation:@"sonic/delete_resonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
                  Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"], NO);
-                 if([Sonic getWithId:sonic.sonicId]){
-                     [sonic saveToDatabase];
-                 }
                  if(completionBlock){
                      completionBlock(sonic);
                  }
@@ -405,26 +375,34 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
 {
     NSString* localFileUrl = [[SNCAPIManager imageCacheDirectory] stringByAppendingPathComponent:imageUrl.lastPathComponent];
     Block dispatchBlock = ^ {
-        if(![[NSFileManager defaultManager] fileExistsAtPath:localFileUrl]){
-            NSData* data = [NSData dataWithContentsOfURL:imageUrl];
-            [data writeToFile:localFileUrl atomically:YES];
+        @autoreleasepool {
+            if(![[NSFileManager defaultManager] fileExistsAtPath:localFileUrl]){
+                NSData* data = [NSData dataWithContentsOfURL:imageUrl];
+                [data writeToFile:localFileUrl atomically:YES];
+                data = nil;
+            }
+            NSData* data = [NSData dataWithContentsOfFile:localFileUrl];
+            UIImage* image = [UIImage imageWithData:data];
+            completionBlock(image);
+            data = nil;
+        
         }
-        UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfFile:localFileUrl]];
-        completionBlock(image);
     };
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),dispatchBlock);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),dispatchBlock);
 }
 
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock
 {
     NSString* localFileUrl = [[SNCAPIManager sonicCacheDirectory] stringByAppendingPathComponent:sonicUrl.lastPathComponent];
     Block dispatchBlock = ^ {
-        if(![[NSFileManager defaultManager] fileExistsAtPath:localFileUrl]){
-            [[NSString stringWithContentsOfURL:sonicUrl encoding:NSUTF8StringEncoding error:nil] writeToFile:localFileUrl atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        }
-        SonicData* sonic = [SonicData sonicDataFromFile:localFileUrl];
-        sonic.remoteSonicDataFileUrl = sonicUrl;
-        sonicBlock(sonic,nil);
+        @autoreleasepool {
+            if(![[NSFileManager defaultManager] fileExistsAtPath:localFileUrl]){
+                [[NSString stringWithContentsOfURL:sonicUrl encoding:NSUTF8StringEncoding error:nil] writeToFile:localFileUrl atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            }
+            SonicData* sonic = [SonicData sonicDataFromFile:localFileUrl];
+            sonic.remoteSonicDataFileUrl = sonicUrl;
+            sonicBlock(sonic,nil);
+         }
     };
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),dispatchBlock);
 }
@@ -455,23 +433,20 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict,BOOL saveToDatabase){
 
 + (void) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 {
-    [[SNCAPIConnector sharedInstance] getRequestWithParams:@{@"token": token}
-                                                  useToken:NO
-                                              andOperation:@"check_is_valid_token"
-                                        andCompletionBlock:^(NSDictionary *responseDictionary) {
-                                            NSString* userId = [[responseDictionary objectForKey:@"user"] objectForKey:@"id"];
-                                            User* user = [User userWithId:userId];
-                                            if(user == nil){
-                                                user = [[User alloc] init];
-                                                user.userId = userId;
-                                                user.username = [[responseDictionary objectForKey:@"user"] objectForKey:@"username"];
-                                                [user saveToDatabase];
-                                            }
-                                            if(block != nil){
-                                                block(user,nil);
-                                            }
-                                        }
-                                             andErrorBlock:errorBlock];
+    [[SNCAPIConnector sharedInstance]
+     getRequestWithParams:@{@"token": token}
+     useToken:NO
+     andOperation:@"check_is_valid_token"
+     andCompletionBlock:^(NSDictionary *responseDictionary) {
+         NSString* userId = [[responseDictionary objectForKey:@"user"] objectForKey:@"id"];
+         User* user = [[User alloc] init];
+         user.userId = userId;
+         user.username = [[responseDictionary objectForKey:@"user"] objectForKey:@"username"];
+         if(block != nil){
+             block(user,nil);
+         }
+     }
+     andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation *) loginWithUsername:(NSString*) username andPassword:(NSString*)password withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock

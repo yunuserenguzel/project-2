@@ -12,10 +12,11 @@
 #import "Configurations.h"
 #import "SNCAPIManager.h"
 #import "SNCSonicViewController.h"
+#import "SonicArray.h"
 
 @interface SNCHomeViewController ()
 
-@property NSArray* sonics;
+@property SonicArray* sonics;
 
 @property UIRefreshControl* refreshControl;
 
@@ -56,7 +57,7 @@
                                              selector:@selector(refresh)
                                                  name:NotificationSonicDeleted
                                                object:nil];
-    self.sonics  = @[];
+    self.sonics  = [[SonicArray alloc] init];
     [self initRefreshController];
     [self refreshFromServer];
 }
@@ -71,6 +72,8 @@
 {
     Sonic* lastSonic = self.sonics.count > 0 ? [self.sonics objectAtIndex:0] : nil;
     [SNCAPIManager getSonicsAfter:lastSonic withCompletionBlock:^(NSArray *sonics) {
+        [self.sonics importSonicsWithArray:sonics];
+        [self refresh];
         [self.refreshControl endRefreshing];
     } andErrorBlock:^(NSError *error) {
         [self.refreshControl endRefreshing];
@@ -86,10 +89,7 @@
 
 - (void) refresh
 {
-//    [self.tableView beginUpdates];
-    self.sonics = [Sonic getFrom:10 to:20];
     [self.tableView reloadData];
-//    [self.tableView endUpdates];
 }
 
 - (void)didReceiveMemoryWarning
@@ -138,29 +138,29 @@
 
 - (void) autoPlay:(UIScrollView*)scrollView
 {
-    CGFloat x = self.tableView.contentOffset.x;
-    CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
-    CGFloat width = self.tableView.frame.size.width;
-    CGFloat height = HeightForHomeCell * 0.4;
-    y -= height * 0.5;
-    CGRect rect = CGRectMake(x, y, width, height);
-    
-    NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
-    if([indexPaths count] == 1){
-        cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [cellWiningTheCenter cellWonCenterOfTableView];
-        });
-
-    }
-    else {
-        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
-            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [cell cellLostCenterOfTableView];
-            });
-        }];
-    }
+//    CGFloat x = self.tableView.contentOffset.x;
+//    CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
+//    CGFloat width = self.tableView.frame.size.width;
+//    CGFloat height = HeightForHomeCell * 0.4;
+//    y -= height * 0.5;
+//    CGRect rect = CGRectMake(x, y, width, height);
+//    
+//    NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
+//    if([indexPaths count] == 1){
+//        cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [cellWiningTheCenter cellWonCenterOfTableView];
+//        });
+//
+//    }
+//    else {
+//        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
+//            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [cell cellLostCenterOfTableView];
+//            });
+//        }];
+//    }
     
 }
 

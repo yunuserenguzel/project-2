@@ -25,4 +25,6 @@
 #define SonicPlaceholderImage [UIImage imageNamed:@"PhotoBaseWithLogo.png"]
 
 #define PersonTableCellHeight 66.0
+
+#define UserThumbnailSize CGSizeMake(66.0,66.0)
 #endif

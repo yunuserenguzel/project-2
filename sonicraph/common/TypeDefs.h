@@ -46,4 +46,11 @@ CGRect CGRectByRatio(CGRect maxRect, CGRect minRect, CGFloat ratio);
 
 @end
 
+@class Sonic;
+typedef void (^CompletionArrayBlock) (NSArray *sonics);
+typedef void (^CompletionUserBlock) (User *user,NSString* token);
+typedef void (^CompletionBoolBlock) (BOOL successful);
+typedef void (^CompletionSonicBlock) (Sonic* sonic);
+typedef void (^CompletionIdBlock) (id object);
+
 #endif

@@ -175,7 +175,8 @@ static AuthenticationManager* sharedInstance = nil;
 - (User *)authenticatedUser
 {
     if(_authenticatedUser == nil){
-        self.authenticatedUser = [User userWithId:self.userId];
+#warning Save and Load user from UserDefaults
+//        self.authenticatedUser = [User userWithId:self.userId];
     }
     return _authenticatedUser;
 }

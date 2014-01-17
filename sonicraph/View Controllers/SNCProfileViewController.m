@@ -244,7 +244,7 @@
 
 - (void) refresh
 {
-    self.sonics = [Sonic getFrom:0 to:20];
+//    self.sonics = [Sonic getFrom:0 to:20];
     [self.sonicCollectionView reloadData];
 }
 

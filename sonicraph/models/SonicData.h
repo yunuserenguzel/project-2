@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "UIImage+scaleToSize.h"
-#import "SonicManagedObject.h"
 #import "Sonic.h"
 
 @class SonicData;

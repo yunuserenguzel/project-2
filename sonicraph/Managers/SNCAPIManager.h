@@ -9,12 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SonicData.h"
 #import "SNCAPIConnector.h"
-
-typedef void (^CompletionArrayBlock) (NSArray *sonics);
-typedef void (^CompletionUserBlock) (User *user,NSString* token);
-typedef void (^CompletionBoolBlock) (BOOL successful);
-typedef void (^CompletionSonicBlock) (Sonic* sonic);
-typedef void (^CompletionIdBlock) (id object);
+#import "TypeDefs.h"
 
 
 @interface SNCAPIManager : NSObject

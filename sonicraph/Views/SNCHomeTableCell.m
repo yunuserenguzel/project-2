@@ -122,9 +122,9 @@
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.userImageView setImage:SonicPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
-    [self.userImageView.layer setCornerRadius:self.userImageView.frame.size.height * 0.5];
-    [self.userImageView.layer setShouldRasterize:YES];
-    [self.userImageView.layer setRasterizationScale:2.0];
+//    [self.userImageView.layer setCornerRadius:self.userImageView.frame.size.height * 0.5];
+//    [self.userImageView.layer setShouldRasterize:YES];
+//    [self.userImageView.layer setRasterizationScale:2.0];
     [self addSubview:self.userImageView];
     
     self.userImageMaskView = [[UIImageView alloc] initWithFrame:[self userImageMaskViewFrame]];
@@ -297,8 +297,6 @@
     }
 }
 
-
-
 - (void) openLikes
 {
     [self.delegate sonic:self.sonic actionFired:SNCHomeTableCellActionTypeOpenLikes];
@@ -334,6 +332,7 @@
         [self.likeButton setSelected:YES];
     }
 }
+
 - (void)receivedNotificationDislikedSonic:(NSNotification*)notification
 {
     Sonic* sonic = notification.object;
@@ -355,11 +354,11 @@
     [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
     [self.usernameLabel setText:[self.sonic.owner username]];
     [self.userImageView setImage:SonicPlaceholderImage];
-//    [SNCAPIManager getImage:[NSURL URLWithString:self.sonic.owner.profileImageUrl] withCompletionBlock:^(id object) {
-//        if(object){
-//            [self.userImageView setImage:(UIImage *)object];
-//        }
-//    }];
+    [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.userImageView setImage:object];
+        });
+    }];
     [self.timestampLabel setText:[[self.sonic creationDate] formattedAsTimeAgo]];
     [self.resonicButton setSelected:self.sonic.isResonicedByMe];
     [self.likeButton setSelected:self.sonic.isLikedByMe];

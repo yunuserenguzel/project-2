@@ -7,74 +7,71 @@
 //
 
 #import "User.h"
-#import "UserManagedObject.h"
 #import "TypeDefs.h"
+#import "SNCAPIManager.h"
+#import "UIImage+scaleToSize.h"
+#import "Configurations.h"
 
 @implementation User
-
-+ (User*) userWithId:(NSString*)userId andUsername:(NSString*)username andFullname:(NSString*)fullname andProfileImage:(NSString*)profile_image;
-
 {
-    User* user = [[User alloc] init];
-    user.userId = userId;
-    if([username isKindOfClass:[NSString class]]){
-        user.username = username;
-    }
-    if([fullname isKindOfClass:[NSString class]]){
-        user.fullName = fullname;
-    }
-    if([profile_image isKindOfClass:[NSString class]]){
-        user.profileImageUrl = profile_image;
-    }
-//    user.profileImage = profile_image
-    return user;
-}
-
-+ (User *)userWithManagedObject:(UserManagedObject *)userManagedObject
-{
-    User* user = [[User alloc] init];
-    user.userManagedObject = userManagedObject;
-    user.username = userManagedObject.username;
-    user.userId = userManagedObject.userId;
-    user.profileImageUrl = userManagedObject.image;
-    user.followingCount = [userManagedObject.followingCount integerValue];
-    user.followerCount = [userManagedObject.followerCount integerValue];
-    user.sonicCount = [userManagedObject.sonicCount integerValue];
-    user.website = userManagedObject.website;
-    user.bio = userManagedObject.bio;
-    user.location = userManagedObject.location;
-    return user;
-}
-
-
-+ (User *)userWithId:(NSString*)userId
-{
-    UserManagedObject* userManagedObject = [UserManagedObject getUser:userId];
-    if (userManagedObject == nil){
-        return nil;
-    }else {
-        return [User userWithManagedObject:userManagedObject];
-    }
-}
-
-- (void)saveToDatabase
-{
-    if(self.userManagedObject == nil){
-        self.userManagedObject = [UserManagedObject createOrFetchWithId:self.userId];
-    }
-    self.userManagedObject.username = self.username;
-    self.userManagedObject.fullname = self.fullName;
-    self.userManagedObject.image = self.profileImageUrl;
-    self.userManagedObject.bio = self.bio;
-    self.userManagedObject.website = self.website;
-    self.userManagedObject.location = self.location;
-    self.userManagedObject.followerCount = [NSNumber numberWithInteger:self.followerCount];
-    self.userManagedObject.followingCount = [NSNumber numberWithInteger:self.followingCount];
-    self.userManagedObject.sonicCount = [NSNumber numberWithInteger:self.sonicCount];
-    [self.userManagedObject save];
+    BOOL isInProcess;
+    NSMutableArray* arrayOfCallBacksForThumbnail;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserSaved object:self];
 }
+- (void) updateWithUser:(User*)user
+{
+    if([self.userId isEqualToString:[user userId]]){
+        self.username = user.username;
+        self.profileImageUrl = user.profileImageUrl;
+        self.fullName = user.fullName;
+        self.website = user.website;
+        self.location = user.location;
+        self.isBeingFollowed = user.isBeingFollowed;
+        self.sonicCount = user.sonicCount;
+        self.followerCount = user.followerCount;
+        self.followingCount = user.followingCount;
+    }
+
+}
+
+- (void)setProfileImageUrl:(NSString *)profileImageUrl
+{
+    if([_profileImageUrl isEqualToString:profileImageUrl] == NO){
+        _profileImageUrl = profileImageUrl;
+        self.thumbnailProfileImage = nil;
+    }
+}
+- (void)getThumbnailProfileImageWithCompletionBlock:(CompletionIdBlock)completionBlock
+{
+    
+    if(self.thumbnailProfileImage){
+        if(completionBlock){
+            completionBlock(self.thumbnailProfileImage);
+        }
+    }
+    else {
+        if(arrayOfCallBacksForThumbnail == nil){
+            arrayOfCallBacksForThumbnail = [NSMutableArray new];
+        }
+        [arrayOfCallBacksForThumbnail addObject:completionBlock];
+        if(isInProcess){
+            return;
+        }
+        isInProcess = YES;
+        [SNCAPIManager getImage:[NSURL URLWithString:self.profileImageUrl] withCompletionBlock:^(id object) {
+            self.thumbnailProfileImage = [(UIImage*)object imageByScalingAndCroppingForSize:UserThumbnailSize];
+            isInProcess = NO;
+            [arrayOfCallBacksForThumbnail enumerateObjectsUsingBlock:^(CompletionIdBlock completionBlock, NSUInteger idx, BOOL *stop) {
+                if(completionBlock){
+                    NSLog(@"calling completion block at index %d",idx);
+                    completionBlock(self.thumbnailProfileImage);
+                }
+            }];
+            arrayOfCallBacksForThumbnail = nil;
+        }];
+    }
+}
+
 
 
 @end

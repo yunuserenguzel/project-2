@@ -10,8 +10,8 @@
 #import "User.h"
 @class SonicData;
 @class SonicManagedObject;
-@interface Sonic : NSObject
 
+@interface Sonic : NSObject
 
 @property (nonatomic) NSString * sonicId;
 @property (nonatomic) CGFloat longitude;
@@ -27,24 +27,12 @@
 @property (nonatomic) NSInteger likeCount;
 @property (nonatomic) NSInteger commentCount;
 
-
-- (void) saveToDatabase;
-
-+ (Sonic*) sonicWithSonicManagedObject:(SonicManagedObject*)sonicManagedObject;
-
-+ (Sonic*) sonicWith:(NSString*)sonicId andLongitude:(NSNumber*)longitude andLatitude:(NSNumber*)latitude andIsPrivate:(NSNumber*)isPrivate andCreationDate:(NSDate*)creationDate andSonicUrl:(NSString*)sonicUrl andOwner:(User*)user;
-
-+ (NSArray*) getFrom:(NSInteger)from to:(NSInteger)to;
-
-+ (Sonic*) getWithId:(NSString*)sonicId;
-
-+ (Sonic*) last;
-
 - (UIImage*) getImage;
 
 - (NSData*) getSound;
 
 - (void) deleteFromDatabase;
 
+- (void) updateWithSonic:(Sonic*)sonic;
 
 @end

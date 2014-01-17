@@ -15,8 +15,6 @@
 
 #import "AuthenticationManager.h"
 
-#import "SonicManagedObject.h"
-
 #import "SNCSonicViewController.h"
 
 
@@ -102,11 +100,6 @@ static SNCAppDelegate* sharedInstance = nil;
 
 - (void) userLoggedIn
 {
-    [SNCAPIManager getSonicsAfter:nil withCompletionBlock:^(NSArray *sonics) {
-        
-    } andErrorBlock:^(NSError *error) {
-        
-    }];
 }
 
 
@@ -125,7 +118,7 @@ static SNCAppDelegate* sharedInstance = nil;
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [[AuthenticationManager sharedInstance] checkAuthentication];
+//    [[AuthenticationManager sharedInstance] checkAuthentication];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

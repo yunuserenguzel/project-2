@@ -112,7 +112,7 @@
                                           httpMethod:method];
     
     [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-        NSLog(@"response string: %@",[completedOperation responseString]);
+        NSLog(@"response string: \n\n%@",[completedOperation responseString]);
         NSDictionary *responseDictionary = [completedOperation responseJSON];
         
         if([[responseDictionary valueForKey:@"error"] boolValue] == true){
@@ -121,12 +121,14 @@
                                                 userInfo:@{NSLocalizedDescriptionKey : [responseDictionary valueForKey:@"error_description"]}];
             if(errorBlock != nil)
                 errorBlock(apiError);
+            NSLog(@"error at op :%@\nerror:%@",completedOperation, apiError);
         }
         else{
             completionBlock(responseDictionary);
         }
         
     } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"error at op :%@\nerror:%@",completedOperation, error);
         if (error.domain == NSURLErrorDomain && error.code == -1009) {
             NSError *connectionError = [NSError errorWithDomain:@"ConnectionError"
                                                            code:-102
@@ -141,8 +143,4 @@
     
     return op;
 }
-
-
-
-
 @end

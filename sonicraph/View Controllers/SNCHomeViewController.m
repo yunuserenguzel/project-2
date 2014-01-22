@@ -27,6 +27,8 @@
     SNCHomeTableCell* cellWiningTheCenter;
     NSInteger indexOfCellToBeIncreased;
     Sonic* sonicToBeViewed;
+    User* userToBeOpen;
+    SonicViewControllerInitiationType sonicViewControllerInitiationType;
 }
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -49,18 +51,43 @@
     [self.tableView setBackgroundColor:CellSpacingGrayColor];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refresh)
-                                                 name:NotificationSonicsAreLoaded
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refresh)
-                                                 name:NotificationSonicDeleted
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(newSonicArrived:)
+     name:NotificationNewSonicCreated
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refresh)
+     name:NotificationSonicDeleted
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(userLoggedOut:)
+     name:NotificationUserLoggedOut
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refreshFromServer)
+     name:NotificationUserLoggedIn
+     object:nil];
+    
     self.sonics  = [[SonicArray alloc] init];
     [self initRefreshController];
     [self refreshFromServer];
 }
+
+- (void) userLoggedOut:(NSNotification*)notification
+{
+    self.sonics = [[SonicArray alloc] init];
+}
+
+- (void) newSonicArrived:(NSNotification*)notification
+{
+    [self.sonics addObject:notification.object];
+    [self refresh];
+}
+
 - (void) initRefreshController
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -83,6 +110,22 @@
 - (void)sonic:(Sonic *)sonic actionFired:(SNCHomeTableCellActionType)actionType
 {
     sonicToBeViewed = sonic;
+    switch (actionType) {
+        case SNCHomeTableCellActionTypeComment:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeCommentWrite;
+            break;
+        case SNCHomeTableCellActionTypeOpenComments:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeCommentRead;
+            break;
+        case SNCHomeTableCellActionTypeOpenLikes:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeLikeRead;
+            break;
+        case SNCHomeTableCellActionTypeOpenResonics:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeResonicRead;
+            break;
+        default:
+            break;
+    }
     [self performSegueWithIdentifier:ViewSonicSegue sender:self];
     
 }
@@ -197,15 +240,19 @@
     if([segue.identifier isEqualToString:ViewSonicSegue]){
         SNCSonicViewController* sonicViewController =  segue.destinationViewController;
         [sonicViewController setSonic:sonicToBeViewed];
-        [sonicViewController initiateFor:SonicViewControllerInitiationTypeCommentWrite];
+        [sonicViewController initiateFor:sonicViewControllerInitiationType];
+    }
+    else if([segue.identifier isEqualToString:HomeToProfileSegue]){
+        SNCProfileViewController* profile = segue.destinationViewController;
+        [profile setUser:userToBeOpen];
     }
 }
 
 - (void) openProfileForUser:(User *)user
 {
-    SNCProfileViewController* profile = [[SNCProfileViewController alloc] init];
-    [profile setUser:user];
-    [self.navigationController pushViewController:profile animated:YES];
+    userToBeOpen = user;
+    [self performSegueWithIdentifier:HomeToProfileSegue sender:self];
+
 }
 
 @end

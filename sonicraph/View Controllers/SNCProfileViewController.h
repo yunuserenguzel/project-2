@@ -12,7 +12,7 @@
 #import "ProfileHeaderView.h"
 #import "SNCHomeTableCell.h"
 
-@interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol>
+@interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol, OpenProfileProtocol>
 
 
 @property (nonatomic) User* user;

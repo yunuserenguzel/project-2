@@ -112,19 +112,19 @@
                          itemWithNormalImage:[UIImage imageNamed:@"HeartGrey.png"]
                          selectedImage:[UIImage imageNamed:@"HeartPink.png"]
                          title:@"Likes"
-                         subtitle:@"215"];
+                         subtitle:@" "];
     
     self.commentsBarItem = [SegmentedBarItem
                             itemWithNormalImage:[UIImage imageNamed:@"CommentGrey.png"]
                             selectedImage:[UIImage imageNamed:@"CommentPink.png"]
                             title:@"Comments"
-                            subtitle:@"215"];
+                            subtitle:@" "];
     
     self.resonicsBarItem = [SegmentedBarItem
                             itemWithNormalImage:[UIImage imageNamed:@"ReSonicGrey.png"]
                             selectedImage:[UIImage imageNamed:@"ReSonicPink.png"]
                             title:@"Resonics"
-                            subtitle:@"215"];
+                            subtitle:@" "];
 
     NSArray* segmentItems = @[self.likesBarItem,
                               self.commentsBarItem,

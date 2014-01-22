@@ -14,6 +14,7 @@
 #import "TypeDefs.h"
 
 typedef enum SonicViewControllerInitiationType {
+    SonicViewControllerInitiationTypeNone = 0,
     SonicViewControllerInitiationTypeCommentWrite = 101,
     SonicViewControllerInitiationTypeCommentRead = 102,
     SonicViewControllerInitiationTypeLikeRead = 103,

@@ -16,8 +16,52 @@
 {
     BOOL isInProcess;
     NSMutableArray* arrayOfCallBacksForThumbnail;
-    
 }
+
+- (id)init
+{
+    if(self = [super init]){
+        [self registerForNotification];
+    }
+    return self;
+}
+
+- (void) registerForNotification
+{
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(updateWithNotification:)
+     name:NotificationUpdateUser
+     object:nil];
+}
+
+- (void) updateWithNotification:(NSNotification*)notification
+{
+    if(notification.object != self){
+        [self updateWithUser:notification.object];
+    }
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.userId forKey:@"userId"];
+    [encoder encodeObject:self.username forKey:@"username"];
+    [encoder encodeObject:self.fullName forKey:@"fullName"];
+    [encoder encodeObject:self.profileImageUrl forKey:@"profileImageUrl"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    if(self = [super init]){
+        self.userId = [decoder decodeObjectForKey:@"userId"];
+        self.username = [decoder decodeObjectForKey:@"username"];
+        self.fullName = [decoder decodeObjectForKey:@"fullName"];
+        self.profileImageUrl = [decoder decodeObjectForKey:@"profileImageUrl"];
+        [self registerForNotification];
+    }
+    return self;
+}
+
 - (void) updateWithUser:(User*)user
 {
     if([self.userId isEqualToString:[user userId]]){
@@ -30,8 +74,10 @@
         self.sonicCount = user.sonicCount;
         self.followerCount = user.followerCount;
         self.followingCount = user.followingCount;
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:NotificationUpdateViewForUser
+         object:self];
     }
-
 }
 
 - (void)setProfileImageUrl:(NSString *)profileImageUrl
@@ -72,6 +118,10 @@
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 
 @end

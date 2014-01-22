@@ -35,6 +35,8 @@ SNCHomeTableCellActionType;
 
 @property (nonatomic) Sonic* sonic;
 
+@property UILabel* resonicedByUsernameLabel;
+
 @property UIImageView* userImageView;
 @property UIImageView* userImageMaskView;
 @property UILabel* usernameLabel;

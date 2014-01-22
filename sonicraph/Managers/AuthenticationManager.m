@@ -9,22 +9,18 @@
 #import "AuthenticationManager.h"
 #import "SNCAppDelegate.h"
 #import "SNCLoginViewController.h"
-#import "DatabaseManager.h"
 #import "TypeDefs.h"
-
+#import "UserPool.h"
 #define AuthenticationManagerUserDefaultsTokenKey @"AuthenticationManagerUserDefaultsTokenKey"
-#define AuthenticationManagerUserDefaultsUsernameKey @"AuthenticationManagerUserDefaultsUsernameKey"
-#define AuthenticationManagerUserDefaultsPasswordKey @"AuthenticationManagerUserDefaultsPasswordKey"
-#define AuthenticationManagerUserDefaultsUserIdKey @"AuthenticationManagerUserDefaultsUserIdKey"
+#define AuthenticationManagerUserDefaultsUserKey @"AuthenticationManagerUserDefaultsUserKey"
 
 static AuthenticationManager* sharedInstance = nil;
 
 @implementation AuthenticationManager
 {
     NSString* _token;
-    NSString* _username;
+    User* _authenticatedUser;
     NSString* _password;
-    NSString* _userId;
 }
 + (AuthenticationManager *)sharedInstance
 {
@@ -52,7 +48,7 @@ static AuthenticationManager* sharedInstance = nil;
 {
     [SNCAPIManager registerWithUsername:username email:email password:password andCompletionBlock:^(User *user, NSString *token) {
         self.token = token;
-        self.userId = user.userId;
+        self.authenticatedUser = user;
         _isUserAuthenticated = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
@@ -80,27 +76,23 @@ static AuthenticationManager* sharedInstance = nil;
     
     [SNCAPIManager loginWithUsername:username andPassword:password withCompletionBlock:^(User *user,NSString* token) {
         NSLog(@"%@",user);
-        if(shouldRemember){
-            self.username = username;
-            self.password = password;
-        }
         self.token = token;
-        self.userId = user.userId;
+        self.authenticatedUser = user;
         _isUserAuthenticated = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:user];
         });
         if(block){
-            block(user,token);
+            block( user, token );
         }
     } andErrorBlock:^(NSError *error) {
         if(error.code == 300){
             _isUserAuthenticated = NO;
         }
-        if(errorBlock){
-            errorBlock(error);
+        if( errorBlock ){
+            errorBlock( error );
         }
-        NSLog(@"%@",error);
+        NSLog(@"%@", error );
     }];
     
 }
@@ -119,69 +111,37 @@ static AuthenticationManager* sharedInstance = nil;
     return _token;
 }
 
-- (NSString *)userId
+
+- (void)setAuthenticatedUser:(User *)authenticatedUser
 {
-    if(_userId == nil){
-        _userId = [[NSUserDefaults standardUserDefaults] stringForKey:AuthenticationManagerUserDefaultsUserIdKey];
+    if(_authenticatedUser != authenticatedUser){
+        _authenticatedUser = authenticatedUser;
+        NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:_authenticatedUser];
+        [self saveToUserDefaults:encodedObject forKey:AuthenticationManagerUserDefaultsUserKey];
     }
-    return _userId;
-}
-
-- (void)setUserId:(NSString *)userId
-{
-    _userId = userId;
-    [self saveToUserDefaults:userId forKey:AuthenticationManagerUserDefaultsUserIdKey];
-
-}
-
-
-- (void)setUsername:(NSString *)username
-{
-    _username = username;
-    if(!self.shouldRemember){
-        [self saveToUserDefaults:nil forKey:AuthenticationManagerUserDefaultsUsernameKey];
-    }
-    else {
-        [self saveToUserDefaults:username forKey:AuthenticationManagerUserDefaultsUsernameKey];
-    }
-}
-
-- (NSString *)username
-{
-    if (_username == nil){
-        _username = [[NSUserDefaults standardUserDefaults] stringForKey:AuthenticationManagerUserDefaultsUsernameKey];
-    }
-    return _username;
-}
-
--  (void)setPassword:(NSString *)password
-{
-    _password = password;
-    if(!self.shouldRemember){
-        [self saveToUserDefaults:password forKey:AuthenticationManagerUserDefaultsPasswordKey];
-    }else {
-        [self saveToUserDefaults:nil forKey:AuthenticationManagerUserDefaultsPasswordKey];
-    }
-}
-
-- (NSString *)password
-{
-    if (_password == nil){
-        _password = [[NSUserDefaults standardUserDefaults] stringForKey:AuthenticationManagerUserDefaultsPasswordKey];
-    }
-    return _password;
 }
 
 - (User *)authenticatedUser
 {
-    if(_authenticatedUser == nil){
-#warning Save and Load user from UserDefaults
-//        self.authenticatedUser = [User userWithId:self.userId];
+    if(self.token == nil){
+        return nil;
     }
+    if(_authenticatedUser == nil){
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSData *encodedObject = [defaults objectForKey:AuthenticationManagerUserDefaultsUserKey];
+        _authenticatedUser = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+        User* user = [[UserPool sharedPool] userForId:_authenticatedUser.userId];
+        if(user){
+            _authenticatedUser = user;
+        } else {
+            [[UserPool sharedPool] addOrUpdateUser:_authenticatedUser];
+        }
+    }
+    
     return _authenticatedUser;
 }
 
-- (void) saveToUserDefaults:(NSString*)value forKey:(NSString*)key
+- (void) saveToUserDefaults:(id)value forKey:(NSString*)key
 {
     [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -189,13 +149,12 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (void)logout
 {
-//    [self setUsername:nil];
-//    [self setPassword:nil];
-    [self setUserId:nil];
     [self setToken:nil];
     [self setAuthenticatedUser:nil];
-    [[DatabaseManager sharedInstance] flushDatabase];
     [self checkAuthentication];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:NotificationUserLoggedOut
+     object:nil];
 }
 
 - (void) checkAuthentication
@@ -204,14 +163,6 @@ static AuthenticationManager* sharedInstance = nil;
     if(self.token == nil){
         [self displayAuthenticationView];
     }
-    
-//    Test Code
-//    [self authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user) {
-//        
-//    } andErrorBlock:^(NSError *error) {
-//        
-//    }];
-    
 }
 
 - (void) displayAuthenticationView

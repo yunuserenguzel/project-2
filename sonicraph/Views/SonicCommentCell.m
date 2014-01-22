@@ -9,7 +9,7 @@
 #import "SonicCommentCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Configurations.h"
-
+#import "AuthenticationManager.h"
 
 @implementation SonicCommentCell
 
@@ -26,6 +26,11 @@
 - (CGRect) userProfileImageViewFrame
 {
     return CGRectMake(10.0, 10.0, 44.0, 44.0);
+}
+
+- (CGRect) deleteButtonFrame
+{
+    return CGRectMake(260.0, 44.0, 60.0, 22.0);
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -60,6 +65,13 @@
     self.commentTextLabel.font = [self.commentTextLabel.font fontWithSize:14.0];
     self.commentTextLabel.numberOfLines = 0;
     
+    self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.deleteButton setFrame:[self deleteButtonFrame]];
+    [self.deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+    [self.deleteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    self.deleteButton.titleLabel.font = [self.deleteButton.titleLabel.font fontWithSize:10.0];
+    [self.deleteButton addTarget:self action:@selector(deleteButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:self.deleteButton];
     
     UIGestureRecognizer* tapGesture;
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
@@ -73,6 +85,24 @@
     [self.delegate openProfileForUser:self.sonicComment.user];
 }
 
+- (void) deleteButtonTapped
+{
+    [[[UIActionSheet alloc]
+      initWithTitle:@"Comment"
+      delegate:self
+      cancelButtonTitle:@"Cancel"
+      destructiveButtonTitle:@"Confirm Delete"
+      otherButtonTitles: nil]
+     showInView:self];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [SNCAPIManager deleteComment:self.sonicComment withCompletionBlock:nil andErrorBlock:nil];
+    }
+}
+
 - (void)setSonicComment:(SonicComment *)sonicComment
 {
     _sonicComment = sonicComment;
@@ -81,17 +111,23 @@
 
 - (void) configureViews
 {
-    [self.userProfileImageView setImage:[UIImage imageNamed:@"2013-11-07 09.52.53.jpg"]];
+    [self.userProfileImageView setImage:SonicPlaceholderImage];
+    [self.sonicComment.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
+       dispatch_async(dispatch_get_main_queue(), ^{
+           if(object){
+               [self.userProfileImageView setImage:object];
+           }
+       });
+    }];
     [self.usernameLabel setText:self.sonicComment.user.username];
     [self.commentTextLabel setText:self.sonicComment.text];
-//    [self.commentTextLabel setText:@"asdasdasdas asdasdasd aasdasdasdas a asdasdasd ereren asldkasld jkjhewr dkfdsf rweuirw "];
-    
-    [self.contentView.subviews enumerateObjectsUsingBlock:^(UIView* subview, NSUInteger idx, BOOL *stop) {
-        NSLog(@"subview: %@",subview);
-//        [subview.subviews enumerateObjectsUsingBlock:^(UIView* subsubview, NSUInteger idx, BOOL *stop) {
-//            NSLog(@"subsubview: %@",subsubview);
-//        }];
-    }];
+
+    NSString* authUserId = [[[AuthenticationManager sharedInstance] authenticatedUser] userId];
+    if([self.sonicComment.sonic.owner.userId isEqualToString:authUserId] || [self.sonicComment.user.userId isEqualToString:authUserId]){
+        [self.deleteButton setHidden:NO];
+    } else {
+        [self.deleteButton setHidden:YES];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

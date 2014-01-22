@@ -10,7 +10,7 @@
 #import "TypeDefs.h"
 
 
-@interface User : NSObject
+@interface User : NSObject <NSCoding>
 
 @property (nonatomic) NSString* userId;
 

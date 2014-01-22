@@ -27,7 +27,20 @@
 {
     [super viewDidLoad];
     [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshForNewLogin:) name:NotificationUserLoggedIn object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refreshForNewLogin:)
+     name:NotificationUserLoggedIn
+     object:nil];
+    UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
+    [self.navigationItem setRightBarButtonItem:barButtonItem];
+    [self.profileHeaderView.likedSonicsButton setHidden:NO];
+}
+
+
+- (void) openSettings
+{
+    [self performSegueWithIdentifier:ProfileToSettingsSegue sender:self];
 }
 
 - (void) refreshForNewLogin:(NSNotification*)notification

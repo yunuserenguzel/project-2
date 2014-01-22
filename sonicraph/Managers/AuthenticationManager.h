@@ -17,9 +17,7 @@
 @property (nonatomic) NSString* token;
 @property NSString* username;
 @property NSString* password;
-@property NSString* userId;
 @property (nonatomic) User* authenticatedUser;
-@property BOOL shouldRemember;
 @property (readonly) BOOL isUserAuthenticated;
 
 + (AuthenticationManager *)sharedInstance;

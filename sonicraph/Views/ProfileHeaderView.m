@@ -9,6 +9,7 @@
 #import "ProfileHeaderView.h"
 #import "TypeDefs.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Configurations.h"
 
 @implementation ProfileHeaderView
 - (CGRect) userProfileImageViewFrame
@@ -28,7 +29,6 @@
     frame.size.height = 22.0;
     return frame;
 }
-
 
 - (CGRect) numberOfSonicsLabelFrame
 {
@@ -89,11 +89,18 @@
     return frame;
 }
 
-- (CGRect) followButtonFrame
+- (CGRect) likedSonicsButtonFrame
 {
     CGRect frame = [self listViewButtonFrame];
     frame.origin.x += frame.size.width;
-    frame.size.width = 160.0;
+    return frame;
+}
+
+- (CGRect) followButtonFrame
+{
+    CGRect frame = [self likedSonicsButtonFrame];
+    frame.origin.x += frame.size.width;
+    frame.size.width = 100.0;
     return frame;
 }
 
@@ -102,7 +109,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setBackgroundColor:rgb(245,245,245)];
-        self.userProfileImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"2013-11-07 09.52.53.jpg"]];
+        self.userProfileImageView = [[UIImageView alloc] initWithImage:SonicPlaceholderImage];
         [self.userProfileImageView setFrame:[self userProfileImageViewFrame]];
         [self.userProfileImageView.layer setCornerRadius:5.0];
         [self.userProfileImageView setClipsToBounds:YES];
@@ -110,22 +117,22 @@
         [self addSubview:self.userProfileImageView];
         
         self.usernamelabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
-        [self.usernamelabel setText:@"yeguzel"];
+        [self.usernamelabel setText:@" "];
         self.usernamelabel.font = [UIFont boldSystemFontOfSize:14.0];
         [self addSubview:self.usernamelabel];
         
         self.userDescriptionLabel = [[UILabel alloc] initWithFrame:[self userDescriptionLabelFrame]];
-        [self.userDescriptionLabel setText:@"computer scientist"];
+        [self.userDescriptionLabel setText:@" "];
         self.userDescriptionLabel.font = [self.userDescriptionLabel.font fontWithSize:14.0];
         [self.userDescriptionLabel setTextColor:[UIColor darkGrayColor]];
         [self addSubview:self.userDescriptionLabel];
         
         self.numberOfSonicsLabel = [[UILabel alloc] initWithFrame:[self numberOfSonicsLabelFrame]];
-        [self.numberOfSonicsLabel setText:@"345"];
+        [self.numberOfSonicsLabel setText:@" "];
         self.numberOfFollowersLabel = [[UILabel alloc] initWithFrame:[self numberOfFollowersLabelFrame]];
-        [self.numberOfFollowersLabel setText:@"112"];
+        [self.numberOfFollowersLabel setText:@" "];
         self.numberOfFollowingsLabel = [[UILabel alloc] initWithFrame:[self numberOfFollowingsLabelFrame]];
-        [self.numberOfFollowingsLabel setText:@"13"];
+        [self.numberOfFollowingsLabel setText:@" "];
         [@[self.numberOfSonicsLabel,self.numberOfFollowingsLabel,self.numberOfFollowersLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
             [self addSubview:label];
             label.font = [UIFont boldSystemFontOfSize:14.0];
@@ -157,39 +164,44 @@
         self.buttonHolderView = [[UIView alloc] initWithFrame:[self buttonHolderViewFrame]];
         [self addSubview:self.buttonHolderView];
         
-        self.gridViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.gridViewButton setFrame:[self gridViewButtonFrame]];
-        [self.gridViewButton setImage:[UIImage imageNamed:@"ViewThumbnailDarkGrey.png"] forState:UIControlStateNormal];
-        [self.buttonHolderView addSubview:self.gridViewButton];
-        
-        self.listViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.listViewButton setFrame:[self listViewButtonFrame]];
-        [self.listViewButton setImage:[UIImage imageNamed:@"ViewListDarkGrey.png"] forState:UIControlStateNormal];
-        [self.buttonHolderView addSubview:self.listViewButton];
+        [self initTabButtons];
         
         self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.followButton setFrame:[self followButtonFrame]];
         [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
         [self.buttonHolderView addSubview:self.followButton];
 
-        
     }
     return self;
 }
+
+- (void) initTabButtons
+{
+    self.gridViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.gridViewButton setFrame:[self gridViewButtonFrame]];
+    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewThumbnailDarkGrey.png"] forState:UIControlStateNormal];
+    [self.buttonHolderView addSubview:self.gridViewButton];
+    
+    self.listViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.listViewButton setFrame:[self listViewButtonFrame]];
+    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListDarkGrey.png"] forState:UIControlStateNormal];
+    [self.buttonHolderView addSubview:self.listViewButton];
+    
+    self.likedSonicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.likedSonicsButton setFrame:[self likedSonicsButtonFrame]];
+    [self.likedSonicsButton setImage:[UIImage imageNamed:@"HeartGrey.png"] forState:UIControlStateNormal];
+    [self.buttonHolderView addSubview:self.likedSonicsButton];
+    [self.likedSonicsButton setHidden:YES];
+    
+}
+
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, rgb(225,225,225).CGColor);
-    
-    // Draw them with a 2.0 stroke width so they are a bit more visible.
     CGContextSetLineWidth(context, 0.5);
-    
     CGContextMoveToPoint(context, 0,[self buttonHolderViewFrame].origin.y); //start at this point
-    
     CGContextAddLineToPoint(context, [self buttonHolderViewFrame].size.width, [self buttonHolderViewFrame].origin.y); //draw to this point
-    
-    // and now draw the Path!
     CGContextStrokePath(context);
 }
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event

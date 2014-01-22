@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "SonicComment.h"
 #import "TypeDefs.h"
-@interface SonicCommentCell : UITableViewCell
+@interface SonicCommentCell : UITableViewCell <UIActionSheetDelegate>
 
 @property (nonatomic) SonicComment* sonicComment;
 
 @property UILabel* usernameLabel;
 @property UILabel* commentTextLabel;
+@property UIButton* deleteButton;
 @property UIImageView* userProfileImageView;
 
 @property id<OpenProfileProtocol> delegate;

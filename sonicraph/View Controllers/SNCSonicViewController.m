@@ -111,6 +111,16 @@
     
 }
 
+- (void) commentDeletedNotification:(NSNotification*)notification
+{
+    SonicComment* comment = notification.object;
+    if([comment isKindOfClass:[SonicComment class]]){
+        NSMutableArray* comments = self.commentsContent.mutableCopy;
+        [comments removeObject:comment];
+        self.commentsContent = [NSArray arrayWithArray:comments];
+        [self.tableView reloadData];
+    }
+}
 
 
 - (void)viewDidLoad
@@ -130,16 +140,22 @@
 //    self.refreshControl = self.refreshControl;
 //    [self.refreshControl addTarget:self action:@selector(refreshContent) forControlEvents:UIControlEventValueChanged];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:self.view.window];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(keyboardWillShow:)
+     name:UIKeyboardWillShowNotification
+     object:self.view.window];
     // register for keyboard notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:self.view.window];
-    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(keyboardWillHide:)
+     name:UIKeyboardWillHideNotification
+     object:self.view.window];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(commentDeletedNotification:)
+     name:NotificationCommentDeleted
+     object:nil];
     [self configureViews];
     
 
@@ -217,6 +233,18 @@
     self.headerView.segmentedBar.delegate = self;
     [self.headerView addTargetForTapToTop:self action:@selector(scrollToTop)];
 
+    UITapGestureRecognizer* tapGesture;
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.headerView.profileImageView addGestureRecognizer:tapGesture];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+    [self.headerView.usernameLabel addGestureRecognizer:tapGesture];
+    [self.headerView.profileImageView setUserInteractionEnabled:YES];
+    [self.headerView.usernameLabel setUserInteractionEnabled:YES];
+}
+
+- (void) tapGesture
+{
+    [self openProfileForUser:self.sonic.owner];
 }
 
 - (void) openActionsMenu
@@ -323,10 +351,18 @@
         return;
     }
     
-    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
+    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite || self.initiationType == SonicViewControllerInitiationTypeCommentRead){
         [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeComments];
         [self.headerView.segmentedBar setSelectedIndex:1];
+    } else if(self.initiationType == SonicViewControllerInitiationTypeLikeRead){
+        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+        [self setCurrentContentType:ContentTypeLikes];
+        [self.headerView.segmentedBar setSelectedIndex:0];
+    } else if(self.initiationType == SonicViewControllerInitiationTypeResonicRead){
+        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+        [self setCurrentContentType:ContentTypeResonics];
+        [self.headerView.segmentedBar setSelectedIndex:2];
     }
     
     [self refreshContent];
@@ -341,6 +377,14 @@
     [self.headerView.resonicsBarItem setSubtitle:[NSString stringWithFormat:@"%d",self.sonic.resonicCount]];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
+        [self.commentField becomeFirstResponder];
+        self.initiationType = SonicViewControllerInitiationTypeNone;
+    }
+}
+
 - (void)setSonic:(Sonic *)sonic
 {
     _sonic = sonic;
@@ -352,7 +396,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (void) refreshContent
 {
@@ -380,7 +423,6 @@
         } andErrorBlock:^(NSError *error) {
             
         }];
-
     }
     [self.tableView reloadData];
 }
@@ -474,31 +516,7 @@
     }
 }
 
-- (void)viewDidUnload {
-    
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
-    
-}
 
-- (void)dealloc {
-    
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
-    
-}
 
 - (void)keyboardWillHide:(NSNotification *)n
 {
@@ -555,9 +573,24 @@
 
 - (void) openProfileForUser:(User *)user
 {
-    SNCProfileViewController* profile = [[SNCProfileViewController alloc] init];
-    [profile setUser:user];
-    [self.navigationController pushViewController:profile animated:YES];    
+    [self performSegueWithIdentifier:SonicToProfileSegue sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:SonicToProfileSegue]) {
+        SNCProfileViewController* profile = segue.destinationViewController;
+        [profile setUser:self.sonic.owner];
+        
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:nil
+     object:nil];
 }
 
 @end

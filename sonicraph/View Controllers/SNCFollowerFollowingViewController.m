@@ -9,6 +9,7 @@
 #import "SNCFollowerFollowingViewController.h"
 #import "SNCAPIManager.h"
 #import "Configurations.h"
+#import "SNCProfileViewController.h"
 
 @interface SNCFollowerFollowingViewController ()
 
@@ -19,6 +20,7 @@
     NSArray* followers;
     NSArray* followings;
     BOOL showFollowers;
+    User* userToBeOpen;
 }
 
 - (CGRect) tableViewFrame
@@ -134,6 +136,15 @@
     return PersonTableCellHeight;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (showFollowers) {
+        [self openProfileForUser:[followers objectAtIndex:indexPath.row]];
+    } else {
+        [self openProfileForUser:[followings objectAtIndex:indexPath.row]];
+    }
+}
+
 - (void)followUser:(User *)user
 {
     user.isBeingFollowed = YES;
@@ -163,6 +174,22 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)openProfileForUser:(User *)user
+{
+    userToBeOpen = user;
+    [self performSegueWithIdentifier:FollowerFollowingToProfileSegue sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:FollowerFollowingToProfileSegue]){
+        SNCProfileViewController* profile = segue.destinationViewController;
+        [profile setUser:userToBeOpen];
+        userToBeOpen = nil;
+    }
+    
 }
 
 @end

@@ -46,7 +46,7 @@
 
 - (Sonic*) getSonicWithId:(NSString*)sonicId
 {
-    for (Sonic* sonic in self) {
+    for (Sonic* sonic in self.sonics) {
         if ([[sonic sonicId] isEqualToString:sonicId]) {
             return sonic;
         }

@@ -61,9 +61,9 @@
                         <barButtonItem key="backBarButtonItem" title="Profile" id="Ycq-qZ-dlc"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="9VH-Ip-L4V" kind="push" identifier="ProfileToPreviewSegue" id="aiB-L1-QVt"/>
                         <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="5ii-yk-Nma"/>
                         <segue destination="vdQ-Dl-azo" kind="push" identifier="ProfileToSettingsSegue" id="KbH-sa-PvF"/>
+                        <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="V84-TT-bI4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pVH-57-z5s" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -84,10 +84,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="i2p-42-1Dq"/>
+                    <connections>
+                        <segue destination="P2x-fH-UPE" kind="push" identifier="FollowerFollowingToProfileSegue" id="rEn-e1-8Y3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I69-8v-YwK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="704" y="1198"/>
+            <point key="canvasLocation" x="704" y="1010"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="jqc-ns-HgC">
@@ -106,7 +109,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UvS-WY-P0t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1162" y="806"/>
+            <point key="canvasLocation" x="704" y="266"/>
         </scene>
         <!--Home View Controller - Home-->
         <scene sceneID="kPu-WX-Z0g">
@@ -132,6 +135,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ViewSonicSegue" id="6rP-k5-zGF"/>
+                        <segue destination="P2x-fH-UPE" kind="push" identifier="HomeToProfileSegue" id="API-bG-IK2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uBg-5r-JB6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -152,10 +156,36 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="lRQ-vt-j4V"/>
+                    <connections>
+                        <segue destination="P2x-fH-UPE" kind="push" identifier="SonicToProfileSegue" id="djt-so-LCv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GIz-gu-0wJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="704" y="2188"/>
+            <point key="canvasLocation" x="704" y="2538"/>
+        </scene>
+        <!--Profile View Controller-->
+        <scene sceneID="9ak-gi-547">
+            <objects>
+                <viewController id="P2x-fH-UPE" customClass="SNCProfileViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ane-tN-YGE"/>
+                        <viewControllerLayoutGuide type="bottom" id="Pfz-jx-4mD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="RCw-zh-NHI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="xag-Zq-TuR"/>
+                    <connections>
+                        <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="5Ah-IT-aOa"/>
+                        <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="xgg-1F-Qkn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y6f-AS-Kv5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="704" y="1756"/>
         </scene>
         <!--Navigation Controller - Home-->
         <scene sceneID="hYG-yn-2P9">
@@ -172,25 +202,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W2i-vT-gdP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-211" y="2188"/>
-        </scene>
-        <!--Sonic View Controller - Preview Sonic-->
-        <scene sceneID="BfV-Wz-2kw">
-            <objects>
-                <viewController id="9VH-Ip-L4V" customClass="SNCSonicViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="d3q-9R-b63"/>
-                        <viewControllerLayoutGuide type="bottom" id="zoA-3C-M0L"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fTF-Wc-brQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Preview Sonic" id="AGG-nA-3Lc"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="U1F-dl-cJ8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="704" y="426"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="efQ-c9-MNg">
@@ -340,4 +351,9 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="5ii-yk-Nma"/>
+        <segue reference="V84-TT-bI4"/>
+        <segue reference="djt-so-LCv"/>
+    </inferredMetricsTieBreakers>
 </document>

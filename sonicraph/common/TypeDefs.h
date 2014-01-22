@@ -18,22 +18,27 @@
 #define ProfileToSettingsSegue @"ProfileToSettingsSegue"
 #define TabbarToLoginRegisterSegue @"TabbarToLoginRegisterSegue"
 #define LoginToRegisterSegue @"LoginToRegisterSegue"
-
+#define HomeToProfileSegue @"HomeToProfileSegue"
+#define SonicToProfileSegue @"SonicToProfileSegue"
+#define FollowerFollowingToProfileSegue @"FollowerFollowingToProfileSegue"
 
 #define CommentsText @"Comments"
 #define LikesText @"Likes"
 #define ResonicsText @"Resonics"
 
-#define NotificationSonicsAreLoaded @"NotificationSonicsAreLoaded"
-#define NotificationLikeSonic @"NotificationLikeSonic"
-#define NotificationDislikeSonic @"NotificationDislikeSonic"
 #define NotificationOpenCommentsOfSonic @"NotificationOpenCommentsOfSonic"
 #define NotificationSonicDeleted @"NotificationSonicDeleted"
 #define NotificationCommentWrittenToSonic @"NotificationCommentWrittenToSonic"
+#define NotificationCommentDeleted @"NotificationCommentDeleted"
+
 #define NotificationUserLoggedIn @"NotificationUserLoggedIn"
-#define NotificationUserSaved @"NotificationUserSaved"
-#define NotificationSonicResoniced @"NotificationSonicResoniced"
-#define NotificationSonicSaved @"NotificationSonicSaved"
+#define NotificationUserLoggedOut @"NotificationUserLoggedOut"
+#define NotificationUpdateUser @"NotificationUpdateUser"
+#define NotificationUpdateViewForUser @"NotificationUpdateViewForUser"
+
+#define NotificationUpdateSonic @"NotificationUpdateSonic"
+#define NotificationUpdateViewForSonic @"NotificationUpdateViewForSonic"
+#define NotificationNewSonicCreated @"NotificationNewSonicCreated"
 
 UIColor* rgb(CGFloat red, CGFloat green, CGFloat blue);
 

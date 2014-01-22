@@ -10,19 +10,23 @@
 #import "SonicData.h"
 #import "SNCAPIConnector.h"
 #import "TypeDefs.h"
+#import "SonicComment.h"
 
+User* userFromServerDictionary(NSDictionary* dictionary);
+SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary);
+Sonic* sonicFromServerDictionary(NSDictionary* sonicDict);
 
 @interface SNCAPIManager : NSObject
 
-+ (void) createSonic:(SonicData *)sonic
- withCompletionBlock:(CompletionSonicBlock)completionBlock;
++ (MKNetworkOperation *) createSonic:(SonicData *)sonic
+                            withTags:(NSString*)tags
+                 withCompletionBlock:(CompletionSonicBlock)completionBlock;
 
 + (void) getUserSonics:(User*)user saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
 
 + (void) getSonicsBefore:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
 
 + (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params
-                            saveToDatabase:(BOOL)saveToDatabase
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
 
@@ -56,6 +60,10 @@
 
 + (MKNetworkOperation*) deleteResonic:(Sonic*)sonic
                   withCompletionBlock:(CompletionSonicBlock)completionBlock
+                        andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) deleteComment:(SonicComment*)sonicComment
+                  withCompletionBlock:(CompletionBoolBlock)completionBlock
                         andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation*) deleteSonic:(Sonic*)sonic
@@ -98,5 +106,10 @@
 + (MKNetworkOperation*) unfollowUser:(User*)user
                  withCompletionBlock:(CompletionBoolBlock)completionBlock
                        andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getSonicsILikedwithCompletionBlock:(CompletionArrayBlock)completionBlock
+                                             andErrorBlock:(ErrorBlock)errorBlock;
+
+
 
 @end

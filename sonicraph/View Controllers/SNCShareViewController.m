@@ -212,9 +212,7 @@
 - (void) shareSonic
 {
     
-    [SNCAPIManager createSonic:self.sonic withCompletionBlock:^(Sonic* sonic) {
-        
-    }];
+    [SNCAPIManager createSonic:self.sonic withTags:self.tagsField.text withCompletionBlock:nil];
     
     [self.tabBarController setSelectedIndex:0];
     [self.navigationController popToRootViewControllerAnimated:NO];
@@ -224,37 +222,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-
-- (void)viewDidUnload {
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
-    
-}
-
-- (void)dealloc {
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
-    
 }
 
 - (void)keyboardWillHide:(NSNotification *)n
@@ -311,6 +278,12 @@
     [UIView commitAnimations];
     
     keyboardIsShown = YES;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:nil
+                                                  object:nil];
 }
 
 @end

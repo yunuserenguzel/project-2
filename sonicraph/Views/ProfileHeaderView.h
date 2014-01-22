@@ -25,6 +25,7 @@
 @property UIView* buttonHolderView;
 @property UIButton* gridViewButton;
 @property UIButton* listViewButton;
+@property UIButton* likedSonicsButton;
 @property UIButton* followButton;
 
 @end

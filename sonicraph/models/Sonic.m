@@ -12,6 +12,14 @@
 
 @implementation Sonic
 
+- (id)init
+{
+    if(self = [super init]){
+        [self registerForNotification];
+    }
+    return self;
+}
+
 - (void)updateWithSonic:(Sonic *)sonic
 {
     if([[self sonicId] isEqualToString:sonic.sonicId]){
@@ -20,6 +28,25 @@
         self.commentCount = sonic.commentCount;
         self.isLikedByMe = sonic.isLikedByMe;
         self.isResonicedByMe = sonic.isResonicedByMe;
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:NotificationUpdateViewForSonic
+         object:self];
+    }
+}
+
+- (void) registerForNotification
+{
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(updateWithNotification:)
+     name:NotificationUpdateSonic
+     object:nil];
+}
+
+- (void) updateWithNotification:(NSNotification*)notification
+{
+    if (notification.object != self) {
+        [self updateWithSonic:notification.object];
     }
 }
 
@@ -47,6 +74,10 @@
     return [[self sonicData] sound];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 
 @end

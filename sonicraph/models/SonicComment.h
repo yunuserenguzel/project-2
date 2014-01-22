@@ -10,6 +10,7 @@
 #import "Sonic.h"
 @interface SonicComment : NSObject
 
+@property NSString* commentId;
 @property Sonic* sonic;
 @property NSString* text;
 @property User* user;

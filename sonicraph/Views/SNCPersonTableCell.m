@@ -43,7 +43,7 @@
     [self.profileImageView setClipsToBounds:YES];
     [self.profileImageView.layer setCornerRadius:5.0];
     [self.profileImageView setUserInteractionEnabled:YES];
-    [self.profileImageView setImage:[UIImage imageNamed:@"PhotoBaseWithLogo.png"]];
+    [self.profileImageView setImage:SonicPlaceholderImage];
     [self.contentView addSubview:self.profileImageView];
     
     UIGestureRecognizer* tapGesture;
@@ -63,7 +63,7 @@
     _user = user;
     if(user){
         [self.usernameLabel setText:user.username];
-        [SNCAPIManager getImage:[NSURL URLWithString:user.profileImageUrl] withCompletionBlock:^(UIImage* image) {
+        [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(image){
                     [self.profileImageView setImage:image];
@@ -80,6 +80,11 @@
     // Configure the view for the selected state
 }
 
+- (void)prepareForReuse
+{
+    [self.profileImageView setImage:SonicPlaceholderImage];
+    [self.usernameLabel setText:@""];
+}
 @end
 
 @implementation SNCPersonFollowableTableCell
@@ -140,6 +145,7 @@
         [self.delegate unfollowUser:self.user];
     }
 }
+
 
 @end
 

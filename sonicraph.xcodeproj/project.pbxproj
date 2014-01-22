@@ -33,7 +33,6 @@
 		AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */; };
 		AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */; };
 		AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE9B182E741900F74F1D /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEAE18316BC500F74F1D /* DatabaseManager.m */; };
 		AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEB018316BC500F74F1D /* SNCAPIManager.m */; };
 		AE86EEB518316BC500F74F1D /* SonicraphMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EEB218316BC500F74F1D /* SonicraphMediaManager.m */; };
 		AE86EEC818316CA800F74F1D /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE86EEBB18316CA800F74F1D /* libmp3lame.a */; };
@@ -164,8 +163,6 @@
 		AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCProfileViewController.m; sourceTree = "<group>"; };
 		AE86EE9A182E741900F74F1D /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		AE86EE9B182E741900F74F1D /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
-		AE86EEAD18316BC500F74F1D /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
-		AE86EEAE18316BC500F74F1D /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
 		AE86EEAF18316BC500F74F1D /* SNCAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCAPIManager.h; sourceTree = "<group>"; };
 		AE86EEB018316BC500F74F1D /* SNCAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCAPIManager.m; sourceTree = "<group>"; };
 		AE86EEB118316BC500F74F1D /* SonicraphMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicraphMediaManager.h; sourceTree = "<group>"; };
@@ -481,8 +478,6 @@
 		AE86EEAC18316BC500F74F1D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				AE86EEAD18316BC500F74F1D /* DatabaseManager.h */,
-				AE86EEAE18316BC500F74F1D /* DatabaseManager.m */,
 				AE86EEAF18316BC500F74F1D /* SNCAPIManager.h */,
 				AE86EEB018316BC500F74F1D /* SNCAPIManager.m */,
 				AE86EEB118316BC500F74F1D /* SonicraphMediaManager.h */,
@@ -933,7 +928,6 @@
 				AE9E4C251889A73200C2E870 /* SonicArray.m in Sources */,
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
-				AE86EEB318316BC500F74F1D /* DatabaseManager.m in Sources */,
 				AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */,
 				AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */,
 			);

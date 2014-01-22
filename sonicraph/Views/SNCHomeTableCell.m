@@ -15,6 +15,7 @@
 #import "TypeDefs.h"
 #import "Configurations.h"
 #import "NSDate+NVTimeAgo.h"
+#import "AuthenticationManager.h"
 
 #define DeleteConfirmAlertViewTag 10001
 #define ResonicConfirmAlertViewTag 20020
@@ -22,8 +23,8 @@
 #define SonicActionSheetTag 121212
 #define DeleteResonicActionSheetTag 123123
 
-#define ButtonsTop 397.0
-#define LabelsTop 377.0
+#define ButtonsTop 405.0
+#define LabelsTop 380.0
 
 
 @interface SNCHomeTableCell () <UIActionSheetDelegate,UIAlertViewDelegate>
@@ -41,7 +42,7 @@
 }
 - (CGRect) cellSpacingViewFrame
 {
-    return CGRectMake(0.0, 450.0, 320.0, 1.0);
+    return CGRectMake(0.0, HeightForHomeCell - 1.0, 320.0, 1.0);
 }
 - (CGRect) userImageMaskViewFrame
 {
@@ -50,12 +51,17 @@
 
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(64.0, 6.0, 320.0, 44.0);
+    return CGRectMake(64.0, 6.0, 160.0, 44.0);
 }
 
 - (CGRect) timestampLabelFrame
 {
     return CGRectMake(200.0, 0.0, 110.0, 22.0);
+}
+
+- (CGRect) resonicedByUsernameLabelFrame
+{
+    return CGRectMake(200.0, 33.0, 110.0, 22.0);
 }
 
 - (CGRect) sonicPlayerViewFrame
@@ -98,7 +104,10 @@
     return CGRectMake(160.0, LabelsTop, 88.0, 22.0);
 }
 
-
+- (Sonic*) actualSonic
+{
+    return self.sonic.isResonic ? self.sonic.originalSonic : self.sonic;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -106,8 +115,6 @@
     if (self) {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self initViews];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedNotificationLikedSonic:) name:NotificationLikeSonic object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedNotificationDislikedSonic:) name:NotificationDislikeSonic object:nil];
         
     }
     return self;
@@ -115,23 +122,17 @@
 
 - (void) initViews
 {
-//    [self.layer setBorderColor:[UIColor redColor].CGColor];
-//    [self.layer setBorderWidth:1.0f];
-    NSLog(@"%@",self);
     self.userImageView = [[UIImageView alloc] initWithFrame:[self userImageViewFrame]];
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.userImageView setImage:SonicPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
-//    [self.userImageView.layer setCornerRadius:self.userImageView.frame.size.height * 0.5];
-//    [self.userImageView.layer setShouldRasterize:YES];
-//    [self.userImageView.layer setRasterizationScale:2.0];
+    [self.userImageView.layer setCornerRadius:10.0];
     [self addSubview:self.userImageView];
     
     self.userImageMaskView = [[UIImageView alloc] initWithFrame:[self userImageMaskViewFrame]];
     [self addSubview:self.userImageMaskView];
     
     self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
-    [self.usernameLabel setText:@"yeguzel"];
     [self.usernameLabel setFont:[self.usernameLabel.font fontWithSize:14.0]];
     [self addSubview:self.usernameLabel];
     
@@ -141,6 +142,12 @@
     [self.timestampLabel setTextAlignment:NSTextAlignmentRight];
     [self addSubview:self.timestampLabel];
     
+    self.resonicedByUsernameLabel = [[UILabel alloc] initWithFrame:[self resonicedByUsernameLabelFrame]];
+    [self.resonicedByUsernameLabel setTextAlignment:NSTextAlignmentRight];
+    [self.resonicedByUsernameLabel setFont:[self.timestampLabel.font fontWithSize:12.0]];
+    [self.resonicedByUsernameLabel setTextColor:[UIColor lightGrayColor]];
+    [self addSubview:self.resonicedByUsernameLabel];
+    
     self.sonicPlayerView = [[SonicPlayerView alloc] init];
     [self.sonicPlayerView setFrame:[self sonicPlayerViewFrame]];
     [self addSubview:self.sonicPlayerView];
@@ -148,12 +155,8 @@
     [self initLabels];
     [self initButtons];
     self.cellSpacingView = [[UIImageView alloc] initWithFrame:[self cellSpacingViewFrame]];
-//    [self.cellSpacingView setImage:[UIImage imageNamed:@"44PXLabelWithShadow@
     [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
     [self addSubview:self.cellSpacingView];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSonicNotification:) name:NotificationSonicSaved object:nil];
-    
     
     [self.usernameLabel setUserInteractionEnabled:YES];
     [self.userImageView setUserInteractionEnabled:YES];
@@ -163,42 +166,55 @@
     [self.usernameLabel addGestureRecognizer:tapGesture];
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.userImageView addGestureRecognizer:tapGesture];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refreshSonicNotification:)
+     name:NotificationUpdateViewForSonic
+     object:nil];
 }
 
 - (void) tapGesture
 {
-    [self.delegate openProfileForUser:self.sonic.owner];
+    [self.delegate openProfileForUser:[self actualSonic].owner];
 }
 
 - (void) refreshSonicNotification:(NSNotification*)notification
 {
     Sonic* sonic = notification.object;
-    if([self.sonic.sonicId isEqualToString:sonic.sonicId]){
-        self.sonic = sonic;
+    if(sonic == self.sonic || sonic == self.sonic.originalSonic){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self configureViews];
+        });
     }
 }
 
 - (void) initLabels
-{
+{   UITapGestureRecognizer* tapGesture;
     self.likesCountLabel = [[UILabel alloc] initWithFrame:[self likesLabelFrame]];
-//    [self.likesCountLabel.layer setBorderColor:[UIColor redColor].CGColor];
-//    [self.likesCountLabel.layer setBorderWidth:1.0f];
     [self.likesCountLabel setTextAlignment:NSTextAlignmentCenter];
     [self.likesCountLabel setFont:[self.likesCountLabel.font fontWithSize:11.0]];
-    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openLikes)];
+    [self addSubview:self.likesCountLabel];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openLikes)];
     [self.likesCountLabel addGestureRecognizer:tapGesture];
     [self.likesCountLabel setUserInteractionEnabled:YES];
-    [self addSubview:self.likesCountLabel];
 
     self.commentsCountLabel = [[UILabel alloc] initWithFrame:[self commentsLabelFrame]];
     [self.commentsCountLabel setTextAlignment:NSTextAlignmentCenter];
     [self.commentsCountLabel setFont:[self.commentsCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.commentsCountLabel];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openComments)];
+    [self.commentsCountLabel addGestureRecognizer:tapGesture];
+    [self.commentsCountLabel setUserInteractionEnabled:YES];
     
     self.resonicsCountLabel = [[UILabel alloc] initWithFrame:[self resonicsLabelFrame]];
     [self.resonicsCountLabel setTextAlignment:NSTextAlignmentCenter];
     [self.resonicsCountLabel setFont:[self.resonicsCountLabel.font fontWithSize:11.0]];
     [self addSubview:self.resonicsCountLabel];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openResonics)];
+    [self.resonicsCountLabel addGestureRecognizer:tapGesture];
+    [self.resonicsCountLabel setUserInteractionEnabled:YES];
+    
 }
 
 - (void) initButtons
@@ -259,15 +275,33 @@
         }
     } else if(actionSheet.tag == DeleteResonicActionSheetTag){
         if(buttonIndex == 0) {
-            [SNCAPIManager deleteResonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
+            if(self.sonic.isResonic){
+                [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:^(BOOL successful) {
+                    [SNCAPIManager deleteResonic:self.sonic.originalSonic withCompletionBlock:^(Sonic *sonic) {
+                        [self.sonic.originalSonic updateWithSonic:sonic];
+                    } andErrorBlock:nil];
+                } andErrorBlock:^(NSError *error) {
+                    
+                }];
+            } else {
+                [SNCAPIManager deleteResonic:self.sonic withCompletionBlock:^(Sonic *sonic) {
+                    [self.sonic updateWithSonic:sonic];
+                } andErrorBlock:nil];
+            }
         }
     }
     
 }
+
 - (void) resonic
 {
-    if(self.sonic.isResonicedByMe){
-        UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Delete resonic" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+    if([self.resonicButton isSelected]){
+        UIActionSheet* actionSheet = [[UIActionSheet alloc]
+                                      initWithTitle:@"Delete resonic"
+                                      delegate:self
+                                      cancelButtonTitle:@"Cancel"
+                                      destructiveButtonTitle:@"Delete"
+                                      otherButtonTitles: nil];
         actionSheet.tag = DeleteResonicActionSheetTag;
         [actionSheet showInView:self];
         
@@ -284,7 +318,6 @@
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"%d",buttonIndex);
     if(alertView.tag == DeleteConfirmAlertViewTag){
         if(buttonIndex == 0){
             [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
@@ -292,54 +325,57 @@
     }
     else if(alertView.tag == ResonicConfirmAlertViewTag){
         if(buttonIndex == 1){
-            [SNCAPIManager resonicSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
+            Sonic* sonicToBeResoniced = [self actualSonic];
+            [SNCAPIManager resonicSonic:sonicToBeResoniced withCompletionBlock:^(Sonic *sonic) {
+                [sonicToBeResoniced updateWithSonic:sonic];
+            } andErrorBlock:nil];
         }
     }
 }
 
+
 - (void) openLikes
 {
-    [self.delegate sonic:self.sonic actionFired:SNCHomeTableCellActionTypeOpenLikes];
+    [self.delegate sonic:[self actualSonic] actionFired:SNCHomeTableCellActionTypeOpenLikes];
+}
+
+- (void) openComments
+{
+    [self.delegate sonic:[self actualSonic] actionFired:SNCHomeTableCellActionTypeOpenComments];
+}
+
+- (void) openResonics
+{
+    [self.delegate sonic:[self actualSonic] actionFired:SNCHomeTableCellActionTypeOpenResonics];
 }
 
 - (void) commentSonic
 {
-    [self.delegate sonic:self.sonic actionFired:SNCHomeTableCellActionTypeComment];
+    [self.delegate sonic:[self actualSonic] actionFired:SNCHomeTableCellActionTypeComment];
 }
 
 - (void)likeSonic
 {
+    Sonic* currentSonic = [self actualSonic];
     [self.likeButton setHighlighted:YES];
     if ([self.likeButton isSelected]){
         [self.likeButton setSelected:NO];
-        [SNCAPIManager dislikeSonic:self.sonic withCompletionBlock:nil andErrorBlock:^(NSError *error) {
+        [SNCAPIManager dislikeSonic:currentSonic withCompletionBlock:^(Sonic *sonic) {
+            [currentSonic updateWithSonic:sonic];
+        } andErrorBlock:^(NSError *error) {
             [self.likeButton setSelected:YES];
         }];
     }
     else {
         [self.likeButton setSelected:YES];
-        [SNCAPIManager likeSonic:self.sonic withCompletionBlock:nil andErrorBlock:^(NSError *error) {
-            [self.likeButton setSelected:NO];
+        [SNCAPIManager likeSonic:currentSonic withCompletionBlock:^(Sonic *sonic) {
+            [currentSonic updateWithSonic:sonic];
+        } andErrorBlock:^(NSError *error) {
+            [self.likeButton setSelected:YES];
         }];
     }
-    
 }
 
-- (void)receivedNotificationLikedSonic:(NSNotification*)notification
-{
-    Sonic* sonic = notification.object;
-    if([self.sonic.sonicId isEqualToString:sonic.sonicId]){
-        [self.likeButton setSelected:YES];
-    }
-}
-
-- (void)receivedNotificationDislikedSonic:(NSNotification*)notification
-{
-    Sonic* sonic = notification.object;
-    if([self.sonic.sonicId isEqualToString:sonic.sonicId]){
-        [self.likeButton setSelected:NO];
-    }
-}
 
 - (void)setSonic:(Sonic *)sonic
 {
@@ -351,20 +387,36 @@
 
 - (void) configureViews
 {
-    [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
-    [self.usernameLabel setText:[self.sonic.owner username]];
+    if(self.sonic.isResonic){
+        [self configureViewsForSonic:self.sonic.originalSonic];
+        [self.resonicedByUsernameLabel setText:[NSString stringWithFormat:@"resoniced by %@",self.sonic.owner.username]];
+    } else {
+        [self configureViewsForSonic:self.sonic];
+        [self.resonicedByUsernameLabel setText:[NSString stringWithFormat:@""]];
+    }
+}
+
+- (void) configureViewsForSonic:(Sonic*)sonic
+{
+    [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrl]];
+    [self.usernameLabel setText:[sonic.owner username]];
     [self.userImageView setImage:SonicPlaceholderImage];
-    [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
+    [sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.userImageView setImage:object];
         });
     }];
-    [self.timestampLabel setText:[[self.sonic creationDate] formattedAsTimeAgo]];
-    [self.resonicButton setSelected:self.sonic.isResonicedByMe];
-    [self.likeButton setSelected:self.sonic.isLikedByMe];
-    self.likesCountLabel.text = [NSString stringWithFormat:@"%d %@",self.sonic.likeCount,LikesText];
-    self.commentsCountLabel.text = [NSString stringWithFormat:@"%d %@",self.sonic.commentCount,CommentsText];
-    self.resonicsCountLabel.text = [NSString stringWithFormat:@"%d %@",self.sonic.resonicCount,ResonicsText];
+    [self.timestampLabel setText:[[sonic creationDate] formattedAsTimeAgo]];
+    if([sonic.owner.userId isEqualToString:[[[AuthenticationManager sharedInstance] authenticatedUser] userId]]){
+        [self.resonicButton setEnabled:NO];
+    } else {
+        [self.resonicButton setEnabled:YES];
+        [self.resonicButton setSelected:sonic.isResonicedByMe];
+    }
+    [self.likeButton setSelected:sonic.isLikedByMe];
+    self.likesCountLabel.text = [NSString stringWithFormat:@"%d %@",sonic.likeCount,LikesText];
+    self.commentsCountLabel.text = [NSString stringWithFormat:@"%d %@",sonic.commentCount,CommentsText];
+    self.resonicsCountLabel.text = [NSString stringWithFormat:@"%d %@",sonic.resonicCount,ResonicsText];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -389,6 +441,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+//
+//- (void)prepareForReuse
+//{
+//    self.sonic = nil;
+//    [self.usernameLabel setText:@""];
+//    [self.userImageView setImage:SonicPlaceholderImage];
+//}
 
 
 @end

@@ -110,6 +110,14 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict);
 + (MKNetworkOperation*) getSonicsILikedwithCompletionBlock:(CompletionArrayBlock)completionBlock
                                              andErrorBlock:(ErrorBlock)errorBlock;
 
++ (MKNetworkOperation*) getSonicsWithSearchQuery:(NSString*)query
+                             withCompletionBlock:(CompletionArrayBlock)completionBlock
+                                   andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getUsersWithSearchQuery:(NSString*)query
+                            withCompletionBlock:(CompletionArrayBlock)completionBlock
+                                  andErrorBlock:(ErrorBlock)errorBlock;
+
 
 
 @end

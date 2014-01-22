@@ -82,6 +82,45 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
 }
 
 @implementation SNCAPIManager
+
++ (MKNetworkOperation *)getSonicsWithSearchQuery:(NSString *)query withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"query": query};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"sonic/search"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSMutableArray* sonics = [NSMutableArray new];
+                [[responseDictionary objectForKey:@"sonics"] enumerateObjectsUsingBlock:^(NSDictionary* sonicDict, NSUInteger idx, BOOL *stop) {
+                    Sonic* sonic = sonicFromServerDictionary(sonicDict);
+                    [sonics addObject:sonic];
+                }];
+                if(completionBlock){
+                    completionBlock(sonics);
+                }
+            } andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)getUsersWithSearchQuery:(NSString *)query withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSDictionary* params = @{@"query": query};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:@"user/search"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSMutableArray* users = [NSMutableArray new];
+                [[responseDictionary objectForKey:@"users"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
+                    User* user = userFromServerDictionary(userDict);
+                    [users addObject:user];
+                }];
+                if(completionBlock){
+                    completionBlock(users);
+                }
+            } andErrorBlock:errorBlock];
+}
+
 + (MKNetworkOperation *)followUser:(User *)user withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     NSDictionary* params = @{@"user": user.userId};

@@ -23,6 +23,8 @@
 		AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */; };
 		AE2B4E80187457E6006BD456 /* SonicComment.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7F187457E6006BD456 /* SonicComment.m */; };
 		AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */; };
+		AE7E18DF18906859009A9B7F /* SNCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18DE18906859009A9B7F /* SNCSearchViewController.m */; };
+		AE7E18E118906E13009A9B7F /* SearchWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7E18E018906E13009A9B7F /* SearchWhite@2x.png */; };
 		AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* SonicData.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -142,6 +144,9 @@
 		AE2B4E7F187457E6006BD456 /* SonicComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicComment.m; sourceTree = "<group>"; };
 		AE637F32184BBCE700DDEE21 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
+		AE7E18DD18906859009A9B7F /* SNCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSearchViewController.h; sourceTree = "<group>"; };
+		AE7E18DE18906859009A9B7F /* SNCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSearchViewController.m; sourceTree = "<group>"; };
+		AE7E18E018906E13009A9B7F /* SearchWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchWhite@2x.png"; sourceTree = "<group>"; };
 		AE86EE79182C0DA800F74F1D /* SonicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicData.h; sourceTree = "<group>"; };
 		AE86EE7A182C0DA800F74F1D /* SonicData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicData.m; sourceTree = "<group>"; };
 		AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMRangeSlider.h; sourceTree = "<group>"; };
@@ -328,6 +333,7 @@
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				AE7E18E018906E13009A9B7F /* SearchWhite@2x.png */,
 				AEB945F41877566D00FCE111 /* profile */,
 				AEDAADF7185DB8A4001DD389 /* Tabbar */,
 				AEDAADEB185DB334001DD389 /* SonicCell */,
@@ -471,6 +477,8 @@
 				AEB9F7AC187B34EC005F4988 /* SNCSettingsViewController.m */,
 				AEB9F7BA187CA955005F4988 /* SNCMyProfileViewController.h */,
 				AEB9F7BB187CA955005F4988 /* SNCMyProfileViewController.m */,
+				AE7E18DD18906859009A9B7F /* SNCSearchViewController.h */,
+				AE7E18DE18906859009A9B7F /* SNCSearchViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -842,6 +850,7 @@
 				AEB945971874D2D000FCE111 /* CommentPink@2x.png in Resources */,
 				AEB945AB1875064D00FCE111 /* MoreWhite@2x.png in Resources */,
 				AEB945A71874F08000FCE111 /* 44PXLabelWithShadow@2x.png in Resources */,
+				AE7E18E118906E13009A9B7F /* SearchWhite@2x.png in Resources */,
 				AEDAAE1618639AF1001DD389 /* SecondsNumbers@2x.png in Resources */,
 				AEB945A51874DE5800FCE111 /* SegmentedButtonBarSeperator@2x.png in Resources */,
 				AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */,
@@ -880,6 +889,7 @@
 				AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */,
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
+				AE7E18DF18906859009A9B7F /* SNCSearchViewController.m in Sources */,
 				AE9ABCFB18799E71008FE96B /* SNCFollowerFollowingViewController.m in Sources */,
 				AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */,
 				AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */,

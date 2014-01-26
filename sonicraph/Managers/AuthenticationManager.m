@@ -135,6 +135,11 @@ static AuthenticationManager* sharedInstance = nil;
             _authenticatedUser = user;
         } else {
             [[UserPool sharedPool] addOrUpdateUser:_authenticatedUser];
+            [SNCAPIManager checkIsTokenValid:self.token withCompletionBlock:^(User *user, NSString *token) {
+                
+            } andErrorBlock:^(NSError *error) {
+                
+            }];
         }
     }
     

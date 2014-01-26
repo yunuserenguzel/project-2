@@ -25,6 +25,13 @@
 		AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */; };
 		AE7E18DF18906859009A9B7F /* SNCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18DE18906859009A9B7F /* SNCSearchViewController.m */; };
 		AE7E18E118906E13009A9B7F /* SearchWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7E18E018906E13009A9B7F /* SearchWhite@2x.png */; };
+		AE7E18E618953F19009A9B7F /* SNCNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18E518953F19009A9B7F /* SNCNotificationsViewController.m */; };
+		AE7E18E818953FFD009A9B7F /* GlobeGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7E18E718953FFD009A9B7F /* GlobeGrey@2x.png */; };
+		AE7E18EB18954102009A9B7F /* SNCNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18EA18954102009A9B7F /* SNCNotificationCell.m */; };
+		AE7E18EE18954BE2009A9B7F /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18ED18954BE2009A9B7F /* Notification.m */; };
+		AE7E18F018955886009A9B7F /* UserGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7E18EF18955886009A9B7F /* UserGrey@2x.png */; };
+		AE7E18F618959947009A9B7F /* SettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18F518959947009A9B7F /* SettingsTableCell.m */; };
+		AE7E18F91895A1AF009A9B7F /* SNCEditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18F81895A1AF009A9B7F /* SNCEditProfileViewController.m */; };
 		AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* SonicData.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -147,6 +154,18 @@
 		AE7E18DD18906859009A9B7F /* SNCSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSearchViewController.h; sourceTree = "<group>"; };
 		AE7E18DE18906859009A9B7F /* SNCSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSearchViewController.m; sourceTree = "<group>"; };
 		AE7E18E018906E13009A9B7F /* SearchWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchWhite@2x.png"; sourceTree = "<group>"; };
+		AE7E18E418953F19009A9B7F /* SNCNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCNotificationsViewController.h; sourceTree = "<group>"; };
+		AE7E18E518953F19009A9B7F /* SNCNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCNotificationsViewController.m; sourceTree = "<group>"; };
+		AE7E18E718953FFD009A9B7F /* GlobeGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GlobeGrey@2x.png"; sourceTree = "<group>"; };
+		AE7E18E918954102009A9B7F /* SNCNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCNotificationCell.h; sourceTree = "<group>"; };
+		AE7E18EA18954102009A9B7F /* SNCNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCNotificationCell.m; sourceTree = "<group>"; };
+		AE7E18EC18954BE2009A9B7F /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
+		AE7E18ED18954BE2009A9B7F /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
+		AE7E18EF18955886009A9B7F /* UserGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UserGrey@2x.png"; sourceTree = "<group>"; };
+		AE7E18F418959947009A9B7F /* SettingsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableCell.h; sourceTree = "<group>"; };
+		AE7E18F518959947009A9B7F /* SettingsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableCell.m; sourceTree = "<group>"; };
+		AE7E18F71895A1AF009A9B7F /* SNCEditProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCEditProfileViewController.h; sourceTree = "<group>"; };
+		AE7E18F81895A1AF009A9B7F /* SNCEditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCEditProfileViewController.m; sourceTree = "<group>"; };
 		AE86EE79182C0DA800F74F1D /* SonicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicData.h; sourceTree = "<group>"; };
 		AE86EE7A182C0DA800F74F1D /* SonicData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicData.m; sourceTree = "<group>"; };
 		AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMRangeSlider.h; sourceTree = "<group>"; };
@@ -333,6 +352,7 @@
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				AE7E18E718953FFD009A9B7F /* GlobeGrey@2x.png */,
 				AE7E18E018906E13009A9B7F /* SearchWhite@2x.png */,
 				AEB945F41877566D00FCE111 /* profile */,
 				AEDAADF7185DB8A4001DD389 /* Tabbar */,
@@ -376,6 +396,36 @@
 			path = rangeslider;
 			sourceTree = "<group>";
 		};
+		AE7E18E218953EC4009A9B7F /* Profile View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AEB9F7AB187B34EC005F4988 /* SNCSettingsViewController.h */,
+				AEB9F7AC187B34EC005F4988 /* SNCSettingsViewController.m */,
+				AE86EE97182D7D2000F74F1D /* SNCProfileViewController.h */,
+				AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */,
+				AE9ABCF918799E71008FE96B /* SNCFollowerFollowingViewController.h */,
+				AE9ABCFA18799E71008FE96B /* SNCFollowerFollowingViewController.m */,
+				AEB9F7BA187CA955005F4988 /* SNCMyProfileViewController.h */,
+				AEB9F7BB187CA955005F4988 /* SNCMyProfileViewController.m */,
+				AE7E18F71895A1AF009A9B7F /* SNCEditProfileViewController.h */,
+				AE7E18F81895A1AF009A9B7F /* SNCEditProfileViewController.m */,
+			);
+			name = "Profile View Controllers";
+			sourceTree = "<group>";
+		};
+		AE7E18E318953EDE009A9B7F /* Camera View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AE86EE8E182C0E0E00F74F1D /* SNCCameraViewController.h */,
+				AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */,
+				AE86EE90182C0E0E00F74F1D /* SNCEditViewController.h */,
+				AE86EE91182C0E0E00F74F1D /* SNCEditViewController.m */,
+				AE86EE92182C0E0E00F74F1D /* SNCShareViewController.h */,
+				AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */,
+			);
+			name = "Camera View Controllers";
+			sourceTree = "<group>";
+		};
 		AE86EE77182C0DA800F74F1D /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,6 +441,8 @@
 				AE9E4C2118899AE900C2E870 /* UserPool.m */,
 				AE9E4C231889A73200C2E870 /* SonicArray.h */,
 				AE9E4C241889A73200C2E870 /* SonicArray.m */,
+				AE7E18EC18954BE2009A9B7F /* Notification.h */,
+				AE7E18ED18954BE2009A9B7F /* Notification.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -410,6 +462,8 @@
 				AEDAAE0F18623B0F001DD389 /* SNCSoundSlider.m */,
 				AE9ABCFC187A0DC9008FE96B /* SNCPersonTableCell.h */,
 				AE9ABCFD187A0DC9008FE96B /* SNCPersonTableCell.m */,
+				AE7E18E918954102009A9B7F /* SNCNotificationCell.h */,
+				AE7E18EA18954102009A9B7F /* SNCNotificationCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -456,29 +510,19 @@
 		AE86EE8D182C0E0E00F74F1D /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AE7E18E318953EDE009A9B7F /* Camera View Controllers */,
+				AE7E18E218953EC4009A9B7F /* Profile View Controllers */,
 				AEB9F7B3187B51DC005F4988 /* Login/Register Group */,
-				AE86EE8E182C0E0E00F74F1D /* SNCCameraViewController.h */,
-				AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */,
-				AE86EE90182C0E0E00F74F1D /* SNCEditViewController.h */,
-				AE86EE91182C0E0E00F74F1D /* SNCEditViewController.m */,
-				AE86EE92182C0E0E00F74F1D /* SNCShareViewController.h */,
-				AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */,
-				AE86EE97182D7D2000F74F1D /* SNCProfileViewController.h */,
-				AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */,
 				AE86EED21832C69600F74F1D /* SNCHomeViewController.h */,
 				AE86EED31832C69600F74F1D /* SNCHomeViewController.m */,
 				AEDAADF4185DB802001DD389 /* SNCTabbarController.h */,
 				AEDAADF5185DB802001DD389 /* SNCTabbarController.m */,
 				AEDAAE351866D184001DD389 /* SNCSonicViewController.h */,
 				AEDAAE361866D184001DD389 /* SNCSonicViewController.m */,
-				AE9ABCF918799E71008FE96B /* SNCFollowerFollowingViewController.h */,
-				AE9ABCFA18799E71008FE96B /* SNCFollowerFollowingViewController.m */,
-				AEB9F7AB187B34EC005F4988 /* SNCSettingsViewController.h */,
-				AEB9F7AC187B34EC005F4988 /* SNCSettingsViewController.m */,
-				AEB9F7BA187CA955005F4988 /* SNCMyProfileViewController.h */,
-				AEB9F7BB187CA955005F4988 /* SNCMyProfileViewController.m */,
 				AE7E18DD18906859009A9B7F /* SNCSearchViewController.h */,
 				AE7E18DE18906859009A9B7F /* SNCSearchViewController.m */,
+				AE7E18E418953F19009A9B7F /* SNCNotificationsViewController.h */,
+				AE7E18E518953F19009A9B7F /* SNCNotificationsViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -555,6 +599,8 @@
 				AEB946001877571B00FCE111 /* ProfileHeaderView.m */,
 				AE9ABCF618797E15008FE96B /* SonicCollectionViewCell.h */,
 				AE9ABCF718797E15008FE96B /* SonicCollectionViewCell.m */,
+				AE7E18F418959947009A9B7F /* SettingsTableCell.h */,
+				AE7E18F518959947009A9B7F /* SettingsTableCell.m */,
 			);
 			name = "Profile Views";
 			sourceTree = "<group>";
@@ -736,6 +782,7 @@
 		AEDAADEB185DB334001DD389 /* SonicCell */ = {
 			isa = PBXGroup;
 			children = (
+				AE7E18EF18955886009A9B7F /* UserGrey@2x.png */,
 				AEB945AA1875064D00FCE111 /* MoreWhite@2x.png */,
 				AEB945A81874F32800FCE111 /* Shadow@2x.png */,
 				AEB945A61874F08000FCE111 /* 44PXLabelWithShadow@2x.png */,
@@ -832,6 +879,7 @@
 				AEB945A91874F32800FCE111 /* Shadow@2x.png in Resources */,
 				AEDAADDB185C9A41001DD389 /* CameraBackFrontWhite@2x.png in Resources */,
 				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
+				AE7E18F018955886009A9B7F /* UserGrey@2x.png in Resources */,
 				AE15966718142C6300929D1D /* Camera Button.png in Resources */,
 				AEDAAE2F186591BA001DD389 /* FacebookIcon@2x.png in Resources */,
 				AEDAAE321865939C001DD389 /* Paused@2x.png in Resources */,
@@ -860,6 +908,7 @@
 				AEDAADFF185DB8A4001DD389 /* GlobeWhite@2x.png in Resources */,
 				AE86EECB18316CA800F74F1D /* AudioConverterKitforiOS.pdf in Resources */,
 				AEDAAE03185DB900001DD389 /* UserWhite@2x.png in Resources */,
+				AE7E18E818953FFD009A9B7F /* GlobeGrey@2x.png in Resources */,
 				AE15966818142C6300929D1D /* Camera Flash@2x.png in Resources */,
 				AEB945FA1877566D00FCE111 /* ViewListPink@2x.png in Resources */,
 				AE159695181C15AE00929D1D /* Sound Button.png in Resources */,
@@ -894,7 +943,9 @@
 				AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */,
 				AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */,
 				AE86EE8C182C0DF300F74F1D /* UIImage+scaleToSize.m in Sources */,
+				AE7E18F618959947009A9B7F /* SettingsTableCell.m in Sources */,
 				AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */,
+				AE7E18EB18954102009A9B7F /* SNCNotificationCell.m in Sources */,
 				AEB9F7B9187B521F005F4988 /* SNCRegisterViewController.m in Sources */,
 				AED56EF71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
 				AE86EE8B182C0DF300F74F1D /* SNCAPIConnector.m in Sources */,
@@ -908,13 +959,16 @@
 				AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */,
 				AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */,
 				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
+				AE7E18E618953F19009A9B7F /* SNCNotificationsViewController.m in Sources */,
 				AEDAAE371866D184001DD389 /* SNCSonicViewController.m in Sources */,
 				AEDAAE2418650B5B001DD389 /* NSDate+NVTimeAgo.m in Sources */,
 				AEDAADF6185DB802001DD389 /* SNCTabbarController.m in Sources */,
 				AE2B4E80187457E6006BD456 /* SonicComment.m in Sources */,
 				AE86EED71832E07600F74F1D /* SonicPlayerView.m in Sources */,
+				AE7E18F91895A1AF009A9B7F /* SNCEditProfileViewController.m in Sources */,
 				AE9E4C2218899AE900C2E870 /* UserPool.m in Sources */,
 				AE86EEB518316BC500F74F1D /* SonicraphMediaManager.m in Sources */,
+				AE7E18EE18954BE2009A9B7F /* Notification.m in Sources */,
 				AE9ABCFE187A0DC9008FE96B /* SNCPersonTableCell.m in Sources */,
 				AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,

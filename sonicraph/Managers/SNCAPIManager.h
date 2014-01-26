@@ -11,11 +11,13 @@
 #import "SNCAPIConnector.h"
 #import "TypeDefs.h"
 #import "SonicComment.h"
+#import "Notification.h"
+
 
 User* userFromServerDictionary(NSDictionary* dictionary);
 SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary);
 Sonic* sonicFromServerDictionary(NSDictionary* sonicDict);
-
+Notification* notificationFromServerDictionary(NSDictionary* dict);
 @interface SNCAPIManager : NSObject
 
 + (MKNetworkOperation *) createSonic:(SonicData *)sonic
@@ -33,7 +35,9 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict);
 + (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock;
 + (void) getImage:(NSURL*)imageUrl withCompletionBlock:(CompletionIdBlock)completionBlock;
 
-+ (void) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
++ (MKNetworkOperation*) checkIsTokenValid:(NSString*)token
+                      withCompletionBlock:(CompletionUserBlock)block
+                            andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation *) registerWithUsername:(NSString*)username
                                         email:(NSString*)email
@@ -117,6 +121,8 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict);
 + (MKNetworkOperation*) getUsersWithSearchQuery:(NSString*)query
                             withCompletionBlock:(CompletionArrayBlock)completionBlock
                                   andErrorBlock:(ErrorBlock)errorBlock;
++ (MKNetworkOperation*) getNotificationsWithCompletionBlock:(CompletionArrayBlock)completionBlock
+                                              andErrorBlock:(ErrorBlock)errorBlock;
 
 
 

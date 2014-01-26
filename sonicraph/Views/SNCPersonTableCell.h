@@ -29,6 +29,7 @@
 @property UIImageView* profileImageView;
 @property id<OpenProfileProtocol> delegate;
 - (void) initViews;
+- (void) configureViews;
 
 @end
 

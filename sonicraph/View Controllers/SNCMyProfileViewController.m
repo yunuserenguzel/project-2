@@ -35,8 +35,16 @@
     UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
     [self.navigationItem setRightBarButtonItem:barButtonItem];
     [self.profileHeaderView.likedSonicsButton setHidden:NO];
+    
+    [self.profileHeaderView.followButton setTitle:@"Edit Profile" forState:UIControlStateNormal];
+    [self.profileHeaderView.followButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+    [self.profileHeaderView.followButton addTarget:self action:@selector(openEditProfile) forControlEvents:UIControlEventTouchUpInside];
 }
 
+- (void) openEditProfile
+{
+    [self performSegueWithIdentifier:MyProfileToEditProfileSegue sender:self];
+}
 
 - (void) openSettings
 {

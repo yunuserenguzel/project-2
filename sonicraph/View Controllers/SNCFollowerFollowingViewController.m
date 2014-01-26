@@ -147,26 +147,12 @@
 
 - (void)followUser:(User *)user
 {
-    user.isBeingFollowed = YES;
     [self.tableView reloadData];
-    [SNCAPIManager followUser:user withCompletionBlock:^(BOOL successful) {
-        
-    } andErrorBlock:^(NSError *error) {
-        user.isBeingFollowed = NO;
-        [self.tableView reloadData];
-    }];
 }
 
 - (void)unfollowUser:(User *)user
 {
-    user.isBeingFollowed = NO;
     [self.tableView reloadData];
-    [SNCAPIManager unfollowUser:user withCompletionBlock:^(BOOL successful) {
-        
-    } andErrorBlock:^(NSError *error) {
-        user.isBeingFollowed = YES;
-        [self.tableView reloadData];
-    }];
 }
 
 

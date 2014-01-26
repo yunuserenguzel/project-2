@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SNCSearchViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
+@interface SNCSearchViewController : UIViewController <UITableViewDataSource,UITableViewDelegate, UISearchBarDelegate, UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property UITableView* userTableView;
 
-@property UICollectionView* soncisCollectionView;
+@property UICollectionView* sonicsCollectionView;
 
-@property UITextField* searchField;
-@property UIBarButtonItem* searchButton;
+@property UISearchBar* searchBar;
+
+@property UISegmentedControl* segmentControl;
 
 @end

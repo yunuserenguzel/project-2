@@ -21,6 +21,9 @@
 #define HomeToProfileSegue @"HomeToProfileSegue"
 #define SonicToProfileSegue @"SonicToProfileSegue"
 #define FollowerFollowingToProfileSegue @"FollowerFollowingToProfileSegue"
+#define SearchToProfileSegue @"SearchToProfileSegue"
+#define SearchToSonicSegue @"SearchToSonicSegue"
+#define MyProfileToEditProfileSegue @"MyProfileToEditProfileSegue"
 
 #define CommentsText @"Comments"
 #define LikesText @"Likes"

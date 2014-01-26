@@ -9,19 +9,35 @@
 #import "SNCSearchViewController.h"
 #import "SNCPersonTableCell.h"
 #import "SNCAPIManager.h"
+#import "SonicArray.h"
+#import "SonicCollectionViewCell.h"
+#import "SNCProfileViewController.h"
+#import "SNCSonicViewController.h"
+
+typedef enum SearchContentType {
+    SearchContentTypeSonics = 111,
+    SearchContentTypeUsers = 222
+}
+SearchContentType;
 
 @interface SNCSearchViewController ()
 
 @property NSArray* users;
+@property SonicArray* sonics;
+
+@property (nonatomic) SearchContentType searchContentType;
+
 @end
 
 @implementation SNCSearchViewController
 {
     UIActivityIndicatorView* activityView;
+    User* selectedUser;
+    Sonic* selectedSonic;
 }
 - (CGRect) searchFieldFrame
 {
-    return CGRectMake(0.0, 0.0, 240.0, 22.0);
+    return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
 
 - (CGRect) contentRect
@@ -39,31 +55,53 @@
     return self;
 }
 
-- (void) search
+-(void)setSearchContentType:(SearchContentType)searchContentType
 {
-    if(activityView == nil){
-        activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    }
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
-    [activityView startAnimating];
-    [SNCAPIManager getUsersWithSearchQuery:self.searchField.text withCompletionBlock:^(NSArray *users) {
-        [activityView stopAnimating];
-        self.navigationItem.rightBarButtonItem = self.searchButton;
-        self.users = users;
+    if(_searchContentType != searchContentType){
+        _searchContentType = searchContentType;
+        self.searchBar.text = @"";
+        [self.searchBar removeFromSuperview];
+        self.users = nil;
+        self.sonics = nil;
         [self.userTableView reloadData];
-    } andErrorBlock:^(NSError *error) {
-        [activityView stopAnimating];
-        self.navigationItem.rightBarButtonItem = self.searchButton;
-    }];
+        [self.sonicsCollectionView reloadData];
+        if(self.searchContentType == SearchContentTypeUsers){
+            [self.userTableView.tableHeaderView addSubview:self.searchBar];
+            [self.userTableView setHidden:NO];
+            [self.sonicsCollectionView setHidden:YES];
+        } else {
+            [self.sonicsCollectionView addSubview:self.searchBar];
+            [self.sonicsCollectionView setHidden:NO];
+            [self.userTableView setHidden:YES];
+        }
+    }
+}
+
+- (void) segmentControlValueChanged
+{
+    if(self.segmentControl.selectedSegmentIndex == 0){
+        self.searchContentType = SearchContentTypeUsers;
+    } else {
+        self.searchContentType = SearchContentTypeSonics;
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.users = @[];
+    [self initSegmentControl];
     [self initUserTableView];
+    [self initSonicCollectionView];
     [self initSearchInstruments];
+    [self setSearchContentType:SearchContentTypeUsers];
+}
+
+- (void) initSegmentControl
+{
+    self.segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Users",@"Sonics"]];
+    [self.segmentControl setSelectedSegmentIndex:0];
+    self.navigationItem.titleView = self.segmentControl;
+    [self.segmentControl addTarget:self action:@selector(segmentControlValueChanged) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void) initUserTableView
@@ -71,24 +109,107 @@
     self.userTableView = [[UITableView alloc] initWithFrame:[self contentRect] style:UITableViewStylePlain];
     [self.view addSubview:self.userTableView];
     [self.userTableView registerClass:[SNCPersonFollowableTableCell class] forCellReuseIdentifier:@"PersonCell"];
+    [self.userTableView setTableHeaderView:[[UIView alloc] initWithFrame:[self searchFieldFrame]]];
     self.userTableView.delegate = self;
     self.userTableView.dataSource = self;
+    [self.userTableView setUserInteractionEnabled:YES];
+//    [self.userTableView setAllowsSelection:YES];
+}
+
+- (void) initSonicCollectionView
+{
+    UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
+    [layout setItemSize:CGSizeMake(106, 106)];
+    [layout setMinimumInteritemSpacing:1.0];
+    [layout setMinimumLineSpacing:1.0];
+    [layout setHeaderReferenceSize:CGSizeMake(320.0, 44.0)];
+    self.sonicsCollectionView = [[UICollectionView alloc] initWithFrame:[self contentRect] collectionViewLayout:layout];
+    [self.view addSubview:self.sonicsCollectionView];
+    [self.sonicsCollectionView setDataSource:self];
+    [self.sonicsCollectionView setDelegate:self];
+    [self.sonicsCollectionView setBackgroundColor:[UIColor whiteColor]];
+    [self.sonicsCollectionView registerClass:[SonicCollectionViewCell class] forCellWithReuseIdentifier:@"SonicCell"];
 }
 
 - (void) initSearchInstruments
 {
-    self.searchField = [[UITextField alloc] initWithFrame:[self searchFieldFrame]];
-    self.searchField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 22.0)];
-    self.searchField.font = [self.searchField.font fontWithSize:14.0];
-    self.searchField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.searchField.layer.borderColor = rgb(200, 200, 200).CGColor;
-    self.searchField.layer.borderWidth = 1.0;
-    self.searchField.layer.cornerRadius = 5.0;
-    self.searchField.keyboardType = UIKeyboardTypeAlphabet;
-    self.navigationItem.titleView = self.searchField;
-    
-    self.searchButton = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStyleBordered target:self action:@selector(search)];
-    self.navigationItem.rightBarButtonItem = self.searchButton;
+    self.searchBar = [[UISearchBar alloc] initWithFrame:[self searchFieldFrame]];
+    [self.searchBar setDelegate:self];
+    self.searchBar.keyboardType = UIKeyboardTypeAlphabet;
+    [self.searchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+}
+
+- (void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [self.searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void) searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [self.searchBar setShowsCancelButton:NO animated:YES];
+}
+
+- (void) searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    self.searchBar.text = @"";
+//    [self.searchBar resignFirstResponder];
+    [self.view endEditing:YES];
+}
+
+- (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.searchBar resignFirstResponder];
+    if(activityView == nil){
+        activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+    [activityView startAnimating];
+    if(self.searchContentType == SearchContentTypeUsers){
+        [SNCAPIManager getUsersWithSearchQuery:self.searchBar.text withCompletionBlock:^(NSArray *users) {
+            [activityView stopAnimating];
+            self.navigationItem.rightBarButtonItem = nil;
+            self.users = users;
+            [self.userTableView reloadData];
+        } andErrorBlock:^(NSError *error) {
+            [activityView stopAnimating];
+            self.navigationItem.rightBarButtonItem = nil;
+        }];
+    }else{
+        [SNCAPIManager getSonicsWithSearchQuery:self.searchBar.text withCompletionBlock:^(NSArray *sonics) {
+            [activityView stopAnimating];
+            self.navigationItem.rightBarButtonItem = nil;
+            self.sonics = [[SonicArray alloc] init];
+            [self.sonics importSonicsWithArray:sonics];
+            [self.sonicsCollectionView reloadData];
+        } andErrorBlock:^(NSError *error) {
+            [activityView stopAnimating];
+            self.navigationItem.rightBarButtonItem = nil;
+        }];
+    }
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    SonicCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SonicCell" forIndexPath:indexPath];
+    [cell setUserInteractionEnabled:YES];
+    [cell setSonic:[self.sonics objectAtIndex:indexPath.row]];
+    return cell;
+}
+
+- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.sonics ? self.sonics.count : 0;
+}
+
+- (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    selectedSonic = [self.sonics objectAtIndex:indexPath.row];
+    [self performSegueWithIdentifier:SearchToSonicSegue sender:self];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -112,10 +233,28 @@
 {
     return 66.0;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    selectedUser = [self.users objectAtIndex:indexPath.row];
+    [self performSegueWithIdentifier:SearchToProfileSegue sender:self];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.destinationViewController class] == [SNCProfileViewController class]){
+        SNCProfileViewController* profile = segue.destinationViewController;
+        [profile setUser:selectedUser];
+    } else {
+        SNCSonicViewController* sonicViewController = segue.destinationViewController;
+        [sonicViewController setSonic:selectedSonic];
+    }
 }
 
 @end

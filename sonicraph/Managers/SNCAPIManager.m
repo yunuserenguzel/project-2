@@ -18,6 +18,7 @@ id asClass(id object, Class class)
 {
     return [object isKindOfClass:class] ? object : nil;
 }
+
 NSDate* dateFromServerString(NSString* dateString)
 {
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -28,6 +29,9 @@ NSDate* dateFromServerString(NSString* dateString)
 
 SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
 {
+    if(dictionary == nil || [dictionary isKindOfClass:[NSNull class]]){
+        return nil;
+    }
     SonicComment* sonicComment = [[SonicComment alloc] init];
     sonicComment.commentId = [NSString stringWithFormat:@"%@",[dictionary objectForKey:@"id"]];
     sonicComment.text = [dictionary objectForKey:@"text"];
@@ -39,7 +43,9 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
 
 User* userFromServerDictionary(NSDictionary* dictionary)
 {
-    
+    if(dictionary == nil || [dictionary isKindOfClass:[NSNull class]]) {
+        return nil;
+    }
     User* user = [[User alloc] init];
     user.userId = [dictionary objectForKey:@"id"];
     user.isBeingFollowed = [[dictionary objectForKey:@"is_being_followed"] boolValue];
@@ -47,7 +53,6 @@ User* userFromServerDictionary(NSDictionary* dictionary)
     user.fullName = asClass([dictionary objectForKey:@"fullname"], [NSString class]);
     user.profileImageUrl = asClass([dictionary objectForKey:@"profile_image"], [NSString class]);
     user.website = asClass([dictionary objectForKey:@"website"], [NSString class]);
-//    user.bio = asClass([dictionary objectForKey:@"bio"], [NSString class]);
     user.location = asClass([dictionary objectForKey:@"location"], [NSString class]);
     user.sonicCount = [asClass([dictionary objectForKey:@"sonic_count"], [NSNumber class]) integerValue];
     user.followerCount = [asClass([dictionary objectForKey:@"follower_count"], [NSNumber class]) integerValue];
@@ -58,6 +63,9 @@ User* userFromServerDictionary(NSDictionary* dictionary)
 
 Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
 {
+    if(sonicDict == nil || [sonicDict isKindOfClass:[NSNull class]]){
+        return nil;
+    }
     NSDictionary* userDict = [sonicDict objectForKey:@"user"];
     User* user = userFromServerDictionary(userDict);
     Sonic* sonic = [[Sonic alloc] init];
@@ -80,8 +88,33 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
     }
     return sonic;
 }
+Notification* notificationFromServerDictionary(NSDictionary* dict)
+{
+    Notification* notification = [[Notification alloc] init];
+    notification.notificationId = [NSString stringWithFormat:@"%@",[dict objectForKey:@"id"]];
+    notification.notificationType = notificationTypeFromString([dict objectForKey:@"notification_type"]);
+    notification.isRead = [asClass([dict objectForKey:@"is_read" ], [NSNumber class]) boolValue];
+    notification.createdAt = dateFromServerString([dict objectForKey:@"created_at"]);
+    notification.byUser = userFromServerDictionary([dict objectForKey:@"by_user"]);
+    notification.toSonic = sonicFromServerDictionary([dict objectForKey:@"to_sonic"]);
+    notification.sonicComment = sonicCommentFromServerDictionary([dict objectForKey:@"comment"]);
+    return notification;
+}
 
 @implementation SNCAPIManager
+
++ (MKNetworkOperation *)getNotificationsWithCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:@{} useToken:YES andOperation:@"noitifications/get_last_notifications" andCompletionBlock:^(NSDictionary *responseDictionary) {
+        NSMutableArray* notifications = [NSMutableArray new];
+        [[responseDictionary objectForKey:@"notifications"] enumerateObjectsUsingBlock:^(NSDictionary* dict, NSUInteger idx, BOOL *stop) {
+            [notifications addObject:notificationFromServerDictionary(dict)];
+       }];
+        if(completionBlock){
+            completionBlock(notifications);
+        }
+    } andErrorBlock:errorBlock];
+}
 
 + (MKNetworkOperation *)getSonicsWithSearchQuery:(NSString *)query withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
@@ -474,17 +507,14 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
 }
 
 
-+ (void) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
++ (MKNetworkOperation*) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 {
-    [[SNCAPIConnector sharedInstance]
+    return [[SNCAPIConnector sharedInstance]
      getRequestWithParams:@{@"token": token}
      useToken:NO
-     andOperation:@"check_is_valid_token"
+     andOperation:@"user/check_is_token_valid"
      andCompletionBlock:^(NSDictionary *responseDictionary) {
-         NSString* userId = [[responseDictionary objectForKey:@"user"] objectForKey:@"id"];
-         User* user = [[User alloc] init];
-         user.userId = userId;
-         user.username = [[responseDictionary objectForKey:@"user"] objectForKey:@"username"];
+         User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
          if(block != nil){
              block(user,nil);
          }

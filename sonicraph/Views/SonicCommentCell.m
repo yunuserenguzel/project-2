@@ -62,7 +62,7 @@
     self.commentTextLabel = [[UILabel alloc] initWithFrame:[self textLabelFrame]];
     [self.contentView addSubview:self.commentTextLabel];
     [self.commentTextLabel setTextColor:[UIColor darkGrayColor]];
-    self.commentTextLabel.font = [self.commentTextLabel.font fontWithSize:14.0];
+//    self.commentTextLabel.font = [self.commentTextLabel.font fontWithSize:14.0];
     self.commentTextLabel.numberOfLines = 0;
     
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];

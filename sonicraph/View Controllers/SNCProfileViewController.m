@@ -68,13 +68,13 @@
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    NSLog(@"profileHeaderViewFrame %@",CGRectCreateDictionaryRepresentation([self profileHeaderViewFrame]));
-    NSLog(@"scrollContentHeaderFrame %@",CGRectCreateDictionaryRepresentation([self scrollContentHeaderFrame]));
-    NSLog(@"sonicCollectionViewFrame %@",CGRectCreateDictionaryRepresentation([self sonicCollectionViewFrame]));
+//    NSLog(@"profileHeaderViewFrame %@",CGRectCreateDictionaryRepresentation([self profileHeaderViewFrame]));
+//    NSLog(@"scrollContentHeaderFrame %@",CGRectCreateDictionaryRepresentation([self scrollContentHeaderFrame]));
+//    NSLog(@"sonicCollectionViewFrame %@",CGRectCreateDictionaryRepresentation([self sonicCollectionViewFrame]));
     [self initializeSonicCollectionView];
     [self initializeSonicListTableView];
-    NSLog(@"contentInsetOfTableView top: %f", self.sonicListTableView.contentInset.top);
-    NSLog(@"contentInsetOfColleView top: %f", self.sonicCollectionView.contentInset.top);
+//    NSLog(@"contentInsetOfTableView top: %f", self.sonicListTableView.contentInset.top);
+//    NSLog(@"contentInsetOfColleView top: %f", self.sonicCollectionView.contentInset.top);
     
     self.profileHeaderView = [[ProfileHeaderView alloc] initWithFrame:[self profileHeaderViewFrame]];
     [self.view addSubview:self.profileHeaderView];

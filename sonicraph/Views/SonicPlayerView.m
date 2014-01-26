@@ -167,7 +167,8 @@
         self.audioPlayer = nil;
     }
     else {
-        self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:nil];
+        NSError* error;
+        self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:&error];
         [self.soundSlider setMaximumValue:self.audioPlayer.duration];
     }
     [self.soundSlider setValue:0.0];

@@ -47,8 +47,8 @@
     [self.contentView addSubview:self.profileImageView];
     
     UIGestureRecognizer* tapGesture;
-    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
-    [self.usernameLabel addGestureRecognizer:tapGesture];
+//    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
+//    [self.usernameLabel addGestureRecognizer:tapGesture];
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.profileImageView addGestureRecognizer:tapGesture];
 }
@@ -61,8 +61,13 @@
 - (void) setUser:(User *)user
 {
     _user = user;
-    if(user){
-        [self.usernameLabel setText:user.username];
+    [self configureViews];
+}
+
+- (void)configureViews
+{
+    if(self.user){
+        [self.usernameLabel setText:self.user.username];
         [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(image){
@@ -128,22 +133,41 @@
 - (void)setUser:(User *)user
 {
     [super setUser:user];
-    if(user.isBeingFollowed){
+}
+
+- (void) configureViews
+{
+    [super configureViews];
+    if(self.user.isBeingFollowed){
         [self.unfollowButton setHidden:NO];
         [self.followButton setHidden:YES];
     }else {
         [self.unfollowButton setHidden:YES];
         [self.followButton setHidden:NO];
     }
+    
 }
 
 - (void) buttonTapped:(UIButton*)button
 {
     if(button == self.followButton){
-        [self.delegate followUser:self.user];
+        self.user.isBeingFollowed = YES;
+        [SNCAPIManager followUser:self.user withCompletionBlock:^(BOOL successful) {
+            [self.delegate followUser:self.user];
+        } andErrorBlock:^(NSError *error) {
+            self.user.isBeingFollowed = NO;
+            [self configureViews];
+        }];
     } else if(self.unfollowButton){
-        [self.delegate unfollowUser:self.user];
+        self.user.isBeingFollowed = NO;
+        [SNCAPIManager unfollowUser:self.user withCompletionBlock:^(BOOL successful) {
+            [self.delegate unfollowUser:self.user];
+        } andErrorBlock:^(NSError *error) {
+            self.user.isBeingFollowed = YES;
+            [self configureViews];
+        }];
     }
+    [self configureViews];
 }
 
 

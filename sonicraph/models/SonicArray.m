@@ -35,7 +35,7 @@
             [cachedSonic updateWithSonic:sonic];
         } else {
             cachedSonic = sonic;
-            [self.sonics addObject:sonic];
+            [self.sonics addObject:cachedSonic];
         }
     }];
     [self sort];

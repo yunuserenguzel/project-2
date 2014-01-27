@@ -74,7 +74,7 @@
 
 - (UIImage*) cropForRect:(CGRect)rect
 {
-    UIGraphicsBeginImageContextWithOptions(rect.size,YES,2.0);
+    UIGraphicsBeginImageContextWithOptions(rect.size,YES,1.0);
     CGFloat x = -rect.origin.x;
     CGFloat y = -rect.origin.y;
     [self drawInRect:CGRectMake(x, y, self.size.width, self.size.height)];

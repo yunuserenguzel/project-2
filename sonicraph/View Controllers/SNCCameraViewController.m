@@ -12,6 +12,8 @@
 #import "Configurations.h"
 #import "SNCTabbarController.h"
 #import "SNCSoundSlider.h"
+#import "UIImage+Resize.h"
+
 
 #define SonicSoundMaxTime 30.0
 
@@ -109,7 +111,6 @@ typedef enum SonicRecordType {
     [self initializeCancelButton];
     self.recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.recordButton setImage:[UIImage imageNamed:@"Camera Button.png"] forState:UIControlStateNormal];
-//    [self.recordButton setTitle:@"Take" forState:UIControlStateNormal];
     [self.recordButton setFrame:[self recordButtonFrame]];
     [self.recordTypeSwitch setHidden:NO];
     [self.view addSubview:self.recordButton];
@@ -134,9 +135,7 @@ typedef enum SonicRecordType {
 
 - (void) previewSonic
 {
-    NSLog(@"preview Sonic");
     if(capturedImage != nil && capturedAudio != nil){
-        NSLog(@"will preview sonic");
         [self performSegueWithIdentifier:EditSonicSegue sender:self];
     }
 }
@@ -182,30 +181,21 @@ typedef enum SonicRecordType {
     [self.recordButton removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
     
     ImageBlock block = ^(UIImage *image) {
-        
-//        image = [image imageByScalingAndCroppingForSize:CGSizeMake(620.0, image.size.height/(image.size.width/620.0))];
-//        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-        
         [self performSelector:@selector(formatCapturedImage:) withObject:image afterDelay:0.0];
-        
-//        UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
         if(self.recordType == SonicRecordTypePhotoFirst){
             [self startAudioRecording];
         }
         if(self.recordType == SonicRecordTypeSoundFirst){
             [self stopAudioRecording];
         }
-        
     };
-    
     [self.mediaManager performSelector:@selector(takePictureWithCompletionBlock:) withObject:block afterDelay:0.5];
-    
-//    [self.mediaManager takePictureWithCompletionBlock:];
 }
 
 - (void) formatCapturedImage:(UIImage*)image
 {
-    image = [image imageByScalingAndCroppingForSize:CGSizeMake(310.0, image.size.height/(image.size.width/310.0))];
+    image = [image resizedImage:CGSizeMake(640.0, image.size.height/(image.size.width/640.0)) interpolationQuality:kCGInterpolationHigh];
+    
     CGFloat xScale = image.size.width / [self cameraViewFrame].size.width;
     CGFloat yScale = image.size.height / [self cameraViewFrame].size.height;
     CGFloat x = [self visibleRectFrame].origin.x * xScale;
@@ -214,9 +204,9 @@ typedef enum SonicRecordType {
     CGFloat h = [self visibleRectFrame].size.height * yScale;
     
     image = [image cropForRect:CGRectMake(x, y, w, h)];
-    capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 1.0)];
-//    UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
-//    NSLog(@"here");
+    
+    capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 0.33)];
+    
     if(self.recordType == SonicRecordTypeSoundFirst){
         [self previewSonic];
     }
@@ -234,7 +224,6 @@ typedef enum SonicRecordType {
 - (void) startAudioRecording
 {
     [self.mediaManager startAuidoRecording];
-    //    self.soundTimer = [[NSTimer alloc] initWithFireDate:[NSDate date] interval:0.01 target:self selector:@selector(updateSoundTimer:) userInfo:nil repeats:YES];
     self.soundTimerInitialFireDate = [NSDate date];
     self.soundTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSoundTimer:) userInfo:nil repeats:YES];
     if(self.recordType == SonicRecordTypeSoundFirst){

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SettingsTableCell.h"
 
-@interface SNCEditProfileViewController : UITableViewController
+@interface SNCEditProfileViewController : UITableViewController <SettingsTableCellProtocol>
 
 @end

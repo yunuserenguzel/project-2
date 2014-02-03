@@ -9,8 +9,6 @@
 #import "SNCEditProfileViewController.h"
 #import "SNCAPIManager.h"
 #import "AuthenticationManager.h"
-#import "SettingsTableCell.h"
-
 
 @interface SettingsField : NSObject 
 @property NSString* key;
@@ -34,6 +32,7 @@
 @interface SNCEditProfileViewController ()
 
 @property NSArray* fields;
+@property NSMutableDictionary* changedFields;
 @property User* user;
 @property UIActivityIndicatorView* activityIndicator;
 @end
@@ -117,6 +116,7 @@
     SettingsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     [cell setKey:settingsField.key];
     [cell setValue:settingsField.value];
+    [cell setDelegate:self];
     return cell;
 }
 
@@ -130,5 +130,16 @@
         return 44.0;
     }
 }
+
+- (void) valueChanged:(id)value forKey:(NSString *)key
+{
+    [self.changedFields setObject:value forKey:key];
+    for (SettingsField* field in self.fields) {
+        if([field.key isEqualToString:key]){
+            field.value = value;
+        }
+    }
+}
+
 
 @end

@@ -103,6 +103,8 @@ typedef enum SonicRecordType {
     [self.view setBackgroundColor:[UIColor blackColor]];
     self.cameraView = [[UIView alloc] initWithFrame:[self cameraViewFrame]];
     [self.view addSubview:self.cameraView];
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focusForTap:)];
+    [self.cameraView addGestureRecognizer:tapGesture];
     [[[NSThread alloc] initWithTarget:self selector:@selector(initializeMediaManager) object:nil] start];
     
     [self initializeMaskView];
@@ -116,6 +118,64 @@ typedef enum SonicRecordType {
     [self.view addSubview:self.recordButton];
     
 	// Do any additional setup after loading the view.
+}
+
+
+//        UIGraphicsBeginImageContext(CGSizeMake(60.0, 60.0));
+//        // This one does not:
+//        CGContextRef ctx = UIGraphicsGetCurrentContext();
+//        CGGradientRef gradient;
+//        CGColorSpaceRef colorspace;
+//        CGFloat locations[2] = { 0.0, 1.0};
+//        NSArray *colors = @[(id)[UIColor whiteColor].CGColor, (id)[UIColor blueColor].CGColor];
+//        colorspace = CGColorSpaceCreateDeviceRGB();
+//        gradient = CGGradientCreateWithColors(colorspace, (CFArrayRef)colors, locations);
+//        CGPoint startPoint, endPoint;
+//        CGFloat startRadius, endRadius;
+//        startPoint.x = 180;
+//        startPoint.y = 180;
+//        endPoint.x = 180;
+//        endPoint.y = 180;
+//        startRadius = 0;
+//        endRadius = 100;
+//        CGContextDrawRadialGradient (ctx, gradient, startPoint, startRadius, endPoint, endRadius, 0);
+//
+//        // Show the whole thing:
+//        imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//        UIGraphicsEndImageContext();
+
+- (void) focusForTap:(UITapGestureRecognizer*)tapGesture
+{
+    CGPoint point = [tapGesture locationInView:self.cameraView];
+    if (CGRectContainsPoint([self visibleRectFrame], point)) {
+        CGFloat size = 15.0;
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(point.x - size, point.y - size, size * 2, size * 2)];
+        imageView.alpha = 0.0;
+        [imageView setBackgroundColor:[UIColor whiteColor]];
+        [imageView.layer setCornerRadius:size];
+        [imageView.layer setShadowColor:[UIColor whiteColor].CGColor];
+        [imageView.layer setShadowOffset:CGSizeMake(0.0, 0.0)];
+        [imageView.layer setShadowRadius:size];
+        [imageView.layer setShadowOpacity:1.0];
+        [self.maskView addSubview:imageView];
+        
+        NSLog(@"start of focus");
+        CGPoint pointOfInterest = CGPointMake(point.y / [self cameraViewFrame].size.height, ([self cameraViewFrame].size.width-point.x) / [self cameraViewFrame].size.width ) ;
+        [self.mediaManager focusCameraToPoint:pointOfInterest withCompletionBlock:^{
+            NSLog(@"end of focus");
+        }];
+        [UIView animateWithDuration:0.2 animations:^{
+            imageView.alpha = 1.0;
+            imageView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.4 animations:^{
+                imageView.alpha = 0.0;
+                imageView.transform = CGAffineTransformMakeScale(1.2, 1.2);
+            } completion:^(BOOL finished) {
+                [imageView removeFromSuperview];
+            }];
+        }];
+    }
 }
 
 - (void) recordButtonPressed
@@ -351,7 +411,6 @@ typedef enum SonicRecordType {
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void) initializeMediaManager
@@ -364,7 +423,6 @@ typedef enum SonicRecordType {
 -(void)manager:(SonicraphMediaManager *)manager audioDataReady:(NSData *)data
 {
     capturedAudio = data;
-//    NSLog(@"%@",data);
     [self previewSonic];
 }
 
@@ -383,10 +441,8 @@ typedef enum SonicRecordType {
     CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
     CGContextFillRect(context, CGRectMake(0.0, 0.0, self.maskView.frame.size.width, self.maskView.frame.size.height));
     
-    //    CGRect inRectFrame = CGRectMake(7.0, 50.0, 306.0, 306.0);
     CGContextClearRect(context, [self visibleRectFrame]);
-//    CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 0.2);
-//    CGContextStrokeRect(context, [self visibleRectFrame]);
+
     
     UIImage *maskImage = UIGraphicsGetImageFromCurrentImageContext();
     

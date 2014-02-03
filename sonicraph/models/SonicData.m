@@ -42,11 +42,9 @@
 {
     NSData* imageData = UIImageJPEGRepresentation(self.image, 1.0);
     NSLog(@"imageSize w:%f h:%f",self.image.size.width,self.image.size.height);
-//    NSLog(@"")
     NSLog(@"imageData: %d",[imageData length]);
     NSString* imageDataString = [imageData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
     NSLog(@"imageDataString: %d",[[imageDataString dataUsingEncoding:NSUTF8StringEncoding] length]);
-//    imageData
     return @{ @"image": imageDataString, @"sound": [self.sound base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed] };
 }
 
@@ -79,10 +77,11 @@
 + (NSString*) filePathWithId:(NSString*)id
 {
     NSString* folderPath = [[SonicData documents] stringByAppendingPathComponent:@"sonics"];
-    [[NSFileManager defaultManager] createDirectoryAtPath:folderPath
-                              withIntermediateDirectories:NO
-                                               attributes:nil
-                                                    error:nil];
+    [[NSFileManager defaultManager]
+     createDirectoryAtPath:folderPath
+     withIntermediateDirectories:NO
+     attributes:nil
+     error:nil];
     NSString* filePath = [folderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.snc",id]];
     return filePath;
 }

@@ -22,7 +22,10 @@
 {
     AVCaptureSession* session;
     
+    
     AVCaptureStillImageOutput* stillImageOutput;
+    
+    AVCaptureDeviceInput* currentDeviceInput;
     AVCaptureDeviceInput* backCameraInput;
     AVCaptureDeviceInput* frontCameraInput;
     
@@ -121,14 +124,7 @@
              [session stopRunning];
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
              image = [UIImage imageWithData:imageData];
-//             image = [image imageByScalingAndCroppingForSize:CGSizeMake(612.0, 612.0)];
-             
-//             image = [UIImage imageWithData:UIImageJPEGRepresentation(image, 0.6)];
              completionBlock(image);
-             
-//             NSLog(@"w:%f, h:%f",image.size.width,image.size.height);
-//             NSLog(@"input file: %@ outputfile:%@",[self tempSoundFileUrl].path,[self tempConvertedSoundFileUrl].path);
-             
          }
      }];
     
@@ -137,8 +133,9 @@
 - (void)useFrontCamera
 {
     [session removeInput:backCameraInput];
+    backCameraInput = nil;
     AVCaptureDevice* device = [AVCaptureDevice deviceWithUniqueID:@"com.apple.avfoundation.avcapturedevice.built-in_video:1"];
-    frontCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
+    currentDeviceInput = frontCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
     if([session canAddInput:frontCameraInput]){
         [session addInput:frontCameraInput];
     }
@@ -147,16 +144,54 @@
 - (void)useMainCamera
 {
     [session removeInput:frontCameraInput];
+    frontCameraInput = nil;
     AVCaptureDevice* device = [AVCaptureDevice deviceWithUniqueID:@"com.apple.avfoundation.avcapturedevice.built-in_video:0"];
-    backCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
+    currentDeviceInput = backCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:nil];
     if ([session canAddInput:backCameraInput]) {
         [session addInput:backCameraInput];
     }
     else {
         // Handle the failure.
     }
-    
+}
 
+- (void)focusCameraToPoint:(CGPoint)point withCompletionBlock:(void (^)())completionBlock
+{
+    NSLog(@"focus point: %f, %f", point.x,point.y);
+    AVCaptureDevice* device = currentDeviceInput.device;
+    if(device){
+        NSError* error;
+        if([device lockForConfiguration:&error]){
+            if([device isFocusPointOfInterestSupported]){
+                [device setFocusPointOfInterest:point];
+            } else {
+                NSLog(@"device focus point of interest is not supported");
+            }
+            if([device isFocusModeSupported:AVCaptureFocusModeAutoFocus]){
+                [device setFocusMode:AVCaptureFocusModeAutoFocus];
+            } else {
+                NSLog(@"device auto focus mode is not supported");
+            }
+            if([device isExposurePointOfInterestSupported]){
+                [device setExposurePointOfInterest:point];
+            } else {
+            }
+            if([device isExposureModeSupported:AVCaptureExposureModeAutoExpose]){
+                [device setExposureMode:AVCaptureExposureModeAutoExpose];
+            } else if([device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]){
+                [device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+            } else {
+                NSLog(@"device auto exposure and contonous auto exposure are not supported");
+            }
+            [device unlockForConfiguration];
+        }
+        if(error){
+            NSLog(@"error for focus on camera : %@",error);
+        }
+    }
+    if(completionBlock){
+        completionBlock();
+    }
 }
 
 - (void) startCamera
@@ -191,18 +226,8 @@
     NSLog(@"SonicMediaManager: stopping auido record");
     if(self.audioRecorder.isRecording){
         [self.audioRecorder stop];
-//        mp3ConverterInterface = [[Mp3ConverterInterface alloc] init];
-//        [mp3ConverterInterface convertMp3FromFile:[self tempSoundFileUrl] toOutputName:TempConvertedSoundFileName andCompletionBlock:^{
-//            NSLog(@"SonicMediaManager: auido convert is done");
-//            NSData* soundData = [NSData dataWithContentsOfURL:[self tempConvertedSoundFileUrl]];
-//            NSLog(@"soundData: %d",soundData.length);
-//            [self.delegate manager:self audioDataReady:soundData];
-//        }];
         NSData* soundData = [NSData dataWithContentsOfURL:[self tempSoundFileUrl]];
         [self.delegate manager:self audioDataReady:soundData];
-
-//        AVURLAsset* asset = [[AVURLAsset alloc] initWithURL:[self tempSoundFileUrl] options:@{}];
-//        UIImageWriteToSavedPhotosAlbum([UIImage imageWithSoundAsset:asset], nil, nil, nil);
     }
     else {
         NSLog(@"Audio recorder is not recording!!!");

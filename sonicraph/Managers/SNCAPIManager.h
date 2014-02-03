@@ -18,6 +18,7 @@ User* userFromServerDictionary(NSDictionary* dictionary);
 SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary);
 Sonic* sonicFromServerDictionary(NSDictionary* sonicDict);
 Notification* notificationFromServerDictionary(NSDictionary* dict);
+
 @interface SNCAPIManager : NSObject
 
 + (MKNetworkOperation *) createSonic:(SonicData *)sonic
@@ -124,6 +125,8 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
 + (MKNetworkOperation*) getNotificationsWithCompletionBlock:(CompletionArrayBlock)completionBlock
                                               andErrorBlock:(ErrorBlock)errorBlock;
 
-
++ (MKNetworkOperation*) editProfileWithFields:(NSDictionary*) fields
+                          withCompletionBlock:(CompletionUserBlock)completionBlock
+                                andErrorBlock:(ErrorBlock)errorBlock;
 
 @end

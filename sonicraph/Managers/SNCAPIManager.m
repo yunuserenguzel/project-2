@@ -103,6 +103,11 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 
 @implementation SNCAPIManager
 
+ + (MKNetworkOperation *)editProfileWithFields:(NSDictionary *)fields withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    return nil;
+}
+
 + (MKNetworkOperation *)getNotificationsWithCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     return [[SNCAPIConnector sharedInstance] getRequestWithParams:@{} useToken:YES andOperation:@"noitifications/get_last_notifications" andCompletionBlock:^(NSDictionary *responseDictionary) {

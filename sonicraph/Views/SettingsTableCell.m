@@ -110,7 +110,7 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 - (void) textFieldValueChanged:(UITextField*)textField
 {
-    
+    [self.delegate valueChanged:self.value forKey:self.key];
 }
 
 

@@ -47,4 +47,6 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 - (void) useMainCamera;
 
+- (void) focusCameraToPoint:(CGPoint)point withCompletionBlock:(void(^)())completionBlock;
+
 @end

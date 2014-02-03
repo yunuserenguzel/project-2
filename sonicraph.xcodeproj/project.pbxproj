@@ -39,7 +39,6 @@
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AE86EE8B182C0DF300F74F1D /* SNCAPIConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */; };
-		AE86EE8C182C0DF300F74F1D /* UIImage+scaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE89182C0DF300F74F1D /* UIImage+scaleToSize.m */; };
 		AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */; };
 		AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE91182C0E0E00F74F1D /* SNCEditViewController.m */; };
 		AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE93182C0E0E00F74F1D /* SNCShareViewController.m */; };
@@ -132,6 +131,7 @@
 		AEDAAE321865939C001DD389 /* Paused@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE311865939C001DD389 /* Paused@2x.png */; };
 		AEDAAE3418663176001DD389 /* AdCommentBoxWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDAAE3318663176001DD389 /* AdCommentBoxWhite@2x.png */; };
 		AEDAAE371866D184001DD389 /* SNCSonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE361866D184001DD389 /* SNCSonicViewController.m */; };
+		AEDAEEA618A02FFC00D38D6C /* UIImage+scaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAEEA518A02FFC00D38D6C /* UIImage+scaleToSize.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -184,8 +184,6 @@
 		AE86EE85182C0DF300F74F1D /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		AE86EE86182C0DF300F74F1D /* SNCAPIConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCAPIConnector.h; sourceTree = "<group>"; };
 		AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCAPIConnector.m; sourceTree = "<group>"; };
-		AE86EE88182C0DF300F74F1D /* UIImage+scaleToSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+scaleToSize.h"; sourceTree = "<group>"; };
-		AE86EE89182C0DF300F74F1D /* UIImage+scaleToSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+scaleToSize.m"; sourceTree = "<group>"; };
 		AE86EE8E182C0E0E00F74F1D /* SNCCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCCameraViewController.h; sourceTree = "<group>"; };
 		AE86EE8F182C0E0E00F74F1D /* SNCCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCCameraViewController.m; sourceTree = "<group>"; };
 		AE86EE90182C0E0E00F74F1D /* SNCEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCEditViewController.h; sourceTree = "<group>"; };
@@ -335,6 +333,8 @@
 		AEDAAE3318663176001DD389 /* AdCommentBoxWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AdCommentBoxWhite@2x.png"; sourceTree = "<group>"; };
 		AEDAAE351866D184001DD389 /* SNCSonicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSonicViewController.h; sourceTree = "<group>"; };
 		AEDAAE361866D184001DD389 /* SNCSonicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSonicViewController.m; sourceTree = "<group>"; };
+		AEDAEEA418A02FFC00D38D6C /* UIImage+scaleToSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+scaleToSize.h"; sourceTree = "<group>"; };
+		AEDAEEA518A02FFC00D38D6C /* UIImage+scaleToSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+scaleToSize.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -496,6 +496,8 @@
 				AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */,
 				AE7E18FA18966334009A9B7F /* UIImage+Resize.h */,
 				AE7E18FB18966334009A9B7F /* UIImage+Resize.m */,
+				AEDAEEA418A02FFC00D38D6C /* UIImage+scaleToSize.h */,
+				AEDAEEA518A02FFC00D38D6C /* UIImage+scaleToSize.m */,
 				AEDAAE2218650B5B001DD389 /* NSDate+NVTimeAgo.h */,
 				AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */,
 				AE86EE9A182E741900F74F1D /* NSData+Base64.h */,
@@ -503,8 +505,6 @@
 				AE86EE83182C0DF300F74F1D /* JSONKit */,
 				AE86EE86182C0DF300F74F1D /* SNCAPIConnector.h */,
 				AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */,
-				AE86EE88182C0DF300F74F1D /* UIImage+scaleToSize.h */,
-				AE86EE89182C0DF300F74F1D /* UIImage+scaleToSize.m */,
 				AEDAAE04185DBD77001DD389 /* UIButton+StateProperties.h */,
 				AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */,
 				AEDAAE171863A015001DD389 /* UIImage+imageForSoundData.h */,
@@ -950,6 +950,7 @@
 			files = (
 				AE86EEE01837EA7E00F74F1D /* User.m in Sources */,
 				AED56EAA1801A35D000DF866 /* main.m in Sources */,
+				AEDAEEA618A02FFC00D38D6C /* UIImage+scaleToSize.m in Sources */,
 				AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */,
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
@@ -957,7 +958,6 @@
 				AE9ABCFB18799E71008FE96B /* SNCFollowerFollowingViewController.m in Sources */,
 				AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */,
 				AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */,
-				AE86EE8C182C0DF300F74F1D /* UIImage+scaleToSize.m in Sources */,
 				AE7E18F618959947009A9B7F /* SettingsTableCell.m in Sources */,
 				AE7E19011896641D009A9B7F /* UIImage+Alpha.m in Sources */,
 				AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */,

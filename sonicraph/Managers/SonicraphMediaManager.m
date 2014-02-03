@@ -193,6 +193,21 @@
         completionBlock();
     }
 }
+- (BOOL) setFlashMode:(AVCaptureFlashMode)flashMode
+{
+    AVCaptureDevice* device = currentDeviceInput.device;
+    if(device){
+        if([device isFlashAvailable]){
+            if([device isFlashModeSupported:flashMode]){
+                if([device lockForConfiguration:nil]){
+                    [device setFlashMode:flashMode];
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 
 - (void) startCamera
 {

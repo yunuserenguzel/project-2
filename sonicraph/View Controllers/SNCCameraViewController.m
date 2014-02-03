@@ -14,6 +14,26 @@
 #import "SNCSoundSlider.h"
 #import "UIImage+Resize.h"
 
+static inline double radians (double degrees) {return degrees * M_PI/180;}
+UIImage* rotate(UIImage* src, UIImageOrientation orientation)
+{
+    UIGraphicsBeginImageContext(src.size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextDrawImage(context, CGRectMake(0.0, 0.0, src.size.width, src.size.height), src.CGImage);
+    
+    if (orientation == UIImageOrientationRight) {
+        CGContextRotateCTM (context, radians(90));
+    } else if (orientation == UIImageOrientationLeft) {
+        CGContextRotateCTM (context, radians(-90));
+    } else if (orientation == UIImageOrientationDown) {
+        // NOTHING
+    } else if (orientation == UIImageOrientationUp) {
+        CGContextRotateCTM (context, radians(90));
+    }
+    UIGraphicsEndImageContext();
+    return UIGraphicsGetImageFromCurrentImageContext();
+}
 
 #define SonicSoundMaxTime 30.0
 
@@ -53,6 +73,8 @@ typedef enum SonicRecordType {
     UIImage* capturedImage;
     NSData* capturedAudio;
     BOOL isMainCamera;
+    AVCaptureFlashMode flashMode;
+    UIDeviceOrientation capturedImageOrientation;
 }
 
 -(CGRect) flashButtonFrame
@@ -117,7 +139,59 @@ typedef enum SonicRecordType {
     [self.recordTypeSwitch setHidden:NO];
     [self.view addSubview:self.recordButton];
     
-	// Do any additional setup after loading the view.
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(orientationChanged:)
+     name:UIDeviceOrientationDidChangeNotification
+     object:nil];
+}
+
+- (CGFloat) angleWithDeviceOrientation:(UIDeviceOrientation)deviceOrientation
+{
+    CGFloat angle;
+    switch (deviceOrientation)
+	{
+		case UIDeviceOrientationPortrait:
+			angle = 0.0f; break;
+		case UIDeviceOrientationPortraitUpsideDown:
+			angle =  M_PI; break;
+		case UIDeviceOrientationLandscapeLeft:
+			angle =  (M_PI/2.0f); break;
+		case UIDeviceOrientationLandscapeRight:
+			angle =  -(M_PI/2.0f); break;
+		default:
+			angle = 0.0f;
+	}
+    return angle;
+}
+
+- (void) orientationChanged:(NSNotification*)notification
+{
+    UIDevice* device = notification.object;
+    NSLog(@"%@",device);
+    CGFloat angle = [self angleWithDeviceOrientation:device.orientation];
+    switch (device.orientation)
+	{
+		case UIDeviceOrientationPortrait:
+			angle = 0.0f; break;
+		case UIDeviceOrientationPortraitUpsideDown:
+			angle =  M_PI; break;
+		case UIDeviceOrientationLandscapeLeft:
+			angle =  (M_PI/2.0f); break;
+		case UIDeviceOrientationLandscapeRight:
+			angle =  -(M_PI/2.0f); break;
+		default:
+			angle = 0.0f;
+	}
+    CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
+    [UIView animateWithDuration:0.3 animations:^{
+        self.recordButton.transform = transform;
+        self.cancelButton.transform = transform;
+        self.flashButton.transform = transform;
+        self.cameraTypeToggleButton.transform = transform;
+    }];
 }
 
 
@@ -235,11 +309,11 @@ typedef enum SonicRecordType {
 {
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.activityIndicator setTintAdjustmentMode:UIViewTintAdjustmentModeDimmed];
-    [self.recordButton addSubview:self.activityIndicator];
+    [self.maskView addSubview:self.activityIndicator];
     [self.activityIndicator setFrame:CGRectMake(0.0, 0.0, self.recordButton.frame.size.width, self.recordButton.frame.size.height)];
     [self.activityIndicator startAnimating];
     [self.recordButton removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
-    
+    capturedImageOrientation = [[UIDevice currentDevice] orientation];
     ImageBlock block = ^(UIImage *image) {
         [self performSelector:@selector(formatCapturedImage:) withObject:image afterDelay:0.0];
         if(self.recordType == SonicRecordTypePhotoFirst){
@@ -266,11 +340,130 @@ typedef enum SonicRecordType {
     image = [image cropForRect:CGRectMake(x, y, w, h)];
     
     capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 0.33)];
-    
+//    capturedImage = [self image:capturedImage rotate:UIImageOrientationUp];
+    if(capturedImageOrientation == UIDeviceOrientationLandscapeLeft){
+//        capturedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationLeft];
+        capturedImage = [self image:capturedImage rotate:UIImageOrientationLeft];
+    }
+    else if (capturedImageOrientation == UIDeviceOrientationLandscapeRight){
+//        capturedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation: UIImageOrientationRight];
+        capturedImage = [self image:capturedImage rotate:UIImageOrientationRight];
+    }
+    else if (capturedImageOrientation == UIDeviceOrientationPortraitUpsideDown){
+//        capturedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation: UIImageOrientationDown];
+        capturedImage = [self image:capturedImage rotate:UIImageOrientationDown];
+    }
     if(self.recordType == SonicRecordTypeSoundFirst){
         [self previewSonic];
     }
 }
+
+static CGRect swapWidthAndHeight(CGRect rect)
+{
+    CGFloat  swap = rect.size.width;
+    
+    rect.size.width  = rect.size.height;
+    rect.size.height = swap;
+    
+    return rect;
+}
+
+
+-(UIImage*)image:(UIImage*)image rotate:(UIImageOrientation)orient
+{
+    CGRect             bnds = CGRectZero;
+    UIImage*           copy = nil;
+    CGContextRef       ctxt = nil;
+    CGImageRef         imag = image.CGImage;
+    CGRect             rect = CGRectZero;
+    CGAffineTransform  tran = CGAffineTransformIdentity;
+    
+    rect.size.width  = CGImageGetWidth(imag);
+    rect.size.height = CGImageGetHeight(imag);
+    
+    bnds = rect;
+    
+    switch (orient)
+    {
+        case UIImageOrientationUp:
+            return image;
+            
+        case UIImageOrientationUpMirrored:
+            tran = CGAffineTransformMakeTranslation(rect.size.width, 0.0);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            break;
+            
+        case UIImageOrientationDown:
+            tran = CGAffineTransformMakeTranslation(rect.size.width,
+                                                    rect.size.height);
+            tran = CGAffineTransformRotate(tran, M_PI);
+            break;
+            
+        case UIImageOrientationDownMirrored:
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.height);
+            tran = CGAffineTransformScale(tran, 1.0, -1.0);
+            break;
+            
+        case UIImageOrientationLeft:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.width);
+            tran = CGAffineTransformRotate(tran, 3.0 * M_PI / 2.0);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeTranslation(rect.size.height,
+                                                    rect.size.width);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, 3.0 * M_PI / 2.0);
+            break;
+            
+        case UIImageOrientationRight:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeTranslation(rect.size.height, 0.0);
+            tran = CGAffineTransformRotate(tran, M_PI / 2.0);
+            break;
+            
+        case UIImageOrientationRightMirrored:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeScale(-1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, M_PI / 2.0);
+            break;
+            
+        default:
+            // orientation value supplied is invalid
+            assert(false);
+            return nil;
+    }
+    
+    UIGraphicsBeginImageContext(bnds.size);
+    ctxt = UIGraphicsGetCurrentContext();
+    
+    switch (orient)
+    {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            CGContextScaleCTM(ctxt, -1.0, 1.0);
+            CGContextTranslateCTM(ctxt, -rect.size.height, 0.0);
+            break;
+            
+        default:
+            CGContextScaleCTM(ctxt, 1.0, -1.0);
+            CGContextTranslateCTM(ctxt, 0.0, -rect.size.height);
+            break;
+    }
+    
+    CGContextConcatCTM(ctxt, tran);
+    CGContextDrawImage(UIGraphicsGetCurrentContext(), rect, imag);
+    
+    copy = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return copy;
+}
+
 
 - (void) audioRecordStartedForManager:(SonicraphMediaManager *)manager
 {
@@ -325,11 +518,11 @@ typedef enum SonicRecordType {
     
     self.flashButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.flashButton setTitle:@"Off" forState:UIControlStateNormal];
-
     [self.flashButton setImage:[UIImage imageNamed:@"Camera Flash.png"] forState:UIControlStateNormal];
-
     [self.flashButton setFrame:[self flashButtonFrame]];
+    [self.flashButton addTarget:self action:@selector(toggleFlash) forControlEvents:UIControlEventTouchUpInside];
     [self.cameraFeaturesBar addSubview:self.flashButton];
+    [self toggleFlash];
     
     self.recordTypeSwitch = [[UISegmentedControl alloc] initWithFrame:[self recordTypeSwitchFrame]];
     [self.cameraFeaturesBar addSubview:self.recordTypeSwitch];
@@ -356,6 +549,32 @@ typedef enum SonicRecordType {
         [self.mediaManager useMainCamera];
         isMainCamera = YES;
     }
+}
+
+- (void) toggleFlash
+{
+    AVCaptureFlashMode requestedFlashMode;
+    if (flashMode == AVCaptureFlashModeOff){
+        NSLog(@"requestedFlashMode is AvCaptureFlashModeAuto");
+        requestedFlashMode = AVCaptureFlashModeAuto;
+    }
+    else if (flashMode == AVCaptureFlashModeAuto){
+        NSLog(@"requestedFlashMode is AvCaptureFlashModeOn");
+        requestedFlashMode = AVCaptureFlashModeOn;
+    }
+    else {
+        NSLog(@"requestedFlashMode is AvCaptureFlashModeOff");
+        requestedFlashMode = AVCaptureFlashModeOff;
+    }
+    
+    if([self.mediaManager setFlashMode:requestedFlashMode]){
+        NSLog(@"requestedflashmode granted");
+        flashMode = requestedFlashMode;
+    } else {
+        NSLog(@"flash mode is not supported");
+    }
+    
+
 }
 
 - (void) recordTypeSwitchChanged
@@ -442,7 +661,6 @@ typedef enum SonicRecordType {
     CGContextFillRect(context, CGRectMake(0.0, 0.0, self.maskView.frame.size.width, self.maskView.frame.size.height));
     
     CGContextClearRect(context, [self visibleRectFrame]);
-
     
     UIImage *maskImage = UIGraphicsGetImageFromCurrentImageContext();
     

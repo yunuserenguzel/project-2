@@ -49,4 +49,6 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 - (void) focusCameraToPoint:(CGPoint)point withCompletionBlock:(void(^)())completionBlock;
 
+- (BOOL) setFlashMode:(AVCaptureFlashMode)flashMode;
+
 @end

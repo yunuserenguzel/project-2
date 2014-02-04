@@ -32,9 +32,9 @@
 		AE7E18F018955886009A9B7F /* UserGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7E18EF18955886009A9B7F /* UserGrey@2x.png */; };
 		AE7E18F618959947009A9B7F /* SettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18F518959947009A9B7F /* SettingsTableCell.m */; };
 		AE7E18F91895A1AF009A9B7F /* SNCEditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18F81895A1AF009A9B7F /* SNCEditProfileViewController.m */; };
-		AE7E18FC18966334009A9B7F /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FB18966334009A9B7F /* UIImage+Resize.m */; };
-		AE7E19011896641D009A9B7F /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */; };
-		AE7E19021896641D009A9B7F /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */; };
+		AE7E18FC18966334009A9B7F /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FB18966334009A9B7F /* UIImage+Resize.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		AE7E19011896641D009A9B7F /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		AE7E19021896641D009A9B7F /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* SonicData.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };

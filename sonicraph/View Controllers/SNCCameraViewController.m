@@ -172,19 +172,6 @@ typedef enum SonicRecordType {
     UIDevice* device = notification.object;
     NSLog(@"%@",device);
     CGFloat angle = [self angleWithDeviceOrientation:device.orientation];
-    switch (device.orientation)
-	{
-		case UIDeviceOrientationPortrait:
-			angle = 0.0f; break;
-		case UIDeviceOrientationPortraitUpsideDown:
-			angle =  M_PI; break;
-		case UIDeviceOrientationLandscapeLeft:
-			angle =  (M_PI/2.0f); break;
-		case UIDeviceOrientationLandscapeRight:
-			angle =  -(M_PI/2.0f); break;
-		default:
-			angle = 0.0f;
-	}
     CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
     [UIView animateWithDuration:0.3 animations:^{
         self.recordButton.transform = transform;

@@ -39,6 +39,19 @@
     [self.profileHeaderView.followButton setTitle:@"Edit Profile" forState:UIControlStateNormal];
     [self.profileHeaderView.followButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
     [self.profileHeaderView.followButton addTarget:self action:@selector(openEditProfile) forControlEvents:UIControlEventTouchUpInside];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(newSonicArrived:)
+     name:NotificationNewSonicCreated
+     object:nil];
+}
+
+- (void) newSonicArrived:(NSNotification*)notification
+{
+    [self.sonics addObject:notification.object];
+    [[self sonicCollectionView] reloadData];
+    [[self sonicListTableView] reloadData];
 }
 
 - (void) openEditProfile
@@ -58,7 +71,7 @@
 
 - (void)dealloc
 {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

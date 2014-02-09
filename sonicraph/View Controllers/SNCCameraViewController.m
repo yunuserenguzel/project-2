@@ -75,6 +75,9 @@ typedef enum SonicRecordType {
     BOOL isMainCamera;
     AVCaptureFlashMode flashMode;
     UIDeviceOrientation capturedImageOrientation;
+    
+    CLLocationManager* locationManager;
+    CLLocation *currentLocation;
 }
 
 -(CGRect) flashButtonFrame
@@ -139,13 +142,18 @@ typedef enum SonicRecordType {
     [self.recordTypeSwitch setHidden:NO];
     [self.view addSubview:self.recordButton];
     
-    
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(orientationChanged:)
      name:UIDeviceOrientationDidChangeNotification
      object:nil];
+    
+    locationManager = [[CLLocationManager alloc] init];
+	locationManager.delegate = self;
+	locationManager.distanceFilter = kCLDistanceFilterNone;
+	locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
 }
 
 - (CGFloat) angleWithDeviceOrientation:(UIDeviceOrientation)deviceOrientation
@@ -180,30 +188,6 @@ typedef enum SonicRecordType {
         self.cameraTypeToggleButton.transform = transform;
     }];
 }
-
-
-//        UIGraphicsBeginImageContext(CGSizeMake(60.0, 60.0));
-//        // This one does not:
-//        CGContextRef ctx = UIGraphicsGetCurrentContext();
-//        CGGradientRef gradient;
-//        CGColorSpaceRef colorspace;
-//        CGFloat locations[2] = { 0.0, 1.0};
-//        NSArray *colors = @[(id)[UIColor whiteColor].CGColor, (id)[UIColor blueColor].CGColor];
-//        colorspace = CGColorSpaceCreateDeviceRGB();
-//        gradient = CGGradientCreateWithColors(colorspace, (CFArrayRef)colors, locations);
-//        CGPoint startPoint, endPoint;
-//        CGFloat startRadius, endRadius;
-//        startPoint.x = 180;
-//        startPoint.y = 180;
-//        endPoint.x = 180;
-//        endPoint.y = 180;
-//        startRadius = 0;
-//        endRadius = 100;
-//        CGContextDrawRadialGradient (ctx, gradient, startPoint, startRadius, endPoint, endRadius, 0);
-//
-//        // Show the whole thing:
-//        imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-//        UIGraphicsEndImageContext();
 
 - (void) focusForTap:(UITapGestureRecognizer*)tapGesture
 {
@@ -283,6 +267,8 @@ typedef enum SonicRecordType {
     } else {
         [self.recordButton setImage:[UIImage imageNamed:@"Camera Button.png"] forState:UIControlStateNormal];
     }
+    
+    [locationManager startUpdatingLocation];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -290,6 +276,7 @@ typedef enum SonicRecordType {
     [self.navigationController setNavigationBarHidden:NO  animated:NO];
     [self.tabBarController.tabBar setHidden:NO];
     [self.soundTimer invalidate];
+    [locationManager stopUpdatingLocation];
 }
 
 - (void) takePicture
@@ -327,17 +314,13 @@ typedef enum SonicRecordType {
     image = [image cropForRect:CGRectMake(x, y, w, h)];
     
     capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 0.33)];
-//    capturedImage = [self image:capturedImage rotate:UIImageOrientationUp];
     if(capturedImageOrientation == UIDeviceOrientationLandscapeLeft){
-//        capturedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationLeft];
         capturedImage = [self image:capturedImage rotate:UIImageOrientationLeft];
     }
     else if (capturedImageOrientation == UIDeviceOrientationLandscapeRight){
-//        capturedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation: UIImageOrientationRight];
         capturedImage = [self image:capturedImage rotate:UIImageOrientationRight];
     }
     else if (capturedImageOrientation == UIDeviceOrientationPortraitUpsideDown){
-//        capturedImage = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation: UIImageOrientationDown];
         capturedImage = [self image:capturedImage rotate:UIImageOrientationDown];
     }
     if(self.recordType == SonicRecordTypeSoundFirst){
@@ -345,111 +328,6 @@ typedef enum SonicRecordType {
     }
 }
 
-static CGRect swapWidthAndHeight(CGRect rect)
-{
-    CGFloat  swap = rect.size.width;
-    
-    rect.size.width  = rect.size.height;
-    rect.size.height = swap;
-    
-    return rect;
-}
-
-
--(UIImage*)image:(UIImage*)image rotate:(UIImageOrientation)orient
-{
-    CGRect             bnds = CGRectZero;
-    UIImage*           copy = nil;
-    CGContextRef       ctxt = nil;
-    CGImageRef         imag = image.CGImage;
-    CGRect             rect = CGRectZero;
-    CGAffineTransform  tran = CGAffineTransformIdentity;
-    
-    rect.size.width  = CGImageGetWidth(imag);
-    rect.size.height = CGImageGetHeight(imag);
-    
-    bnds = rect;
-    
-    switch (orient)
-    {
-        case UIImageOrientationUp:
-            return image;
-            
-        case UIImageOrientationUpMirrored:
-            tran = CGAffineTransformMakeTranslation(rect.size.width, 0.0);
-            tran = CGAffineTransformScale(tran, -1.0, 1.0);
-            break;
-            
-        case UIImageOrientationDown:
-            tran = CGAffineTransformMakeTranslation(rect.size.width,
-                                                    rect.size.height);
-            tran = CGAffineTransformRotate(tran, M_PI);
-            break;
-            
-        case UIImageOrientationDownMirrored:
-            tran = CGAffineTransformMakeTranslation(0.0, rect.size.height);
-            tran = CGAffineTransformScale(tran, 1.0, -1.0);
-            break;
-            
-        case UIImageOrientationLeft:
-            bnds = swapWidthAndHeight(bnds);
-            tran = CGAffineTransformMakeTranslation(0.0, rect.size.width);
-            tran = CGAffineTransformRotate(tran, 3.0 * M_PI / 2.0);
-            break;
-            
-        case UIImageOrientationLeftMirrored:
-            bnds = swapWidthAndHeight(bnds);
-            tran = CGAffineTransformMakeTranslation(rect.size.height,
-                                                    rect.size.width);
-            tran = CGAffineTransformScale(tran, -1.0, 1.0);
-            tran = CGAffineTransformRotate(tran, 3.0 * M_PI / 2.0);
-            break;
-            
-        case UIImageOrientationRight:
-            bnds = swapWidthAndHeight(bnds);
-            tran = CGAffineTransformMakeTranslation(rect.size.height, 0.0);
-            tran = CGAffineTransformRotate(tran, M_PI / 2.0);
-            break;
-            
-        case UIImageOrientationRightMirrored:
-            bnds = swapWidthAndHeight(bnds);
-            tran = CGAffineTransformMakeScale(-1.0, 1.0);
-            tran = CGAffineTransformRotate(tran, M_PI / 2.0);
-            break;
-            
-        default:
-            // orientation value supplied is invalid
-            assert(false);
-            return nil;
-    }
-    
-    UIGraphicsBeginImageContext(bnds.size);
-    ctxt = UIGraphicsGetCurrentContext();
-    
-    switch (orient)
-    {
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            CGContextScaleCTM(ctxt, -1.0, 1.0);
-            CGContextTranslateCTM(ctxt, -rect.size.height, 0.0);
-            break;
-            
-        default:
-            CGContextScaleCTM(ctxt, 1.0, -1.0);
-            CGContextTranslateCTM(ctxt, 0.0, -rect.size.height);
-            break;
-    }
-    
-    CGContextConcatCTM(ctxt, tran);
-    CGContextDrawImage(UIGraphicsGetCurrentContext(), rect, imag);
-    
-    copy = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return copy;
-}
 
 
 - (void) audioRecordStartedForManager:(SonicraphMediaManager *)manager
@@ -661,6 +539,8 @@ static CGRect swapWidthAndHeight(CGRect rect)
     if([segue.destinationViewController isKindOfClass:[SNCEditViewController class]]){
         SonicData* sonic = [[SonicData alloc] initWithImage:capturedImage andSound:nil];
         [sonic setRawSound:capturedAudio];
+        sonic.latitude = currentLocation.coordinate.latitude;
+        sonic.longitude = currentLocation.coordinate.longitude;
         SNCEditViewController* previewController = segue.destinationViewController;
         [previewController setSonic:sonic];
         capturedAudio = nil;
@@ -669,4 +549,129 @@ static CGRect swapWidthAndHeight(CGRect rect)
     }
 }
 
+// Failed to get current location
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+	
+    UIAlertView *errorAlert = [[UIAlertView alloc]
+							   initWithTitle:@"Error" message:@"Failed to Get Your Location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    // Call alert
+	[errorAlert show];
+}
+
+// Got location and now update
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+	
+    currentLocation = newLocation;
+    
+	NSLog(@"%@", currentLocation);
+	
+}
+
+static CGRect swapWidthAndHeight(CGRect rect)
+{
+    CGFloat  swap = rect.size.width;
+    
+    rect.size.width  = rect.size.height;
+    rect.size.height = swap;
+    
+    return rect;
+}
+
+
+-(UIImage*)image:(UIImage*)image rotate:(UIImageOrientation)orient
+{
+    CGRect             bnds = CGRectZero;
+    UIImage*           copy = nil;
+    CGContextRef       ctxt = nil;
+    CGImageRef         imag = image.CGImage;
+    CGRect             rect = CGRectZero;
+    CGAffineTransform  tran = CGAffineTransformIdentity;
+    
+    rect.size.width  = CGImageGetWidth(imag);
+    rect.size.height = CGImageGetHeight(imag);
+    
+    bnds = rect;
+    
+    switch (orient)
+    {
+        case UIImageOrientationUp:
+            return image;
+            
+        case UIImageOrientationUpMirrored:
+            tran = CGAffineTransformMakeTranslation(rect.size.width, 0.0);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            break;
+            
+        case UIImageOrientationDown:
+            tran = CGAffineTransformMakeTranslation(rect.size.width,
+                                                    rect.size.height);
+            tran = CGAffineTransformRotate(tran, M_PI);
+            break;
+            
+        case UIImageOrientationDownMirrored:
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.height);
+            tran = CGAffineTransformScale(tran, 1.0, -1.0);
+            break;
+            
+        case UIImageOrientationLeft:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.width);
+            tran = CGAffineTransformRotate(tran, 3.0 * M_PI / 2.0);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeTranslation(rect.size.height,
+                                                    rect.size.width);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, 3.0 * M_PI / 2.0);
+            break;
+            
+        case UIImageOrientationRight:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeTranslation(rect.size.height, 0.0);
+            tran = CGAffineTransformRotate(tran, M_PI / 2.0);
+            break;
+            
+        case UIImageOrientationRightMirrored:
+            bnds = swapWidthAndHeight(bnds);
+            tran = CGAffineTransformMakeScale(-1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, M_PI / 2.0);
+            break;
+            
+        default:
+            // orientation value supplied is invalid
+            assert(false);
+            return nil;
+    }
+    
+    UIGraphicsBeginImageContext(bnds.size);
+    ctxt = UIGraphicsGetCurrentContext();
+    
+    switch (orient)
+    {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            CGContextScaleCTM(ctxt, -1.0, 1.0);
+            CGContextTranslateCTM(ctxt, -rect.size.height, 0.0);
+            break;
+            
+        default:
+            CGContextScaleCTM(ctxt, 1.0, -1.0);
+            CGContextTranslateCTM(ctxt, 0.0, -rect.size.height);
+            break;
+    }
+    
+    CGContextConcatCTM(ctxt, tran);
+    CGContextDrawImage(UIGraphicsGetCurrentContext(), rect, imag);
+    
+    copy = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return copy;
+}
 @end

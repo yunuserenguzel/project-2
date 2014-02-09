@@ -35,7 +35,7 @@ SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
     SonicComment* sonicComment = [[SonicComment alloc] init];
     sonicComment.commentId = [NSString stringWithFormat:@"%@",[dictionary objectForKey:@"id"]];
     sonicComment.text = [dictionary objectForKey:@"text"];
-    sonicComment.createdAt = dateFromServerString([dictionary objectForKey:@"created_at"]);
+    sonicComment.createdAt = dateFromServerString(asClass([dictionary objectForKey:@"created_at"], [NSString class]));
     sonicComment.user = userFromServerDictionary([dictionary objectForKey:@"user"]);
     return sonicComment;
 }
@@ -75,7 +75,7 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
     sonic.latitude = [asClass([sonicDict objectForKey:@"latitude"], [NSNumber class]) floatValue];
     sonic.longitude= [asClass([sonicDict objectForKey:@"longitude"],[NSNumber class]) floatValue];
     sonic.isPrivate = [asClass([sonicDict objectForKey:@"is_private" ], [NSNumber class]) boolValue];
-    sonic.creationDate = dateFromServerString([sonicDict objectForKey:@"created_at"]);
+    sonic.creationDate = dateFromServerString(asClass([sonicDict objectForKey:@"created_at"], [NSString class]));
     sonic.owner = user;
     sonic.likeCount = [asClass([sonicDict objectForKey:@"likes_count"], [NSNumber class]) integerValue];
     sonic.resonicCount = [asClass([sonicDict objectForKey:@"resonics_count"], [NSNumber class]) integerValue];
@@ -94,7 +94,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
     notification.notificationId = [NSString stringWithFormat:@"%@",[dict objectForKey:@"id"]];
     notification.notificationType = notificationTypeFromString([dict objectForKey:@"notification_type"]);
     notification.isRead = [asClass([dict objectForKey:@"is_read" ], [NSNumber class]) boolValue];
-    notification.createdAt = dateFromServerString([dict objectForKey:@"created_at"]);
+    notification.createdAt = dateFromServerString(asClass([dict objectForKey:@"created_at"], [NSString class]));
     notification.byUser = userFromServerDictionary([dict objectForKey:@"by_user"]);
     notification.toSonic = sonicFromServerDictionary([dict objectForKey:@"to_sonic"]);
     notification.sonicComment = sonicCommentFromServerDictionary([dict objectForKey:@"comment"]);
@@ -287,12 +287,12 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 {
     NSDictionary* params = @{@"sonic": sonic.sonicId};
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicDeleted object:sonic];
     return [[SNCAPIConnector sharedInstance]
             getRequestWithParams:params
             useToken:YES
             andOperation:@"sonic/delete_sonic"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationSonicDeleted object:sonic];
                 if(completionBlock){
                     completionBlock(YES);
                 }
@@ -351,6 +351,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                  if(completionBlock){
                      completionBlock(sonic);
                  }
+                 
              } andErrorBlock:errorBlock];
 }
 +(MKNetworkOperation *)createSonic:(SonicData *)sonic withTags:(NSString *)tags withCompletionBlock:(CompletionSonicBlock)completionBlock
@@ -362,7 +363,9 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
     
     NSString* operation = @"sonic/create_sonic";
     return [[SNCAPIConnector sharedInstance]
-            uploadFileRequestWithParams:@{@"tags":tags, @"latitude":[NSNumber numberWithFloat:sonic.latitude], @"longitude":[NSNumber numberWithFloat:sonic.longitude]}
+            uploadFileRequestWithParams:@{@"tags":tags,
+                                          @"latitude":[NSNumber numberWithFloat:sonic.latitude],
+                                          @"longitude":[NSNumber numberWithFloat:sonic.longitude]}
             useToken:YES
             andFiles:@[@{@"file":tempFile,@"key":@"sonic_data"}]
             andOperation:operation

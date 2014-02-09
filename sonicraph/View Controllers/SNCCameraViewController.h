@@ -11,8 +11,9 @@
 #import "SonicraphMediaManager.h"
 #import "TypeDefs.h"
 #import "SNCAppDelegate.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface SNCCameraViewController : UIViewController <SonicraphMediaProtocol>
+@interface SNCCameraViewController : UIViewController <SonicraphMediaProtocol,CLLocationManagerDelegate>
 
 @property SonicraphMediaManager* mediaManager;
 

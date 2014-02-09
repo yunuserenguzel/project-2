@@ -7,6 +7,7 @@
 //
 
 #import "SonicArray.h"
+#import "TypeDefs.h"
 
 @interface SonicArray ()
 
@@ -42,8 +43,6 @@
 
 }
 
-
-
 - (Sonic*) getSonicWithId:(NSString*)sonicId
 {
     for (Sonic* sonic in self.sonics) {
@@ -52,6 +51,17 @@
         }
     }
     return nil;
+}
+
+- (BOOL) deleteSonicWithId:(NSString*)sonicId
+{
+    for (Sonic* sonic in self.sonics) {
+        if ([[sonic sonicId] isEqualToString:sonicId]) {
+            [self.sonics removeObject:sonic];
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (Sonic *)objectAtIndex:(NSInteger)index

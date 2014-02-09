@@ -55,7 +55,7 @@
     
     // < 1 minute = "Just now"
     if(secondsSince < MINUTE)
-        return @"Just now";
+        return @"Now";
     
     
     // < 1 hour = "x minutes ago"
@@ -191,9 +191,9 @@
     
     //Handle Plural
     if(minutesSince == 1)
-        return @"1 minute ago";
+        return @"1 minute";
     else
-        return [NSString stringWithFormat:@"%d minutes ago", minutesSince];
+        return [NSString stringWithFormat:@"%d minutes", minutesSince];
 }
 
 
@@ -205,9 +205,9 @@
     
     //Handle Plural
     if(hoursSince == 1)
-        return @"1 hour ago";
+        return @"1 hour";
     else
-        return [NSString stringWithFormat:@"%d hours ago", hoursSince];
+        return [NSString stringWithFormat:@"%d hours", hoursSince];
 }
 
 
@@ -219,7 +219,8 @@
     
     //Format
     [dateFormatter setDateFormat:@"h:mm a"];
-    return [NSString stringWithFormat:@"Yesterday at %@", [dateFormatter stringFromDate:self]];
+//    return [NSString stringWithFormat:@"Yesterday", [dateFormatter stringFromDate:self]];
+    return @"Yesterday";
 }
 
 
@@ -230,7 +231,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 
     //Format
-    [dateFormatter setDateFormat:@"EEEE 'at' h:mm a"];
+    [dateFormatter setDateFormat:@"EEEE"];
     return [dateFormatter stringFromDate:self];
 }
 
@@ -242,7 +243,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     //Format
-    [dateFormatter setDateFormat:@"MMMM d 'at' h:mm a"];
+    [dateFormatter setDateFormat:@"MMMM d"];
     return [dateFormatter stringFromDate:self];
 }
 
@@ -254,7 +255,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     //Format
-    [dateFormatter setDateFormat:@"MMMM d"];
+    [dateFormatter setDateFormat:@"MMMM"];
     return [dateFormatter stringFromDate:self];
 }
 
@@ -266,7 +267,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     //Format
-    [dateFormatter setDateFormat:@"LLLL d, yyyy"];
+    [dateFormatter setDateFormat:@"LLLL"];
     return [dateFormatter stringFromDate:self];
 }
 

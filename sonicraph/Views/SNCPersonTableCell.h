@@ -11,6 +11,7 @@
 #import "TypeDefs.h"
 
 #define SNCPersonTableCellIdentifier @"SNCPersonTableCellIdentifier"
+
 @class SNCPersonTableCell;
 @class Sonic;
 @protocol SNCPersonFollowableTableCellProtocol
@@ -27,7 +28,11 @@
 
 @property UILabel* usernameLabel;
 @property UIImageView* profileImageView;
+@property UILabel* fullnameLabel;
+@property UILabel* locationLabel;
+
 @property id<OpenProfileProtocol> delegate;
+
 - (void) initViews;
 - (void) configureViews;
 

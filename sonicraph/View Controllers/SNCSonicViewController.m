@@ -15,8 +15,33 @@
 #import "UIButton+StateProperties.h"
 #import "SonicCommentCell.h"
 #import "SNCPersonTableCell.h"
+#import "NSDate+NVTimeAgo.h"
+#import "AuthenticationManager.h"
 
 #define CellIdentifierSonicComment @"CellIdentifierSonicComment"
+
+typedef void (^AnimationFrame)(CGFloat ratio);
+void animateWithFrameRecursive(NSDate* startTime, CGFloat duration, AnimationFrame frame){
+    NSDate* currentTime = [NSDate date];
+    CGFloat ratio = 0.0;
+    CGFloat interval = [currentTime timeIntervalSinceDate:startTime];
+    if( duration > interval ){
+        ratio = interval / duration;
+    } else if (duration <= interval){
+        ratio = 1.0;
+    }
+    frame(ratio);
+    if (ratio < 1.0){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            animateWithFrameRecursive(startTime, duration, frame);
+        });
+    }
+}
+void animateWithFrame(CGFloat duration,AnimationFrame frame){
+    NSDate* startTime = [NSDate date];
+    animateWithFrameRecursive(startTime, duration, frame);
+}
+
 
 @implementation SNCSonicViewController
 {
@@ -43,7 +68,7 @@
 }
 - (CGRect) headerViewFrame
 {
-    return CGRectMake(0.0, self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height, 320.0, HeaderViewMaxHeight);
+    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height, 320.0, HeaderViewMaxHeight);
 }
 - (CGRect) tabActionBarContentFrame
 {
@@ -62,7 +87,7 @@
 
 - (CGRect) commentFieldFrame
 {
-    return CGRectMake(0.0, 0.0, 320.0, 44.0);
+    return CGRectMake(10.0, 7.0, 300.0, 30.0);
 }
 
 - (CGRect) commentSubmitButtonFrame
@@ -70,55 +95,14 @@
     return CGRectMake(260.0, 0.0, 60.0, 44.0);
 }
 
-- (NSArray*) currentContent
-{
-    switch (currentContentType) {
-        case ContentTypeLikes:
-            return self.likesContent;
-        case ContentTypeComments:
-            return self.commentsContent;
-        case ContentTypeResonics:
-            return self.resonicsContent;
-        default:
-            return nil;
-    }
-}
 
-- (void) setCurrentContentType:(ContentType)contentType
-{
-    currentContentType = contentType;
-    for (UIView* subview in self.tabActionBarView.subviews) {
-        [subview removeFromSuperview];
-    }
-    switch (currentContentType) {
-        case ContentTypeComments:
-            [self.navigationItem setTitle:CommentsText];
-            [self.tabActionBarView addSubview:self.writeCommentView];
-            break;
-        case ContentTypeLikes:
-            [self.navigationItem setTitle:LikesText];
-            [self.tabActionBarView addSubview:self.likeButton];
-            break;
-        case ContentTypeResonics:
-            [self.navigationItem setTitle:ResonicsText];
-            [self.tabActionBarView addSubview:self.resonicButton];
-            break;
-        default:
-            [self.navigationItem setTitle:@""];
-            break;
-    }
-    [self.tableView reloadData];
-    
-}
 
 - (void) commentDeletedNotification:(NSNotification*)notification
 {
     SonicComment* comment = notification.object;
     if([comment isKindOfClass:[SonicComment class]]){
-        NSMutableArray* comments = self.commentsContent.mutableCopy;
-        [comments removeObject:comment];
-        self.commentsContent = [NSArray arrayWithArray:comments];
-        [self.tableView reloadData];
+        [self.commentsContent removeObject:comment];
+        [self reloadData];
     }
 }
 
@@ -126,9 +110,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.commentsContent = @[];
-    self.likesContent = @[];
-    self.resonicsContent = @[];
+    self.commentsContent = [NSMutableArray new];
+    self.likesContent = [NSMutableArray new];
+    self.resonicsContent = [NSMutableArray new];
     [self initTableView];
     
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MoreWhite.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openActionsMenu)]];
@@ -163,17 +147,17 @@
 - (void) initTableView
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+//    [self.tableView setFrame:self.view.frame];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView registerClass:[SonicCommentCell class] forCellReuseIdentifier:CellIdentifierSonicComment];
     [self.tableView registerClass:[SNCPersonTableCell class] forCellReuseIdentifier:SNCPersonTableCellIdentifier];
-    [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, HeaderViewMaxHeight * 2.0, 0.0)];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, 44.0, 0.0)];
     [self.tableView setShowsVerticalScrollIndicator:NO];
     [self.tableView setShowsHorizontalScrollIndicator:NO];
-    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 64.0, 0.0, 0.0)];
+    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
     [self.tableView setTableFooterView:[UIView new]];
-    
-    //    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self setTableViewContentSize];
     [self.view addSubview:self.tableView];
     
 }
@@ -182,13 +166,20 @@
 {
     self.tabActionBarView = [[UIView alloc] initWithFrame:[self tabActionBarViewMaxFrame]];
     [self.view addSubview:self.tabActionBarView];
+    self.tabActionBarView.backgroundColor = rgb(235, 235, 235);
     
     self.writeCommentView = [[UIView alloc] initWithFrame:[self tabActionBarContentFrame]];
-    [self.writeCommentView setBackgroundColor:[UIColor whiteColor]];
+    [self.writeCommentView.layer setCornerRadius:5.0];
     
     self.commentField = [[UITextField alloc] initWithFrame:[self commentFieldFrame]];
-    [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 44.0)]];
-    [self.commentField setPlaceholder:@"Write comment"];
+    [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)]];
+    [self.commentField setLeftViewMode:UITextFieldViewModeAlways];
+    [self.commentField setPlaceholder:@"Say something nice.."];
+    [self.commentField setFont:[self.commentField.font fontWithSize:14.0]];
+    [self.commentField setBackgroundColor:[UIColor whiteColor]];
+    [self.commentField.layer setCornerRadius:5.0];
+    [self.commentField.layer setBorderWidth:1.0];
+    [self.commentField.layer setBorderColor:self.tabActionBarView.backgroundColor.CGColor];
     [self.writeCommentView addSubview:self.commentField];
     
     self.commentSubmitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -199,23 +190,15 @@
     [self.writeCommentView addSubview:self.commentSubmitButton];
     
     self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.likeButton setTitle:@"Like" forState:UIControlStateNormal];
-    [self.likeButton setImage:[UIImage imageNamed:@"HeartPink.png"] forState:UIControlStateNormal];
+    self.likeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     
     self.resonicButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.resonicButton setTitle:@"Resonic" forState:UIControlStateNormal];
+//    [self.resonicButton setTitle:@"Resonic" forState:UIControlStateNormal];
     [self.resonicButton setImage:[UIImage imageNamed:@"ReSonicPink.png"] forState:UIControlStateNormal];
     [@[self.likeButton, self.resonicButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
         [button setFrame:[self tabActionBarContentFrame]];
-        [button setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 40.0)];
-        button.titleLabel.font = [button.titleLabel.font fontWithSize:18.0];
-        [button setBackgroundImageWithColor:NavigationBarBlueColor forState:UIControlStateNormal];
-    }];
-    
-    [@[self.commentField,self.likeButton,self.resonicButton] enumerateObjectsUsingBlock:^(UIView* view, NSUInteger idx, BOOL *stop) {
-        [view.layer setBorderColor:NavigationBarBlueColor.CGColor];
-        [view.layer setBorderWidth:1.0];
-        [view.layer setCornerRadius:5.0];
+//        [button setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 40.0)];
+        [button setBackgroundImageWithColor:self.tabActionBarView.backgroundColor forState:UIControlStateNormal];
     }];
 
 }
@@ -230,7 +213,8 @@
     [self.headerView setFrame:[self headerViewFrame]];
     [self.tableView.tableHeaderView addSubview:self.headerView];
     
-    self.headerView.segmentedBar.delegate = self;
+//    self.headerView.segmentedBar.delegate = self;
+    [self.headerView.segmentedBar addTarget:self action:@selector(segmentedBarChanged) forControlEvents:UIControlEventValueChanged];
     [self.headerView addTargetForTapToTop:self action:@selector(scrollToTop)];
 
     UITapGestureRecognizer* tapGesture;
@@ -271,7 +255,7 @@
     self.initiationType = initiationType;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
     static CGFloat navigationHeight = -1.0;
     if(navigationHeight == -1.0){
@@ -281,7 +265,7 @@
     CGFloat ratio = [self extractRatioFromTopOffset:scrollView.contentOffset.y  andHeight:&height];
     ratio = ratio > 0.0 ? ratio : 0.0;
     [self.headerView reorganizeForRatio:ratio];
-    if(height <= HeaderViewMinHeight){
+    if (ratio <= 0){
         if (self.headerView.superview != self.view){
             [self.view addSubview:self.headerView];
         }
@@ -303,7 +287,65 @@
     [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self tabActionBarViewMinFrame], ratio)];
 
     [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio > 1.0 ? 1.0 : ratio)];
+
 }
+
+
+//
+//- (void) setContentSize
+//{
+//    CGFloat height = HeaderViewMaxHeight + self.tableView.frame.size.height - 44.0;
+//    if(self.tableView.contentSize.height < height){
+//        self.tableView.contentSize = CGSizeMake(self.tableView.contentSize.width, height );
+//    }
+//}
+
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    [self setContentSize];
+//    static CGFloat navigationHeight = -1.0;
+//    if(navigationHeight == -1.0){
+//        navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+//    }
+//    CGFloat height;
+//    CGFloat ratio = [self extractRatioFromTopOffset:scrollView.contentOffset.y  andHeight:&height];
+//    ratio = ratio > 0.0 ? ratio : 0.0;
+//    [self.headerView reorganizeForRatio:ratio];
+//    NSLog(@"height: %f",height);
+//    if (height < HeaderViewMinHeight - 66.0){
+//        CGFloat translateAmount = HeaderViewMinHeight - 66.0 - height;
+//        translateAmount = translateAmount > 56.0 ? 56.0 : translateAmount;
+//        if (self.headerView.superview != self.view){
+//            [self.view addSubview:self.headerView];
+//        }
+//        CGRect frame = [self headerViewFrame];
+//        frame.origin.y = navigationHeight + HeaderViewMinHeight - HeaderViewMaxHeight - translateAmount;
+//        [self.headerView setFrame:frame];
+//    }
+//    else if(height <= HeaderViewMinHeight){
+//        if (self.headerView.superview != self.view){
+//            [self.view addSubview:self.headerView];
+//        }
+//        CGRect frame = [self headerViewFrame];
+//        frame.origin.y = navigationHeight + HeaderViewMinHeight - HeaderViewMaxHeight;
+//        [self.headerView setFrame:frame];
+//    }
+//    else {
+//        if(self.headerView.superview != self.tableView.tableHeaderView){
+//            [self.tableView.tableHeaderView addSubview:self.headerView];
+//        }
+//        [self.headerView setFrame:[self headerViewFrame]];
+//    }
+//    if (ratio < 0.3){
+//        [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:1.0 - (ratio/0.3)*1.0]];
+//    } else {
+//        [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:0.0]];
+//    }
+//    
+//    [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self tabActionBarViewMinFrame], ratio)];
+//
+//    [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio > 1.0 ? 1.0 : ratio)];
+//}
 
 - (CGFloat) extractRatioFromTopOffset:(CGFloat)topOffset andHeight:(inout CGFloat*)height
 {
@@ -314,33 +356,42 @@
     return (tempHeight-HeaderViewMinHeight) / (HeaderViewMaxHeight - HeaderViewMinHeight);
 }
 
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [self calculateAndAnimateToContentOffset];
-}
-
-- (void) calculateAndAnimateToContentOffset
-{
-    CGFloat height;
-    CGFloat ratio = [self extractRatioFromTopOffset:self.tableView.contentOffset.y andHeight:&height];
-    if(ratio > 0.0 && ratio < 1.0){
-        CGFloat velocityY = [self.tableView.panGestureRecognizer velocityInView:self.tableView].y;
-        if(velocityY > 0.0){
-            [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
-        } else {
-            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight) animated:YES];
-        }
-    }
-}
-
-- (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    if (velocity.y != 0.0){
-        return;
-    }
-    [self calculateAndAnimateToContentOffset];
-
-}
+//-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+//{
+//    [self calculateAndAnimateToContentOffset];
+//}
+//
+//- (void) calculateAndAnimateToContentOffset
+//{
+//    CGFloat height;
+//    CGFloat ratio = [self extractRatioFromTopOffset:self.tableView.contentOffset.y andHeight:&height];
+//    
+//    if(ratio > 0.0 && ratio < 1.0){
+//        CGFloat startY = self.tableView.contentOffset.y;
+//        CGFloat endY;
+//        CGFloat velocityY = [self.tableView.panGestureRecognizer velocityInView:self.tableView].y;
+//        if(velocityY > 0.0){
+//            endY = 0.0;
+//        } else {
+//            endY = HeaderViewMaxHeight - HeaderViewMinHeight;
+//        }
+//        [self.tableView setContentOffset:self.tableView.contentOffset];
+//        animateWithFrame(0.3, ^(CGFloat ratio) {
+//            [self.tableView setContentOffset:CGPointMake(0.0, startY - (startY - endY) * ratio)];
+//        });
+//    }
+//}
+//
+//- (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+////    if (velocity.y != 0.0){
+////        return;
+////    }
+//    [self calculateAndAnimateToContentOffset];
+////    if (scrollView.contentOffset.y < HeaderViewMaxHeight - HeaderViewMinHeight) {
+////        *targetContentOffset = CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight);
+////    }
+//}
 
 - (void) configureViews
 {
@@ -354,31 +405,42 @@
     if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite || self.initiationType == SonicViewControllerInitiationTypeCommentRead){
         [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeComments];
-        [self.headerView.segmentedBar setSelectedIndex:1];
+        [self.headerView.segmentedBar setSelectedSegmentIndex:1];
     } else if(self.initiationType == SonicViewControllerInitiationTypeLikeRead){
         [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeLikes];
-        [self.headerView.segmentedBar setSelectedIndex:0];
+        [self.headerView.segmentedBar setSelectedSegmentIndex:0];
     } else if(self.initiationType == SonicViewControllerInitiationTypeResonicRead){
         [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeResonics];
-        [self.headerView.segmentedBar setSelectedIndex:2];
+        [self.headerView.segmentedBar setSelectedSegmentIndex:2];
+    }
+    
+    if (self.sonic.isLikedByMe){
+        [self setLikeButtonSelected];
+    } else {
+        [self setLikeButtonUnselected];
     }
     
     [self refreshContent];
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
-    self.headerView.usernameLabel.text = self.sonic.owner.username;
+    self.headerView.usernameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.username] ;
+    self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
+    self.headerView.createdAtLabel.text = [self.sonic.creationDate formattedAsTimeAgo];
     [self.headerView.profileImageView setImage:SonicPlaceholderImage];
-    [SNCAPIManager getImage:[NSURL URLWithString:self.sonic.owner.profileImageUrl] withCompletionBlock:^(id object) {
-        self.headerView.profileImageView.image = (UIImage*) object;
+    [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.headerView.profileImageView.image = (UIImage*) object;
+        });
     }];
-    [self.headerView.likesBarItem setSubtitle:[NSString stringWithFormat:@"%d",self.sonic.likeCount]];
-    [self.headerView.commentsBarItem setSubtitle:[NSString stringWithFormat:@"%d",self.sonic.commentCount]];
-    [self.headerView.resonicsBarItem setSubtitle:[NSString stringWithFormat:@"%d",self.sonic.resonicCount]];
+//    [self.headerView.segmentedBar setTitle:[NSString stringWithFormat:@"Likes (%d)",self.sonic.likeCount] forSegmentAtIndex:0];
+//    [self.headerView.segmentedBar setTitle:[NSString stringWithFormat:@"Comments (%d)",self.sonic.commentCount] forSegmentAtIndex:1];
+//    [self.headerView.segmentedBar setTitle:[NSString stringWithFormat:@"Resonics (%d)",self.sonic.resonicCount] forSegmentAtIndex:2];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self setTableViewContentSize];
     if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
         [self.commentField becomeFirstResponder];
         self.initiationType = SonicViewControllerInitiationTypeNone;
@@ -397,12 +459,72 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Content methods
+
+- (NSArray*) currentContent
+{
+    switch (currentContentType) {
+        case ContentTypeLikes:
+            return self.likesContent;
+        case ContentTypeComments:
+            return self.commentsContent;
+        case ContentTypeResonics:
+            return self.resonicsContent;
+        default:
+            return nil;
+    }
+}
+
+- (void) setCurrentContentType:(ContentType)contentType
+{
+    currentContentType = contentType;
+    for (UIView* subview in self.tabActionBarView.subviews) {
+        [subview removeFromSuperview];
+    }
+    switch (currentContentType) {
+        case ContentTypeComments:
+            [self.tabActionBarView addSubview:self.writeCommentView];
+            break;
+        case ContentTypeLikes:
+            [self.tabActionBarView addSubview:self.likeButton];
+            break;
+        case ContentTypeResonics:
+            [self.tabActionBarView addSubview:self.resonicButton];
+            break;
+        default:
+            [self.navigationItem setTitle:@""];
+            break;
+    }
+    [self refreshNavigationItemText];
+    [self reloadData];
+}
+
+- (void) refreshNavigationItemText
+{
+    switch (currentContentType) {
+        case ContentTypeComments:
+            [self.navigationItem setTitle:[CommentsText stringByAppendingString:[NSString stringWithFormat:@" (%d)",self.sonic.commentCount]]];
+            break;
+        case ContentTypeLikes:
+            [self.navigationItem setTitle:[LikesText stringByAppendingString:[NSString stringWithFormat:@" (%d)",self.sonic.likeCount]]];
+            break;
+        case ContentTypeResonics:
+            [self.navigationItem setTitle:[ResonicsText stringByAppendingString:[NSString stringWithFormat:@" (%d)",self.sonic.resonicCount]]];
+            break;
+        default:
+            [self.navigationItem setTitle:@"Sonic"];
+            break;
+    }
+}
 - (void) refreshContent
 {
+    [self reloadData];
+    [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
     if(currentContentType == ContentTypeLikes){
         [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
-            self.likesContent = users;
-            [self.tableView reloadData];
+            self.likesContent = [users mutableCopy];
+            [self reloadData];
+            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
             
         } andErrorBlock:^(NSError *error) {
             
@@ -410,24 +532,125 @@
     }
     else if(currentContentType == ContentTypeComments){
         [SNCAPIManager getCommentsOfSonic:self.sonic withCompletionBlock:^(NSArray *comments) {
-            self.commentsContent = comments;
-            [self.tableView reloadData];
+            self.commentsContent = [comments mutableCopy];
+            [self reloadData];
+            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
         } andErrorBlock:^(NSError *error) {
             
         }];
     }
     else if(currentContentType == ContentTypeResonics){
         [SNCAPIManager getResonicsOfSonic:self.sonic withCompletionBlock:^(NSArray *resonics) {
-            self.resonicsContent = resonics;
-            [self.tableView reloadData];
+            self.resonicsContent = [resonics mutableCopy];
+            [self reloadData];
+            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
         } andErrorBlock:^(NSError *error) {
             
         }];
     }
-    [self.tableView reloadData];
 }
 
-#pragma mark - Table view data source
+- (void)segmentedBarChanged
+{
+    [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
+    switch (self.headerView.segmentedBar.selectedSegmentIndex) {
+        case 0:
+            [self setCurrentContentType:ContentTypeLikes];
+            if(self.likesContent == nil|| self.likesContent.count == 0){
+                [self refreshContent];
+            }
+            break;
+        case 1:
+            [self setCurrentContentType:ContentTypeComments];
+            if(self.commentsContent == nil || self.commentsContent.count == 0){
+                [self refreshContent];
+            }
+            break;
+        case 2:
+            [self setCurrentContentType:ContentTypeResonics];
+            if(self.resonicsContent == nil || self.resonicsContent.count == 0){
+                [self refreshContent];
+            }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark - Action tab bar methods
+
+- (void) setLikeButtonSelected
+{
+    [self.likeButton setBackgroundImageWithColor:PinkColor forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"HeartWhite.png"] forState:UIControlStateNormal];
+    [self.likeButton setTitle:@"You Liked This Sonic :)" forState:UIControlStateNormal];
+    [self.likeButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
+    [self.likeButton addTarget:self action:@selector(unlikeSonic) forControlEvents:UIControlEventTouchUpInside];
+    [self.likeButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [self.likeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
+    [self.likeButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 20.0, 0.0, 0.0)];
+}
+
+- (void) setLikeButtonUnselected
+{
+    [self.likeButton setBackgroundImageWithColor:self.tabActionBarView.backgroundColor forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"HeartPink.png"] forState:UIControlStateNormal];
+    [self.likeButton setTitle:@"" forState:UIControlStateNormal];
+    [self.likeButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
+    [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
+    [self.likeButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+    [self.likeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
+}
+
+- (void) likeSonic
+{
+    [self setLikeButtonSelected];
+    [self.likesContent addObject:[[AuthenticationManager sharedInstance] authenticatedUser]];
+    [self reloadData];
+    [SNCAPIManager likeSonic:self.sonic withCompletionBlock:^(Sonic *sonic) {
+        [self.sonic updateWithSonic:sonic];
+        [self refreshNavigationItemText];
+    } andErrorBlock:^(NSError *error) {
+        [self setLikeButtonUnselected];
+        [self.likesContent removeObject:[[AuthenticationManager sharedInstance] authenticatedUser]];
+        [self reloadData];
+        [self refreshNavigationItemText];
+    }];
+}
+
+- (void) unlikeSonic
+{
+    [self setLikeButtonUnselected];
+    [self.likesContent removeObject:[[AuthenticationManager sharedInstance] authenticatedUser]];
+    [self reloadData];
+    [SNCAPIManager dislikeSonic:self.sonic withCompletionBlock:^(Sonic *sonic) {
+        [self.sonic updateWithSonic:sonic];
+        [self refreshNavigationItemText];
+    } andErrorBlock:^(NSError *error) {
+        [self setLikeButtonSelected];
+        [self.likesContent addObject:[[AuthenticationManager sharedInstance] authenticatedUser]];
+        [self reloadData];
+        [self refreshNavigationItemText];
+    }];
+    
+}
+
+
+
+#pragma mark - Table view methods
+
+- (void) reloadData
+{
+    CGSize firstSize = self.tableView.contentSize;
+    CGPoint scrollPoint = self.tableView.contentOffset;
+    self.tableView.contentSize = CGSizeMake(self.tableView.contentSize.width, 1.0);
+    [self setTableViewContentSize];
+    [self.tableView setContentSize:firstSize];
+    [self.tableView setContentOffset:scrollPoint];
+    [self.tableView reloadData];
+    [self setTableViewContentSize];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -447,7 +670,30 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 64.0;
+    if (currentContentType == ContentTypeComments){
+        SonicComment* comment = [[self currentContent] objectAtIndex:indexPath.row];
+        return [SonicCommentCell cellHeightForText:comment.text];
+    } else {
+        return PersonTableCellHeight;
+    }
+}
+
+-(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
+        [self setTableViewContentSize];
+    }
+}
+
+- (void) setTableViewContentSize
+{
+    CGFloat height = HeaderViewMaxHeight + self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height;
+    if(self.tableView.contentSize.height < height - 44.0){
+        self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, height - self.tableView.contentSize.height, 0.0);
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 44.0, 0.0);
+    }
+    
 }
 
 - (void) writeComment
@@ -455,8 +701,8 @@
     [self.commentField setEnabled:NO];
     [self closeKeyboard];
     [SNCAPIManager writeCommentToSonic:self.sonic withText:self.commentField.text withCompletionBlock:^(id object) {
-        self.commentsContent = [self.commentsContent arrayByAddingObject:object];
-        [self.tableView reloadData];
+        [self.commentsContent addObject:object];
+        [self reloadData];
         [self.commentField setText:@""];
         [self.commentField setEnabled:YES];
         //        [self refreshContent];
@@ -488,35 +734,11 @@
 }
 
 
-- (void)segmentedBar:(SegmentedBar *)segmentedBar selectedItemAtIndex:(NSInteger)index
+- (void) closeKeyboard
 {
-    [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
-    switch (index) {
-        case 0:
-            [self setCurrentContentType:ContentTypeLikes];
-            if(self.likesContent == nil|| self.likesContent.count == 0){
-                [self refreshContent];
-            }
-            break;
-        case 1:
-            [self setCurrentContentType:ContentTypeComments];
-            if(self.commentsContent == nil || self.commentsContent.count == 0){
-                [self refreshContent];
-            }
-            break;
-        case 2:
-            [self setCurrentContentType:ContentTypeResonics];
-            if(self.resonicsContent == nil || self.resonicsContent.count == 0){
-                [self refreshContent];
-            }
-            break;
-            
-        default:
-            break;
-    }
+    [self.keyboardCloser removeFromSuperview];
+    [self.commentField resignFirstResponder];
 }
-
-
 
 - (void)keyboardWillHide:(NSNotification *)n
 {
@@ -525,7 +747,7 @@
     
     // The kKeyboardAnimationDuration I am using is 0.3
     [UIView setAnimationDuration:0.3];
-//    [self.tags setFrame:[self tagsFrame]];
+    //    [self.tags setFrame:[self tagsFrame]];
     [self.tabActionBarView setFrame:[self tabActionBarViewMinFrame]];
     self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
     [UIView commitAnimations];
@@ -565,12 +787,6 @@
     keyboardIsShown = YES;
 }
 
-- (void) closeKeyboard
-{
-    [self.keyboardCloser removeFromSuperview];
-    [self.commentField resignFirstResponder];
-}
-
 - (void) openProfileForUser:(User *)user
 {
     [self performSegueWithIdentifier:SonicToProfileSegue sender:self];
@@ -584,7 +800,6 @@
         
     }
 }
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]

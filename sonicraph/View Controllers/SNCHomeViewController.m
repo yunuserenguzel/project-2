@@ -58,7 +58,7 @@
      object:nil];
     [[NSNotificationCenter defaultCenter]
      addObserver:self
-     selector:@selector(refresh)
+     selector:@selector(removeSonic:)
      name:NotificationSonicDeleted
      object:nil];
     [[NSNotificationCenter defaultCenter]
@@ -76,6 +76,15 @@
     [self initRefreshController];
     [self refreshFromServer];
 }
+
+- (void) removeSonic:(NSNotification*)notification
+{
+    Sonic* sonic = notification.object;
+    if([self.sonics deleteSonicWithId:sonic.sonicId]){
+        [self refresh];
+    }
+}
+
 
 - (void) userLoggedOut:(NSNotification*)notification
 {

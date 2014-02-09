@@ -15,19 +15,22 @@
 #define CommentsTabButtonTag 5112
 #define ResonicsTabButtonTag 5113
 
-#define HeaderViewMaxHeight 448.0
-#define HeaderViewMinHeight 127.0
+#define HeaderViewMaxHeight 450.0
+#define HeaderViewMinHeight 44.0
 
 @interface SonicViewControllerHeaderView : UIView
 
 @property SonicPlayerView* sonicPlayerView;
 @property UILabel* usernameLabel;
+@property UILabel* fullnameLabel;
 @property UIImageView* profileImageView;
+@property UILabel* createdAtLabel;
 
-@property SegmentedBar* segmentedBar;
-@property SegmentedBarItem* likesBarItem;
-@property SegmentedBarItem* commentsBarItem;
-@property SegmentedBarItem* resonicsBarItem;
+//@property SegmentedBar* segmentedBar;
+//@property SegmentedBarItem* likesBarItem;
+//@property SegmentedBarItem* commentsBarItem;
+//@property SegmentedBarItem* resonicsBarItem;
+@property UISegmentedControl* segmentedBar;
 
 @property UIView* tapToTopView;
 

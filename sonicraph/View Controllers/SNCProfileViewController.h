@@ -11,13 +11,14 @@
 #import "User.h"
 #import "ProfileHeaderView.h"
 #import "SNCHomeTableCell.h"
-
+#import "SonicArray.h"
 @interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol, OpenProfileProtocol>
 
 
 @property (nonatomic) User* user;
 @property ProfileHeaderView* profileHeaderView;
 
+@property SonicArray* sonics;
 
 @property UITableView* sonicListTableView;
 

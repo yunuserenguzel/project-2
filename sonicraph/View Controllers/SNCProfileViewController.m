@@ -10,17 +10,14 @@
 #import "SNCAPIManager.h"
 #import "SNCEditViewController.h"
 #import "SonicData.h"
-#import "Sonic.h"
 #import "Configurations.h"
 #import "SNCSonicViewController.h"
 #import "SNCHomeTableCell.h"
 #import "SonicCollectionViewCell.h"
 #import "SNCFollowerFollowingViewController.h"
-#import "SonicArray.h"
 
 @interface SNCProfileViewController ()
 
-@property SonicArray* sonics;
 
 @property SonicArray* likedSonics;
 
@@ -105,8 +102,21 @@
      name:NotificationUserLoggedOut
      object:nil];
     [self configureViews];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(removeSonic:)
+     name:NotificationSonicDeleted
+     object:nil];
+    [self configureViews];
 }
 
+-(void) removeSonic:(NSNotification*)notification
+{
+    Sonic* sonic = notification.object;
+    if([self.sonics deleteSonicWithId:sonic.sonicId]){
+        [self refresh];
+    }
+}
 
 - (void) userLoggedOut:(NSNotification*)notification
 {

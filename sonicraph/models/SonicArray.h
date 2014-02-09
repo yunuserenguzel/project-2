@@ -11,12 +11,13 @@
 
 @interface SonicArray : NSMutableArray
 
-
 - (void) importSonicsWithArray:(NSArray*)array;
 
 - (void) addObject:(Sonic*)sonic;
 
 - (Sonic*) objectAtIndex:(NSInteger)index;
+
+- (BOOL) deleteSonicWithId:(NSString*)sonicId;
 
 @property (readonly,nonatomic) NSInteger count;
 @end

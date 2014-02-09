@@ -13,12 +13,20 @@
 
 - (CGRect) profileImageViewFrame
 {
-    return CGRectMake(10.0, PersonTableCellHeight * 0.5 - 22.0, 44.0, 44.0);
+    return CGRectMake(5.0, PersonTableCellHeight * 0.5 - 24.5, 49.0, 49.0);
 }
 
+- (CGRect) fullnameLabelFrame
+{
+    return CGRectMake(64.0, 7.0, 320.0 - 60.0, 22.0);
+}
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(60.0, PersonTableCellHeight * 0.5 - 22.0, 320.0 - 60.0, 44.0);
+    return CGRectMake(64.0, 27.0, 320.0 - 60.0, 18.0);
+}
+- (CGRect) locationLabelFrame
+{
+    return CGRectMake(64.0, 45.0, 320.0 - 60.0, 16.0);
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -32,19 +40,32 @@
 
 - (void) initViews
 {
-    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
-    [self.usernameLabel setTextColor:[UIColor darkGrayColor]];
-    [self.usernameLabel setUserInteractionEnabled:YES];
-    [self.contentView addSubview:self.usernameLabel];
     
     self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageViewFrame]];
     [self.profileImageView setFrame:[self profileImageViewFrame]];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
-    [self.profileImageView.layer setCornerRadius:5.0];
+    [self.profileImageView.layer setCornerRadius:8.0];
     [self.profileImageView setUserInteractionEnabled:YES];
     [self.profileImageView setImage:SonicPlaceholderImage];
     [self.contentView addSubview:self.profileImageView];
+    
+    self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
+    [self.contentView addSubview:self.fullnameLabel];
+    [self.fullnameLabel setTextColor:NavigationBarBlueColor];
+    self.fullnameLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    
+    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
+    [self.usernameLabel setTextColor:[UIColor lightGrayColor]];
+    [self.usernameLabel setUserInteractionEnabled:YES];
+    self.usernameLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    [self.contentView addSubview:self.usernameLabel];
+    
+    self.locationLabel = [[UILabel alloc] initWithFrame:[self locationLabelFrame]];
+    [self.contentView addSubview:self.locationLabel];
+    [self.locationLabel setTextColor:[UIColor grayColor]];
+    self.locationLabel.font = [UIFont systemFontOfSize:10.0];
+    
     
     UIGestureRecognizer* tapGesture;
 //    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
@@ -67,7 +88,9 @@
 - (void)configureViews
 {
     if(self.user){
-        [self.usernameLabel setText:self.user.username];
+        [self.usernameLabel setText:[@"@" stringByAppendingString:self.user.username]];
+        [self.fullnameLabel setText:self.user.fullName];
+        [self.locationLabel setText:self.user.location];
         [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(image){

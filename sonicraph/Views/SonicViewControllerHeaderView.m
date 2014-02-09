@@ -115,15 +115,15 @@
     [self.profileImageView setClipsToBounds:YES];
     [self addSubview:self.profileImageView];
     
-    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelMaxFrame]];
-    [self.usernameLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
-    [self.usernameLabel setTextColor:[UIColor lightGrayColor]];
-    [self addSubview:self.usernameLabel];
-    
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelMaxFrame]];
     [self.fullnameLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
     [self.fullnameLabel setTextColor:NavigationBarBlueColor];
     [self addSubview:self.fullnameLabel];
+    
+    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelMaxFrame]];
+    [self.usernameLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
+    [self.usernameLabel setTextColor:[UIColor lightGrayColor]];
+    [self addSubview:self.usernameLabel];
     
     self.createdAtLabel = [[UILabel alloc] initWithFrame:[self createdAtLabelMaxFrame]];
     [self.createdAtLabel setFont:[UIFont systemFontOfSize:10.0]];
@@ -172,11 +172,11 @@
 
 - (void) reorganizeForRatio:(CGFloat)ratio
 {   
-    [self.sonicPlayerView setFrame:CGRectByRatio([self sonicPlayerViewMaxFrame], [self sonicPlayerViewMinFrame], ratio)];
-    [self.profileImageView setFrame:CGRectByRatio([self profileImageMaxFrame], [self profileImageMinFrame], ratio)];
-    [self.fullnameLabel setFrame:CGRectByRatio([self fullnameLabelMaxFrame], [self fullnameLabelMinFrame], ratio)];
-    [self.usernameLabel setFrame:CGRectByRatio([self usernameLabelMaxFrame], [self usernameLabelMinFrame], ratio)];
-    [self.createdAtLabel setFrame:CGRectByRatio([self createdAtLabelMaxFrame], [self createdAtLabelMinFrame], ratio)];
+//    [self.sonicPlayerView setFrame:CGRectByRatio([self sonicPlayerViewMaxFrame], [self sonicPlayerViewMinFrame], ratio)];
+//    [self.profileImageView setFrame:CGRectByRatio([self profileImageMaxFrame], [self profileImageMinFrame], ratio)];
+//    [self.fullnameLabel setFrame:CGRectByRatio([self fullnameLabelMaxFrame], [self fullnameLabelMinFrame], ratio)];
+//    [self.usernameLabel setFrame:CGRectByRatio([self usernameLabelMaxFrame], [self usernameLabelMinFrame], ratio)];
+//    [self.createdAtLabel setFrame:CGRectByRatio([self createdAtLabelMaxFrame], [self createdAtLabelMinFrame], ratio)];
     [self.segmentedBar setFrame:CGRectByRatio([self segmentedBarMaxFrame], [self segmentedBarMinFrame], ratio)];
     if(ratio < 1.0){
         [self.sonicPlayerView stop];

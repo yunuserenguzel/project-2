@@ -15,9 +15,14 @@
 
 @property UILabel* usernameLabel;
 @property UILabel* commentTextLabel;
+@property UILabel* createdAtLabel;
 @property UIButton* deleteButton;
 @property UIImageView* userProfileImageView;
 
 @property id<OpenProfileProtocol> delegate;
+
++ (CGFloat) cellHeightForText:(NSString*)text;
+
++ (CGFloat) labelHeightForText:(NSString*)text;
 
 @end

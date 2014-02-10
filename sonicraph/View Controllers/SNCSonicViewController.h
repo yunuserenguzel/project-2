@@ -28,7 +28,7 @@ typedef enum ContentType {
     ContentTypeResonics
 } ContentType;
 
-@interface SNCSonicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol>
+@interface SNCSonicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol, UIAlertViewDelegate>
 
 @property UITableView* tableView;
 @property (nonatomic) Sonic* sonic;

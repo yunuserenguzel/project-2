@@ -32,7 +32,7 @@
 
 - (CGRect) profileHeaderViewFrame
 {
-    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, 320.0, 180.0);
+    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, 320.0, ProfileHeaderViewHeight);
 }
 
 - (CGRect) scrollContentHeaderFrame
@@ -142,7 +142,12 @@
             self.profileHeaderView.userProfileImageView.image = (UIImage*) object;
         });
     }];
-    self.profileHeaderView.usernamelabel.text = self.user.username;
+    
+    
+    self.profileHeaderView.usernamelabel.text = [NSString stringWithFormat:@"@%@",self.user.username];
+    self.profileHeaderView.fullnameLabel.text = self.user.fullName;
+    self.profileHeaderView.locationLabel.text = self.user.location;
+    self.profileHeaderView.websiteLabel.text = self.user.website;
     self.profileHeaderView.numberOfSonicsLabel.text = [NSString stringWithFormat:@"%d",self.user.sonicCount];
     self.profileHeaderView.numberOfFollowersLabel.text = [NSString stringWithFormat:@"%d",self.user.followerCount];
     self.profileHeaderView.numberOfFollowingsLabel.text = [NSString stringWithFormat:@"%d",self.user.followingCount];
@@ -194,6 +199,9 @@
 
 - (void) setListViewModeOn
 {
+    [self.profileHeaderView.listViewButton setSelected:YES];
+    [self.profileHeaderView.gridViewButton setSelected:NO];
+    [self.profileHeaderView.likedSonicsButton setSelected:NO];
     if([self.sonicListTableView isHidden] == YES){
         [self.sonicCollectionView setHidden:YES];
         [self.sonicListTableView setHidden:NO];
@@ -205,6 +213,9 @@
 
 - (void) setGridViewModeOn
 {
+    [self.profileHeaderView.listViewButton setSelected:NO];
+    [self.profileHeaderView.gridViewButton setSelected:YES];
+    [self.profileHeaderView.likedSonicsButton setSelected:NO];
     showLikedSonics = NO;
     if([self.sonicCollectionView isHidden] == YES){
         [self.sonicCollectionView setHidden:NO];
@@ -217,6 +228,9 @@
 - (void) showLikedSonics
 {
     [self setGridViewModeOn];
+    [self.profileHeaderView.listViewButton setSelected:NO];
+    [self.profileHeaderView.gridViewButton setSelected:NO];
+    [self.profileHeaderView.likedSonicsButton setSelected:YES];
     showLikedSonics = YES;
     if(self.likedSonics == nil) {
         self.likedSonics = [[SonicArray alloc] init];

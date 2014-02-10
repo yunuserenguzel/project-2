@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#define ProfileHeaderViewHeight 240.0
+
 @interface ProfileHeaderView : UIView
 
 @property UIImageView* userProfileImageView;
+@property UILabel* fullnameLabel;
 @property UILabel* usernamelabel;
-@property UILabel* userDescriptionLabel;
+@property UILabel* locationLabel;
+@property UILabel* websiteLabel;
 
 @property UILabel* numberOfSonicsLabel;
 @property UILabel* numberOfFollowersLabel;

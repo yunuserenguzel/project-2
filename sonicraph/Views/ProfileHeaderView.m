@@ -10,29 +10,41 @@
 #import "TypeDefs.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Configurations.h"
+#import "UIButton+StateProperties.h"
 
 @implementation ProfileHeaderView
 - (CGRect) userProfileImageViewFrame
 {
-    return CGRectMake(10.0, 10.0, 64.0, 64.0);
+    return CGRectMake(10.0, 10.0, 120.0, 120.0);
+}
+
+- (CGRect) fullnameLabelFrame
+{
+    return CGRectMake(140.0, 10.0, 160.0, 22.0);
 }
 
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(84.0, 10.0, 320.0 - 64.0, 22.0);
+    return CGRectMake(140.0, 28.0, 160.0, 20.0);
 }
 
-- (CGRect) userDescriptionLabelFrame
+- (CGRect) locationLabelFrame
 {
-    CGRect frame = [self usernameLabelFrame];
-    frame.origin.y += frame.size.height;
-    frame.size.height = 22.0;
-    return frame;
+    return CGRectMake(140.0, 54.0, 160.0, 20.0);
+}
+
+- (CGRect) websiteLabelFrame
+{
+    return CGRectMake(140.0, 70.0, 160.0, 20.0);
+}
+- (CGRect) followButtonFrame
+{
+    return CGRectMake(140.0, 100.0, 150.0, 30.0);
 }
 
 - (CGRect) numberOfSonicsLabelFrame
 {
-    return CGRectMake(30.0, 86.0, 96.6, 22.0);
+    return CGRectMake(10.0, 145.0, 96.6, 22.0);
 }
 
 - (CGRect) numberOfFollowersLabelFrame
@@ -51,9 +63,8 @@
 
 - (CGRect) sonicsLabelFrame
 {
-    return CGRectMake(30.0, 102.0, 96.6, 22.0);
+    return CGRectMake(10.0, 165.0, 96.6, 22.0);
 }
-
 
 - (CGRect) followersLabelFrame
 {
@@ -71,7 +82,7 @@
 
 - (CGRect) buttonHolderViewFrame
 {
-    return CGRectMake(0.0, 136.0, 320.0, 44.0);
+    return CGRectMake(0.0, 195.0, 320.0, 44.0);
 }
 
 - (CGRect) gridViewButtonFrame
@@ -96,100 +107,115 @@
     return frame;
 }
 
-- (CGRect) followButtonFrame
-{
-    CGRect frame = [self likedSonicsButtonFrame];
-    frame.origin.x += frame.size.width;
-    frame.size.width = 100.0;
-    return frame;
-}
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         [self setBackgroundColor:rgb(245,245,245)];
-        self.userProfileImageView = [[UIImageView alloc] initWithImage:SonicPlaceholderImage];
-        [self.userProfileImageView setFrame:[self userProfileImageViewFrame]];
-        [self.userProfileImageView.layer setCornerRadius:5.0];
-        [self.userProfileImageView setClipsToBounds:YES];
-        [self.userProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
-        [self addSubview:self.userProfileImageView];
-        
-        self.usernamelabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
-        [self.usernamelabel setText:@" "];
-        self.usernamelabel.font = [UIFont boldSystemFontOfSize:14.0];
-        [self addSubview:self.usernamelabel];
-        
-        self.userDescriptionLabel = [[UILabel alloc] initWithFrame:[self userDescriptionLabelFrame]];
-        [self.userDescriptionLabel setText:@" "];
-        self.userDescriptionLabel.font = [self.userDescriptionLabel.font fontWithSize:14.0];
-        [self.userDescriptionLabel setTextColor:[UIColor darkGrayColor]];
-        [self addSubview:self.userDescriptionLabel];
-        
-        self.numberOfSonicsLabel = [[UILabel alloc] initWithFrame:[self numberOfSonicsLabelFrame]];
-        [self.numberOfSonicsLabel setText:@" "];
-        self.numberOfFollowersLabel = [[UILabel alloc] initWithFrame:[self numberOfFollowersLabelFrame]];
-        [self.numberOfFollowersLabel setText:@" "];
-        self.numberOfFollowingsLabel = [[UILabel alloc] initWithFrame:[self numberOfFollowingsLabelFrame]];
-        [self.numberOfFollowingsLabel setText:@" "];
-        [@[self.numberOfSonicsLabel,self.numberOfFollowingsLabel,self.numberOfFollowersLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
-            [self addSubview:label];
-            label.font = [UIFont boldSystemFontOfSize:14.0];
-            [label setUserInteractionEnabled:YES];
-//            if(idx < 2){
-//                UIImageView* seperator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SegmentedButtonBarSeperator.png"]];
-//                [seperator setContentMode:UIViewContentModeCenter];
-//                CGRect frame = label.frame;
-//                frame.origin.x += frame.size.width - 1.0;
-//                frame.size.width = 1.0;
-//                [seperator setFrame:frame];
-//                [self addSubview:seperator];
-//            }
-        }];
-        
-        self.sonicsLabel = [[UILabel alloc] initWithFrame:[self sonicsLabelFrame]];
-        [self.sonicsLabel setText:@"Sonics"];
-        self.followersLabel = [[UILabel alloc] initWithFrame:[self followersLabelFrame]];
-        [self.followersLabel setText:@"Followers"];
-        self.followingsLabel = [[UILabel alloc] initWithFrame:[self followingsLabelFrame]];
-        [self.followingsLabel setText:@"Following"];
-        [@[self.sonicsLabel,self.followersLabel,self.followingsLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
-            [self addSubview:label];
-            label.font = [label.font fontWithSize:14.0];
-            [label setTextColor:[UIColor darkGrayColor]];
-            [label setUserInteractionEnabled:YES];
-        }];
-        
-        self.buttonHolderView = [[UIView alloc] initWithFrame:[self buttonHolderViewFrame]];
-        [self addSubview:self.buttonHolderView];
-        
+        [self initProfileImageAndUserInfoLabels];
+        [self initCountableLabels];
         [self initTabButtons];
         
         self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.followButton setBackgroundImageWithColor:PinkColor forState:UIControlStateNormal];
+        [self.followButton setBackgroundImageWithColor:[UIColor whiteColor] forState:UIControlStateSelected];
         [self.followButton setFrame:[self followButtonFrame]];
         [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
-        [self.buttonHolderView addSubview:self.followButton];
+        [self.followButton.layer setCornerRadius:5.0];
+        self.followButton.layer.borderColor = PinkColor.CGColor;
+        self.followButton.layer.borderWidth = 1.0;
+        self.followButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [self.followButton setClipsToBounds:YES];
+        [self addSubview:self.followButton];
 
     }
     return self;
 }
 
+- (void) initProfileImageAndUserInfoLabels
+{
+    self.userProfileImageView = [[UIImageView alloc] initWithImage:SonicPlaceholderImage];
+    [self.userProfileImageView setFrame:[self userProfileImageViewFrame]];
+    [self.userProfileImageView.layer setCornerRadius:10.0];
+    [self.userProfileImageView setClipsToBounds:YES];
+    [self.userProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self addSubview:self.userProfileImageView];
+    
+    self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
+    self.fullnameLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    self.fullnameLabel.textColor = NavigationBarBlueColor;
+    [self addSubview:self.fullnameLabel];
+    
+    self.usernamelabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
+    self.usernamelabel.font = [UIFont boldSystemFontOfSize:14.0];
+    self.usernamelabel.textColor = [UIColor lightGrayColor];
+    [self addSubview:self.usernamelabel];
+    
+    self.locationLabel = [[UILabel alloc] initWithFrame:[self locationLabelFrame]];
+    self.locationLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    self.locationLabel.textColor = [UIColor lightGrayColor];
+    [self addSubview:self.locationLabel];
+    
+    self.websiteLabel = [[UILabel alloc] initWithFrame:[self websiteLabelFrame]];
+    self.websiteLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    self.websiteLabel.textColor = [UIColor lightGrayColor];
+//    self.websiteLabel set
+    [self addSubview:self.websiteLabel];
+}
+
+- (void) initCountableLabels
+{
+    self.numberOfSonicsLabel = [[UILabel alloc] initWithFrame:[self numberOfSonicsLabelFrame]];
+    [self.numberOfSonicsLabel setText:@" "];
+    self.numberOfFollowersLabel = [[UILabel alloc] initWithFrame:[self numberOfFollowersLabelFrame]];
+    [self.numberOfFollowersLabel setText:@" "];
+    self.numberOfFollowingsLabel = [[UILabel alloc] initWithFrame:[self numberOfFollowingsLabelFrame]];
+    [self.numberOfFollowingsLabel setText:@" "];
+    [@[self.numberOfSonicsLabel,self.numberOfFollowingsLabel,self.numberOfFollowersLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
+        [self addSubview:label];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont boldSystemFontOfSize:18.0];
+        label.textColor = [UIColor grayColor];
+        [label setUserInteractionEnabled:YES];
+    }];
+    
+    self.sonicsLabel = [[UILabel alloc] initWithFrame:[self sonicsLabelFrame]];
+    [self.sonicsLabel setText:@"Sonics"];
+    self.followersLabel = [[UILabel alloc] initWithFrame:[self followersLabelFrame]];
+    [self.followersLabel setText:@"Followers"];
+    self.followingsLabel = [[UILabel alloc] initWithFrame:[self followingsLabelFrame]];
+    [self.followingsLabel setText:@"Following"];
+    [@[self.sonicsLabel,self.followersLabel,self.followingsLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
+        [self addSubview:label];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [label.font fontWithSize:16.0];
+        [label setTextColor:[UIColor grayColor]];
+        [label setUserInteractionEnabled:YES];
+    }];
+}
+
 - (void) initTabButtons
 {
+    self.buttonHolderView = [[UIView alloc] initWithFrame:[self buttonHolderViewFrame]];
+    [self.buttonHolderView setBackgroundColor:rgb(240, 240, 240)];
+    [self addSubview:self.buttonHolderView];
+    
     self.gridViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.gridViewButton setFrame:[self gridViewButtonFrame]];
-    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewThumbnailDarkGrey.png"] forState:UIControlStateNormal];
+    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewGridGrey.png"] forState:UIControlStateNormal];
+    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewGridPink.png"] forState:UIControlStateSelected];
     [self.buttonHolderView addSubview:self.gridViewButton];
     
     self.listViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.listViewButton setFrame:[self listViewButtonFrame]];
-    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListDarkGrey.png"] forState:UIControlStateNormal];
+    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListGrey.png"] forState:UIControlStateNormal];
+    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListPink.png"] forState:UIControlStateSelected];
     [self.buttonHolderView addSubview:self.listViewButton];
     
     self.likedSonicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.likedSonicsButton setFrame:[self likedSonicsButtonFrame]];
     [self.likedSonicsButton setImage:[UIImage imageNamed:@"HeartGrey.png"] forState:UIControlStateNormal];
+    [self.likedSonicsButton setImage:[UIImage imageNamed:@"HeartPink.png"] forState:UIControlStateSelected];
     [self.buttonHolderView addSubview:self.likedSonicsButton];
     [self.likedSonicsButton setHidden:YES];
     
@@ -204,15 +230,15 @@
     CGContextAddLineToPoint(context, [self buttonHolderViewFrame].size.width, [self buttonHolderViewFrame].origin.y); //draw to this point
     CGContextStrokePath(context);
 }
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    UIView* view = [super hitTest:point withEvent:event];
-    if(view == self){
-        return nil;
-    }
-    else {
-        return view;
-    }
-}
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+//{
+//    UIView* view = [super hitTest:point withEvent:event];
+//    if(view == self){
+//        return nil;
+//    }
+//    else {
+//        return view;
+//    }
+//}
 
 @end

@@ -12,6 +12,8 @@
 #import "ProfileHeaderView.h"
 #import "SNCHomeTableCell.h"
 #import "SonicArray.h"
+
+
 @interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol, OpenProfileProtocol>
 
 

@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.title = @"My Profile";
     [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
     [[NSNotificationCenter defaultCenter]
      addObserver:self

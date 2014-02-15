@@ -13,12 +13,15 @@
 #import "SNCAPIManager.h"
 #import "SNCSonicViewController.h"
 #import "SonicArray.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import "SNCAppDelegate.h"
 
 @interface SNCHomeViewController ()
 
 @property SonicArray* sonics;
 
 @property UIRefreshControl* refreshControl;
+@property FBLoginView* fbLoginView;
 
 @end
 
@@ -75,6 +78,27 @@
     self.sonics  = [[SonicArray alloc] init];
     [self initRefreshController];
     [self refreshFromServer];
+    
+    // If the session state is any of the two "open" states when the button is clicked
+    if (FBSession.activeSession.state == FBSessionStateOpen
+        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
+        
+        // Close the session and remove the access token from the cache
+        // The session state handler (in the app delegate) will be called automatically
+        [FBSession.activeSession closeAndClearTokenInformation];
+        
+        // If the session state is not any of the two "open" states when the button is clicked
+    } else {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for basic_info permissions when opening a session
+        [FBSession openActiveSessionWithPublishPermissions:@[@"publish_stream"] defaultAudience:FBSessionDefaultAudienceOnlyMe allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+            SNCAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+            // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+            [appDelegate sessionStateChanged:session state:state error:error];
+            
+        }];
+    }
+
 }
 
 - (void) removeSonic:(NSNotification*)notification

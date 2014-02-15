@@ -10,6 +10,7 @@
 #import "SNCAPIManager.h"
 #import "SonicPlayerView.h"
 #import "UIButton+StateProperties.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface SNCShareViewController ()
 
@@ -20,7 +21,6 @@
 @property UIButton* tagsDoneButton;
 @property UIBarButtonItem* shareButtonItem;
 @property UIView* keyboardCloser;
-
 @property SonicPlayerView* sonicPlayerView;
 
 @end
@@ -111,6 +111,8 @@
      selector:@selector(keyboardWillHide:)
      name:UIKeyboardWillHideNotification
      object:self.view.window];
+    
+    
 }
 
 - (void) configureViews
@@ -208,7 +210,31 @@
 - (void) shareSonic
 {
     
-    [SNCAPIManager createSonic:self.sonic withTags:self.tagsField.text withCompletionBlock:nil];
+    [SNCAPIManager createSonic:self.sonic withTags:self.tagsField.text withCompletionBlock:^(Sonic *sonic) {
+        NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",sonic.sonicId];
+        NSString* fullNameFild = [NSString stringWithFormat:@"%@'s sonic", sonic.owner.fullName];
+        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       fullNameFild, @"name",
+                                       sonic.tags, @"caption",
+                                       @"sonicraph.com",@"description",
+                                       sonicPageLink, @"link",
+                                       nil];
+
+        // Make the request
+        [FBRequestConnection startWithGraphPath:@"/me/feed"
+                                     parameters:params
+                                     HTTPMethod:@"POST"
+                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                  if (!error) {
+                                      // Link posted successfully to Facebook
+                                      NSLog(@"result: %@", result);
+                                  } else {
+                                      // An error occurred, we need to handle the error
+                                      // See: https://developers.facebook.com/docs/ios/errors
+                                      NSLog(@"%@", error.description);
+                                  }
+                              }];
+    }];
     
     [self.tabBarController setSelectedIndex:0];
     [self.navigationController popToRootViewControllerAnimated:NO];

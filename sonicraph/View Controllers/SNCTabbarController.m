@@ -55,7 +55,7 @@ static int previousTabIndex = 0;
     [self.tabBar setBarStyle:UIBarStyleDefault];
     [self.tabBar setBarTintColor:[UIColor whiteColor]];
     [self.tabBar setTintColor:NavigationBarBlueColor];
-    [self.tabBar setSelectedImageTintColor:PinkColor];
+    [self.tabBar setSelectedImageTintColor:NavigationBarBlueColor];
     self.tabBar.backgroundColor = [UIColor clearColor];
     [[self.tabBar.subviews objectAtIndex:0] setAlpha:0.1];
     self.tabBar.superview.backgroundColor = [UIColor clearColor];
@@ -64,60 +64,39 @@ static int previousTabIndex = 0;
     for (UIView* view in self.tabBar.subviews) {
         [view setBackgroundColor:[UIColor clearColor]];
     }
+    NSArray* imageNames = @[@"HomePink.png",
+                            @"SearchPink.png",
+                            @"CameraPink.png",
+                            @"GlobePink.png",
+                            @"UserPink.png"];
+    NSArray* selectedImageNames = @[@"HomeBlue.png",
+                                    @"SearchBlue.png",
+                                    @"CameraBlue.png",
+                                    @"GlobeBlue.png",
+                                    @"UserBlue.png"];
     
-//    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:PinkColor, NSForegroundColorAttributeName, nil]
-//                                             forState:UIControlStateNormal];
+    for(int i=0; i<self.tabBar.items.count; i++)
+    {
+        UITabBarItem* item = [self.tabBar.items objectAtIndex:i];
+        [item setImage:[[UIImage imageNamed:[imageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [item setSelectedImage:[[UIImage imageNamed:[selectedImageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    }
     
-//    [self.tabBar.items enumerateObjectsUsingBlock:^(UITabBarItem* item, NSUInteger idx, BOOL *stop) {
-//    }];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:PinkColor, NSForegroundColorAttributeName, nil]
+                                             forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:NavigationBarBlueColor, NSForegroundColorAttributeName, nil]
+                                             forState:UIControlStateSelected];
+    
     
     [self setDelegate:self];
     [self setSelectedIndex:0];
-    
-//    cameraItemBackground = [[UIView alloc] initWithFrame:CGRectMake(160.0-44.0, 0.0, 88.0, 49.0)];
-//    [cameraItemBackground setBackgroundColor:[UIColor whiteColor]];
-//
-//    
-//    [self.tabBar.subviews enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
-//        NSLog(@"view: %@",button);
-//        if(idx == CameraTabbarIndex){
-//            [button addSubview:cameraItemBackground];
-//            UILongPressGestureRecognizer* gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(cameraButtonPressed:)];
-//            [gesture setMinimumPressDuration:0.0];
-//            [gesture setDelegate:self];
-//            [button addGestureRecognizer:gesture];
-//            
-//            UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cameraButtonTapped)];
-//            [button addGestureRecognizer:tapGesture];
-//        }
-//    }];
-//    
-//    [self.tabBar insertSubview:cameraItemBackground atIndex:0];
-}
 
-//- (void) cameraButtonPressed:(UILongPressGestureRecognizer*)recognizer
-//{
-//    if([recognizer state] == UIGestureRecognizerStateBegan){
-//        [cameraItemBackground setBackgroundColor:[UIColor lightGrayColor]];
-//        
-//    }
-//    else if ([recognizer state] == UIGestureRecognizerStateEnded){
-//        [cameraItemBackground setBackgroundColor:[UIColor greenColor]];
-//    
-//    }
-//}
+}
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
 }
-//
-//- (void) cameraButtonTapped
-//{
-//    previousTabIndex = self.selectedIndex;
-//    [self setSelectedIndex:CameraTabbarIndex];
-//
-//}
 
 - (void)didReceiveMemoryWarning
 {

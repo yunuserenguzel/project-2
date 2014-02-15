@@ -15,6 +15,7 @@
 #import "SNCHomeTableCell.h"
 #import "SonicCollectionViewCell.h"
 #import "SNCFollowerFollowingViewController.h"
+#import "SNCAppDelegate.h"
 
 @interface SNCProfileViewController ()
 
@@ -108,6 +109,8 @@
      name:NotificationSonicDeleted
      object:nil];
     [self configureViews];
+    
+
 }
 
 -(void) removeSonic:(NSNotification*)notification

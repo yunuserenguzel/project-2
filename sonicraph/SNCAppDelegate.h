@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
+
 @interface SNCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -18,6 +20,8 @@
 @property (readonly) UITabBarController* tabbarController;
 
 + (SNCAppDelegate*) sharedInstance;
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 
 - (void)saveContext;
 

@@ -35,17 +35,19 @@ SNCHomeTableCellActionType;
 
 @property (nonatomic) Sonic* sonic;
 
-@property UILabel* resonicedByUsernameLabel;
 
 @property UIImageView* userImageView;
 @property UIImageView* userImageMaskView;
 @property UILabel* usernameLabel;
+@property UILabel* fullnameLabel;
 @property UILabel* timestampLabel;
+@property UILabel* resonicedByUsernameLabel;
+@property UIImageView* resonicImageView;
 
 @property UIButton* likeButton;
 @property UIButton* commentButton;
 @property UIButton* resonicButton;
-@property UIButton* shareButton;
+@property UIButton* moreButton;
 
 @property UILabel* likesCountLabel;
 @property UILabel* commentsCountLabel;

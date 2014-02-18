@@ -8,6 +8,8 @@
 
 #import "SNCMyProfileViewController.h"
 #import "AuthenticationManager.h"
+#import "UIButton+StateProperties.h"
+
 @interface SNCMyProfileViewController ()
 
 @end
@@ -37,15 +39,27 @@
     [self.navigationItem setRightBarButtonItem:barButtonItem];
     [self.profileHeaderView.likedSonicsButton setHidden:NO];
     
-    [self.profileHeaderView.followButton setTitle:@"Edit Profile" forState:UIControlStateNormal];
-    [self.profileHeaderView.followButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
-    [self.profileHeaderView.followButton addTarget:self action:@selector(openEditProfile) forControlEvents:UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(newSonicArrived:)
      name:NotificationNewSonicCreated
      object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(userChanged:)
+     name:NotificationUpdateUser
+     object:self.user];
+}
+
+- (void) userChanged:(NSNotification*)notification
+{
+    User* user = notification.object;
+    if(self.user == user)
+    {
+        self.user = user;
+        [self configureViews];
+    }
 }
 
 - (void) newSonicArrived:(NSNotification*)notification
@@ -55,10 +69,7 @@
     [[self sonicListTableView] reloadData];
 }
 
-- (void) openEditProfile
-{
-    [self performSegueWithIdentifier:MyProfileToEditProfileSegue sender:self];
-}
+
 
 - (void) openSettings
 {

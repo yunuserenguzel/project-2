@@ -18,6 +18,7 @@
 @property UIImageView* notificationTypeImageView;
 @property UIImageView* profileImageView;
 @property UILabel* fullnameLabel;
+@property UILabel* usernameLabel;
 @property UILabel* notificationTextLabel;
 @property UILabel* createdAtLabel;
 @end

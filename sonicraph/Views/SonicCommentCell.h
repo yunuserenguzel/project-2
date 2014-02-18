@@ -13,7 +13,7 @@
 
 @property (nonatomic) SonicComment* sonicComment;
 
-@property UILabel* usernameLabel;
+@property UILabel* fullnameLabel;
 @property UILabel* commentTextLabel;
 @property UILabel* createdAtLabel;
 @property UIButton* deleteButton;

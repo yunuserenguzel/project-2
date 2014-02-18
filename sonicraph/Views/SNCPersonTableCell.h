@@ -30,6 +30,7 @@
 @property UIImageView* profileImageView;
 @property UILabel* fullnameLabel;
 @property UILabel* locationLabel;
+@property UIImageView* locationImageView;
 
 @property id<OpenProfileProtocol> delegate;
 
@@ -38,7 +39,7 @@
 
 @end
 
-@interface SNCPersonFollowableTableCell : SNCPersonTableCell
+@interface SNCPersonFollowableTableCell : SNCPersonTableCell <UIActionSheetDelegate>
 
 @property UIView* followContent;
 

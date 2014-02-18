@@ -8,13 +8,17 @@
 
 #import "SNCNotificationsViewController.h"
 #import "SNCAPIManager.h"
+#import "SNCProfileViewController.h"
+#import "SNCSonicViewController.h"
 
 @interface SNCNotificationsViewController ()
 @property NSArray* notifications;
 @end
 
 @implementation SNCNotificationsViewController
-
+{
+    Notification* selectedNotification;
+}
 - (CGRect) tableViewFrame
 {
     CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height;
@@ -51,14 +55,21 @@
 
 - (void) initTableView
 {
+//    self.tableView = [[UITableView alloc] initWithFrame:[self frameForScrollContent]];
+    self.tableView.contentInset = [self edgeInsetsForScrollContent];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
     [self.tableView registerClass:[SNCNotificationCell class] forCellReuseIdentifier:@"NotificationCell"];
+//    [self.view addSubview:self.tableView];
     [self initRefreshControl];
+    
 }
 
 - (void) initRefreshControl
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl setTintColor:[UIColor grayColor]];
+//    [self.refreshControl setTintColor:[UIColor grayColor]];
     [self.refreshControl addTarget:self action:@selector(refreshFromServer) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -88,6 +99,42 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    selectedNotification = [self.notifications objectAtIndex:indexPath.row];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if(selectedNotification.notificationType == NotificationTypeFollow)
+    {
+        [self performSegueWithIdentifier:ViewUserSegue sender:self];
+    }
+    else if(selectedNotification.notificationType == NotificationTypeLike || selectedNotification.notificationType == NotificationTypeResonic || selectedNotification.notificationType == NotificationTypeComment)
+    {
+        [self performSegueWithIdentifier:ViewSonicSegue sender:self];
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if(selectedNotification.notificationType == NotificationTypeFollow)
+    {
+        SNCProfileViewController* profileVC = segue.destinationViewController;
+        [profileVC setUser:selectedNotification.byUser];
+    }
+    else if(selectedNotification.notificationType == NotificationTypeComment)
+    {
+        SNCSonicViewController* sonicVC = segue.destinationViewController;
+        [sonicVC setInitiationType:SonicViewControllerInitiationTypeCommentRead];
+        [sonicVC setSonic:selectedNotification.toSonic];
+    }
+    else if(selectedNotification.notificationType == NotificationTypeLike || selectedNotification.notificationType == NotificationTypeResonic)
+    {
+        SNCSonicViewController* sonicVC = segue.destinationViewController;
+        [sonicVC setInitiationType:SonicViewControllerInitiationTypeNone];
+        [sonicVC setSonic:selectedNotification.toSonic];
+    }
+    
 }
 
 @end

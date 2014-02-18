@@ -23,7 +23,8 @@
 #define FollowerFollowingToProfileSegue @"FollowerFollowingToProfileSegue"
 #define SearchToProfileSegue @"SearchToProfileSegue"
 #define SearchToSonicSegue @"SearchToSonicSegue"
-#define MyProfileToEditProfileSegue @"MyProfileToEditProfileSegue"
+#define EditProfileSegue @"EditProfileSegue"
+#define ViewUserSegue @"ViewUserSegue"
 
 #define CommentsText @"Comments"
 #define LikesText @"Likes"

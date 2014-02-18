@@ -13,6 +13,7 @@
 #import "SonicCollectionViewCell.h"
 #import "SNCProfileViewController.h"
 #import "SNCSonicViewController.h"
+#import "Configurations.h"
 
 typedef enum SearchContentType {
     SearchContentTypeSonics = 111,
@@ -35,11 +36,15 @@ SearchContentType;
     User* selectedUser;
     Sonic* selectedSonic;
 }
+- (CGRect) segmentedControlFrame
+{
+    CGFloat y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height + 6;
+    return CGRectMake(70.0, y, 160.0, 33.0);
+}
 - (CGRect) searchFieldFrame
 {
     return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
-
 - (CGRect) contentRect
 {
     CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height;
@@ -89,6 +94,12 @@ SearchContentType;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setBarTintColor:PinkColor];
+    
     [self initSegmentControl];
     [self initUserTableView];
     [self initSonicCollectionView];
@@ -99,8 +110,10 @@ SearchContentType;
 - (void) initSegmentControl
 {
     self.segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Users",@"Sonics"]];
+    [self.segmentControl setFrame:[self segmentedControlFrame]];
     [self.segmentControl setSelectedSegmentIndex:0];
     self.navigationItem.titleView = self.segmentControl;
+    [self.segmentControl sizeToFit];
     [self.segmentControl addTarget:self action:@selector(segmentControlValueChanged) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -135,6 +148,10 @@ SearchContentType;
 {
     self.searchBar = [[UISearchBar alloc] initWithFrame:[self searchFieldFrame]];
     [self.searchBar setDelegate:self];
+    [self.searchBar setBarTintColor:CellSpacingGrayColor];
+//    [self.searchBar setTintColor:CellSpacingGrayColor];
+    [self.searchBar.layer setBorderColor:CellSpacingGrayColor.CGColor];
+    [self.searchBar.layer setBorderWidth:1.0];
     self.searchBar.keyboardType = UIKeyboardTypeAlphabet;
     [self.searchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
 }

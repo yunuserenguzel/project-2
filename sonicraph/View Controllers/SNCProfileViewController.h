@@ -12,9 +12,9 @@
 #import "ProfileHeaderView.h"
 #import "SNCHomeTableCell.h"
 #import "SonicArray.h"
+#import "UIViewController+CustomMethods.h"
 
-
-@interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol, OpenProfileProtocol>
+@interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol, OpenProfileProtocol,UIActionSheetDelegate>
 
 
 @property (nonatomic) User* user;
@@ -26,5 +26,7 @@
 
 @property UICollectionView* sonicCollectionView;
 @property UICollectionViewFlowLayout* sonicCollectionViewFlowLayout;
+
+- (void) configureViews;
 
 @end

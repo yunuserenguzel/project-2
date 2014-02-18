@@ -45,9 +45,11 @@
         return nil;
     }
     User* cachedUser = [self userForId:user.userId];
-    if(cachedUser){
+    if(cachedUser)
+    {
         [cachedUser updateWithUser:user];
-    } else {
+    } else
+    {
         cachedUser = user;
         [self.users setObject:cachedUser forKey:cachedUser.userId];
     }

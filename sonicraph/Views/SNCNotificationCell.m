@@ -19,22 +19,27 @@
 
 - (CGRect) profileImageViewFrame
 {
-    return CGRectMake(33.0, (NotificationTableCellHeight - 44.0) * 0.5 , 44.0, 44.0);
+    return CGRectMake(33.0, 7.0 , 49.0, 49.0);
 }
 
 - (CGRect) fullnameLabelFrame
 {
-    return CGRectMake(88.0, 0.0, 150.0, 28.0);
+    return CGRectMake(88.0, 5.0, 150.0, 18.0);
+}
+
+- (CGRect) usernameLabelFrame
+{
+    return CGRectMake(88.0, 22.0, 150.0, 16.0);
 }
 
 - (CGRect) createAtLabelFrame
 {
-    return CGRectMake(260.0, 0.0, 55.0, 22.0);
+    return CGRectMake(255.0, 5.0, 55.0, 18.0);
 }
 
 - (CGRect) notificationTextLabelFrame
 {
-    return CGRectMake(88.0, 22.0, 210.0, 42.0);
+    return CGRectMake(88.0, 38.0, 210.0, 18.0);
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -53,26 +58,35 @@
     
     self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageViewFrame]];
     [self.contentView addSubview:self.profileImageView];
-    self.profileImageView.layer.cornerRadius = 2.0;
+    self.profileImageView.layer.cornerRadius = 8.0;
     [self.profileImageView setClipsToBounds:YES];
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
+    self.fullnameLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    self.fullnameLabel.textColor = FullnameTextColor;
     [self.contentView addSubview:self.fullnameLabel];
+    
+    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
+    [self.usernameLabel setTextColor:[UIColor lightGrayColor]];
+    [self.usernameLabel setUserInteractionEnabled:YES];
+    self.usernameLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    [self.contentView addSubview:self.usernameLabel];
     
     self.notificationTextLabel = [[UILabel alloc] initWithFrame:[self notificationTextLabelFrame]];
     [self.contentView addSubview:self.notificationTextLabel];
     self.notificationTextLabel.numberOfLines = 0;
     self.notificationTextLabel.font = [self.notificationTextLabel.font fontWithSize:14.0];
+    self.notificationTextLabel.textColor = [UIColor grayColor];
     
     self.createdAtLabel = [[UILabel alloc] initWithFrame:[self createAtLabelFrame]];
     [self.contentView addSubview:self.createdAtLabel];
-    self.createdAtLabel.font = [self.createdAtLabel.font fontWithSize:10.0];
+    self.createdAtLabel.textColor = [UIColor lightGrayColor];
+    self.createdAtLabel.textAlignment = NSTextAlignmentRight;
+    self.createdAtLabel.font = [UIFont boldSystemFontOfSize:10.0];
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (void)setNotification:(Notification *)notification
@@ -84,6 +98,7 @@
 - (void) configureViews
 {
     self.fullnameLabel.text = self.notification.byUser.fullName;
+    self.usernameLabel.text = [NSString stringWithFormat:@"@%@",self.notification.byUser.username];
     self.createdAtLabel.text = [self.notification.createdAt formattedAsTimeAgo];
     self.profileImageView.image = SonicPlaceholderImage;
     [self updateNotificationTextAndImage];
@@ -99,19 +114,19 @@
     NSString* text = nil;
     UIImage* image;
     if(self.notification.notificationType == NotificationTypeComment){
-        text = @"is commented on one of your sonics";
-        image = [self notificationTypeImageLike];
+        text = @"commented on your sonic";
+        image = [self notificationTypeImageComment];
     }
     else if(self.notification.notificationType == NotificationTypeFollow){
         text = @"is now following you";
         image = [self notificationTypeImageFollow];
     }
     else if(self.notification.notificationType == NotificationTypeLike){
-        text = @"is liked one of your sonics";
+        text = @"liked one of your sonics";
         image = [self notificationTypeImageLike];
     }
     else if(self.notification.notificationType == NotificationTypeResonic){
-        text = @"is resoniced one of your sonics";
+        text = @"resoniced one of your sonics";
         image = [self notificationTypeImageResonic];
     }
     self.notificationTextLabel.text = text;
@@ -121,7 +136,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"HeartGrey.png"];
+        image =  [UIImage imageNamed:@"NotificationLike.png"];
     }
     return image;
 }
@@ -129,7 +144,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"ReSonicGrey.png"];
+        image =  [UIImage imageNamed:@"NotificationResonic.png"];
     }
     return image;
 }
@@ -137,7 +152,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"CommentGrey.png"];
+        image =  [UIImage imageNamed:@"NotificationComment.png"];
     }
     return image;
 }
@@ -145,7 +160,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"UserGrey.png"];
+        image =  [UIImage imageNamed:@"NotificationFollower.png"];
     }
     return image;
 }

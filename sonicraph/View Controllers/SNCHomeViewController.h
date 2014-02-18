@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SNCHomeTableCell.h"
 #import "TypeDefs.h"
-@interface SNCHomeViewController : UITableViewController <UIScrollViewDelegate,SNCHomeTableCellProtocol,OpenProfileProtocol>
+#import "UIViewController+CustomMethods.h"
 
+@interface SNCHomeViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate, UIScrollViewDelegate,SNCHomeTableCellProtocol,OpenProfileProtocol>
+//@property UITableView* tableView;
+//@property UIRefreshControl* refreshControl;
 @end

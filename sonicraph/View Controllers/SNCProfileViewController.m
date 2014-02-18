@@ -16,7 +16,8 @@
 #import "SonicCollectionViewCell.h"
 #import "SNCFollowerFollowingViewController.h"
 #import "SNCAppDelegate.h"
-
+#import "UIButton+StateProperties.h"
+#import "AuthenticationManager.h"
 @interface SNCProfileViewController ()
 
 
@@ -29,11 +30,13 @@
     Sonic* selectedSonic;
     User* userToBeOpen;
     BOOL showLikedSonics;
+    BOOL shouldShowFollowers;
 }
 
 - (CGRect) profileHeaderViewFrame
 {
-    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, 320.0, ProfileHeaderViewHeight);
+//    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, 320.0, ProfileHeaderViewHeight);
+    return CGRectMake(0.0, -ProfileHeaderViewHeight, 320.0, ProfileHeaderViewHeight);
 }
 
 - (CGRect) scrollContentHeaderFrame
@@ -45,8 +48,8 @@
 
 - (CGRect) sonicCollectionViewFrame
 {
-    CGFloat y =  [self profileHeaderViewFrame].origin.y;
-    CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height - y;
+    CGFloat y =  [self scrollContentHeaderFrame].origin.y;
+    CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
     return CGRectMake(0.0, y, 320.0, h);
 }
 
@@ -63,19 +66,37 @@
 {
     [super viewDidLoad];
     self.sonics = [[SonicArray alloc] init];
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-//    NSLog(@"profileHeaderViewFrame %@",CGRectCreateDictionaryRepresentation([self profileHeaderViewFrame]));
-//    NSLog(@"scrollContentHeaderFrame %@",CGRectCreateDictionaryRepresentation([self scrollContentHeaderFrame]));
-//    NSLog(@"sonicCollectionViewFrame %@",CGRectCreateDictionaryRepresentation([self sonicCollectionViewFrame]));
+    
+    self.navigationItem.title = @"Profile";
     [self initializeSonicCollectionView];
     [self initializeSonicListTableView];
-//    NSLog(@"contentInsetOfTableView top: %f", self.sonicListTableView.contentInset.top);
-//    NSLog(@"contentInsetOfColleView top: %f", self.sonicCollectionView.contentInset.top);
+    [self initializeHeaderView];
     
+    [self refresh];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refreshUser:)
+     name:NotificationUpdateViewForUser
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(userLoggedOut:)
+     name:NotificationUserLoggedOut
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(removeSonic:)
+     name:NotificationSonicDeleted
+     object:nil];
+    
+    [self configureViews];
+    
+}
+
+- (void) initializeHeaderView
+{
     self.profileHeaderView = [[ProfileHeaderView alloc] initWithFrame:[self profileHeaderViewFrame]];
-    [self.view addSubview:self.profileHeaderView];
+//    [self.view addSubview:self.profileHeaderView];
     [self.profileHeaderView.gridViewButton addTarget:self action:@selector(setGridViewModeOn) forControlEvents:UIControlEventTouchUpInside];
     [self.profileHeaderView.listViewButton addTarget:self action:@selector(setListViewModeOn) forControlEvents:UIControlEventTouchUpInside];
     [self.profileHeaderView.likedSonicsButton addTarget:self action:@selector(showLikedSonics) forControlEvents:UIControlEventTouchUpInside];
@@ -91,28 +112,12 @@
     tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
     [self.profileHeaderView.numberOfFollowingsLabel addGestureRecognizer:tapGestureRecognizer];
     
-    [self refresh];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(refreshUser:)
-     name:NotificationUpdateViewForUser
-     object:nil];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(userLoggedOut:)
-     name:NotificationUserLoggedOut
-     object:nil];
-    [self configureViews];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(removeSonic:)
-     name:NotificationSonicDeleted
-     object:nil];
-    [self configureViews];
-    
-
 }
 
+- (void) openEditProfile
+{
+    [self performSegueWithIdentifier:EditProfileSegue sender:self];
+}
 -(void) removeSonic:(NSNotification*)notification
 {
     Sonic* sonic = notification.object;
@@ -145,8 +150,6 @@
             self.profileHeaderView.userProfileImageView.image = (UIImage*) object;
         });
     }];
-    
-    
     self.profileHeaderView.usernamelabel.text = [NSString stringWithFormat:@"@%@",self.user.username];
     self.profileHeaderView.fullnameLabel.text = self.user.fullName;
     self.profileHeaderView.locationLabel.text = self.user.location;
@@ -154,16 +157,88 @@
     self.profileHeaderView.numberOfSonicsLabel.text = [NSString stringWithFormat:@"%d",self.user.sonicCount];
     self.profileHeaderView.numberOfFollowersLabel.text = [NSString stringWithFormat:@"%d",self.user.followerCount];
     self.profileHeaderView.numberOfFollowingsLabel.text = [NSString stringWithFormat:@"%d",self.user.followingCount];
+    
+    [self configureFollowButton];
 }
+
+- (void) configureFollowButton
+{
+    [self.profileHeaderView.followButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+    if([self.user.userId isEqualToString:[[[AuthenticationManager sharedInstance] authenticatedUser] userId]])
+    {
+        [self.profileHeaderView.followButton setTitle:@"Edit Profile" forState:UIControlStateNormal];
+        [self.profileHeaderView.followButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [self.profileHeaderView.followButton setBackgroundImageWithColor:rgb(245.0, 245.0, 245.0) forState:UIControlStateNormal];
+        [self.profileHeaderView.followButton.layer setBorderColor:rgb(245.0, 245.0, 245.0).CGColor];
+        [self.profileHeaderView.followButton addTarget:self action:@selector(openEditProfile) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else
+    {
+        if([self.user isBeingFollowed])
+        {
+            [self.profileHeaderView.followButton setSelected:YES];
+            [self.profileHeaderView.followButton addTarget:self action:@selector(unfollow) forControlEvents:UIControlEventTouchUpInside];
+        }
+        else
+        {
+            [self.profileHeaderView.followButton setSelected:NO];
+            [self.profileHeaderView.followButton addTarget:self action:@selector(follow) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    [self.profileHeaderView.followButton setEnabled:YES];
+}
+
+- (void) follow
+{
+    [self.profileHeaderView.followButton setEnabled:NO];
+    [SNCAPIManager followUser:self.user withCompletionBlock:^(BOOL successful) {
+        self.user.isBeingFollowed = YES;
+        self.user.followerCount++;
+        [self configureViews];
+    } andErrorBlock:^(NSError *error) {
+        [self.profileHeaderView.followButton setEnabled:YES];
+    }];
+}
+
+- (void) unfollow
+{
+    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:self.user.fullName delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Unfollow" otherButtonTitles: nil];
+    [sheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+- (void) confirmUnfollow
+{
+    [self.profileHeaderView.followButton setEnabled:NO];
+    [SNCAPIManager unfollowUser:self.user withCompletionBlock:^(BOOL successful) {
+        self.user.isBeingFollowed = NO;
+        self.user.followerCount--;
+        [self configureViews];
+    } andErrorBlock:^(NSError *error) {
+        [self.profileHeaderView.followButton setEnabled:YES];
+    }];
+}
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0)
+    {
+        [self confirmUnfollow];
+    }
+    else
+    {
+        [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    }
+    
+}
+
 
 - (void) tapGesture:(UIGestureRecognizer*)tapGesture
 {
     
     if(tapGesture.view == self.profileHeaderView.followersLabel || tapGesture.view == self.profileHeaderView.numberOfFollowersLabel){
-        
+        shouldShowFollowers = YES;
     }
     else if (tapGesture.view == self.profileHeaderView.followingsLabel || tapGesture.view == self.profileHeaderView.numberOfFollowingsLabel){
-    
+        shouldShowFollowers = NO;
     }
     [self performSegueWithIdentifier:ProfileToFollowerFollowingSegue sender:self];
 }
@@ -205,11 +280,13 @@
     [self.profileHeaderView.listViewButton setSelected:YES];
     [self.profileHeaderView.gridViewButton setSelected:NO];
     [self.profileHeaderView.likedSonicsButton setSelected:NO];
+    [self.sonicListTableView addSubview:self.profileHeaderView];
+    
     if([self.sonicListTableView isHidden] == YES){
         [self.sonicCollectionView setHidden:YES];
         [self.sonicListTableView setHidden:NO];
-        [self.sonicListTableView setContentOffset:CGPointMake(0.0, -[self profileHeaderViewFrame].size.height)];
-        [self scrollViewDidScroll:self.sonicListTableView];
+//        [self.sonicListTableView setContentOffset:CGPointMake(0.0, -[self profileHeaderViewFrame].size.height)];
+//        [self scrollViewDidScroll:self.sonicListTableView];
     }
     [self.sonicListTableView reloadData];
 }
@@ -219,12 +296,13 @@
     [self.profileHeaderView.listViewButton setSelected:NO];
     [self.profileHeaderView.gridViewButton setSelected:YES];
     [self.profileHeaderView.likedSonicsButton setSelected:NO];
+    [self.sonicCollectionView addSubview:self.profileHeaderView];
     showLikedSonics = NO;
     if([self.sonicCollectionView isHidden] == YES){
         [self.sonicCollectionView setHidden:NO];
         [self.sonicListTableView setHidden:YES];
-        [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -[self profileHeaderViewFrame].size.height)];
-        [self scrollViewDidScroll:self.sonicCollectionView];
+//        [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -[self profileHeaderViewFrame].size.height)];
+//        [self scrollViewDidScroll:self.sonicCollectionView];
     }
     [self.sonicCollectionView reloadData];
 }
@@ -277,21 +355,21 @@
     return HeightForHomeCell;
 }
 
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    CGFloat topOffset = scrollView.contentOffset.y + scrollView.contentInset.top;
-    if(topOffset < scrollView.contentInset.top){
-        CGRect frame = [self profileHeaderViewFrame];
-        frame.origin.y -= topOffset  ;
-        [self.profileHeaderView setFrame:frame];
-    } else if ( topOffset <= 0) {
-        [self.profileHeaderView setFrame:[self profileHeaderViewFrame]];
-    } else {
-        CGRect frame = [self profileHeaderViewFrame];
-        frame.origin.y -= scrollView.contentInset.top;
-        [self.profileHeaderView setFrame:frame];
-    }
-}
+//- (void) scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    CGFloat topOffset = scrollView.contentOffset.y + scrollView.contentInset.top;
+//    if(topOffset < scrollView.contentInset.top){
+//        CGRect frame = [self profileHeaderViewFrame];
+//        frame.origin.y -= topOffset  ;
+//        [self.profileHeaderView setFrame:frame];
+//    } else if ( topOffset <= 0) {
+//        [self.profileHeaderView setFrame:[self profileHeaderViewFrame]];
+//    } else {
+//        CGRect frame = [self profileHeaderViewFrame];
+//        frame.origin.y -= scrollView.contentInset.top;
+//        [self.profileHeaderView setFrame:frame];
+//    }
+//}
 
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -364,6 +442,7 @@
     }else if([segueIdentifier isEqualToString:ProfileToFollowerFollowingSegue]){
         SNCFollowerFollowingViewController* follow = segue.destinationViewController;
         [follow setUser:self.user];
+        [follow setShouldShowFollowers:shouldShowFollowers];
     }
 }
 

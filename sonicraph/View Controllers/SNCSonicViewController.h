@@ -12,6 +12,7 @@
 #import "SonicViewControllerHeaderView.h"
 #import "SNCProfileViewController.h"
 #import "TypeDefs.h"
+#import "UIViewController+CustomMethods.h"
 
 typedef enum SonicViewControllerInitiationType {
     SonicViewControllerInitiationTypeNone = 0,
@@ -47,8 +48,6 @@ typedef enum ContentType {
 
 @property UIButton* likeButton;
 @property UIButton* resonicButton;
-
-@property UIView* keyboardCloser;
 
 @property SonicViewControllerInitiationType initiationType;
 

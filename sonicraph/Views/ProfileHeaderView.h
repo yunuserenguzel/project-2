@@ -10,13 +10,15 @@
 
 #define ProfileHeaderViewHeight 240.0
 
-@interface ProfileHeaderView : UIView
+@interface ProfileHeaderView : UIView <UIGestureRecognizerDelegate>
 
 @property UIImageView* userProfileImageView;
 @property UILabel* fullnameLabel;
 @property UILabel* usernamelabel;
 @property UILabel* locationLabel;
 @property UILabel* websiteLabel;
+@property UIImageView* locationImageView;
+@property UIImageView* websiteImageView;
 
 @property UILabel* numberOfSonicsLabel;
 @property UILabel* numberOfFollowersLabel;

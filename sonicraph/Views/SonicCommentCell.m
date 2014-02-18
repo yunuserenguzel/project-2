@@ -29,10 +29,10 @@
                                               options:NSStringDrawingUsesLineFragmentOrigin
                                            attributes:attributes
                                               context:nil];
-    NSLog(@"text: %@\n rect: %@",text,CGRectCreateDictionaryRepresentation(rect));
+//    NSLog(@"text: %@\n rect: %@",text,CGRectCreateDictionaryRepresentation(rect));
     return MAX(rect.size.height + 3,24.0);
 }
-- (CGRect) usernameLabelFrame
+- (CGRect) fullnameLabelFrame
 {
     return CGRectMake(58.0, 4.0, self.frame.size.width - 132.0, 22.0);
 }
@@ -49,7 +49,7 @@
 
 - (CGRect) userProfileImageViewFrame
 {
-    return CGRectMake(5.0, 5.0, 44.0, 44.0);
+    return CGRectMake(5.0, 5.0, 49.0, 49.0);
 }
 
 - (CGRect) deleteButtonFrame
@@ -74,21 +74,21 @@
     [self.contentView addSubview:self.userProfileImageView];
     [self.userProfileImageView setClipsToBounds:YES];
     [self.userProfileImageView setUserInteractionEnabled:YES];
-    [self.userProfileImageView.layer setCornerRadius:6.0];
+    [self.userProfileImageView.layer setCornerRadius:8.0];
     [self.userProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
     
-    self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
-    [self.usernameLabel setUserInteractionEnabled:YES];
-    [self.contentView addSubview:self.usernameLabel];
+    self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
+    [self.fullnameLabel setUserInteractionEnabled:YES];
+    [self.contentView addSubview:self.fullnameLabel];
 //    self.usernameLabel.font = [self.usernameLabel.font fontWithSize:12.0];
-    self.usernameLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    self.usernameLabel.textColor = NavigationBarBlueColor;
-    self.usernameLabel.numberOfLines = 1;
+    self.fullnameLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    self.fullnameLabel.textColor = FullnameTextColor;
+    self.fullnameLabel.numberOfLines = 1;
     
     self.createdAtLabel = [[UILabel alloc] initWithFrame:[self createdAtLabelFrame]];
     [self.contentView addSubview:self.createdAtLabel];
-    self.createdAtLabel.font = [UIFont systemFontOfSize:10.0];
-    self.createdAtLabel.textColor = [UIColor grayColor];
+    self.createdAtLabel.font = [UIFont boldSystemFontOfSize:10.0];
+    self.createdAtLabel.textColor = [UIColor lightGrayColor];
     [self.createdAtLabel setTextAlignment:NSTextAlignmentRight];
     
     self.commentTextLabel = [[UILabel alloc] initWithFrame:[self textLabelFrame]];
@@ -100,14 +100,14 @@
     self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.deleteButton setFrame:[self deleteButtonFrame]];
     [self.deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
-    [self.deleteButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    self.deleteButton.titleLabel.font = [self.deleteButton.titleLabel.font fontWithSize:10.0];
+    [self.deleteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    self.deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:10.0];
     [self.deleteButton addTarget:self action:@selector(deleteButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.deleteButton];
     
     UIGestureRecognizer* tapGesture;
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
-    [self.usernameLabel addGestureRecognizer:tapGesture];
+    [self.fullnameLabel addGestureRecognizer:tapGesture];
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.userProfileImageView addGestureRecognizer:tapGesture];
 }
@@ -151,7 +151,7 @@
            }
        });
     }];
-    [self.usernameLabel setText:self.sonicComment.user.fullName];
+    [self.fullnameLabel setText:self.sonicComment.user.fullName];
     [self.commentTextLabel setText:self.sonicComment.text];
     [self.createdAtLabel setText:[self.sonicComment.createdAt formattedAsTimeAgo]];
 

@@ -32,5 +32,5 @@
 
 - (void) getThumbnailProfileImageWithCompletionBlock:(CompletionIdBlock)completionBlock;
 - (void) updateWithUser:(User*)user;
-
+- (void) fireUserUpdatedForViewNotification;
 @end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d7G-lq-cZK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d7G-lq-cZK">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -26,12 +26,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c0n-Ck-jzz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="248" y="-435"/>
+            <point key="canvasLocation" x="228" y="-432"/>
         </scene>
-        <!--Navigation Controller - Profile-->
+        <!--Navigation View Controller - Profile-->
         <scene sceneID="aE5-qH-bks">
             <objects>
-                <navigationController definesPresentationContext="YES" id="fCe-kc-u0K" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="fCe-kc-u0K" customClass="SNCNavigationViewController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="UserWhite.png" id="tNX-4D-1BX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xUP-FK-4jt">
                         <autoresizingMask key="autoresizingMask"/>
@@ -64,12 +64,11 @@
                         <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="5ii-yk-Nma"/>
                         <segue destination="vdQ-Dl-azo" kind="push" identifier="ProfileToSettingsSegue" id="KbH-sa-PvF"/>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="V84-TT-bI4"/>
-                        <segue destination="xrD-se-wHG" kind="push" identifier="MyProfileToEditProfileSegue" id="hAG-nz-L4O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pVH-57-z5s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="248" y="492"/>
+            <point key="canvasLocation" x="228" y="492"/>
         </scene>
         <!--Follower Following View Controller-->
         <scene sceneID="noc-uK-Tdr">
@@ -110,7 +109,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UvS-WY-P0t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1162" y="640"/>
+            <point key="canvasLocation" x="1614" y="36"/>
         </scene>
         <!--Edit Profile View Controller - Edit Profile-->
         <scene sceneID="HW5-Mq-Tho">
@@ -139,38 +138,30 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t88-gl-6yo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1574" y="142"/>
+            <point key="canvasLocation" x="1162" y="678"/>
         </scene>
         <!--Home View Controller - Home-->
-        <scene sceneID="kPu-WX-Z0g">
+        <scene sceneID="X6t-6R-DjG">
             <objects>
-                <tableViewController id="sdK-cW-6gb" customClass="SNCHomeViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="I9k-nd-A2G">
+                <tableViewController id="l34-W1-Kgc" customClass="SNCHomeViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="CmW-MC-VPa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="BFv-D4-HwU">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BFv-D4-HwU" id="CRm-Kn-WID">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="l34-W1-Kgc" id="IOa-xG-fyJ"/>
+                            <outlet property="delegate" destination="l34-W1-Kgc" id="ARH-3N-UJ9"/>
+                        </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Home" id="bH5-cB-bBr">
-                        <barButtonItem key="backBarButtonItem" title="Home" id="kaH-Zw-nft"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Home" id="Az6-7b-TXn"/>
                     <connections>
-                        <segue destination="N56-gF-1FD" kind="push" identifier="ViewSonicSegue" id="6rP-k5-zGF"/>
-                        <segue destination="P2x-fH-UPE" kind="push" identifier="HomeToProfileSegue" id="API-bG-IK2"/>
+                        <segue destination="P2x-fH-UPE" kind="push" identifier="ViewUserSegue" id="FBU-PY-Jaz"/>
+                        <segue destination="N56-gF-1FD" kind="push" identifier="ViewSonicSegue" id="hm7-BI-Gmx"/>
                     </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uBg-5r-JB6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QNb-Jq-fQu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="248" y="1394"/>
+            <point key="canvasLocation" x="228" y="1394"/>
         </scene>
         <!--Sonic View Controller-->
         <scene sceneID="5vf-Bv-5ay">
@@ -185,7 +176,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="lRQ-vt-j4V"/>
+                    <navigationItem key="navigationItem" id="lRQ-vt-j4V">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="8X0-4g-YN3"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="P2x-fH-UPE" kind="push" identifier="SonicToProfileSegue" id="djt-so-LCv"/>
                     </connections>
@@ -211,32 +204,33 @@
                     <connections>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="5Ah-IT-aOa"/>
                         <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="xgg-1F-Qkn"/>
+                        <segue destination="xrD-se-wHG" kind="push" identifier="EditProfileSegue" id="GWJ-K0-iU6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y6f-AS-Kv5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1162" y="2130"/>
         </scene>
-        <!--Navigation Controller - Home-->
+        <!--Navigation View Controller - Home-->
         <scene sceneID="hYG-yn-2P9">
             <objects>
-                <navigationController definesPresentationContext="YES" id="F0F-wh-NmK" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="F0F-wh-NmK" customClass="SNCNavigationViewController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="EyeWhite.png" id="FTh-dn-qqH"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ILS-Fh-ei1">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="sdK-cW-6gb" kind="relationship" relationship="rootViewController" id="ob4-Ka-6rJ"/>
+                        <segue destination="l34-W1-Kgc" kind="relationship" relationship="rootViewController" id="bYZ-j1-dmq"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W2i-vT-gdP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-211" y="1394"/>
         </scene>
-        <!--Navigation Controller - Search-->
+        <!--Navigation View Controller - Search-->
         <scene sceneID="KRa-eG-SKw">
             <objects>
-                <navigationController definesPresentationContext="YES" id="7ac-Sg-YSV" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="7ac-Sg-YSV" customClass="SNCNavigationViewController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Search" image="SearchWhite.png" id="KR4-AX-Uut"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="tIU-ir-XJ0">
                         <autoresizingMask key="autoresizingMask"/>
@@ -270,18 +264,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hId-vM-4Vh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="248" y="2327"/>
+            <point key="canvasLocation" x="228" y="2311"/>
         </scene>
-        <!--Navigation Controller - Notifications-->
+        <!--Navigation View Controller - Notifications-->
         <scene sceneID="n1w-1h-5ow">
             <objects>
-                <navigationController definesPresentationContext="YES" id="l3c-LS-owH" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="l3c-LS-owH" customClass="SNCNavigationViewController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Notifications" image="GlobeGrey.png" id="aPO-qe-ZrQ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vA8-a8-QDx">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Ahz-bF-FFb" kind="relationship" relationship="rootViewController" id="vCI-sO-VSR"/>
+                        <segue destination="POl-qt-9OX" kind="relationship" relationship="rootViewController" id="RTU-hn-AKh"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DNg-rW-N1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -289,35 +283,27 @@
             <point key="canvasLocation" x="-211" y="3149"/>
         </scene>
         <!--Notifications View Controller - Notifications-->
-        <scene sceneID="X6c-OF-CAT">
+        <scene sceneID="j5K-He-GJB">
             <objects>
-                <tableViewController id="Ahz-bF-FFb" customClass="SNCNotificationsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OXN-2I-905">
+                <tableViewController id="POl-qt-9OX" customClass="SNCNotificationsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="EkY-qa-49T">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vhh-sD-oiS">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vhh-sD-oiS" id="rp3-T9-lWo">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="Ahz-bF-FFb" id="kTX-oN-r35"/>
-                            <outlet property="delegate" destination="Ahz-bF-FFb" id="agg-ra-rfm"/>
+                            <outlet property="dataSource" destination="POl-qt-9OX" id="hBG-p6-IC3"/>
+                            <outlet property="delegate" destination="POl-qt-9OX" id="fFy-Jh-a5o"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Notifications" id="f5S-sJ-E2w">
-                        <barButtonItem key="backBarButtonItem" title="Notifications" id="YWn-Am-hr5"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Notifications" id="lP2-qS-OfU"/>
+                    <connections>
+                        <segue destination="N56-gF-1FD" kind="push" identifier="ViewSonicSegue" id="pj3-9w-wcu"/>
+                        <segue destination="P2x-fH-UPE" kind="push" identifier="ViewUserSegue" id="q27-RJ-FdK"/>
+                    </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Wxh-rF-a5L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e1g-KY-x2j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="266" y="3138"/>
+            <point key="canvasLocation" x="238" y="3151"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="efQ-c9-MNg">
@@ -462,9 +448,9 @@
     <resources>
         <image name="CameraTBWhite.png" width="29" height="24"/>
         <image name="EyeWhite.png" width="30" height="20"/>
-        <image name="GlobeGrey.png" width="24" height="24"/>
-        <image name="SearchWhite.png" width="20" height="20"/>
-        <image name="UserWhite.png" width="24" height="24"/>
+        <image name="GlobeGrey.png" width="27" height="27"/>
+        <image name="SearchWhite.png" width="25" height="25"/>
+        <image name="UserWhite.png" width="25" height="27"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -472,8 +458,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="gKM-Yi-ddK"/>
-        <segue reference="V84-TT-bI4"/>
+        <segue reference="pj3-9w-wcu"/>
+        <segue reference="q27-RJ-FdK"/>
         <segue reference="5ii-yk-Nma"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -10,6 +10,7 @@
 #import "User.h"
 #import "SNCPersonTableCell.h"
 #import "TypeDefs.h"
+#import "UIViewController+CustomMethods.h"
 
 @interface SNCFollowerFollowingViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,SNCPersonFollowableTableCellProtocol,OpenProfileProtocol>
 

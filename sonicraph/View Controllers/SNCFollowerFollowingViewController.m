@@ -19,22 +19,21 @@
 {
     NSArray* followers;
     NSArray* followings;
-    BOOL showFollowers;
     User* userToBeOpen;
 }
 
-- (CGRect) tableViewFrame
-{
-    CGRect frame = self.view.frame;
-    frame.origin.y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-    frame.size.height -= frame.origin.y;
-    return frame;
-}
+//- (CGRect) tableViewFrame
+//{
+//    CGRect frame = self.view.frame;
+//    frame.origin.y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+//    frame.size.height -= frame.origin.y;
+//    return frame;
+//}
 
 - (CGRect) segmentedControlFrame
 {
     CGFloat y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height + 6;
-    return CGRectMake(70.0, y, 180.0, 33.0);
+    return CGRectMake(70.0, y, 160.0, 33.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -50,7 +49,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    showFollowers = YES;
+//    self.shouldShowFollowers = YES;
     [self initializeTableView];
     [self initializeSegmentedControl];
     
@@ -67,6 +66,10 @@
 {
     if(![self isViewLoaded]) return;
     if(!self.user)return;
+    if(!self.shouldShowFollowers)
+    {
+        [self.segmentedControl setSelectedSegmentIndex:1];
+    }
     [SNCAPIManager getFollowersOfUser:self.user withCompletionBlock:^(NSArray *users) {
         followers = users;
         [self.tableView reloadData];
@@ -84,9 +87,11 @@
 
 - (void) initializeTableView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:[self tableViewFrame]];
+    self.tableView = [[UITableView alloc] initWithFrame:[self frameForScrollContent]];
+    self.tableView.contentInset = [self edgeInsetsForScrollContent];
     [self.view addSubview:self.tableView];
     [self.tableView setDelegate:self];
+    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
     [self.tableView setDataSource:self];
     [self.tableView registerClass:[SNCPersonFollowableTableCell class] forCellReuseIdentifier:@"Cell"];
 }
@@ -104,17 +109,17 @@
 - (void) segmentChanged:(UISegmentedControl*)segmentedControl
 {
     if([segmentedControl selectedSegmentIndex] == 0){
-        showFollowers = YES;
+        self.shouldShowFollowers = YES;
         
     } else if([segmentedControl selectedSegmentIndex] == 1){
-        showFollowers = NO;
+        self.shouldShowFollowers = NO;
     }
     [[self tableView] reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return showFollowers ? followers.count : followings.count;
+    return self.shouldShowFollowers ? followers.count : followings.count;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -125,7 +130,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SNCPersonFollowableTableCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    NSArray* array = showFollowers ? followers : followings;
+    NSArray* array = self.shouldShowFollowers ? followers : followings;
     [cell setUser:[array objectAtIndex:indexPath.row]];
     [cell setDelegate:self];
     return cell;
@@ -138,7 +143,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (showFollowers) {
+    if (self.shouldShowFollowers) {
         [self openProfileForUser:[followers objectAtIndex:indexPath.row]];
     } else {
         [self openProfileForUser:[followings objectAtIndex:indexPath.row]];

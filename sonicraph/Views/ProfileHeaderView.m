@@ -30,12 +30,19 @@
 
 - (CGRect) locationLabelFrame
 {
-    return CGRectMake(140.0, 54.0, 160.0, 20.0);
+    return CGRectMake(154.0, 54.0, 160.0, 20.0);
 }
-
+- (CGRect) locationImageViewFrame
+{
+    return CGRectMake(140.0, 58.0, 12.0, 12.0);
+}
 - (CGRect) websiteLabelFrame
 {
-    return CGRectMake(140.0, 70.0, 160.0, 20.0);
+    return CGRectMake(154.0, 70.0, 160.0, 20.0);
+}
+- (CGRect) websiteImageViewFrame
+{
+    return CGRectMake(140.0, 74.0, 12.0, 12.0);
 }
 - (CGRect) followButtonFrame
 {
@@ -111,7 +118,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setBackgroundColor:rgb(245,245,245)];
+//        [self setBackgroundColor:rgb(245,245,245)];
+        [self setBackgroundColor:[UIColor whiteColor]];
         [self initProfileImageAndUserInfoLabels];
         [self initCountableLabels];
         [self initTabButtons];
@@ -121,6 +129,9 @@
         [self.followButton setBackgroundImageWithColor:[UIColor whiteColor] forState:UIControlStateSelected];
         [self.followButton setFrame:[self followButtonFrame]];
         [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
+        [self.followButton setTitle:@"Following" forState:UIControlStateSelected];
+        [self.followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.followButton setTitleColor:PinkColor forState:UIControlStateSelected];
         [self.followButton.layer setCornerRadius:5.0];
         self.followButton.layer.borderColor = PinkColor.CGColor;
         self.followButton.layer.borderWidth = 1.0;
@@ -143,7 +154,7 @@
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
     self.fullnameLabel.font = [UIFont boldSystemFontOfSize:16.0];
-    self.fullnameLabel.textColor = NavigationBarBlueColor;
+    self.fullnameLabel.textColor = FullnameTextColor;
     [self addSubview:self.fullnameLabel];
     
     self.usernamelabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
@@ -156,11 +167,24 @@
     self.locationLabel.textColor = [UIColor lightGrayColor];
     [self addSubview:self.locationLabel];
     
+    self.locationImageView = [[UIImageView alloc] initWithFrame:[self locationImageViewFrame]];
+    [self addSubview:self.locationImageView];
+    self.locationImageView.image = [UIImage imageNamed:@"Location.png"];
+    self.locationImageView.contentMode = UIViewContentModeScaleAspectFit;
+    
     self.websiteLabel = [[UILabel alloc] initWithFrame:[self websiteLabelFrame]];
     self.websiteLabel.font = [UIFont boldSystemFontOfSize:13.0];
     self.websiteLabel.textColor = [UIColor lightGrayColor];
-//    self.websiteLabel set
     [self addSubview:self.websiteLabel];
+    
+    self.websiteImageView = [[UIImageView alloc] initWithFrame:[self websiteImageViewFrame]];
+    [self addSubview:self.websiteImageView];
+    self.websiteImageView.image = [UIImage imageNamed:@"WebIcon.png"];
+    self.websiteImageView.contentMode = UIViewContentModeScaleAspectFit;
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecoznizer shouldReceiveTouch:(UITouch *)touch{
+    return YES;
 }
 
 - (void) initCountableLabels
@@ -174,8 +198,8 @@
     [@[self.numberOfSonicsLabel,self.numberOfFollowingsLabel,self.numberOfFollowersLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
         [self addSubview:label];
         label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont boldSystemFontOfSize:18.0];
-        label.textColor = [UIColor grayColor];
+        label.font = [UIFont boldSystemFontOfSize:20.0];
+        label.textColor = PinkColor;
         [label setUserInteractionEnabled:YES];
     }];
     
@@ -214,8 +238,8 @@
     
     self.likedSonicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.likedSonicsButton setFrame:[self likedSonicsButtonFrame]];
-    [self.likedSonicsButton setImage:[UIImage imageNamed:@"HeartGrey.png"] forState:UIControlStateNormal];
-    [self.likedSonicsButton setImage:[UIImage imageNamed:@"HeartPink.png"] forState:UIControlStateSelected];
+    [self.likedSonicsButton setImage:[UIImage imageNamed:@"LikeTabGrey.png"] forState:UIControlStateNormal];
+    [self.likedSonicsButton setImage:[UIImage imageNamed:@"LikeTabPink.png"] forState:UIControlStateSelected];
     [self.buttonHolderView addSubview:self.likedSonicsButton];
     [self.likedSonicsButton setHidden:YES];
     

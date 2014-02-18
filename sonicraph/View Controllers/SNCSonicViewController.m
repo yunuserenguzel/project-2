@@ -34,7 +34,7 @@ void animateWithFrameRecursive(NSDate* startTime, CGFloat duration, AnimationFra
         ratio = 1.0;
     }
     frame(ratio);
-    if (ratio < 1.0){
+    if (ratio <= 1.0){
         dispatch_async(dispatch_get_main_queue(), ^{
             animateWithFrameRecursive(startTime, duration, frame);
         });
@@ -50,16 +50,19 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 {
     ContentType currentContentType;
     BOOL keyboardIsShown;
+    User* selectedUser;
 }
+
+
 
 - (CGRect) tabbarMaxFrame
 {
-    return CGRectMake(0.0, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
+    return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height - self.tabBarController.tabBar.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
 }
 
 - (CGRect) tabbarMinFrame
 {
-    return CGRectMake(0.0, self.view.frame.size.height + self.tabBarController.tabBar.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
+    return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height + self.tabBarController.tabBar.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
 }
 - (CGRect) keyBoardCloserFrame
 {
@@ -67,25 +70,25 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 }
 - (CGRect) tableHeaderViewFrame
 {
-    return CGRectMake(0.0, 0.0, 320.0, HeaderViewMaxHeight + self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height);
+    return CGRectMake(0.0, 0.0, 320.0, HeaderViewMaxHeight);
 }
 - (CGRect) headerViewFrame
 {
-    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height, 320.0, HeaderViewMaxHeight);
+    return CGRectMake(0.0,0.0, 320.0, HeaderViewMaxHeight);
 }
 - (CGRect) tabActionBarContentFrame
 {
-    return CGRectMake(0.0, 0.0, 320.0, 44.0);
+    return CGRectMake(0.0, 0.0, 320.0, self.tabBarController.tabBar.frame.size.height);
 }
 
 - (CGRect) tabActionBarViewMaxFrame
 {
-    return CGRectMake(0.0, self.view.frame.size.height + 88.0, 320.0, 44.0);
+    return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height + 88.0, 320.0, 44.0);
 }
 
 - (CGRect) tabActionBarViewMinFrame
 {
-    return CGRectMake(0.0, self.view.frame.size.height - 44.0, 320.0, 44.0);
+    return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height - 44.0, 320.0, 44.0);
 }
 
 - (CGRect) commentFieldFrame
@@ -97,18 +100,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 {
     return CGRectMake(260.0, 0.0, 60.0, 44.0);
 }
-
-
-
-- (void) commentDeletedNotification:(NSNotification*)notification
-{
-    SonicComment* comment = notification.object;
-    if([comment isKindOfClass:[SonicComment class]]){
-        [self.commentsContent removeObject:comment];
-        [self reloadData];
-    }
-}
-
 
 - (void)viewDidLoad
 {
@@ -144,18 +135,25 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
      name:NotificationCommentDeleted
      object:nil];
     [self configureViews];
-    
 
+}
+- (void) commentDeletedNotification:(NSNotification*)notification
+{
+    SonicComment* comment = notification.object;
+    if([comment isKindOfClass:[SonicComment class]]){
+        [self.commentsContent removeObject:comment];
+        [self reloadData];
+    }
 }
 - (void) initTableView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
-//    [self.tableView setFrame:self.view.frame];
+    CGRect frame = [self frameForScrollContent];
+    frame.size.height = self.view.frame.size.height - [self heightOfNavigationBar];
+    self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView registerClass:[SonicCommentCell class] forCellReuseIdentifier:CellIdentifierSonicComment];
     [self.tableView registerClass:[SNCPersonTableCell class] forCellReuseIdentifier:SNCPersonTableCellIdentifier];
-    [self.tableView setContentInset:UIEdgeInsetsMake(0.0, 0.0, 44.0, 0.0)];
     [self.tableView setShowsVerticalScrollIndicator:NO];
     [self.tableView setShowsHorizontalScrollIndicator:NO];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
@@ -168,11 +166,13 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 - (void) initTabsViews
 {
     self.tabActionBarView = [[UIView alloc] initWithFrame:[self tabActionBarViewMaxFrame]];
-    [self.view addSubview:self.tabActionBarView];
+    [self.tabActionBarView setUserInteractionEnabled:YES];
+    [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.tabActionBarView];
     self.tabActionBarView.backgroundColor = rgb(235, 235, 235);
     
     self.writeCommentView = [[UIView alloc] initWithFrame:[self tabActionBarContentFrame]];
     [self.writeCommentView.layer setCornerRadius:5.0];
+    [self.writeCommentView setUserInteractionEnabled:YES];
     
     self.commentField = [[UITextField alloc] initWithFrame:[self commentFieldFrame]];
     [self.commentField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)]];
@@ -180,6 +180,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     [self.commentField setPlaceholder:@"Say something nice.."];
     [self.commentField setFont:[self.commentField.font fontWithSize:14.0]];
     [self.commentField setBackgroundColor:[UIColor whiteColor]];
+    [self.commentField setUserInteractionEnabled:YES];
     [self.commentField.layer setCornerRadius:5.0];
     [self.commentField.layer setBorderWidth:1.0];
     [self.commentField.layer setBorderColor:self.tabActionBarView.backgroundColor.CGColor];
@@ -242,7 +243,10 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 {
     [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
-
+- (void) scrollToContentTop
+{
+    [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight) animated:YES];
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -250,8 +254,18 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     [UIView animateWithDuration:duration animations:^{
         [self.tabBarController.tabBar setFrame:[self tabbarMaxFrame]];
     }];
+    [self closeKeyboard];
+    [self.tabActionBarView removeFromSuperview];
 }
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.tabActionBarView];
+    [self setTableViewContentSize];
+    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
+        [self.commentField becomeFirstResponder];
+        self.initiationType = SonicViewControllerInitiationTypeNone;
+    }
+}
 - (void) initiateFor:(SonicViewControllerInitiationType)initiationType
 {
     self.initiationType = initiationType;
@@ -261,7 +275,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 {
     static CGFloat navigationHeight = -1.0;
     if(navigationHeight == -1.0){
-        navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+        navigationHeight =  [self heightOfNavigationBar];
     }
     CGFloat height;
     CGFloat ratio = [self extractRatioFromTopOffset:scrollView.contentOffset.y  andHeight:&height];
@@ -272,7 +286,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
             [self.view addSubview:self.headerView];
         }
         CGRect frame = [self headerViewFrame];
-        frame.origin.y = navigationHeight + HeaderViewMinHeight - HeaderViewMaxHeight;
+        frame.origin.y = HeaderViewMinHeight - HeaderViewMaxHeight;
         [self.headerView setFrame:frame];
     } else {
         if(self.headerView.superview != self.tableView.tableHeaderView){
@@ -293,62 +307,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 }
 
 
-//
-//- (void) setContentSize
-//{
-//    CGFloat height = HeaderViewMaxHeight + self.tableView.frame.size.height - 44.0;
-//    if(self.tableView.contentSize.height < height){
-//        self.tableView.contentSize = CGSizeMake(self.tableView.contentSize.width, height );
-//    }
-//}
-
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    [self setContentSize];
-//    static CGFloat navigationHeight = -1.0;
-//    if(navigationHeight == -1.0){
-//        navigationHeight =  self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-//    }
-//    CGFloat height;
-//    CGFloat ratio = [self extractRatioFromTopOffset:scrollView.contentOffset.y  andHeight:&height];
-//    ratio = ratio > 0.0 ? ratio : 0.0;
-//    [self.headerView reorganizeForRatio:ratio];
-//    NSLog(@"height: %f",height);
-//    if (height < HeaderViewMinHeight - 66.0){
-//        CGFloat translateAmount = HeaderViewMinHeight - 66.0 - height;
-//        translateAmount = translateAmount > 56.0 ? 56.0 : translateAmount;
-//        if (self.headerView.superview != self.view){
-//            [self.view addSubview:self.headerView];
-//        }
-//        CGRect frame = [self headerViewFrame];
-//        frame.origin.y = navigationHeight + HeaderViewMinHeight - HeaderViewMaxHeight - translateAmount;
-//        [self.headerView setFrame:frame];
-//    }
-//    else if(height <= HeaderViewMinHeight){
-//        if (self.headerView.superview != self.view){
-//            [self.view addSubview:self.headerView];
-//        }
-//        CGRect frame = [self headerViewFrame];
-//        frame.origin.y = navigationHeight + HeaderViewMinHeight - HeaderViewMaxHeight;
-//        [self.headerView setFrame:frame];
-//    }
-//    else {
-//        if(self.headerView.superview != self.tableView.tableHeaderView){
-//            [self.tableView.tableHeaderView addSubview:self.headerView];
-//        }
-//        [self.headerView setFrame:[self headerViewFrame]];
-//    }
-//    if (ratio < 0.3){
-//        [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:1.0 - (ratio/0.3)*1.0]];
-//    } else {
-//        [self.headerView setBackgroundColor:[rgb(245, 245, 245) colorWithAlphaComponent:0.0]];
-//    }
-//    
-//    [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self tabActionBarViewMinFrame], ratio)];
-//
-//    [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio > 1.0 ? 1.0 : ratio)];
-//}
-
 - (CGFloat) extractRatioFromTopOffset:(CGFloat)topOffset andHeight:(inout CGFloat*)height
 {
     CGFloat tempHeight = HeaderViewMaxHeight - topOffset;
@@ -358,42 +316,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     return (tempHeight-HeaderViewMinHeight) / (HeaderViewMaxHeight - HeaderViewMinHeight);
 }
 
-//-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-//{
-//    [self calculateAndAnimateToContentOffset];
-//}
-//
-//- (void) calculateAndAnimateToContentOffset
-//{
-//    CGFloat height;
-//    CGFloat ratio = [self extractRatioFromTopOffset:self.tableView.contentOffset.y andHeight:&height];
-//    
-//    if(ratio > 0.0 && ratio < 1.0){
-//        CGFloat startY = self.tableView.contentOffset.y;
-//        CGFloat endY;
-//        CGFloat velocityY = [self.tableView.panGestureRecognizer velocityInView:self.tableView].y;
-//        if(velocityY > 0.0){
-//            endY = 0.0;
-//        } else {
-//            endY = HeaderViewMaxHeight - HeaderViewMinHeight;
-//        }
-//        [self.tableView setContentOffset:self.tableView.contentOffset];
-//        animateWithFrame(0.3, ^(CGFloat ratio) {
-//            [self.tableView setContentOffset:CGPointMake(0.0, startY - (startY - endY) * ratio)];
-//        });
-//    }
-//}
-//
-//- (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-//{
-////    if (velocity.y != 0.0){
-////        return;
-////    }
-//    [self calculateAndAnimateToContentOffset];
-////    if (scrollView.contentOffset.y < HeaderViewMaxHeight - HeaderViewMinHeight) {
-////        *targetContentOffset = CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight);
-////    }
-//}
 
 - (void) configureViews
 {
@@ -403,21 +325,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     else if(self.sonic == nil){
         return;
     }
-    
-    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite || self.initiationType == SonicViewControllerInitiationTypeCommentRead){
-        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
-        [self setCurrentContentType:ContentTypeComments];
-        [self.headerView.segmentedBar setSelectedSegmentIndex:1];
-    } else if(self.initiationType == SonicViewControllerInitiationTypeLikeRead){
-        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
-        [self setCurrentContentType:ContentTypeLikes];
-        [self.headerView.segmentedBar setSelectedSegmentIndex:0];
-    } else if(self.initiationType == SonicViewControllerInitiationTypeResonicRead){
-        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
-        [self setCurrentContentType:ContentTypeResonics];
-        [self.headerView.segmentedBar setSelectedSegmentIndex:2];
-    }
-    
     if (self.sonic.isLikedByMe){
         [self setLikeButtonSelected];
     } else {
@@ -425,7 +332,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }
     if ([self.sonic.owner.userId isEqualToString:[[[AuthenticationManager sharedInstance] authenticatedUser] userId]]){
         [self setResonicButtonUnselected];
-//        [self.resonicButton setImage:[UIImage imageNamed:@"ResonicLightGrey.png"] forState:UIControlStateNormal];
         [self.resonicButton setEnabled:NO];
     }
     else if (self.sonic.isResonicedByMe){
@@ -433,7 +339,32 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     } else {
         [self setResonicButtonUnselected];
     }
-    [self refreshContent];
+    BOOL scrollToContentTop = NO;
+    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite || self.initiationType == SonicViewControllerInitiationTypeCommentRead){
+        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+        [self setCurrentContentType:ContentTypeComments];
+        [self.headerView.segmentedBar setSelectedSegmentIndex:1];
+        scrollToContentTop = YES;
+    } else if(self.initiationType == SonicViewControllerInitiationTypeLikeRead){
+        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+        [self setCurrentContentType:ContentTypeLikes];
+        [self.headerView.segmentedBar setSelectedSegmentIndex:0];
+        scrollToContentTop = YES;
+    } else if(self.initiationType == SonicViewControllerInitiationTypeResonicRead){
+        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+        [self setCurrentContentType:ContentTypeResonics];
+        [self.headerView.segmentedBar setSelectedSegmentIndex:2];
+        scrollToContentTop = YES;
+    }
+//    else {
+//        [self.tableView setContentOffset:CGPointMake(0.0,0.0)];
+//        [self setCurrentContentType:ContentTypeComments];
+//        [self.headerView.segmentedBar setSelectedSegmentIndex:1];
+//        scrollToContentTop = NO;
+//    }
+    
+    [self refreshContentWithScrollToContentTop:scrollToContentTop];
+    
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
     self.headerView.usernameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.username] ;
     self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
@@ -447,14 +378,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self setTableViewContentSize];
-    if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
-        [self.commentField becomeFirstResponder];
-        self.initiationType = SonicViewControllerInitiationTypeNone;
-    }
-}
+
 
 - (void)setSonic:(Sonic *)sonic
 {
@@ -525,16 +449,21 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
             break;
     }
 }
-- (void) refreshContent
+- (void) refreshContentWithScrollToContentTop:(BOOL)scrollToContentTop
 {
     [self reloadData];
-    [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
+    if(scrollToContentTop)
+    {
+        [self scrollToContentTop];
+    }
     if(currentContentType == ContentTypeLikes){
         [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
             self.likesContent = [users mutableCopy];
             [self reloadData];
-            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
-            
+            if(scrollToContentTop)
+            {
+                [self scrollToContentTop];
+            }
         } andErrorBlock:^(NSError *error) {
             
         }];
@@ -543,7 +472,10 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
         [SNCAPIManager getCommentsOfSonic:self.sonic withCompletionBlock:^(NSArray *comments) {
             self.commentsContent = [comments mutableCopy];
             [self reloadData];
-            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
+            if(scrollToContentTop)
+            {
+                [self scrollToContentTop];
+            }
         } andErrorBlock:^(NSError *error) {
             
         }];
@@ -552,7 +484,10 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
         [SNCAPIManager getResonicsOfSonic:self.sonic withCompletionBlock:^(NSArray *resonics) {
             self.resonicsContent = [resonics mutableCopy];
             [self reloadData];
-            [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight-HeaderViewMinHeight) animated:YES];
+            if(scrollToContentTop)
+            {
+                [self scrollToContentTop];
+            }
         } andErrorBlock:^(NSError *error) {
             
         }];
@@ -566,19 +501,19 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
         case 0:
             [self setCurrentContentType:ContentTypeLikes];
             if(self.likesContent == nil|| self.likesContent.count == 0){
-                [self refreshContent];
+                [self refreshContentWithScrollToContentTop:YES];
             }
             break;
         case 1:
             [self setCurrentContentType:ContentTypeComments];
             if(self.commentsContent == nil || self.commentsContent.count == 0){
-                [self refreshContent];
+                [self refreshContentWithScrollToContentTop:YES];
             }
             break;
         case 2:
             [self setCurrentContentType:ContentTypeResonics];
             if(self.resonicsContent == nil || self.resonicsContent.count == 0){
-                [self refreshContent];
+                [self refreshContentWithScrollToContentTop:YES];
             }
             break;
             
@@ -607,7 +542,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 - (void) setLikeButtonSelected
 {
     [self.likeButton setBackgroundImageWithColor:PinkColor forState:UIControlStateNormal];
-    [self.likeButton setImage:[UIImage imageNamed:@"HeartWhite.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"LikeWhite.png"] forState:UIControlStateNormal];
     [self.likeButton setTitle:@"You liked this sonic :)" forState:UIControlStateNormal];
     [self.likeButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.likeButton addTarget:self action:@selector(unlikeSonic) forControlEvents:UIControlEventTouchUpInside];
@@ -617,7 +552,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 - (void) setLikeButtonUnselected
 {
     [self.likeButton setBackgroundImageWithColor:self.tabActionBarView.backgroundColor forState:UIControlStateNormal];
-    [self.likeButton setImage:[UIImage imageNamed:@"HeartPink.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"LikePink.png"] forState:UIControlStateNormal];
     [self.likeButton setTitle:@"" forState:UIControlStateNormal];
     [self.likeButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
@@ -732,7 +667,17 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 }
 
 #pragma mark - Table view methods
-
+- (void) setTableViewContentSize
+{
+    
+    CGFloat height = HeaderViewMaxHeight + self.tableView.frame.size.height - HeaderViewMinHeight;
+    CGFloat insetBottom = height - self.tableView.contentSize.height;
+    NSLog(@"insetBottom %f, tabbar: %f", insetBottom, self.tabBarController.tabBar.frame.size.height);
+    insetBottom = MAX(insetBottom, self.tabBarController.tabBar.frame.size.height);
+//    insetBottom = MAX(insetBottom, self.tabBarController.tabBar.frame.size.height);
+    self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, insetBottom, 0.0);
+    
+}
 - (void) reloadData
 {
     CGSize firstSize = self.tableView.contentSize;
@@ -778,16 +723,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }
 }
 
-- (void) setTableViewContentSize
-{
-    CGFloat height = HeaderViewMaxHeight + self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height;
-    if(self.tableView.contentSize.height < height - 44.0){
-        self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, height - self.tableView.contentSize.height, 0.0);
-    } else {
-        self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 44.0, 0.0);
-    }
-    
-}
+
 
 - (void) writeComment
 {
@@ -829,7 +765,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void) closeKeyboard
 {
-    [self.keyboardCloser removeFromSuperview];
     [self.commentField resignFirstResponder];
 }
 
@@ -854,12 +789,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
         return;
     }
     
-    self.keyboardCloser = [[UIView alloc] initWithFrame:[self keyBoardCloserFrame]];
-    //    [self.keyboardCloser setAlpha:0.0];
-    [self.keyboardCloser setUserInteractionEnabled:YES];
-    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
-    [self.keyboardCloser addGestureRecognizer:tapGesture];
-    [self.view insertSubview:self.keyboardCloser belowSubview:self.tabActionBarView];
+    [self.view addGestureRecognizer:[[UIGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)]];
     
     NSDictionary* userInfo = [n userInfo];
     
@@ -872,7 +802,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     // The kKeyboardAnimationDuration I am using is 0.3
     [UIView setAnimationDuration:0.3];
     CGRect frame = [self tabActionBarViewMinFrame];
-    frame.origin.y = self.view.frame.size.height - keyboardSize.height - frame.size.height;
+    frame.origin.y = frame.origin.y - keyboardSize.height;
     [self.tabActionBarView setFrame:frame];
     self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
     [UIView commitAnimations];
@@ -882,15 +812,16 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void) openProfileForUser:(User *)user
 {
+    selectedUser = user;
     [self performSegueWithIdentifier:SonicToProfileSegue sender:self];
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:SonicToProfileSegue]) {
         SNCProfileViewController* profile = segue.destinationViewController;
-        [profile setUser:self.sonic.owner];
-        
+        [profile setUser:selectedUser];
     }
 }
 - (void)dealloc

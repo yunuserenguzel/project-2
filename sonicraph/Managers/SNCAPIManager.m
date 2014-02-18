@@ -493,27 +493,49 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 
 + (NSString*) sonicCacheDirectory
 {
-    
-    NSString* cacheFolder = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"cached_sonics"];
-    
-    [[NSFileManager defaultManager] createDirectoryAtPath:cacheFolder
-                              withIntermediateDirectories:NO
-                                               attributes:nil
-                                                    error:nil];
+    static NSString* cacheFolder = nil;
+    if(cacheFolder == nil)
+    {
+        cacheFolder = [SNCAPIManager getAndcreateFolderAtApplicationDirectory:@"cached_sonics"];
+    }
     return cacheFolder;
 }
 
 + (NSString*) imageCacheDirectory
 {
-    NSString* cacheFolder = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"cached_images"];
-    
-    [[NSFileManager defaultManager] createDirectoryAtPath:cacheFolder
-                              withIntermediateDirectories:NO
-                                               attributes:nil
-                                                    error:nil];
+    static NSString* cacheFolder = nil;
+    if(cacheFolder == nil)
+    {
+        cacheFolder = [SNCAPIManager getAndcreateFolderAtApplicationDirectory:@"cached_images"];
+    }
     return cacheFolder;
 }
 
++ (NSString*) getAndcreateFolderAtApplicationDirectory:(NSString*)folderName
+{
+    NSString* cacheFolder;
+    NSError* error;
+    NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    cacheFolder = [[dirs objectAtIndex:0] stringByAppendingPathComponent:folderName];
+    [[NSFileManager defaultManager]
+     createDirectoryAtPath:cacheFolder
+     withIntermediateDirectories:YES
+     attributes:nil
+     error:&error];
+    if(error)
+    {
+        NSLog(@"[SNCAPIManager.m %d] %@",__LINE__,error);
+    }
+    [[NSURL fileURLWithPath:cacheFolder]
+     setResourceValue:[NSNumber numberWithBool:YES]
+     forKey:NSURLIsExcludedFromBackupKey
+     error:&error];
+    if(error)
+    {
+        NSLog(@"[SNCAPIManager.m %d] %@",__LINE__,error);
+    }
+    return cacheFolder;
+}
 
 + (MKNetworkOperation*) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 {

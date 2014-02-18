@@ -30,7 +30,7 @@
 }
 - (CGRect) createdAtLabelMaxFrame
 {
-    return CGRectMake(64.0, 40.0, 200.0, 16.0);
+    return CGRectMake(320.0-60.0, 5.0, 55.0, 20.0);
 }
 - (CGRect) sonicPlayerViewMaxFrame
 {
@@ -55,7 +55,7 @@
 }
 - (CGRect) createdAtLabelMinFrame
 {
-    return CGRectMake(64.0, HeaderViewMaxHeight - HeaderViewMinHeight + 40.0, 200.0, 16.0);
+    return CGRectMake(320.0-60.0, HeaderViewMaxHeight - HeaderViewMinHeight + 5.0, 55.0, 20.0);
 }
 - (CGRect) sonicPlayerViewMinFrame
 {
@@ -117,7 +117,7 @@
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelMaxFrame]];
     [self.fullnameLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
-    [self.fullnameLabel setTextColor:NavigationBarBlueColor];
+    [self.fullnameLabel setTextColor:FullnameTextColor];
     [self addSubview:self.fullnameLabel];
     
     self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelMaxFrame]];
@@ -126,38 +126,13 @@
     [self addSubview:self.usernameLabel];
     
     self.createdAtLabel = [[UILabel alloc] initWithFrame:[self createdAtLabelMaxFrame]];
-    [self.createdAtLabel setFont:[UIFont systemFontOfSize:10.0]];
-    [self.createdAtLabel setTextColor:[UIColor grayColor]];
+    [self.createdAtLabel setTextAlignment:NSTextAlignmentRight];
+    [self.createdAtLabel setFont:[UIFont boldSystemFontOfSize:10.0]];
+    [self.createdAtLabel setTextColor:[UIColor lightGrayColor]];
     [self addSubview:self.createdAtLabel];
 }
 - (void) inititalizeTab
 {
-//    self.segmentedBar = [[SegmentedBar alloc] initWithFrame:[self segmentedBarMaxFrame]];
-//    [self addSubview:self.segmentedBar];
-//    
-//    self.likesBarItem = [SegmentedBarItem
-//                         itemWithNormalImage:[UIImage imageNamed:@"HeartGrey.png"]
-//                         selectedImage:[UIImage imageNamed:@"HeartPink.png"]
-//                         title:@"Likes"
-//                         subtitle:@" "];
-//    
-//    self.commentsBarItem = [SegmentedBarItem
-//                            itemWithNormalImage:[UIImage imageNamed:@"CommentGrey.png"]
-//                            selectedImage:[UIImage imageNamed:@"CommentPink.png"]
-//                            title:@"Comments"
-//                            subtitle:@" "];
-//    
-//    self.resonicsBarItem = [SegmentedBarItem
-//                            itemWithNormalImage:[UIImage imageNamed:@"ReSonicGrey.png"]
-//                            selectedImage:[UIImage imageNamed:@"ReSonicPink.png"]
-//                            title:@"Resonics"
-//                            subtitle:@" "];
-//
-//    NSArray* segmentItems = @[self.likesBarItem,
-//                              self.commentsBarItem,
-//                              self.resonicsBarItem];
-//    
-//    [self.segmentedBar setItems:segmentItems];
     self.segmentedBar = [[UISegmentedControl alloc]
                          initWithItems:@[@"Likes",@"Comments",@"Resonics"]];
     [self addSubview:self.segmentedBar];

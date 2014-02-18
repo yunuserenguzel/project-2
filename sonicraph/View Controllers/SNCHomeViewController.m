@@ -20,7 +20,6 @@
 
 @property SonicArray* sonics;
 
-@property UIRefreshControl* refreshControl;
 @property FBLoginView* fbLoginView;
 
 @end
@@ -33,27 +32,22 @@
     User* userToBeOpen;
     SonicViewControllerInitiationType sonicViewControllerInitiationType;
 }
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:style];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
 // 45, 173, 254
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     indexOfCellToBeIncreased = -1;
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    [self.navigationController.navigationBar setBarTintColor:NavigationBarBlueColor];
+    [self initTableView];
     
-    [self.tableView setBackgroundColor:CellSpacingGrayColor];
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [self.tableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(newSonicArrived:)
@@ -100,6 +94,29 @@
     }
 
 }
+- (void) initTableView
+{
+//    self.tableView = [[UITableView alloc] initWithFrame:[self frameForScrollContent] style:UITableViewStylePlain];
+    self.tableView.contentInset = [self edgeInsetsForScrollContent];
+    [self.tableView setBackgroundColor:CellSpacingGrayColor];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.tableView setScrollsToTop:YES];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.tableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
+    [self.tableView setShowsVerticalScrollIndicator:NO];
+    [self.tableView setShowsHorizontalScrollIndicator:NO];
+    [self.tableView setTableFooterView:[UIView new]];
+    [self.tableView setTableHeaderView:[UIView new]];
+//    [self.view addSubview:self.tableView];
+}
+
+- (void) initRefreshController
+{
+    self.refreshControl = [[UIRefreshControl alloc] init];
+//    [self.tableView insertSubview:self.refreshControl atIndex:0];
+    [self.refreshControl addTarget:self action:@selector(refreshFromServer) forControlEvents:UIControlEventValueChanged];
+}
 
 - (void) removeSonic:(NSNotification*)notification
 {
@@ -122,12 +139,6 @@
 }
 
 
-- (void) initRefreshController
-{
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    self.refreshControl = self.refreshControl;
-    [self.refreshControl addTarget:self action:@selector(refreshFromServer) forControlEvents:UIControlEventValueChanged];
-}
 
 - (void) refreshFromServer
 {
@@ -246,21 +257,21 @@
     [cellWiningTheCenter cellLostCenterOfTableView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if(!decelerate){
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self autoPlay:scrollView];
-        });
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self autoPlay:scrollView];
-    });
-}
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+//{
+//    if(!decelerate){
+//        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//            [self autoPlay:scrollView];
+//        });
+//    }
+//}
+//
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [self autoPlay:scrollView];
+//    });
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -268,6 +279,12 @@
         return HeightForHomeCell + 44.0;
     }
     return HeightForHomeCell;
+}
+
+- (void) openProfileForUser:(User *)user
+{
+    userToBeOpen = user;
+    [self performSegueWithIdentifier:ViewUserSegue sender:self];
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -282,11 +299,5 @@
     }
 }
 
-- (void) openProfileForUser:(User *)user
-{
-    userToBeOpen = user;
-    [self performSegueWithIdentifier:HomeToProfileSegue sender:self];
-
-}
 
 @end

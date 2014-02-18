@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "SNCNotificationCell.h"
+#import "UIViewController+CustomMethods.h"
 
-@interface SNCNotificationsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SNCNotificationsViewController : UITableViewController  <UITableViewDataSource, UITableViewDelegate>
+
+//@property UITableView* tableView;
 
 @end

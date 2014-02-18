@@ -16,11 +16,15 @@
 
 #define SonicPlayerViewSize CGSizeMake(320.0,322.0)
 #define SonicCollectionViewCellSize CGSizeMake(106.0,106.0)
-#define HeightForHomeCell 460.0
+#define HeightForHomeCell 455.0
 
 #define NavigationBarBlueColor rgb(45.0, 173.0, 254.0)
 #define PinkColor rgb(244.0, 75.0, 122.0)
-#define CellSpacingGrayColor rgb(230.0, 230.0, 230.0) 
+#define DarkPinkColor rgb(244.0*0.9, 75.0*0.9, 122.0*0.9)
+#define CellSpacingGrayColor rgb(245.0, 245.0, 245.0)
+#define CellSpacingLineGrayColor rgb(230.0, 230.0, 230.0)
+
+#define FullnameTextColor rgb(101.0,101.0,101.0)
 
 #define SonicPlaceholderImage [UIImage imageNamed:@"PhotoBaseWithLogo.png"]
 

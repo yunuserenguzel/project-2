@@ -74,10 +74,14 @@
         self.sonicCount = user.sonicCount;
         self.followerCount = user.followerCount;
         self.followingCount = user.followingCount;
-        [[NSNotificationCenter defaultCenter]
-         postNotificationName:NotificationUpdateViewForUser
-         object:self];
     }
+}
+
+- (void)fireUserUpdatedForViewNotification
+{
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:NotificationUpdateViewForUser
+     object:self];
 }
 
 - (void)setProfileImageUrl:(NSString *)profileImageUrl

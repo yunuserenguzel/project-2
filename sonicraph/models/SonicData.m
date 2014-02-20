@@ -56,6 +56,11 @@
 + (SonicData *)sonicDataFromFile:(NSString *)filePath
 {
     NSString* sonicDataString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError* error;
+        NSURL *fileUrl = [NSURL URLWithString:filePath];
+        [fileUrl setResourceValue:[NSDate date] forKey:NSURLContentModificationDateKey error:&error];
+    });
     return [SonicData sonicDataWithJsonDataString:sonicDataString];
 }
 + (SonicData *)sonicDataWithSonic:(Sonic *)sonic
@@ -109,7 +114,7 @@
 }
 
 
-- (void)setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock
+- (void)setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicDataBlock) sonicBlock
 {
     if(self.rawSound == nil){
         NSLog(@"setSoundCroppingFrom method requires rawSound to be set");

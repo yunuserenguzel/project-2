@@ -76,6 +76,7 @@
 		AEC59D6A18AA0DFC00E66E41 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEC59C2A18AA0DF100E66E41 /* FacebookSDK.framework */; };
 		AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECBA6401856408600DE8EDE /* SNCLoginViewController.m */; };
 		AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AECBA64218564D9D00DE8EDE /* QuartzCore.framework */; };
+		AED0C48818B3598900725867 /* SNCResourceHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = AED0C48718B3598900725867 /* SNCResourceHandler.m */; };
 		AED2779818AFDE1800C17F19 /* CameraBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED2777A18AFDE1800C17F19 /* CameraBlue@2x.png */; };
 		AED2779918AFDE1800C17F19 /* CameraDarkGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED2777B18AFDE1800C17F19 /* CameraDarkGrey@2x.png */; };
 		AED2779A18AFDE1800C17F19 /* CameraGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED2777C18AFDE1800C17F19 /* CameraGrey@2x.png */; };
@@ -590,6 +591,8 @@
 		AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCLoginViewController.h; path = ../Views/SNCLoginViewController.h; sourceTree = "<group>"; };
 		AECBA6401856408600DE8EDE /* SNCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNCLoginViewController.m; path = ../Views/SNCLoginViewController.m; sourceTree = "<group>"; };
 		AECBA64218564D9D00DE8EDE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AED0C48618B3598900725867 /* SNCResourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCResourceHandler.h; sourceTree = "<group>"; };
+		AED0C48718B3598900725867 /* SNCResourceHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCResourceHandler.m; sourceTree = "<group>"; };
 		AED2777A18AFDE1800C17F19 /* CameraBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraBlue@2x.png"; sourceTree = "<group>"; };
 		AED2777B18AFDE1800C17F19 /* CameraDarkGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraDarkGrey@2x.png"; sourceTree = "<group>"; };
 		AED2777C18AFDE1800C17F19 /* CameraGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CameraGrey@2x.png"; sourceTree = "<group>"; };
@@ -943,6 +946,8 @@
 				AE86EEB218316BC500F74F1D /* SonicraphMediaManager.m */,
 				AE637F32184BBCE700DDEE21 /* AuthenticationManager.h */,
 				AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */,
+				AED0C48618B3598900725867 /* SNCResourceHandler.h */,
+				AED0C48718B3598900725867 /* SNCResourceHandler.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2069,6 +2074,7 @@
 				AED56F081801B425000DF866 /* SNCAPITest.m in Sources */,
 				AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */,
 				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
+				AED0C48818B3598900725867 /* SNCResourceHandler.m in Sources */,
 				AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */,
 				AEB9F7BC187CA955005F4988 /* SNCMyProfileViewController.m in Sources */,
 				AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */,

@@ -33,7 +33,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
 
-+ (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock;
++ (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicDataBlock)sonicBlock;
 + (void) getImage:(NSURL*)imageUrl withCompletionBlock:(CompletionIdBlock)completionBlock;
 
 + (MKNetworkOperation*) checkIsTokenValid:(NSString*)token

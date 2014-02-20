@@ -11,6 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "SNCSoundSlider.h"
 #import "Configurations.h"
+#import "SNCResourceHandler.h"
 
 @interface SonicPlayerView () <AVAudioPlayerDelegate>
 
@@ -140,13 +141,29 @@
         _sonicUrl = sonicUrl;
         [self setSonic:nil];
         self.imageView.image = SonicPlaceholderImage;
-        [SNCAPIManager getSonic:sonicUrl withSonicBlock:^(SonicData *sonic, NSError *error) {
-            if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.sonic = sonic;
-                });
-            }
-        }];
+//        [SNCAPIManager getSonic:sonicUrl withSonicBlock:^(SonicData *sonic, NSError *error) {
+//            if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    self.sonic = sonic;
+//                });
+//            }
+//        }];
+        
+        [[SNCResourceHandler sharedInstance]
+         getSonicDataWithUrl:self.sonicUrl
+         withCompletionBlock:^(SonicData *sonic) {
+             if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     self.sonic = sonic;
+                 });
+             }
+         }
+         andRefreshBlock:^(CGFloat ratio) {
+             NSLog(@"ratio: %f",ratio);
+         }
+         andErrorBlock:^(NSError *error) {
+             
+         }];
     }
 }
 

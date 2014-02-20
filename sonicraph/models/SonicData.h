@@ -12,7 +12,7 @@
 
 @class SonicData;
 
-typedef void (^SonicBlock) (SonicData* sonicData, NSError* error);
+typedef void (^SonicDataBlock) (SonicData* sonicData, NSError* error);
 
 @interface SonicData : NSObject
 
@@ -45,6 +45,6 @@ typedef void (^SonicBlock) (SonicData* sonicData, NSError* error);
 
 - (void) saveToFile;
 
-- (void) setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicBlock) sonicBlock;
+- (void) setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicDataBlock) sonicBlock;
 
 @end

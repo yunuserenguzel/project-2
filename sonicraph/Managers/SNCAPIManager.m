@@ -475,7 +475,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),dispatchBlock);
 }
 
-+ (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicBlock)sonicBlock
++ (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicDataBlock)sonicBlock
 {
     NSString* localFileUrl = [[SNCAPIManager sonicCacheDirectory] stringByAppendingPathComponent:sonicUrl.lastPathComponent];
     Block dispatchBlock = ^ {

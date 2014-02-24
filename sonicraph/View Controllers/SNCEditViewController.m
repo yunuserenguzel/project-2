@@ -142,10 +142,10 @@
     [self.soundSlider setUpperValue:1.0];
     [self.soundSlider setMaximumValue:1.0];
     [self.soundSlider setMinimumRange:1.0];
-    [self.soundSlider setLowerHandleImageNormal:[UIImage imageNamed:@"TrimHandleBig.png"]];
-    [self.soundSlider setUpperHandleImageNormal:[UIImage imageNamed:@"TrimHandleBig.png"]];
-    [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBig.png"]];
-    [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimHandleBig.png"]];
+    [self.soundSlider setLowerHandleImageNormal:[UIImage imageNamed:@"TrimHandle.png"]];
+    [self.soundSlider setUpperHandleImageNormal:[UIImage imageNamed:@"TrimHandle.png"]];
+    [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimHandle.png"]];
+    [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimHandle.png"]];
     [self.view addSubview:self.soundSlider];
 }
 

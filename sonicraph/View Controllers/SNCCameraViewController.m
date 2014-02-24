@@ -37,8 +37,8 @@ UIImage* rotate(UIImage* src, UIImageOrientation orientation)
 
 #define SonicSoundMaxTime 30.0
 
-#define RecordButtonCameraImage [UIImage imageNamed:@"Camera Button.png"]
-#define RecordButtonMicrophoneImage [UIImage imageNamed:@"Sound Button.png"]
+#define RecordButtonCameraImage [UIImage imageNamed:@"CaptureButtonCamera.png"]
+#define RecordButtonMicrophoneImage [UIImage imageNamed:@"CaptureButtonMic.png"]
 
 typedef enum SonicRecordType {
     SonicRecordTypePhotoFirst,
@@ -108,7 +108,7 @@ typedef enum SonicRecordType {
 }
 - (CGRect) recordButtonFrame
 {
-    return CGRectMake(self.view.frame.size.width*0.5 - 33.0, self.view.frame.size.height-88.0, 66.0, 66.0);
+    return CGRectMake(self.view.frame.size.width*0.5 - 50.0, self.view.frame.size.height-110.0, 99.0, 99.0);
 }
 
 -(CGRect) soundTimeSliderFrame
@@ -187,6 +187,16 @@ typedef enum SonicRecordType {
         self.flashButton.transform = transform;
         self.cameraTypeToggleButton.transform = transform;
     }];
+    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight)
+    {
+        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniMic.png"] forSegmentAtIndex:0];
+        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniCamera.png"] forSegmentAtIndex:1];
+    }
+    else
+    {
+        [self.recordTypeSwitch setTitle:@"Sound First" forSegmentAtIndex:0];
+        [self.recordTypeSwitch setTitle:@"Photo First" forSegmentAtIndex:1];
+    }
 }
 
 - (void) focusForTap:(UITapGestureRecognizer*)tapGesture
@@ -263,9 +273,9 @@ typedef enum SonicRecordType {
     [self.recordButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.recordButton addTarget:self action:@selector(recordButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     if(self.recordType == SonicRecordTypeSoundFirst){
-        [self.recordButton setImage:[UIImage imageNamed:@"Sound Button.png"] forState:UIControlStateNormal];
+        [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];
     } else {
-        [self.recordButton setImage:[UIImage imageNamed:@"Camera Button.png"] forState:UIControlStateNormal];
+        [self.recordButton setImage:RecordButtonCameraImage forState:UIControlStateNormal];
     }
     
     [locationManager startUpdatingLocation];
@@ -328,14 +338,12 @@ typedef enum SonicRecordType {
     }
 }
 
-
-
 - (void) audioRecordStartedForManager:(SonicraphMediaManager *)manager
 {
     if(self.recordType == SonicRecordTypePhotoFirst){
         [self.activityIndicator stopAnimating];
         [self.recordButton addTarget:self action:@selector(stopAudioRecording) forControlEvents:UIControlEventTouchUpInside];
-        [self.recordButton setImage:[UIImage imageNamed:@"Sound Button.png"] forState:UIControlStateNormal];
+        [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];
     }
 }
 
@@ -382,8 +390,10 @@ typedef enum SonicRecordType {
     [self.view addSubview:self.cameraFeaturesBar];
     
     self.flashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.flashButton.titleLabel setFont:[UIFont boldSystemFontOfSize:10.0]];
+    [self.flashButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 5.0, 0.0, 0.0)];
     [self.flashButton setTitle:@"Off" forState:UIControlStateNormal];
-    [self.flashButton setImage:[UIImage imageNamed:@"Camera Flash.png"] forState:UIControlStateNormal];
+    [self.flashButton setImage:[UIImage imageNamed:@"GleamWhite.png"] forState:UIControlStateNormal];
     [self.flashButton setFrame:[self flashButtonFrame]];
     [self.flashButton addTarget:self action:@selector(toggleFlash) forControlEvents:UIControlEventTouchUpInside];
     [self.cameraFeaturesBar addSubview:self.flashButton];
@@ -398,7 +408,7 @@ typedef enum SonicRecordType {
     
     self.cameraTypeToggleButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.cameraTypeToggleButton.frame = [self cameraTypeToggleButtonFrame];
-    [self.cameraTypeToggleButton setImage:[UIImage imageNamed:@"CameraBackFrontWhite.png"] forState:UIControlStateNormal];
+    [self.cameraTypeToggleButton setImage:[UIImage imageNamed:@"CameraFrontBackWhite.png"] forState:UIControlStateNormal];
     [self.cameraTypeToggleButton addTarget:self action:@selector(toggleCameraType) forControlEvents:UIControlEventTouchUpInside];
     [self.cameraTypeToggleButton setTintColor:[UIColor whiteColor]];
     [self.cameraFeaturesBar addSubview:self.cameraTypeToggleButton];
@@ -435,6 +445,18 @@ typedef enum SonicRecordType {
     if([self.mediaManager setFlashMode:requestedFlashMode]){
         NSLog(@"requestedflashmode granted");
         flashMode = requestedFlashMode;
+        if(flashMode == AVCaptureFlashModeAuto)
+        {
+            [self.flashButton setTitle:@"Auto" forState:UIControlStateNormal];
+        }
+        else if(flashMode == AVCaptureFlashModeOn)
+        {
+            [self.flashButton setTitle:@"On" forState:UIControlStateNormal];
+        }
+        else if(flashMode == AVCaptureFlashModeOff)
+        {
+            [self.flashButton setTitle:@"Off" forState:UIControlStateNormal];
+        }
     } else {
         NSLog(@"flash mode is not supported");
     }
@@ -517,9 +539,6 @@ typedef enum SonicRecordType {
     [self.maskView setContentMode:UIViewContentModeScaleAspectFit];
     [self.view addSubview:self.maskView];
     
-    // Ensure it's auto-resolution
-    // w x h, transparent, and with device's default scaling (required for retina!)
-    
     UIGraphicsBeginImageContextWithOptions(self.maskView.frame.size, NO, 2.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
@@ -562,11 +581,8 @@ typedef enum SonicRecordType {
 // Got location and now update
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-	
     currentLocation = newLocation;
-    
 	NSLog(@"%@", currentLocation);
-	
 }
 
 static CGRect swapWidthAndHeight(CGRect rect)

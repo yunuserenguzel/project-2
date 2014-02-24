@@ -60,7 +60,7 @@
 - (CGRect) facebookButtonFrame
 {
     CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(160.0, 44.0);
+    frame.size = CGSizeMake(320.0, 44.0);
     frame.origin = CGPointMake(0.0, self.view.frame.size.height - frame.size.height);
     return frame;
 }
@@ -163,14 +163,14 @@
 - (void) initializeFacebookAndTwitterButtons
 {
     self.facebookButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.twitterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    self.twitterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebookButton setImage:[UIImage imageNamed:@"FacebookIcon.png"] forState:UIControlStateNormal];
     [self.facebookButton setTitle:@"Facebook" forState:UIControlStateNormal];
-    [self.twitterButton setImage:[UIImage imageNamed:@"TwitterIcon.png"] forState:UIControlStateNormal];
-    [self.twitterButton setTitle:@"Twitter" forState:UIControlStateNormal];
-    self.twitterButton.frame = [self twitterButtonFrame];
+//    [self.twitterButton setImage:[UIImage imageNamed:@"TwitterIcon.png"] forState:UIControlStateNormal];
+//    [self.twitterButton setTitle:@"Twitter" forState:UIControlStateNormal];
+//    self.twitterButton.frame = [self twitterButtonFrame];
     self.facebookButton.frame = [self facebookButtonFrame];
-    [@[self.twitterButton, self.facebookButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
+    [@[self.facebookButton /*, self.twitterButton*/] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
         [self.view addSubview:button];
         [button setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
         [button setBackgroundColor:[UIColor darkGrayColor]];

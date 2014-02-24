@@ -92,6 +92,11 @@ static int previousTabIndex = 0;
     
     [self setDelegate:self];
     [self setSelectedIndex:0];
+    
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     UIRemoteNotificationTypeAlert |
+     UIRemoteNotificationTypeBadge |
+     UIRemoteNotificationTypeSound];
 
 }
 

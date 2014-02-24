@@ -38,15 +38,6 @@
 {
     return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-// 45, 173, 254
 
 - (void)viewDidLoad
 {
@@ -239,29 +230,29 @@
 
 - (void) autoPlay:(UIScrollView*)scrollView
 {
-//    CGFloat x = self.tableView.contentOffset.x;
-//    CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
-//    CGFloat width = self.tableView.frame.size.width;
-//    CGFloat height = HeightForHomeCell * 0.4;
-//    y -= height * 0.5;
-//    CGRect rect = CGRectMake(x, y, width, height);
-//    
-//    NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
-//    if([indexPaths count] == 1){
-//        cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [cellWiningTheCenter cellWonCenterOfTableView];
-//        });
-//
-//    }
-//    else {
-//        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
-//            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [cell cellLostCenterOfTableView];
-//            });
-//        }];
-//    }
+    CGFloat x = self.tableView.contentOffset.x;
+    CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
+    CGFloat width = self.tableView.frame.size.width;
+    CGFloat height = HeightForHomeCell * 0.4;
+    y -= height * 0.5;
+    CGRect rect = CGRectMake(x, y, width, height);
+    
+    NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
+    if([indexPaths count] == 1){
+        cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cellWiningTheCenter cellWonCenterOfTableView];
+        });
+
+    }
+    else {
+        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
+            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cell cellLostCenterOfTableView];
+            });
+        }];
+    }
     
 }
 
@@ -288,21 +279,21 @@
     }
 }
 
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-//{
-//    if(!decelerate){
-//        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//            [self autoPlay:scrollView];
-//        });
-//    }
-//}
-//
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-//{
-//    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [self autoPlay:scrollView];
-//    });
-//}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!decelerate){
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self autoPlay:scrollView];
+        });
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self autoPlay:scrollView];
+    });
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

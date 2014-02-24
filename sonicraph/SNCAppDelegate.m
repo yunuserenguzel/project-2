@@ -188,6 +188,30 @@ static SNCAppDelegate* sharedInstance = nil;
 {
     // Saves changes in the application's managed object context before the application terminates.
 }
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    //    NSLog(@"Failed to get token: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    if(application.applicationState != UIApplicationStateActive)
+    {
+        [self.tabbarController setSelectedIndex:3];
+    }
+}
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSString* deviceTokenStr = [deviceToken description];
+    deviceTokenStr = [deviceTokenStr stringByReplacingOccurrencesOfString:@" " withString:@""];
+    deviceTokenStr = [deviceTokenStr stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    deviceTokenStr = [deviceTokenStr stringByReplacingOccurrencesOfString:@">" withString:@""];
+    [SNCAPIManager registerDeviceToken:deviceTokenStr withCompletionBlock:^(NSDictionary *responseDictionary) {
+        NSLog(@"device token registered successfully");
+    } andErrorBlock:^(NSError *error) {
+        NSLog(@"device token register failed with error: %@",error);
+    }];
+}
 
 #pragma mark - Application's Documents directory
 

@@ -134,4 +134,11 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                           withCompletionBlock:(CompletionUserBlock)completionBlock
                                 andErrorBlock:(ErrorBlock)errorBlock;
 
++ (MKNetworkOperation*) registerDeviceToken:(NSString*)deviceToken
+                        withCompletionBlock:(CompletionBlock)completionBlock
+                              andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) destroyAuthenticationWithCompletionBlock:(CompletionBlock)completionBlock
+                              andErrorBlock:(ErrorBlock)errorBlock;
+
 @end

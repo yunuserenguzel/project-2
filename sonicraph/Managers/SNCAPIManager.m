@@ -104,6 +104,19 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 }
 
 @implementation SNCAPIManager
++ (MKNetworkOperation *)destroyAuthenticationWithCompletionBlock:(CompletionBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:@{} useToken:YES andOperation:@"user/destroy_authentication" andCompletionBlock:completionBlock  andErrorBlock:errorBlock];
+}
++ (MKNetworkOperation *)registerDeviceToken:(NSString *)deviceToken withCompletionBlock:(CompletionBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    return [[SNCAPIConnector sharedInstance]
+            postRequestWithParams:@{@"device_token": deviceToken,@"platform":@"ios"}
+            useToken:YES
+            andOperation:@"user/register_device_token"
+            andCompletionBlock:completionBlock
+            andErrorBlock:nil];
+}
 
 + (MKNetworkOperation *)editProfileWithFields:(NSDictionary *)fields withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {

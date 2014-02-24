@@ -261,6 +261,10 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 {
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.tabActionBarView];
     [self setTableViewContentSize];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
         [self.commentField becomeFirstResponder];
         self.initiationType = SonicViewControllerInitiationTypeNone;

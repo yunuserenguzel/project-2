@@ -154,12 +154,17 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (void)logout
 {
-    [self setToken:nil];
-    [self setAuthenticatedUser:nil];
-    [self checkAuthentication];
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:NotificationUserLoggedOut
-     object:nil];
+    [SNCAPIManager destroyAuthenticationWithCompletionBlock:^(NSDictionary *responseDictionary) {
+        [self setToken:nil];
+        [self setAuthenticatedUser:nil];
+        
+        [self checkAuthentication];
+        
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:NotificationUserLoggedOut
+         object:nil];
+    } andErrorBlock:nil];
+    
 }
 
 - (void) checkAuthentication

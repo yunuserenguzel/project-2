@@ -8,9 +8,10 @@
 
 #import "User.h"
 #import "TypeDefs.h"
-#import "SNCAPIManager.h"
+//#import "SNCAPIManager.h"
 #import "UIImage+scaleToSize.h"
 #import "Configurations.h"
+#import "SNCResourceHandler.h"
 
 @implementation User
 {
@@ -74,6 +75,7 @@
         self.sonicCount = user.sonicCount;
         self.followerCount = user.followerCount;
         self.followingCount = user.followingCount;
+        [self fireUserUpdatedForViewNotification];
     }
 }
 
@@ -108,7 +110,7 @@
             return;
         }
         isInProcess = YES;
-        [SNCAPIManager getImage:[NSURL URLWithString:self.profileImageUrl] withCompletionBlock:^(id object) {
+        [[SNCResourceHandler sharedInstance] getImageWithUrl:[NSURL URLWithString:self.profileImageUrl] withCompletionBlock:^(id object) {
             self.thumbnailProfileImage = [(UIImage*)object imageByScalingAndCroppingForSize:UserThumbnailSize];
             isInProcess = NO;
             [arrayOfCallBacksForThumbnail enumerateObjectsUsingBlock:^(CompletionIdBlock completionBlock, NSUInteger idx, BOOL *stop) {
@@ -118,7 +120,7 @@
                 }
             }];
             arrayOfCallBacksForThumbnail = nil;
-        }];
+        } andRefreshBlock:nil andErrorBlock:nil];
     }
 }
 

@@ -9,7 +9,6 @@
 #ifndef sonicraph_TypeDefs_h
 #define sonicraph_TypeDefs_h
 
-
 #define EditSonicSegue @"EditSonicSegue"
 #define ShareSonicSegue @"ShareSonicSegue"
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"

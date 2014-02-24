@@ -13,6 +13,51 @@
 #import "Configurations.h"
 #import "SNCResourceHandler.h"
 
+@interface LoadingView : UIView
+@property (nonatomic) CGFloat ratio;
+@end
+
+@implementation LoadingView
+
+- (void)setRatio:(CGFloat)ratio
+{
+    _ratio = ratio;
+    [self setNeedsDisplay];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+//    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [UIColor lightGrayColor].CGColor);
+    CGContextFillRect(context, self.bounds);
+    
+    CGRect allRect = self.bounds;
+    CGRect circleRect = CGRectMake(allRect.origin.x + 2, allRect.origin.y + 2,
+                                   allRect.size.width - 4, allRect.size.height - 4);
+    
+    // Draw background
+    CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0); // white
+    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 0.1); // translucent white
+    CGContextSetLineWidth(context, 2.0);
+    CGContextFillEllipseInRect(context, circleRect);
+    CGContextStrokeEllipseInRect(context, circleRect);
+    
+    // Draw progress
+    float x = (allRect.size.width / 2);
+    float y = (allRect.size.height / 2);
+    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0); // white
+    CGContextMoveToPoint(context, x, y);
+    CGContextAddArc(context, x, y, (allRect.size.width - 4) / 2, -(M_PI / 2),
+                    (self.ratio * 2 * M_PI) - M_PI / 2, 0);
+    CGContextClosePath(context);
+    CGContextFillPath(context);
+}
+
+@end
+
+
 @interface SonicPlayerView () <AVAudioPlayerDelegate>
 
 @property UIImageView* imageView;
@@ -29,7 +74,7 @@
 
 @implementation SonicPlayerView
 {
-    
+    LoadingView* loadingView;
 }
 
 - (CGRect) imageViewFrame
@@ -90,6 +135,10 @@
     [self.pausedImageView setFrame:[self pausedImageViewFrame]];
     [self.pausedImageView setHidden:YES];
     [self.imageView addSubview:self.pausedImageView];
+    
+    loadingView = [[LoadingView alloc] initWithFrame:[self imageViewFrame]];
+    loadingView.backgroundColor = [UIColor clearColor];
+    [self addSubview:loadingView];
 
 }
 - (void) longPress:(UILongPressGestureRecognizer* )longGesture
@@ -137,34 +186,44 @@
 
 - (void)setSonicUrl:(NSURL *)sonicUrl
 {
-    if([[self.sonicUrl path] isEqualToString:sonicUrl.path] != YES){
+    if(![[self.sonicUrl path] isEqualToString:sonicUrl.path]){
         _sonicUrl = sonicUrl;
-        [self setSonic:nil];
-        self.imageView.image = SonicPlaceholderImage;
-//        [SNCAPIManager getSonic:sonicUrl withSonicBlock:^(SonicData *sonic, NSError *error) {
-//            if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    self.sonic = sonic;
-//                });
-//            }
-//        }];
-        
-        [[SNCResourceHandler sharedInstance]
-         getSonicDataWithUrl:self.sonicUrl
-         withCompletionBlock:^(SonicData *sonic) {
-             if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     self.sonic = sonic;
-                 });
-             }
-         }
-         andRefreshBlock:^(CGFloat ratio) {
-             NSLog(@"ratio: %f",ratio);
-         }
-         andErrorBlock:^(NSError *error) {
-             
-         }];
+        [self downloadSonicData];
     }
+}
+
+- (void) downloadSonicData
+{
+    [self setSonic:nil];
+    loadingView.hidden = NO;
+    self.imageView.image = SonicPlaceholderImage;
+    [[SNCResourceHandler sharedInstance]
+     getSonicDataWithUrl:self.sonicUrl
+     withCompletionBlock:^(SonicData *sonic) {
+         if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 self.sonic = sonic;
+             });
+         }
+     }
+     andRefreshBlock:^(CGFloat ratio) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             loadingView.ratio = ratio;
+         });
+     }
+     andErrorBlock:^(NSError *error) {
+         UIButton* retryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+         [retryButton setImage:[UIImage imageNamed:@"retry_icon.png"] forState:UIControlStateNormal];
+         retryButton.frame = [self imageViewFrame];
+         [self addSubview:retryButton];
+         [retryButton addTarget:self action:@selector(retry:) forControlEvents:UIControlEventTouchUpInside];
+     }];
+}
+
+- (void) retry:(UIButton*)retryButton
+{
+    [retryButton removeFromSuperview];
+    [self downloadSonicData];
 }
 
 - (void) initializeImageView
@@ -178,6 +237,7 @@
 - (void)setSonic:(SonicData *)sonic
 {
     _sonic = sonic;
+    loadingView.hidden = YES;
     self.imageView.image = self.sonic.image;
     if(sonic == nil){
         [self.audioPlayer stop];
@@ -198,12 +258,10 @@
     CGRect imageViewframe = [self imageViewFrame];;
     imageViewframe.size = frame.size;
     [self.imageView setFrame:imageViewframe];
-//    NSLog(@"imageViewFrame: %@",CGRectCreateDictionaryRepresentation(self.imageView.frame));
 }
 
 - (void) timerUpdate
 {
-//    NSLog(@"%f",self.audioPlayer.currentTime);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.soundSlider setValue:self.audioPlayer.currentTime];
     });

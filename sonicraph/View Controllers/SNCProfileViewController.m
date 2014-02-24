@@ -31,11 +31,11 @@
     User* userToBeOpen;
     BOOL showLikedSonics;
     BOOL shouldShowFollowers;
+    BOOL isLoadingFromServer;
 }
 
 - (CGRect) profileHeaderViewFrame
 {
-//    return CGRectMake(0.0,  self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, 320.0, ProfileHeaderViewHeight);
     return CGRectMake(0.0, -ProfileHeaderViewHeight, 320.0, ProfileHeaderViewHeight);
 }
 
@@ -96,7 +96,6 @@
 - (void) initializeHeaderView
 {
     self.profileHeaderView = [[ProfileHeaderView alloc] initWithFrame:[self profileHeaderViewFrame]];
-//    [self.view addSubview:self.profileHeaderView];
     [self.profileHeaderView.gridViewButton addTarget:self action:@selector(setGridViewModeOn) forControlEvents:UIControlEventTouchUpInside];
     [self.profileHeaderView.listViewButton addTarget:self action:@selector(setListViewModeOn) forControlEvents:UIControlEventTouchUpInside];
     [self.profileHeaderView.likedSonicsButton addTarget:self action:@selector(showLikedSonics) forControlEvents:UIControlEventTouchUpInside];
@@ -134,12 +133,16 @@
 {
     _user = user;
     [self configureViews];
-    [SNCAPIManager getUserSonics:user saveToDatabase:NO withCompletionBlock:^(NSArray *sonics) {
+    isLoadingFromServer = YES;
+    [SNCAPIManager getUserSonics:user before:nil withCompletionBlock:^(NSArray *sonics) {
         [self.sonics importSonicsWithArray:sonics];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self refresh];
+            isLoadingFromServer = NO;
         });
-    } andErrorBlock:nil];
+    } andErrorBlock:^(NSError *error) {
+        isLoadingFromServer = NO;
+    }];
 }
 
 - (void) configureViews
@@ -285,8 +288,6 @@
     if([self.sonicListTableView isHidden] == YES){
         [self.sonicCollectionView setHidden:YES];
         [self.sonicListTableView setHidden:NO];
-//        [self.sonicListTableView setContentOffset:CGPointMake(0.0, -[self profileHeaderViewFrame].size.height)];
-//        [self scrollViewDidScroll:self.sonicListTableView];
     }
     [self.sonicListTableView reloadData];
 }
@@ -301,8 +302,6 @@
     if([self.sonicCollectionView isHidden] == YES){
         [self.sonicCollectionView setHidden:NO];
         [self.sonicListTableView setHidden:YES];
-//        [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -[self profileHeaderViewFrame].size.height)];
-//        [self scrollViewDidScroll:self.sonicCollectionView];
     }
     [self.sonicCollectionView reloadData];
 }
@@ -355,21 +354,25 @@
     return HeightForHomeCell;
 }
 
-//- (void) scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    CGFloat topOffset = scrollView.contentOffset.y + scrollView.contentInset.top;
-//    if(topOffset < scrollView.contentInset.top){
-//        CGRect frame = [self profileHeaderViewFrame];
-//        frame.origin.y -= topOffset  ;
-//        [self.profileHeaderView setFrame:frame];
-//    } else if ( topOffset <= 0) {
-//        [self.profileHeaderView setFrame:[self profileHeaderViewFrame]];
-//    } else {
-//        CGRect frame = [self profileHeaderViewFrame];
-//        frame.origin.y -= scrollView.contentInset.top;
-//        [self.profileHeaderView setFrame:frame];
-//    }
-//}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(!isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
+    {
+        isLoadingFromServer = YES;
+        [SNCAPIManager getUserSonics:self.user before:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
+            [self.sonics importSonicsWithArray:sonics];
+            if(sonics.count > 0)
+            {
+                isLoadingFromServer = NO;
+            }
+            [self refresh];
+        } andErrorBlock:^(NSError *error) {
+            isLoadingFromServer = NO;
+            [self refresh];
+        }];
+    }
+}
+
 
 - (void) viewWillAppear:(BOOL)animated
 {

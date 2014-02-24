@@ -10,12 +10,18 @@
 #import "SonicData.h"
 #import "TypeDefs.h"
 
+#define SONIC_DATA_CACHE_LIMIT 100
+
 @interface SNCResourceHandler : NSObject
+
+
 
 + (SNCResourceHandler*) sharedInstance;
 
 - (void) getSonicDataWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(FloatBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock;
 
 - (void) getImageWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(FloatBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock;
+
++ (NSString*) getAndCreateFolderAtApplicationDirectory:(NSString*)folderName;
 
 @end    

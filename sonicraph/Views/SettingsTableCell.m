@@ -28,7 +28,9 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 
 @implementation SettingsTableCell
-
+{
+    UIImagePickerController* imagePickerController;
+}
 - (CGRect) keyLabelFrame
 {
     return CGRectMake(10.0, 0.0, 100.0, 44.0);
@@ -78,7 +80,7 @@ CGFloat heightForIdentifier(NSString* identifier)
 {
     self.stringValueField = [[UITextField alloc] initWithFrame:[self stringValueFieldFrame]];
     [self.contentView addSubview:self.stringValueField];
-    [self.stringValueField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.stringValueField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     [self.stringValueField setTextAlignment:NSTextAlignmentRight];
     [self.stringValueField setFont:[self.stringValueField.font fontWithSize:14.0]];
 }
@@ -90,8 +92,40 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.imageValueView setContentMode:UIViewContentModeScaleAspectFill];
     [self.imageValueView setClipsToBounds:YES];
     self.imageValueView.layer.cornerRadius = 10.0;
+    [self.imageValueView setUserInteractionEnabled:YES];
+    [self.imageValueView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showActionSheet)]];
 }
 
+- (void) showActionSheet
+{
+    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:self.key delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Choose From Library",@"Take Photo", nil];
+    [sheet showInView:self];
+}
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex != actionSheet.cancelButtonIndex)
+    {
+        if(imagePickerController == nil)
+        {
+            imagePickerController = [[UIImagePickerController alloc] init];
+            imagePickerController.delegate = self;
+        }
+        imagePickerController.sourceType = buttonIndex ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypePhotoLibrary;
+        [self.delegate presentViewController:imagePickerController animated:YES completion:^{
+            
+        }];
+    }
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSLog(@"info: %@",info);
+    
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self imageValueChanged:[info objectForKey:UIImagePickerControllerOriginalImage]];
+    }];
+    
+}
 - (void) setKey:(NSString *)key
 {
     _key = key;
@@ -110,6 +144,13 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 - (void) textFieldValueChanged:(UITextField*)textField
 {
+    self.value = textField.text;
+    [self.delegate valueChanged:self.value forKey:self.key];
+}
+
+- (void) imageValueChanged:(UIImage*)image
+{
+    self.value = image;
     [self.delegate valueChanged:self.value forKey:self.key];
 }
 

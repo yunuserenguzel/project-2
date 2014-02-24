@@ -187,7 +187,6 @@ static SNCAppDelegate* sharedInstance = nil;
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
-    [self saveContext];
 }
 
 #pragma mark - Application's Documents directory

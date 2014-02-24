@@ -13,6 +13,8 @@
 #import "User.h"
 #import "AuthenticationManager.h"
 #import "UserPool.h"
+#import "SNCResourceHandler.h"
+#import "UIImage+Resize.h"
 
 id asClass(id object, Class class)
 {
@@ -103,9 +105,31 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 
 @implementation SNCAPIManager
 
- + (MKNetworkOperation *)editProfileWithFields:(NSDictionary *)fields withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
++ (MKNetworkOperation *)editProfileWithFields:(NSDictionary *)fields withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    return nil;
+    NSMutableArray* files = [NSMutableArray new];
+    NSMutableDictionary* params = [NSMutableDictionary new];
+    for (NSString* key in [fields allKeys]) {
+        id value = [fields objectForKey:key];
+        if([value isKindOfClass:[UIImage class]])
+        {
+            NSString* tempFileUrl = [[[SNCResourceHandler getAndCreateFolderAtApplicationDirectory:@"temp"] stringByAppendingString:key] stringByAppendingString:@".jpg"];
+            UIImage* resizedImage = [value resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(640.0, 640.0) interpolationQuality:kCGInterpolationHigh];
+            [UIImageJPEGRepresentation(resizedImage, 1.0) writeToFile:tempFileUrl atomically:YES];
+            [files addObject:@{@"file": tempFileUrl, @"key":key}];
+        }
+        else
+        {
+            [params setObject:value forKey:key];
+        }
+    }
+    return [[SNCAPIConnector sharedInstance] uploadFileRequestWithParams:params useToken:YES andFiles:files andOperation:@"user/edit" andCompletionBlock:^(NSDictionary *responseDictionary) {
+        User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
+        if(completionBlock)
+        {
+            completionBlock(user,nil);
+        }
+    } andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation *)getNotificationsWithCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
@@ -114,7 +138,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
         NSMutableArray* notifications = [NSMutableArray new];
         [[responseDictionary objectForKey:@"notifications"] enumerateObjectsUsingBlock:^(NSDictionary* dict, NSUInteger idx, BOOL *stop) {
             [notifications addObject:notificationFromServerDictionary(dict)];
-       }];
+        }];
         if(completionBlock){
             completionBlock(notifications);
         }
@@ -296,7 +320,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 if(completionBlock){
                     completionBlock(YES);
                 }
-    } andErrorBlock:errorBlock];
+            } andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation*) likeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
@@ -312,7 +336,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 if(completionBlock){
                     completionBlock(sonic);
                 }
-    } andErrorBlock:errorBlock];
+            } andErrorBlock:errorBlock];
 }
 + (MKNetworkOperation*) dislikeSonic:(Sonic*)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
@@ -327,7 +351,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 if(completionBlock){
                     completionBlock(sonic);
                 }
-    } andErrorBlock:errorBlock];
+            } andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation *)resonicSonic:(Sonic *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
@@ -384,17 +408,61 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             }];
 }
 
-+ (void) getUserSonics:(User*)user saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+
+
++ (MKNetworkOperation*) getUserSonics:(User*)user before:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSNumber* count = [NSNumber numberWithInt:20];
+    NSNumber* count = [NSNumber numberWithInt:10];
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
     if(user != nil){
         [params setObject:user.userId forKey:@"of_user"];
     }
+    if(sonic)
+    {
+        [params setObject:sonic.sonicId forKey:@"before"];
+    }
     [params setObject:count forKey:@"count"];
-    [SNCAPIManager getSonicsWithParams:params
-                   withCompletionBlock:completionBlock
-                         andErrorBlock:errorBlock];
+    return [SNCAPIManager getSonicsWithParams:params
+                          withCompletionBlock:completionBlock
+                                andErrorBlock:errorBlock];
+}
+
+
++ (MKNetworkOperation *)getSonicsILikedwithCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    [params setObject:[NSNumber numberWithBool:YES] forKey:@"me_liked"];
+    return [SNCAPIManager getSonicsWithParams:params
+                          withCompletionBlock:completionBlock
+                                andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSNumber* count = [NSNumber numberWithInt:10];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    if(sonic != nil){
+        [params setObject:sonic.sonicId forKey:@"after"];
+    }
+    [params setObject:count forKey:@"count"];
+    
+    return [SNCAPIManager getSonicsWithParams:params
+                          withCompletionBlock:completionBlock
+                                andErrorBlock:errorBlock];
+}
+
++ (MKNetworkOperation *)getSonicsBefore:(Sonic *)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSNumber* count = [NSNumber numberWithInt:10];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    if(sonic != nil){
+        [params setObject:sonic.sonicId forKey:@"before"];
+    }
+    [params setObject:count forKey:@"count"];
+    
+    return [SNCAPIManager getSonicsWithParams:params
+                          withCompletionBlock:completionBlock
+                                andErrorBlock:errorBlock];
 }
 //
 //+ (void) getSonicsBefore:(Sonic*)sonic withCompletionBlock:(Block)completionBlock
@@ -409,30 +477,6 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 //    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
 //}
 //
-
-+ (MKNetworkOperation *)getSonicsILikedwithCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
-{
-    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    [params setObject:[NSNumber numberWithBool:YES] forKey:@"me_liked"];
-    return [SNCAPIManager getSonicsWithParams:params
-                          withCompletionBlock:completionBlock
-                                andErrorBlock:errorBlock];
-}
-
-+ (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
-{
-    NSNumber* count = [NSNumber numberWithInt:20];
-    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    if(sonic != nil){
-        [params setObject:sonic.sonicId forKey:@"after_sonic"];
-    }
-    [params setObject:count forKey:@"count"];
-    
-    return [SNCAPIManager getSonicsWithParams:params
-                          withCompletionBlock:completionBlock
-                                andErrorBlock:errorBlock];
-}
-
 + (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock
@@ -443,113 +487,30 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             useToken:YES
             andOperation:operation
             andCompletionBlock:^(NSDictionary *responseDictionary) {
-             NSMutableArray* sonics = [[NSMutableArray alloc] init];
-             for (NSDictionary* sonicDict in [responseDictionary objectForKey:@"sonics"]) {
-                 [sonics addObject:sonicFromServerDictionary(sonicDict)];
-             }
-             if(completionBlock){
-                 completionBlock(sonics);
-             }
+                NSMutableArray* sonics = [[NSMutableArray alloc] init];
+                for (NSDictionary* sonicDict in [responseDictionary objectForKey:@"sonics"]) {
+                    [sonics addObject:sonicFromServerDictionary(sonicDict)];
+                }
+                if(completionBlock){
+                    completionBlock(sonics);
+                }
             }
             andErrorBlock:errorBlock];
-}
-
-
-+ (void) getImage:(NSURL*)imageUrl withCompletionBlock:(CompletionIdBlock)completionBlock
-{
-    NSString* localFileUrl = [[SNCAPIManager imageCacheDirectory] stringByAppendingPathComponent:imageUrl.lastPathComponent];
-    Block dispatchBlock = ^ {
-        @autoreleasepool {
-            if(![[NSFileManager defaultManager] fileExistsAtPath:localFileUrl]){
-                NSData* data = [NSData dataWithContentsOfURL:imageUrl];
-                [data writeToFile:localFileUrl atomically:YES];
-                data = nil;
-            }
-            NSData* data = [NSData dataWithContentsOfFile:localFileUrl];
-            UIImage* image = [UIImage imageWithData:data];
-            completionBlock(image);
-            data = nil;
-        
-        }
-    };
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),dispatchBlock);
-}
-
-+ (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicDataBlock)sonicBlock
-{
-    NSString* localFileUrl = [[SNCAPIManager sonicCacheDirectory] stringByAppendingPathComponent:sonicUrl.lastPathComponent];
-    Block dispatchBlock = ^ {
-        @autoreleasepool {
-            if(![[NSFileManager defaultManager] fileExistsAtPath:localFileUrl]){
-                [[NSString stringWithContentsOfURL:sonicUrl encoding:NSUTF8StringEncoding error:nil] writeToFile:localFileUrl atomically:YES encoding:NSUTF8StringEncoding error:nil];
-            }
-            SonicData* sonic = [SonicData sonicDataFromFile:localFileUrl];
-            sonic.remoteSonicDataFileUrl = sonicUrl;
-            sonicBlock(sonic,nil);
-         }
-    };
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),dispatchBlock);
-}
-
-+ (NSString*) sonicCacheDirectory
-{
-    static NSString* cacheFolder = nil;
-    if(cacheFolder == nil)
-    {
-        cacheFolder = [SNCAPIManager getAndcreateFolderAtApplicationDirectory:@"cached_sonics"];
-    }
-    return cacheFolder;
-}
-
-+ (NSString*) imageCacheDirectory
-{
-    static NSString* cacheFolder = nil;
-    if(cacheFolder == nil)
-    {
-        cacheFolder = [SNCAPIManager getAndcreateFolderAtApplicationDirectory:@"cached_images"];
-    }
-    return cacheFolder;
-}
-
-+ (NSString*) getAndcreateFolderAtApplicationDirectory:(NSString*)folderName
-{
-    NSString* cacheFolder;
-    NSError* error;
-    NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    cacheFolder = [[dirs objectAtIndex:0] stringByAppendingPathComponent:folderName];
-    [[NSFileManager defaultManager]
-     createDirectoryAtPath:cacheFolder
-     withIntermediateDirectories:YES
-     attributes:nil
-     error:&error];
-    if(error)
-    {
-        NSLog(@"[SNCAPIManager.m %d] %@",__LINE__,error);
-    }
-    [[NSURL fileURLWithPath:cacheFolder]
-     setResourceValue:[NSNumber numberWithBool:YES]
-     forKey:NSURLIsExcludedFromBackupKey
-     error:&error];
-    if(error)
-    {
-        NSLog(@"[SNCAPIManager.m %d] %@",__LINE__,error);
-    }
-    return cacheFolder;
 }
 
 + (MKNetworkOperation*) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 {
     return [[SNCAPIConnector sharedInstance]
-     getRequestWithParams:@{@"token": token}
-     useToken:NO
-     andOperation:@"user/check_is_token_valid"
-     andCompletionBlock:^(NSDictionary *responseDictionary) {
-         User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
-         if(block != nil){
-             block(user,nil);
-         }
-     }
-     andErrorBlock:errorBlock];
+            getRequestWithParams:@{@"token": token}
+            useToken:NO
+            andOperation:@"user/check_is_token_valid"
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                User* user = userFromServerDictionary([responseDictionary objectForKey:@"user"]);
+                if(block != nil){
+                    block(user,nil);
+                }
+            }
+            andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation *) loginWithUsername:(NSString*) username andPassword:(NSString*)password withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
@@ -567,7 +528,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 if(completionBlock != nil){
                     completionBlock(user,token);
                 }
-    } andErrorBlock:errorBlock];
+            } andErrorBlock:errorBlock];
 }
 
 
@@ -605,7 +566,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 [[responseDictionary objectForKey:@"users"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
                     NSLog(@"%@",responseDictionary);
                     [users addObject:userFromServerDictionary(userDict)];
-//                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
+                    //                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
                 }];
                 completionBlock(users);
             } andErrorBlock:errorBlock];
@@ -627,7 +588,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 }];
                 completionBlock(users);
             } andErrorBlock:errorBlock];
-
+    
 }
 
 

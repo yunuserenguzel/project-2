@@ -20,7 +20,7 @@
 
 @property SonicArray* sonics;
 
-@property FBLoginView* fbLoginView;
+@property UIActivityIndicatorView* bottomActivityIndicator;
 
 @end
 
@@ -31,6 +31,12 @@
     Sonic* sonicToBeViewed;
     User* userToBeOpen;
     SonicViewControllerInitiationType sonicViewControllerInitiationType;
+    BOOL isLoadingFromServer;
+}
+
+- (CGRect) tableFooterViewRect
+{
+    return CGRectMake(0.0, 0.0, 320.0, 44.0);
 }
 //- (id)initWithStyle:(UITableViewStyle)style
 //{
@@ -96,7 +102,7 @@
 }
 - (void) initTableView
 {
-//    self.tableView = [[UITableView alloc] initWithFrame:[self frameForScrollContent] style:UITableViewStylePlain];
+
     self.tableView.contentInset = [self edgeInsetsForScrollContent];
     [self.tableView setBackgroundColor:CellSpacingGrayColor];
     self.tableView.dataSource = self;
@@ -106,9 +112,12 @@
     [self.tableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
     [self.tableView setShowsVerticalScrollIndicator:NO];
     [self.tableView setShowsHorizontalScrollIndicator:NO];
-    [self.tableView setTableFooterView:[UIView new]];
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:[self tableFooterViewRect]]];
     [self.tableView setTableHeaderView:[UIView new]];
-//    [self.view addSubview:self.tableView];
+    self.bottomActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.bottomActivityIndicator.frame = [self tableFooterViewRect];
+    [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
+
 }
 
 - (void) initRefreshController
@@ -142,13 +151,17 @@
 
 - (void) refreshFromServer
 {
-    Sonic* lastSonic = self.sonics.count > 0 ? [self.sonics objectAtIndex:0] : nil;
-    [SNCAPIManager getSonicsAfter:lastSonic withCompletionBlock:^(NSArray *sonics) {
+    isLoadingFromServer = YES;
+//    Sonic* lastSonic = self.sonics.count > 0 ? [self.sonics objectAtIndex:0] : nil;
+    [SNCAPIManager getSonicsAfter:nil withCompletionBlock:^(NSArray *sonics) {
+        self.sonics = [[SonicArray alloc] init];
         [self.sonics importSonicsWithArray:sonics];
         [self refresh];
         [self.refreshControl endRefreshing];
+        isLoadingFromServer = NO;
     } andErrorBlock:^(NSError *error) {
         [self.refreshControl endRefreshing];
+        isLoadingFromServer = NO;
     }];
 }
 
@@ -255,6 +268,24 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [cellWiningTheCenter cellLostCenterOfTableView];
+    if(!isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
+    {
+        isLoadingFromServer = YES;
+        [self.bottomActivityIndicator startAnimating];
+        [SNCAPIManager getSonicsBefore:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
+            [self.sonics importSonicsWithArray:sonics];
+            [self.bottomActivityIndicator stopAnimating];
+            if(sonics.count > 0)
+            {
+                isLoadingFromServer = NO;
+            }
+            [self refresh];
+        } andErrorBlock:^(NSError *error) {
+            [self.bottomActivityIndicator stopAnimating];
+            isLoadingFromServer = NO;
+            [self refresh];
+        }];
+    }
 }
 
 //- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -293,7 +324,7 @@
         [sonicViewController setSonic:sonicToBeViewed];
         [sonicViewController initiateFor:sonicViewControllerInitiationType];
     }
-    else if([segue.identifier isEqualToString:HomeToProfileSegue]){
+    else if([segue.identifier isEqualToString:ViewUserSegue]){
         SNCProfileViewController* profile = segue.destinationViewController;
         [profile setUser:userToBeOpen];
     }

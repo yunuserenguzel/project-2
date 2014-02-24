@@ -54,8 +54,8 @@ static int previousTabIndex = 0;
 
     [self.tabBar setBarStyle:UIBarStyleDefault];
     [self.tabBar setBarTintColor:[UIColor whiteColor]];
-    [self.tabBar setTintColor:NavigationBarBlueColor];
-    [self.tabBar setSelectedImageTintColor:NavigationBarBlueColor];
+    [self.tabBar setTintColor:PinkColor];
+    [self.tabBar setSelectedImageTintColor:PinkColor];
     self.tabBar.backgroundColor = [UIColor clearColor];
     [[self.tabBar.subviews objectAtIndex:0] setAlpha:0.1];
     self.tabBar.superview.backgroundColor = [UIColor clearColor];
@@ -64,27 +64,29 @@ static int previousTabIndex = 0;
     for (UIView* view in self.tabBar.subviews) {
         [view setBackgroundColor:[UIColor clearColor]];
     }
-    NSArray* imageNames = @[@"HomePink.png",
+    NSArray* selectedImageNames = @[@"HomePink.png",
                             @"SearchPink.png",
                             @"CameraPink.png",
                             @"GlobePink.png",
                             @"UserPink.png"];
-    NSArray* selectedImageNames = @[@"HomeBlue.png",
-                                    @"SearchBlue.png",
-                                    @"CameraBlue.png",
-                                    @"GlobeBlue.png",
-                                    @"UserBlue.png"];
+    NSArray*imageNames  = @[@"HomeLightGrey.png",
+                                    @"SearchLightGrey.png",
+                                    @"CameraLightGrey.png",
+                                    @"GlobeLightGrey.png",
+                                    @"UserLightGrey.png"];
     
     for(int i=0; i<self.tabBar.items.count; i++)
     {
         UITabBarItem* item = [self.tabBar.items objectAtIndex:i];
         [item setImage:[[UIImage imageNamed:[imageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [item setSelectedImage:[[UIImage imageNamed:[selectedImageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+//        [item setImage:[[UIImage imageNamed:[imageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAutomatic]];
+//        [item setSelectedImage:[[UIImage imageNamed:[selectedImageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAutomatic]];
     }
     
+//    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:PinkColor, NSForegroundColorAttributeName, nil]
+//                                             forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:PinkColor, NSForegroundColorAttributeName, nil]
-                                             forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:NavigationBarBlueColor, NSForegroundColorAttributeName, nil]
                                              forState:UIControlStateSelected];
     
     

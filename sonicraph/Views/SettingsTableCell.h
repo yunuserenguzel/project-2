@@ -20,11 +20,11 @@ CGFloat heightForIdentifier(NSString* identifier);
 
 @end
 
-@interface SettingsTableCell : UITableViewCell
+@interface SettingsTableCell : UITableViewCell <UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic) NSString* key;
 @property (nonatomic) id value;
-@property id<SettingsTableCellProtocol> delegate;
+@property UITableViewController<SettingsTableCellProtocol>* delegate;
 
 
 @end

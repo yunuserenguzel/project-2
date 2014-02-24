@@ -13,6 +13,7 @@
 #import "SonicComment.h"
 #import "Notification.h"
 
+#define APIErrorCodeUsernameExist 212
 
 User* userFromServerDictionary(NSDictionary* dictionary);
 SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary);
@@ -25,16 +26,11 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                             withTags:(NSString*)tags
                  withCompletionBlock:(CompletionSonicBlock)completionBlock;
 
-+ (void) getUserSonics:(User*)user saveToDatabase:(BOOL)saveToDatabase withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
 
-+ (void) getSonicsBefore:(SonicManagedObject*)sonicManagedObject withCompletionBlock:(Block)completionBlock;
 
 + (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
-
-+ (void) getSonic:(NSURL*)sonicUrl withSonicBlock:(SonicDataBlock)sonicBlock;
-+ (void) getImage:(NSURL*)imageUrl withCompletionBlock:(CompletionIdBlock)completionBlock;
 
 + (MKNetworkOperation*) checkIsTokenValid:(NSString*)token
                       withCompletionBlock:(CompletionUserBlock)block
@@ -78,6 +74,15 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
 + (MKNetworkOperation*) getSonicsAfter:(Sonic*)sonic
                    withCompletionBlock:(CompletionArrayBlock)completionBlock
                          andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getSonicsBefore:(Sonic*)sonic
+                    withCompletionBlock:(CompletionArrayBlock)completionBlock
+                          andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getUserSonics:(User*)user
+                               before:(Sonic*)sonic
+                  withCompletionBlock:(CompletionArrayBlock)completionBlock
+                        andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation*) getCommentsOfSonic:(Sonic*)sonic
                        withCompletionBlock:(CompletionArrayBlock)completionBlock

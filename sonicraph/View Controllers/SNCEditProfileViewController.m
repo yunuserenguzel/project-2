@@ -12,17 +12,19 @@
 
 @interface SettingsField : NSObject 
 @property NSString* key;
+@property NSString* serverKey;
 @property id value;
 @property NSString* type;
-+ (SettingsField*) k:(NSString*)key v:(id)value t:(NSString*)type;
++ (SettingsField*) k:(NSString*)key sK:(NSString*)serverKey v:(id)value t:(NSString*)type;
 
 @end
 
 @implementation SettingsField
-+(SettingsField *)k:(NSString *)key v:(id)value t:(NSString *)type
++(SettingsField *)k:(NSString *)key sK:(NSString*)serverKey v:(id)value t:(NSString *)type
 {
     SettingsField* settingsField = [[SettingsField alloc] init];
     settingsField.key = key;
+    settingsField.serverKey = serverKey;
     settingsField.value = value;
     settingsField.type = type;
     return settingsField;
@@ -35,6 +37,7 @@
 @property NSMutableDictionary* changedFields;
 @property User* user;
 @property UIActivityIndicatorView* activityIndicator;
+@property UIBarButtonItem* saveButton;
 @end
 
 @implementation SNCEditProfileViewController
@@ -51,6 +54,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.changedFields = [NSMutableDictionary new];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellStringValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellPasswordValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellDateValueIdentifier];
@@ -68,24 +72,44 @@
         [self.activityIndicator stopAnimating];
     }];
     
-    UIBarButtonItem* save = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(save)];
-    self.navigationItem.rightBarButtonItem = save;
+    self.saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = self.saveButton;
 }
 
 - (void) save
 {
-    
+    if(self.changedFields.count > 0)
+    {
+        [self.tableView setUserInteractionEnabled:NO];
+        UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
+        [activityIndicator sizeToFit];
+        [activityIndicator startAnimating];
+        [SNCAPIManager editProfileWithFields:self.changedFields withCompletionBlock:^(User *user, NSString *token) {
+            [self.tableView setUserInteractionEnabled:YES];
+            self.navigationItem.rightBarButtonItem = self.saveButton;
+            [activityIndicator stopAnimating];
+        } andErrorBlock:^(NSError *error) {
+            if(error.code == APIErrorCodeUsernameExist)
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is already exist. Choose a different username." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+            }
+            [self.tableView setUserInteractionEnabled:YES];
+            self.navigationItem.rightBarButtonItem = self.saveButton;
+            [activityIndicator stopAnimating];
+        }];
+    }
 }
 
 - (void) prepareFields
 {
     [self.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
         self.fields = @[
-                        [SettingsField k:@"Photo" v:object t:SettingsTableCellImageValueIdentifier],
-                        [SettingsField k:@"Name" v:self.user.fullName t:SettingsTableCellStringValueIdentifier],
-                        [SettingsField k:@"Username" v:self.user.username t:SettingsTableCellStringValueIdentifier],
-                        [SettingsField k:@"Location" v:self.user.location t:SettingsTableCellStringValueIdentifier],
-                        [SettingsField k:@"Website" v:self.user.website t:SettingsTableCellStringValueIdentifier]
+                        [SettingsField k:@"Photo" sK:@"profile_image" v:object t:SettingsTableCellImageValueIdentifier],
+                        [SettingsField k:@"Name" sK:@"fullname" v:self.user.fullName t:SettingsTableCellStringValueIdentifier],
+                        [SettingsField k:@"Username" sK:@"username" v:self.user.username t:SettingsTableCellStringValueIdentifier],
+                        [SettingsField k:@"Location" sK:@"location" v:self.user.location t:SettingsTableCellStringValueIdentifier],
+                        [SettingsField k:@"Website" sK:@"website" v:self.user.website t:SettingsTableCellStringValueIdentifier]
                         ];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -133,10 +157,10 @@
 
 - (void) valueChanged:(id)value forKey:(NSString *)key
 {
-    [self.changedFields setObject:value forKey:key];
     for (SettingsField* field in self.fields) {
         if([field.key isEqualToString:key]){
             field.value = value;
+            [self.changedFields setObject:value forKey:field.serverKey];
         }
     }
 }

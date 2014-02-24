@@ -120,8 +120,7 @@
 - (void) initViews
 {
     
-    self.sonicPlayerView = [[SonicPlayerView alloc] init];
-    [self.sonicPlayerView setFrame:[self sonicPlayerViewFrame]];
+    self.sonicPlayerView = [[SonicPlayerView alloc] initWithFrame:[self sonicPlayerViewFrame]];
     [self addSubview:self.sonicPlayerView];
     [self addSubview:self.usernameLabel];
     [self initUserInfo];

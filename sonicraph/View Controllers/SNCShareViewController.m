@@ -11,6 +11,7 @@
 #import "SonicPlayerView.h"
 #import "UIButton+StateProperties.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "Configurations.h"
 
 @interface SNCShareViewController ()
 
@@ -23,13 +24,30 @@
 @property UIView* keyboardCloser;
 @property SonicPlayerView* sonicPlayerView;
 
+
+@property UIButton* backButton;
+@property UILabel* titleLabel;
+@property UIButton* doneButton;
+
 @end
 
 @implementation SNCShareViewController
 {
     BOOL keyboardIsShown;
 }
+- (CGRect) backButtonFrame
+{
+    return CGRectMake(0.0, 0.0, 106.0, 66.0);
+}
+- (CGRect) titleLabelFrame
+{
+    return CGRectMake(106.0, 0.0, 108.0, 66.0);
+}
 
+- (CGRect) doneButtonFrame
+{
+    return CGRectMake(106.0 + 108.0, 0.0, 106.0, 66.0);
+}
 - (CGRect) tagsFrame
 {
     return CGRectMake(0.0, 420.0, 320.0, 44.0);
@@ -47,7 +65,6 @@
 {
     return CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
 }
-
 
 - (CGRect) twitterButtonFrame
 {
@@ -92,14 +109,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor blackColor]];
+    [self.view setBackgroundColor:CameraViewControllersBackgroundColor];
     
 	// Do any additional setup after loading the view.
-    [self initializeShareButton];
     [self initializeFacebookAndTwitterButtons];
     [self initializeSonicPlayerView];
     [self initTags];
     [self configureViews];
+    [self initializeTopViews];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -111,8 +128,6 @@
      selector:@selector(keyboardWillHide:)
      name:UIKeyboardWillHideNotification
      object:self.view.window];
-    
-    
 }
 
 - (void) configureViews
@@ -122,7 +137,40 @@
     }
     [self.sonicPlayerView setSonic:self.sonic];
 }
+- (void) initializeTopViews
+{
+    
+    self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.backButton setFrame:[self backButtonFrame]];
+    [self.backButton setTitle:@"Edit" forState:UIControlStateNormal];
+    [self.backButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [self.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.backButton setImage:[UIImage imageNamed:@"BackArrow.png"] forState:UIControlStateNormal];
+    [self.backButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0)];
+    [self.backButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
+    [self.view addSubview:self.backButton];
+    
+    self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
+    [self.titleLabel setText:@"Share"];
+    [self.titleLabel setTextColor:[UIColor whiteColor]];
+    [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.titleLabel setFont:self.backButton.titleLabel.font];
+    [self.view addSubview:self.titleLabel];
+    
+    self.doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.doneButton setFrame:[self doneButtonFrame]];
+    [self.doneButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    [self.doneButton setImage:[UIImage imageNamed:@"Share.png"] forState:UIControlStateNormal];
+    [self.doneButton addTarget:self action:@selector(shareSonic) forControlEvents:UIControlEventTouchUpInside];
+    [self.doneButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
+    [self.view addSubview:self.doneButton];
+    
+}
 
+- (void) back
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (void) initializeSonicPlayerView
 {
     self.sonicPlayerView = [[SonicPlayerView alloc]initWithFrame:[self sonicPlayerViewFrame]];
@@ -162,7 +210,7 @@
 
 - (void) initializeFacebookAndTwitterButtons
 {
-    self.facebookButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.facebookButton = [UIButton buttonWithType:UIButtonTypeCustom];
 //    self.twitterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebookButton setImage:[UIImage imageNamed:@"FacebookIcon.png"] forState:UIControlStateNormal];
     [self.facebookButton setTitle:@"Facebook" forState:UIControlStateNormal];
@@ -172,10 +220,7 @@
     self.facebookButton.frame = [self facebookButtonFrame];
     [@[self.facebookButton /*, self.twitterButton*/] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
         [self.view addSubview:button];
-        [button setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
-        [button setBackgroundColor:[UIColor darkGrayColor]];
-        [button.layer setBorderColor:[UIColor blackColor].CGColor];
-        [button.layer setBorderWidth:1.0f];
+        [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 7.0, 0.0, 0.0)];
         [button setTintColor:[UIColor lightGrayColor]];
         [button setAdjustsImageWhenHighlighted:NO];
         [button addTarget:self action:@selector(setClickedButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
@@ -194,11 +239,6 @@
     }
 }
 
-- (void) initializeShareButton
-{
-    self.shareButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Share.png"] style:UIBarButtonItemStyleDone target:self action:@selector(shareSonic)];
-    [self.navigationItem setRightBarButtonItem:self.shareButtonItem];
-}
 
 - (void)setSonic:(SonicData *)sonic
 {
@@ -209,7 +249,6 @@
 
 - (void) shareSonic
 {
-    
     [SNCAPIManager createSonic:self.sonic withTags:self.tagsField.text withCompletionBlock:^(Sonic *sonic) {
         NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",sonic.sonicId];
         NSString* fullNameFild = [NSString stringWithFormat:@"%@'s sonic", sonic.owner.fullName];

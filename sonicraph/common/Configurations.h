@@ -10,7 +10,8 @@
 #ifndef sonicraph_Configurations_h
 #define sonicraph_Configurations_h
 
-#define MaximumSoundInterval 30.0f
+#define SonicMaximumSoundInterval 30.0f
+#define SonicMinimumSoundInterval 1.1f
 
 #define SonicSize CGSizeMake(320.0,320.0)
 
@@ -23,6 +24,8 @@
 #define DarkPinkColor rgb(244.0*0.9, 75.0*0.9, 122.0*0.9)
 #define CellSpacingGrayColor rgb(245.0, 245.0, 245.0)
 #define CellSpacingLineGrayColor rgb(230.0, 230.0, 230.0)
+
+#define CameraViewControllersBackgroundColor rgb(38.0,79.0,113.0)
 
 #define FullnameTextColor rgb(101.0,101.0,101.0)
 

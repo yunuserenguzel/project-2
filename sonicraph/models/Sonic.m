@@ -9,6 +9,7 @@
 #import "Sonic.h"
 #import "SonicData.h"
 #import "TypeDefs.h"
+#import "AuthenticationManager.h"
 
 @implementation Sonic
 
@@ -72,6 +73,11 @@
 - (NSData *)getSound
 {
     return [[self sonicData] sound];
+}
+
+- (BOOL)isMySonic
+{
+    return [[[[AuthenticationManager sharedInstance] authenticatedUser] userId] isEqualToString:self.owner.userId];
 }
 
 - (void)dealloc

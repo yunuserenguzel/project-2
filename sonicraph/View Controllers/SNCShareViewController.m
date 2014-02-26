@@ -12,10 +12,14 @@
 #import "UIButton+StateProperties.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "Configurations.h"
+#import "SNCSwitchView.h"
+#import "SNCAppDelegate.h"
+
+#define FacebookShareDefaultValueKey @"FacebookShareDefaultValueKey" 
 
 @interface SNCShareViewController ()
 
-@property UIButton* facebookButton;
+@property SNCSwitchView* facebookSwitch;
 @property UIButton* twitterButton;
 @property UITextField* tagsField;
 @property UIImageView* tags;
@@ -23,7 +27,6 @@
 @property UIBarButtonItem* shareButtonItem;
 @property UIView* keyboardCloser;
 @property SonicPlayerView* sonicPlayerView;
-
 
 @property UIButton* backButton;
 @property UILabel* titleLabel;
@@ -77,8 +80,8 @@
 - (CGRect) facebookButtonFrame
 {
     CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(320.0, 44.0);
-    frame.origin = CGPointMake(0.0, self.view.frame.size.height - frame.size.height);
+    frame.size = CGSizeMake(110.0, 44.0);
+    frame.origin = CGPointMake(105.0, self.view.frame.size.height - frame.size.height - 22.0);
     return frame;
 }
 
@@ -87,7 +90,8 @@
     return CGRectMake(0.0, 66.0, 320.0, 320.0);
 }
 
-- (BOOL)prefersStatusBarHidden {
+- (BOOL) prefersStatusBarHidden
+{
     return YES;
 }
 - (void) viewWillAppear:(BOOL)animated
@@ -95,18 +99,18 @@
     [self.tabBarController.tabBar setHidden:YES];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void) viewWillDisappear:(BOOL)animated
 {
     [self.sonicPlayerView stop];
     [self.tabBarController.tabBar setHidden:NO];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void) viewDidAppear:(BOOL)animated
 {
     
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:CameraViewControllersBackgroundColor];
@@ -128,6 +132,9 @@
      selector:@selector(keyboardWillHide:)
      name:UIKeyboardWillHideNotification
      object:self.view.window];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.facebookSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:FacebookShareDefaultValueKey] boolValue];
 }
 
 - (void) configureViews
@@ -210,30 +217,104 @@
 
 - (void) initializeFacebookAndTwitterButtons
 {
-    self.facebookButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    self.twitterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.facebookButton setImage:[UIImage imageNamed:@"FacebookIcon.png"] forState:UIControlStateNormal];
-    [self.facebookButton setTitle:@"Facebook" forState:UIControlStateNormal];
-//    [self.twitterButton setImage:[UIImage imageNamed:@"TwitterIcon.png"] forState:UIControlStateNormal];
-//    [self.twitterButton setTitle:@"Twitter" forState:UIControlStateNormal];
-//    self.twitterButton.frame = [self twitterButtonFrame];
-    self.facebookButton.frame = [self facebookButtonFrame];
-    [@[self.facebookButton /*, self.twitterButton*/] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
-        [self.view addSubview:button];
-        [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 7.0, 0.0, 0.0)];
-        [button setTintColor:[UIColor lightGrayColor]];
-        [button setAdjustsImageWhenHighlighted:NO];
-        [button addTarget:self action:@selector(setClickedButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
-    }];
+    self.facebookSwitch = [[SNCSwitchView alloc] init];
+    [self.facebookSwitch addTarget:self action:@selector(facebookButtonChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.facebookSwitch setFrame:[self facebookButtonFrame]];
+    [self.facebookSwitch setImage:[UIImage imageNamed:@"FacebookShareButtonIcon.png"]];
+    [self.facebookSwitch setBackgroundImage:[UIImage imageNamed:@"FacebookShareButtonBase.png"]];
+    [self.view addSubview:self.facebookSwitch];
+}
+
+- (void) facebookButtonChanged:(SNCSwitchView*)switchView
+{
+    if(self.facebookSwitch.on)
+    {
+        [self enableFacebook];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:self.facebookSwitch.on] forKey:FacebookShareDefaultValueKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void) enableFacebook
+{
+        // We will post on behalf of the user, these are the permissions we need:
+    NSArray *permissionsNeeded = @[@"publish_actions"];
+    if([[FBSession activeSession] state] == FBSessionStateOpen || [[FBSession activeSession] state] == FBSessionStateOpenTokenExtended)
+    {
+        // Request the permissions the user currently has
+        [FBRequestConnection
+         startWithGraphPath:@"/me/permissions"
+         completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+             if (!error){
+                 NSDictionary *currentPermissions= [(NSArray *)[result data] objectAtIndex:0];
+                 NSMutableArray *requestPermissions = [[NSMutableArray alloc] initWithArray:@[]];
+                 
+                 // Check if all the permissions we need are present in the user's current permissions
+                 // If they are not present add them to the permissions to be requested
+                 for (NSString *permission in permissionsNeeded){
+                     if (![currentPermissions objectForKey:permission]){
+                         [requestPermissions addObject:permission];
+                     }
+                 }
+                 
+                 // If we have permissions to request
+                 if ([requestPermissions count] > 0){
+                     // Ask for the missing permissions
+                     [FBSession.activeSession requestNewPublishPermissions:requestPermissions
+                                                           defaultAudience:FBSessionDefaultAudienceFriends
+                                                         completionHandler:^(FBSession *session, NSError *error) {
+                                                             if (!error) {
+                                                                 // Permission granted, we can request the user information
+                                                                 //                                                                                      [self makeRequestToShareLink];
+                                                             } else {
+                                                                 // An error occurred, handle the error
+                                                                 // See our Handling Errors guide: https://developers.facebook.com/docs/ios/errors/
+                                                                 NSLog(@"%@", error.description);
+                                                             }
+                                                         }];
+                 }
+                 else
+                 {
+                     // Permissions are present, we can request the user information
+                     //                                          [self makeRequestToShareLink];
+                 }
+                 
+             } else {
+                 // There was an error requesting the permission information
+                 // See our Handling Errors guide: https://developers.facebook.com/docs/ios/errors/
+                 NSLog(@"%@", error.description);
+             }
+         }];
+    }
+    else
+    {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for basic_info permissions when opening a session
+        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             if(state == FBSessionStateOpenTokenExtended || state == FBSessionStateOpen)
+             {
+                 [self enableFacebook];
+             }
+             // Retrieve the app delegate
+             SNCAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+             [appDelegate sessionStateChanged:session state:state error:error];
+         }];
+    }
 }
 
 - (void) setClickedButtonSelected:(UIButton*)button
 {
-    if([button isSelected]){
+    if([button isSelected])
+    {
         [button setSelected:NO];
         [button setTintColor:[UIColor lightGrayColor]];
     }
-    else {
+    else
+    {
         [button setSelected:YES];
         [button setTintColor:[UIColor whiteColor]];
     }
@@ -250,29 +331,35 @@
 - (void) shareSonic
 {
     [SNCAPIManager createSonic:self.sonic withTags:self.tagsField.text withCompletionBlock:^(Sonic *sonic) {
-        NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",sonic.sonicId];
-        NSString* fullNameFild = [NSString stringWithFormat:@"%@'s sonic", sonic.owner.fullName];
-        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       fullNameFild, @"name",
-                                       sonic.tags, @"caption",
-                                       @"sonicraph.com",@"description",
-                                       sonicPageLink, @"link",
-                                       nil];
-
+        
         // Make the request
-        [FBRequestConnection startWithGraphPath:@"/me/feed"
-                                     parameters:params
-                                     HTTPMethod:@"POST"
-                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                  if (!error) {
-                                      // Link posted successfully to Facebook
-                                      NSLog(@"result: %@", result);
-                                  } else {
-                                      // An error occurred, we need to handle the error
-                                      // See: https://developers.facebook.com/docs/ios/errors
-                                      NSLog(@"%@", error.description);
-                                  }
-                              }];
+        if(self.facebookSwitch.on)
+        {
+            NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",sonic.sonicId];
+            NSString* fullNameFild = [NSString stringWithFormat:@"%@ took a sonic", sonic.owner.fullName];
+            NSString* name = sonic.tags ? sonic.tags : @"Sonicraph";
+            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                           name, @"name",
+                                           fullNameFild, @"caption",
+                                           @"sonicraph.com", @"description",
+                                           sonicPageLink, @"link",
+                                           nil];
+            
+            // Make the request
+            [FBRequestConnection startWithGraphPath:@"/me/feed"
+                                         parameters:params
+                                         HTTPMethod:@"POST"
+                                  completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                      if (!error) {
+                                          // Link posted successfully to Facebook
+                                          NSLog(@"result: %@", result);
+                                      } else {
+                                          // An error occurred, we need to handle the error
+                                          // See: https://developers.facebook.com/docs/ios/errors
+                                          NSLog(@"%@", error.description);
+                                      }
+                                  }];
+        }
     }];
     
     [self.tabBarController setSelectedIndex:0];
@@ -311,7 +398,8 @@
 - (void)keyboardWillShow:(NSNotification *)n
 {
     // This is an ivar I'm using to ensure that we do not do the frame size adjustment on the `UIScrollView` if the keyboard is already shown.  This can happen if the user, after fixing editing a `UITextField`, scrolls the resized `UIScrollView` to another `UITextField` and attempts to edit the next `UITextField`.  If we were to resize the `UIScrollView` again, it would be disastrous.  NOTE: The keyboard notification will fire even when the keyboard is already shown.
-    if (keyboardIsShown) {
+    if (keyboardIsShown)
+    {
         return;
     }
     
@@ -342,9 +430,10 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:nil
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:nil
+     object:nil];
 }
 
 @end

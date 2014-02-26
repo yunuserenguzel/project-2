@@ -22,13 +22,20 @@ UIImage* rotate(UIImage* src, UIImageOrientation orientation)
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextDrawImage(context, CGRectMake(0.0, 0.0, src.size.width, src.size.height), src.CGImage);
     
-    if (orientation == UIImageOrientationRight) {
+    if (orientation == UIImageOrientationRight)
+    {
         CGContextRotateCTM (context, radians(90));
-    } else if (orientation == UIImageOrientationLeft) {
+    }
+    else if (orientation == UIImageOrientationLeft)
+    {
         CGContextRotateCTM (context, radians(-90));
-    } else if (orientation == UIImageOrientationDown) {
+    }
+    else if (orientation == UIImageOrientationDown)
+    {
         // NOTHING
-    } else if (orientation == UIImageOrientationUp) {
+    }
+    else if (orientation == UIImageOrientationUp)
+    {
         CGContextRotateCTM (context, radians(90));
     }
     UIGraphicsEndImageContext();
@@ -78,6 +85,7 @@ typedef enum SonicRecordType {
     
     CLLocationManager* locationManager;
     CLLocation *currentLocation;
+    BOOL isMediaManagerReady;
 }
 
 -(CGRect) flashButtonFrame
@@ -129,22 +137,23 @@ typedef enum SonicRecordType {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    isMediaManagerReady = NO;
     self.recordType = SonicRecordTypeSoundFirst;
     [self.view setBackgroundColor:CameraViewControllersBackgroundColor];
     self.cameraView = [[UIView alloc] initWithFrame:[self cameraViewFrame]];
     [self.view addSubview:self.cameraView];
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focusForTap:)];
     [self.cameraView addGestureRecognizer:tapGesture];
-    [[[NSThread alloc] initWithTarget:self selector:@selector(initializeMediaManager) object:nil] start];
     
     [self initializeMaskView];
     [self initializeCameraFeaturesBar];
     [self initializeSoundTimeSlider];
     [self initializeRetakeAndCancelButton];
+    
     self.recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.recordButton setImage:[UIImage imageNamed:@"Camera Button.png"] forState:UIControlStateNormal];
     [self.recordButton setFrame:[self recordButtonFrame]];
-    [self.recordTypeSwitch setEnabled:YES];
+    [self.recordButton setEnabled:NO];
     [self.view addSubview:self.recordButton];
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -158,6 +167,12 @@ typedef enum SonicRecordType {
 	locationManager.delegate = self;
 	locationManager.distanceFilter = kCLDistanceFilterNone;
 	locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [[[NSThread alloc]
+      initWithTarget:self
+      selector:@selector(initializeMediaManager)
+      object:nil]
+     start];
     
 }
 
@@ -212,7 +227,8 @@ typedef enum SonicRecordType {
 - (void) focusForTap:(UITapGestureRecognizer*)tapGesture
 {
     CGPoint point = [tapGesture locationInView:self.cameraView];
-    if (CGRectContainsPoint([self visibleRectFrame], point)) {
+    if (CGRectContainsPoint([self visibleRectFrame], point))
+    {
         CGFloat size = 15.0;
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(point.x - size, point.y - size, size * 2, size * 2)];
         imageView.alpha = 0.0;
@@ -246,9 +262,12 @@ typedef enum SonicRecordType {
 - (void) recordButtonPressed
 {
     [self.recordTypeSwitch setEnabled:NO];
-    if(self.recordType == SonicRecordTypeSoundFirst){
+    if(self.recordType == SonicRecordTypeSoundFirst)
+    {
         [self startAudioRecording];
-    } else {
+    }
+    else
+    {
         [self takePicture];
     }
 }
@@ -260,7 +279,8 @@ typedef enum SonicRecordType {
 
 - (void) previewSonic
 {
-    if(capturedImage != nil && capturedAudio != nil){
+    if(capturedImage != nil && capturedAudio != nil)
+    {
         [self performSegueWithIdentifier:EditSonicSegue sender:self];
     }
 }
@@ -268,7 +288,10 @@ typedef enum SonicRecordType {
 - (void) viewWillAppear:(BOOL)animated
 {
     [self.recordTypeSwitch setSelectedSegmentIndex:0];
-    [self.recordButton setEnabled:YES];
+    if(isMediaManagerReady)
+    {
+        [self.recordButton setEnabled:YES];
+    }
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.tabBarController.tabBar setHidden:YES];
     
@@ -283,9 +306,12 @@ typedef enum SonicRecordType {
     [self.soundTimeSlider setValue:0.0];
     [self.recordButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.recordButton addTarget:self action:@selector(recordButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    if(self.recordType == SonicRecordTypeSoundFirst){
+    if(self.recordType == SonicRecordTypeSoundFirst)
+    {
         [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];
-    } else {
+    }
+    else
+    {
         [self.recordButton setImage:RecordButtonCameraImage forState:UIControlStateNormal];
     }
     
@@ -336,7 +362,7 @@ typedef enum SonicRecordType {
     CGFloat h = [self visibleRectFrame].size.height * yScale;
     
     image = [image cropForRect:CGRectMake(x, y, w, h)];
-    
+
     capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 0.33)];
     if(capturedImageOrientation == UIDeviceOrientationLandscapeLeft)
     {
@@ -358,7 +384,8 @@ typedef enum SonicRecordType {
 
 - (void) audioRecordStartedForManager:(SonicraphMediaManager *)manager
 {
-    if(self.recordType == SonicRecordTypePhotoFirst){
+    if(self.recordType == SonicRecordTypePhotoFirst)
+    {
         [self.activityIndicator stopAnimating];
         [self.recordButton addTarget:self action:@selector(stopAudioRecording) forControlEvents:UIControlEventTouchUpInside];
         [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];
@@ -368,6 +395,7 @@ typedef enum SonicRecordType {
 - (void) startAudioRecording
 {
     [self.mediaManager startAuidoRecording];
+    [self.recordButton setEnabled:NO];
     self.soundTimerInitialFireDate = [NSDate date];
     self.soundTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSoundTimer:) userInfo:nil repeats:YES];
     if(self.recordType == SonicRecordTypeSoundFirst)
@@ -393,7 +421,8 @@ typedef enum SonicRecordType {
     {
         self.soundTimeSlider.value = self.mediaManager.audioRecorder.currentTime;
     }
-    else {
+    else
+    {
         [self.soundTimer invalidate];
         if (self.recordType == SonicRecordTypePhotoFirst)
         {
@@ -443,7 +472,6 @@ typedef enum SonicRecordType {
     [self.cameraTypeToggleButton addTarget:self action:@selector(toggleCameraType) forControlEvents:UIControlEventTouchUpInside];
     [self.cameraTypeToggleButton setTintColor:[UIColor whiteColor]];
     [self.cameraFeaturesBar addSubview:self.cameraTypeToggleButton];
-
 }
 
 - (void) toggleCameraType
@@ -478,8 +506,8 @@ typedef enum SonicRecordType {
         NSLog(@"requestedFlashMode is AvCaptureFlashModeOff");
         requestedFlashMode = AVCaptureFlashModeOff;
     }
-    
-    if([self.mediaManager setFlashMode:requestedFlashMode]){
+    if([self.mediaManager setFlashMode:requestedFlashMode])
+    {
         NSLog(@"requestedflashmode granted");
         flashMode = requestedFlashMode;
         if(flashMode == AVCaptureFlashModeAuto)
@@ -494,11 +522,11 @@ typedef enum SonicRecordType {
         {
             [self.flashButton setTitle:@"Off" forState:UIControlStateNormal];
         }
-    } else {
+    }
+    else
+    {
         NSLog(@"flash mode is not supported");
     }
-    
-
 }
 
 - (void) recordTypeSwitchChanged
@@ -524,7 +552,6 @@ typedef enum SonicRecordType {
     [self.soundTimeSlider setFillColor:PinkColor];
     [self.soundTimeSlider setBaseColor:[UIColor whiteColor]];
     [self.view addSubview:self.soundTimeSlider];
-    
 }
 
 - (void) initializeRetakeAndCancelButton
@@ -594,6 +621,9 @@ typedef enum SonicRecordType {
     self.mediaManager = [[SonicraphMediaManager alloc] initWithView:self.cameraView];
     [self.mediaManager setDelegate:self];
     isMainCamera = YES;
+    isMediaManagerReady = YES;
+    [self.recordButton setEnabled:YES];
+    NSLog(@"Media Manager Ready");
 }
 
 -(void)manager:(SonicraphMediaManager *)manager audioDataReady:(NSData *)data
@@ -622,7 +652,8 @@ typedef enum SonicRecordType {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.destinationViewController isKindOfClass:[SNCEditViewController class]]){
+    if([segue.destinationViewController isKindOfClass:[SNCEditViewController class]])
+    {
         SonicData* sonic = [[SonicData alloc] initWithImage:capturedImage andSound:nil];
         [sonic setRawSound:capturedAudio];
         sonic.latitude = currentLocation.coordinate.latitude;
@@ -638,10 +669,14 @@ typedef enum SonicRecordType {
 // Failed to get current location
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    UIAlertView *errorAlert = [[UIAlertView alloc]
-							   initWithTitle:@"Error" message:@"Failed to Get Your Location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    // Call alert
-	[errorAlert show];
+//    UIAlertView *errorAlert = [[UIAlertView alloc]
+//							   initWithTitle:@"Error"
+//                               message:@"Failed to Get Your Location"
+//                               delegate:nil
+//                               cancelButtonTitle:@"OK"
+//                               otherButtonTitles:nil];
+//    // Call alert
+//	[errorAlert show];
 }
 
 // Got location and now update

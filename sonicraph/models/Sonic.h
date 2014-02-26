@@ -36,4 +36,6 @@
 
 - (void) updateWithSonic:(Sonic*)sonic;
 
+- (BOOL) isMySonic;
+
 @end

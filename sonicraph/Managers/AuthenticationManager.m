@@ -39,14 +39,20 @@ static AuthenticationManager* sharedInstance = nil;
         }else {
             _isUserAuthenticated = NO;
         }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUser:) name:NotificationUpdateViewForUser object:self.authenticatedUser];
     }
     return self;
 }
 
+- (void) updateUser:(NSNotification*)notification
+{
+    [self setAuthenticatedUser:notification.object];
+}
 
 - (void)registerUserWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     [SNCAPIManager registerWithUsername:username email:email password:password andCompletionBlock:^(User *user, NSString *token) {
+        [self clearThirdPartyAppLogins];
         self.token = token;
         self.authenticatedUser = user;
         _isUserAuthenticated = YES;
@@ -76,6 +82,7 @@ static AuthenticationManager* sharedInstance = nil;
     
     [SNCAPIManager loginWithUsername:username andPassword:password withCompletionBlock:^(User *user,NSString* token) {
         NSLog(@"%@",user);
+        [self clearThirdPartyAppLogins];
         self.token = token;
         self.authenticatedUser = user;
         _isUserAuthenticated = YES;
@@ -152,14 +159,21 @@ static AuthenticationManager* sharedInstance = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (void) clearThirdPartyAppLogins
+{
+    [FBSession.activeSession closeAndClearTokenInformation];
+    [FBSession.activeSession close];
+    [FBSession setActiveSession:nil];
+    
+}
+
 - (void)logout
 {
     [SNCAPIManager destroyAuthenticationWithCompletionBlock:^(NSDictionary *responseDictionary) {
         [self setToken:nil];
         [self setAuthenticatedUser:nil];
-        
         [self checkAuthentication];
-        
+        [self clearThirdPartyAppLogins];
         [[NSNotificationCenter defaultCenter]
          postNotificationName:NotificationUserLoggedOut
          object:nil];

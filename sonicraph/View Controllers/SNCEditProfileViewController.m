@@ -103,14 +103,17 @@
 
 - (void) prepareFields
 {
+    SettingsField* imageSettings = [SettingsField k:@"Photo" sK:@"profile_image" v:nil t:SettingsTableCellImageValueIdentifier];
+    NSMutableArray* array = [NSMutableArray new];
+    [array addObject:imageSettings];
+    [array addObject:[SettingsField k:@"Name" sK:@"fullname" v:self.user.fullName t:SettingsTableCellStringValueIdentifier]];
+    [array addObject:[SettingsField k:@"Username" sK:@"username" v:self.user.username t:SettingsTableCellStringValueIdentifier]];
+    [array addObject:[SettingsField k:@"Location" sK:@"location" v:self.user.location t:SettingsTableCellStringValueIdentifier]];
+    [array addObject:[SettingsField k:@"Website" sK:@"website" v:self.user.website t:SettingsTableCellStringValueIdentifier]];
+    self.fields = array;
+    [self.tableView reloadData];
     [self.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
-        self.fields = @[
-                        [SettingsField k:@"Photo" sK:@"profile_image" v:object t:SettingsTableCellImageValueIdentifier],
-                        [SettingsField k:@"Name" sK:@"fullname" v:self.user.fullName t:SettingsTableCellStringValueIdentifier],
-                        [SettingsField k:@"Username" sK:@"username" v:self.user.username t:SettingsTableCellStringValueIdentifier],
-                        [SettingsField k:@"Location" sK:@"location" v:self.user.location t:SettingsTableCellStringValueIdentifier],
-                        [SettingsField k:@"Website" sK:@"website" v:self.user.website t:SettingsTableCellStringValueIdentifier]
-                        ];
+        imageSettings.value = object;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });

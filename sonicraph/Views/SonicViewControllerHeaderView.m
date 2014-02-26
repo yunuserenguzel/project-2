@@ -137,7 +137,7 @@
                          initWithItems:@[@"Likes",@"Comments",@"Resonics"]];
     [self addSubview:self.segmentedBar];
     [self.segmentedBar setFrame:[self segmentedBarMaxFrame]];
-    [self.segmentedBar setTintColor:NavigationBarBlueColor];
+    [self.segmentedBar setTintColor:PinkColor];
 }
 - (void) addTargetForTapToTop:(id)target action:(SEL)selector
 {

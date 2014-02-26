@@ -141,7 +141,6 @@
 		AED3321518BBD4D5002FB70A /* Cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3320B18BBD4D5002FB70A /* Cancel.png */; };
 		AED3321618BBD4D5002FB70A /* CaptureButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3320C18BBD4D5002FB70A /* CaptureButtonCamera@2x.png */; };
 		AED3321718BBD4D5002FB70A /* CaptureButtonMic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3320D18BBD4D5002FB70A /* CaptureButtonMic@2x.png */; };
-		AED3321818BBD4D5002FB70A /* FacebookIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3320E18BBD4D5002FB70A /* FacebookIcon@2x.png */; };
 		AED3321918BBD4D5002FB70A /* GleamWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3320F18BBD4D5002FB70A /* GleamWhite@2x.png */; };
 		AED3321A18BBD4D5002FB70A /* Paused@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3321018BBD4D5002FB70A /* Paused@2x.png */; };
 		AED3321C18BBD4D5002FB70A /* TrimHandle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3321218BBD4D5002FB70A /* TrimHandle@2x.png */; };
@@ -152,6 +151,7 @@
 		AED3322A18BC040F002FB70A /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3322918BC040E002FB70A /* BackArrow@2x.png */; };
 		AED3322C18BC08FC002FB70A /* TtimBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3322B18BC08FC002FB70A /* TtimBar@2x.png */; };
 		AED3322E18BC1E5E002FB70A /* Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AED3322D18BC1E5E002FB70A /* Share@2x.png */; };
+		AED3323118BC888A002FB70A /* SNCSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = AED3323018BC888A002FB70A /* SNCSwitchView.m */; };
 		AED56E9C1801A35D000DF866 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9B1801A35D000DF866 /* Foundation.framework */; };
 		AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9D1801A35D000DF866 /* CoreGraphics.framework */; };
 		AED56EA01801A35D000DF866 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED56E9F1801A35D000DF866 /* UIKit.framework */; };
@@ -180,6 +180,9 @@
 		AEDAAE2418650B5B001DD389 /* NSDate+NVTimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */; };
 		AEDAAE371866D184001DD389 /* SNCSonicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE361866D184001DD389 /* SNCSonicViewController.m */; };
 		AEDAEEA618A02FFC00D38D6C /* UIImage+scaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAEEA518A02FFC00D38D6C /* UIImage+scaleToSize.m */; };
+		AEDED1D818BDD50A00FEB636 /* FacebookShareButtonBase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDED1D618BDD50A00FEB636 /* FacebookShareButtonBase@2x.png */; };
+		AEDED1D918BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDED1D718BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png */; };
+		AEDED1DC18BDEB9800FEB636 /* SonicActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDED1DB18BDEB9800FEB636 /* SonicActionSheet.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -660,7 +663,6 @@
 		AED3320B18BBD4D5002FB70A /* Cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cancel.png; sourceTree = "<group>"; };
 		AED3320C18BBD4D5002FB70A /* CaptureButtonCamera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CaptureButtonCamera@2x.png"; sourceTree = "<group>"; };
 		AED3320D18BBD4D5002FB70A /* CaptureButtonMic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CaptureButtonMic@2x.png"; sourceTree = "<group>"; };
-		AED3320E18BBD4D5002FB70A /* FacebookIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookIcon@2x.png"; sourceTree = "<group>"; };
 		AED3320F18BBD4D5002FB70A /* GleamWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GleamWhite@2x.png"; sourceTree = "<group>"; };
 		AED3321018BBD4D5002FB70A /* Paused@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Paused@2x.png"; sourceTree = "<group>"; };
 		AED3321218BBD4D5002FB70A /* TrimHandle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TrimHandle@2x.png"; sourceTree = "<group>"; };
@@ -671,6 +673,8 @@
 		AED3322918BC040E002FB70A /* BackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow@2x.png"; sourceTree = "<group>"; };
 		AED3322B18BC08FC002FB70A /* TtimBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TtimBar@2x.png"; sourceTree = "<group>"; };
 		AED3322D18BC1E5E002FB70A /* Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Share@2x.png"; sourceTree = "<group>"; };
+		AED3322F18BC888A002FB70A /* SNCSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSwitchView.h; sourceTree = "<group>"; };
+		AED3323018BC888A002FB70A /* SNCSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSwitchView.m; sourceTree = "<group>"; };
 		AED56E981801A35D000DF866 /* sonicraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonicraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED56E9B1801A35D000DF866 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AED56E9D1801A35D000DF866 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -727,6 +731,10 @@
 		AEDAAE361866D184001DD389 /* SNCSonicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSonicViewController.m; sourceTree = "<group>"; };
 		AEDAEEA418A02FFC00D38D6C /* UIImage+scaleToSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+scaleToSize.h"; sourceTree = "<group>"; };
 		AEDAEEA518A02FFC00D38D6C /* UIImage+scaleToSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+scaleToSize.m"; sourceTree = "<group>"; };
+		AEDED1D618BDD50A00FEB636 /* FacebookShareButtonBase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookShareButtonBase@2x.png"; sourceTree = "<group>"; };
+		AEDED1D718BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookShareButtonIcon@2x.png"; sourceTree = "<group>"; };
+		AEDED1DA18BDEB9800FEB636 /* SonicActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicActionSheet.h; sourceTree = "<group>"; };
+		AEDED1DB18BDEB9800FEB636 /* SonicActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicActionSheet.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -847,6 +855,8 @@
 				AE9ABCFD187A0DC9008FE96B /* SNCPersonTableCell.m */,
 				AE7E18E918954102009A9B7F /* SNCNotificationCell.h */,
 				AE7E18EA18954102009A9B7F /* SNCNotificationCell.m */,
+				AED3322F18BC888A002FB70A /* SNCSwitchView.h */,
+				AED3323018BC888A002FB70A /* SNCSwitchView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1025,6 +1035,8 @@
 				AEB945A01874DA3200FCE111 /* SegmentedBar.m */,
 				AEB945ED1876047900FCE111 /* SonicCommentCell.h */,
 				AEB945EE1876047900FCE111 /* SonicCommentCell.m */,
+				AEDED1DA18BDEB9800FEB636 /* SonicActionSheet.h */,
+				AEDED1DB18BDEB9800FEB636 /* SonicActionSheet.m */,
 			);
 			name = "Sonic Controller Views";
 			sourceTree = "<group>";
@@ -1596,6 +1608,8 @@
 		AED3320818BBD4D5002FB70A /* sonicraphcameramodeelementspng */ = {
 			isa = PBXGroup;
 			children = (
+				AEDED1D618BDD50A00FEB636 /* FacebookShareButtonBase@2x.png */,
+				AEDED1D718BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png */,
 				AED3322D18BC1E5E002FB70A /* Share@2x.png */,
 				AED3322B18BC08FC002FB70A /* TtimBar@2x.png */,
 				AED3322918BC040E002FB70A /* BackArrow@2x.png */,
@@ -1608,7 +1622,6 @@
 				AED3320B18BBD4D5002FB70A /* Cancel.png */,
 				AED3320C18BBD4D5002FB70A /* CaptureButtonCamera@2x.png */,
 				AED3320D18BBD4D5002FB70A /* CaptureButtonMic@2x.png */,
-				AED3320E18BBD4D5002FB70A /* FacebookIcon@2x.png */,
 				AED3320F18BBD4D5002FB70A /* GleamWhite@2x.png */,
 				AED3321018BBD4D5002FB70A /* Paused@2x.png */,
 				AED3321218BBD4D5002FB70A /* TrimHandle@2x.png */,
@@ -1921,6 +1934,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED277E318AFE21D00C17F19 /* ResonicGrey@2x.png in Resources */,
+				AEDED1D818BDD50A00FEB636 /* FacebookShareButtonBase@2x.png in Resources */,
 				AED277AA18AFDE1800C17F19 /* SearchBlue@2x.png in Resources */,
 				AED277A418AFDE1800C17F19 /* HomeBlue@2x.png in Resources */,
 				AED277F618B023A900C17F19 /* FollowingPink@2x.png in Resources */,
@@ -1969,6 +1983,7 @@
 				AED2779A18AFDE1800C17F19 /* CameraGrey@2x.png in Resources */,
 				AED3322518BBDED8002FB70A /* MiniCameraLeft@2x.png in Resources */,
 				AED277EA18B0004700C17F19 /* LikeTabPink@2x.png in Resources */,
+				AEDED1D918BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png in Resources */,
 				AEB9F7B2187B442E005F4988 /* Settings@2x.png in Resources */,
 				AED277F218B00D5000C17F19 /* WebIcon@2x.png in Resources */,
 				AED277AC18AFDE1800C17F19 /* SearchGrey@2x.png in Resources */,
@@ -2009,7 +2024,6 @@
 				AED2779E18AFDE1800C17F19 /* GlobeBlue@2x.png in Resources */,
 				AED277B218AFDE1800C17F19 /* UserGrey@2x.png in Resources */,
 				AED2780818B1429000C17F19 /* NotificationComment@2x.png in Resources */,
-				AED3321818BBD4D5002FB70A /* FacebookIcon@2x.png in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
 				AED277A918AFDE1800C17F19 /* HomeWhite@2x.png in Resources */,
 				AED277AF18AFDE1800C17F19 /* SearchWhite@2x.png in Resources */,
@@ -2031,6 +2045,7 @@
 				AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */,
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
+				AED3323118BC888A002FB70A /* SNCSwitchView.m in Sources */,
 				AE7E18DF18906859009A9B7F /* SNCSearchViewController.m in Sources */,
 				AE9ABCFB18799E71008FE96B /* SNCFollowerFollowingViewController.m in Sources */,
 				AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */,
@@ -2086,6 +2101,7 @@
 				AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */,
 				AEB9F7BC187CA955005F4988 /* SNCMyProfileViewController.m in Sources */,
 				AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */,
+				AEDED1DC18BDEB9800FEB636 /* SonicActionSheet.m in Sources */,
 				AE9E4C251889A73200C2E870 /* SonicArray.m in Sources */,
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
@@ -2419,8 +2435,8 @@
 				ARCHS = armv7;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yunus Guzel (J592UV7UG6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yunus Guzel (J592UV7UG6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/yunuserenguzel/Documents/FacebookSDK,
@@ -2436,7 +2452,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "C6B3CC05-31C7-4194-8BDE-085A697812EC";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2448,8 +2464,8 @@
 				ARCHS = armv7;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yunus Guzel (J592UV7UG6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yunus Guzel (J592UV7UG6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/yunuserenguzel/Documents/FacebookSDK,
@@ -2467,7 +2483,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "C6B3CC05-31C7-4194-8BDE-085A697812EC";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

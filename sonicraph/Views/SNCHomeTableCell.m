@@ -16,6 +16,7 @@
 #import "Configurations.h"
 #import "NSDate+NVTimeAgo.h"
 #import "AuthenticationManager.h"
+#import "SonicActionSheet.h"
 
 #define DeleteConfirmAlertViewTag 10001
 #define ResonicConfirmAlertViewTag 20020
@@ -283,19 +284,24 @@
 
 - (void) share
 {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Share on Facebook",@"Share on Twitter",@"Copy URL",@"Open Details", nil];
-    actionSheet.tag = SonicActionSheetTag;
-    [actionSheet showInView:self];
+//    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Share on Facebook",@"Share on Twitter",@"Copy URL",@"Open Details", nil];
+//    actionSheet.tag = SonicActionSheetTag;
+//    [actionSheet showInView:self];
+    
+    SonicActionSheet* sonicActionSheet = [[SonicActionSheet alloc] initWithSonic:self.sonic];
+    sonicActionSheet.delegate = self;
+    sonicActionSheet.tag = SonicActionSheetTag;
+    [sonicActionSheet showInView:self];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if(actionSheet.tag == SonicActionSheetTag){
-        if(buttonIndex == 0){
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
-            alert.tag = DeleteConfirmAlertViewTag;
-            [alert show];
-        }
+//        if(buttonIndex == 0){
+//            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+//            alert.tag = DeleteConfirmAlertViewTag;
+//            [alert show];
+//        }
     } else if(actionSheet.tag == DeleteResonicActionSheetTag){
         if(buttonIndex == 0) {
             if(self.sonic.isResonic){
@@ -342,9 +348,9 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if(alertView.tag == DeleteConfirmAlertViewTag){
-        if(buttonIndex == 0){
-            [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
-        }
+//        if(buttonIndex == 0){
+//            [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
+//        }
     }
     else if(alertView.tag == ResonicConfirmAlertViewTag){
         if(buttonIndex == 1){

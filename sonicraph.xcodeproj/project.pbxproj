@@ -183,6 +183,8 @@
 		AEDED1D818BDD50A00FEB636 /* FacebookShareButtonBase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDED1D618BDD50A00FEB636 /* FacebookShareButtonBase@2x.png */; };
 		AEDED1D918BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEDED1D718BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png */; };
 		AEDED1DC18BDEB9800FEB636 /* SonicActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDED1DB18BDEB9800FEB636 /* SonicActionSheet.m */; };
+		AEDED1E818BE682900FEB636 /* SNCFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDED1E718BE682900FEB636 /* SNCFacebookManager.m */; };
+		AEDED1F318BEB02100FEB636 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDED1F218BEB02100FEB636 /* Social.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -735,6 +737,9 @@
 		AEDED1D718BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FacebookShareButtonIcon@2x.png"; sourceTree = "<group>"; };
 		AEDED1DA18BDEB9800FEB636 /* SonicActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicActionSheet.h; sourceTree = "<group>"; };
 		AEDED1DB18BDEB9800FEB636 /* SonicActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicActionSheet.m; sourceTree = "<group>"; };
+		AEDED1E618BE682900FEB636 /* SNCFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCFacebookManager.h; sourceTree = "<group>"; };
+		AEDED1E718BE682900FEB636 /* SNCFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCFacebookManager.m; sourceTree = "<group>"; };
+		AEDED1F218BEB02100FEB636 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -742,6 +747,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEDED1F318BEB02100FEB636 /* Social.framework in Frameworks */,
 				AEC59D6A18AA0DFC00E66E41 /* FacebookSDK.framework in Frameworks */,
 				AE5B5F4C18A38A8100059077 /* CoreLocation.framework in Frameworks */,
 				AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */,
@@ -941,6 +947,8 @@
 				AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */,
 				AED0C48618B3598900725867 /* SNCResourceHandler.h */,
 				AED0C48718B3598900725867 /* SNCResourceHandler.m */,
+				AEDED1E618BE682900FEB636 /* SNCFacebookManager.h */,
+				AEDED1E718BE682900FEB636 /* SNCFacebookManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1650,6 +1658,7 @@
 		AED56E9A1801A35D000DF866 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AEDED1F218BEB02100FEB636 /* Social.framework */,
 				AEC59C2918AA0DF100E66E41 /* FacebookSDK */,
 				AEC59C2718AA0DE100E66E41 /* FacebookSDK */,
 				AE5B5F4B18A38A8100059077 /* CoreLocation.framework */,
@@ -2096,6 +2105,7 @@
 				AEDAAE06185DBD77001DD389 /* UIButton+StateProperties.m in Sources */,
 				AED56F081801B425000DF866 /* SNCAPITest.m in Sources */,
 				AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */,
+				AEDED1E818BE682900FEB636 /* SNCFacebookManager.m in Sources */,
 				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
 				AED0C48818B3598900725867 /* SNCResourceHandler.m in Sources */,
 				AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */,

@@ -14,6 +14,7 @@
 #import "Configurations.h"
 #import "SNCSwitchView.h"
 #import "SNCAppDelegate.h"
+#import "SNCFacebookManager.h"
 
 #define FacebookShareDefaultValueKey @"FacebookShareDefaultValueKey" 
 
@@ -238,72 +239,7 @@
 - (void) enableFacebook
 {
         // We will post on behalf of the user, these are the permissions we need:
-    NSArray *permissionsNeeded = @[@"publish_actions"];
-    if([[FBSession activeSession] state] == FBSessionStateOpen || [[FBSession activeSession] state] == FBSessionStateOpenTokenExtended)
-    {
-        // Request the permissions the user currently has
-        [FBRequestConnection
-         startWithGraphPath:@"/me/permissions"
-         completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-             if (!error){
-                 NSDictionary *currentPermissions= [(NSArray *)[result data] objectAtIndex:0];
-                 NSMutableArray *requestPermissions = [[NSMutableArray alloc] initWithArray:@[]];
-                 
-                 // Check if all the permissions we need are present in the user's current permissions
-                 // If they are not present add them to the permissions to be requested
-                 for (NSString *permission in permissionsNeeded){
-                     if (![currentPermissions objectForKey:permission]){
-                         [requestPermissions addObject:permission];
-                     }
-                 }
-                 
-                 // If we have permissions to request
-                 if ([requestPermissions count] > 0){
-                     // Ask for the missing permissions
-                     [FBSession.activeSession requestNewPublishPermissions:requestPermissions
-                                                           defaultAudience:FBSessionDefaultAudienceFriends
-                                                         completionHandler:^(FBSession *session, NSError *error) {
-                                                             if (!error) {
-                                                                 // Permission granted, we can request the user information
-                                                                 //                                                                                      [self makeRequestToShareLink];
-                                                             } else {
-                                                                 // An error occurred, handle the error
-                                                                 // See our Handling Errors guide: https://developers.facebook.com/docs/ios/errors/
-                                                                 NSLog(@"%@", error.description);
-                                                             }
-                                                         }];
-                 }
-                 else
-                 {
-                     // Permissions are present, we can request the user information
-                     //                                          [self makeRequestToShareLink];
-                 }
-                 
-             } else {
-                 // There was an error requesting the permission information
-                 // See our Handling Errors guide: https://developers.facebook.com/docs/ios/errors/
-                 NSLog(@"%@", error.description);
-             }
-         }];
-    }
-    else
-    {
-        // Open a session showing the user the login UI
-        // You must ALWAYS ask for basic_info permissions when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
-                                           allowLoginUI:YES
-                                      completionHandler:
-         ^(FBSession *session, FBSessionState state, NSError *error) {
-             if(state == FBSessionStateOpenTokenExtended || state == FBSessionStateOpen)
-             {
-                 [self enableFacebook];
-             }
-             // Retrieve the app delegate
-             SNCAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-             [appDelegate sessionStateChanged:session state:state error:error];
-         }];
-    }
+    [SNCFacebookManager grantPermissionWithCompletionBlock:nil andErrorBlock:nil];
 }
 
 - (void) setClickedButtonSelected:(UIButton*)button
@@ -335,30 +271,7 @@
         // Make the request
         if(self.facebookSwitch.on)
         {
-            NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",sonic.sonicId];
-            NSString* fullNameFild = [NSString stringWithFormat:@"%@ took a sonic", sonic.owner.fullName];
-            NSString* name = sonic.tags ? sonic.tags : @"Sonicraph";
-            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                           name, @"name",
-                                           fullNameFild, @"caption",
-                                           @"sonicraph.com", @"description",
-                                           sonicPageLink, @"link",
-                                           nil];
-            
-            // Make the request
-            [FBRequestConnection startWithGraphPath:@"/me/feed"
-                                         parameters:params
-                                         HTTPMethod:@"POST"
-                                  completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                      if (!error) {
-                                          // Link posted successfully to Facebook
-                                          NSLog(@"result: %@", result);
-                                      } else {
-                                          // An error occurred, we need to handle the error
-                                          // See: https://developers.facebook.com/docs/ios/errors
-                                          NSLog(@"%@", error.description);
-                                      }
-                                  }];
+            [SNCFacebookManager postSonic:sonic withCompletionBlock:nil andErrorBlock:nil];
         }
     }];
     
@@ -374,17 +287,6 @@
 
 - (void)keyboardWillHide:(NSNotification *)n
 {
-//    NSDictionary* userInfo = [n userInfo];
-    
-    // get the size of the keyboard
-//    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    
-    // resize the scrollview
-//    CGRect viewFrame = self.scrollView.frame;
-    // I'm also subtracting a constant kTabBarHeight because my UIScrollView was offset by the UITabBar so really only the portion of the keyboard that is leftover pass the UITabBar is obscuring my UIScrollView.
-//    viewFrame.size.height += keyboardSize.height;
-    
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     // The kKeyboardAnimationDuration I am using is 0.3
@@ -397,14 +299,11 @@
 
 - (void)keyboardWillShow:(NSNotification *)n
 {
-    // This is an ivar I'm using to ensure that we do not do the frame size adjustment on the `UIScrollView` if the keyboard is already shown.  This can happen if the user, after fixing editing a `UITextField`, scrolls the resized `UIScrollView` to another `UITextField` and attempts to edit the next `UITextField`.  If we were to resize the `UIScrollView` again, it would be disastrous.  NOTE: The keyboard notification will fire even when the keyboard is already shown.
-    if (keyboardIsShown)
+   if (keyboardIsShown)
     {
         return;
     }
-    
     self.keyboardCloser = [[UIView alloc] initWithFrame:[self keyBoardCloserFrame]];
-//    [self.keyboardCloser setAlpha:0.0];
     [self.keyboardCloser setUserInteractionEnabled:YES];
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
     [self.keyboardCloser addGestureRecognizer:tapGesture];
@@ -415,7 +314,6 @@
     // get the size of the keyboard
     CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    // I'm also subtracting a constant kTabBarHeight because my UIScrollView was offset by the UITabBar so really only the portion of the keyboard that is leftover pass the UITabBar is obscuring my UIScrollView.
     
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];

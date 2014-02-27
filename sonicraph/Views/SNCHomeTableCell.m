@@ -29,7 +29,7 @@
 
 
 @interface SNCHomeTableCell () <UIActionSheetDelegate,UIAlertViewDelegate>
-
+@property SonicActionSheet* sonicActionSheet;
 @property SonicPlayerView* sonicPlayerView;
 @property UIImageView* cellSpacingView;
 
@@ -288,10 +288,10 @@
 //    actionSheet.tag = SonicActionSheetTag;
 //    [actionSheet showInView:self];
     
-    SonicActionSheet* sonicActionSheet = [[SonicActionSheet alloc] initWithSonic:self.sonic];
-    sonicActionSheet.delegate = self;
-    sonicActionSheet.tag = SonicActionSheetTag;
-    [sonicActionSheet showInView:self];
+    self.sonicActionSheet = [[SonicActionSheet alloc] initWithSonic:self.sonic];
+    self.sonicActionSheet.delegate = self;
+    self.sonicActionSheet.tag = SonicActionSheetTag;
+    [self.sonicActionSheet showInView:self];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -302,23 +302,24 @@
 //            alert.tag = DeleteConfirmAlertViewTag;
 //            [alert show];
 //        }
-    } else if(actionSheet.tag == DeleteResonicActionSheetTag){
-        if(buttonIndex == 0) {
-            if(self.sonic.isResonic){
-                [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:^(BOOL successful) {
-                    [SNCAPIManager deleteResonic:self.sonic.originalSonic withCompletionBlock:^(Sonic *sonic) {
-                        [self.sonic.originalSonic updateWithSonic:sonic];
-                    } andErrorBlock:nil];
-                } andErrorBlock:^(NSError *error) {
-                    
-                }];
-            } else {
-                [SNCAPIManager deleteResonic:self.sonic withCompletionBlock:^(Sonic *sonic) {
-                    [self.sonic updateWithSonic:sonic];
-                } andErrorBlock:nil];
-            }
-        }
     }
+//    else if(actionSheet.tag == DeleteResonicActionSheetTag){
+//        if(buttonIndex == 0) {
+//            if(self.sonic.isResonic){
+//                [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:^(BOOL successful) {
+//                    [SNCAPIManager deleteResonic:self.sonic.originalSonic withCompletionBlock:^(Sonic *sonic) {
+//                        [self.sonic.originalSonic updateWithSonic:sonic];
+//                    } andErrorBlock:nil];
+//                } andErrorBlock:^(NSError *error) {
+//                    
+//                }];
+//            } else {
+//                [SNCAPIManager deleteResonic:self.sonic withCompletionBlock:^(Sonic *sonic) {
+//                    [self.sonic updateWithSonic:sonic];
+//                } andErrorBlock:nil];
+//            }
+//        }
+//    }
     
 }
 
@@ -428,6 +429,7 @@
 
 - (void) configureViewsForSonic:(Sonic*)sonic
 {
+    self.sonicActionSheet = nil;
     [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrl]];
     [self.fullnameLabel setText:[sonic.owner fullName]];
     [self.usernameLabel setText:[NSString stringWithFormat:@"@%@",[sonic.owner username]]];

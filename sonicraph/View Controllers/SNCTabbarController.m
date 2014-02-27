@@ -25,11 +25,11 @@ static int previousTabIndex = 0;
 {
     UIView* cameraItemBackground;
 }
-+ (SNCTabbarController *)sharedInstance
++ (SNCTabbarController *) sharedInstance
 {
     return sharedInstance;
 }
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -37,17 +37,17 @@ static int previousTabIndex = 0;
     }
     return self;
 }
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+- (BOOL) tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     previousTabIndex = tabBarController.selectedIndex;
     return YES;
 }
 
-- (void)openPreviousTab
+- (void) openPreviousTab
 {
     [self setSelectedIndex:previousTabIndex];
 }
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     sharedInstance = self;
@@ -65,15 +65,15 @@ static int previousTabIndex = 0;
         [view setBackgroundColor:[UIColor clearColor]];
     }
     NSArray* selectedImageNames = @[@"HomePink.png",
-                            @"SearchPink.png",
-                            @"CameraPink.png",
-                            @"GlobePink.png",
-                            @"UserPink.png"];
-    NSArray*imageNames  = @[@"HomeLightGrey.png",
-                                    @"SearchLightGrey.png",
-                                    @"CameraLightGrey.png",
-                                    @"GlobeLightGrey.png",
-                                    @"UserLightGrey.png"];
+                                    @"SearchPink.png",
+                                    @"CameraPink.png",
+                                    @"GlobePink.png",
+                                    @"UserPink.png"];
+    NSArray*imageNames  = @[@"HomeGrey.png",
+                            @"SearchGrey.png",
+                            @"CameraGrey.png",
+                            @"GlobeGrey.png",
+                            @"UserGrey.png"];
     
     for(int i=0; i<self.tabBar.items.count; i++)
     {
@@ -99,7 +99,7 @@ static int previousTabIndex = 0;
      UIRemoteNotificationTypeSound];
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
 }

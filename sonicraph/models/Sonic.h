@@ -29,6 +29,8 @@
 @property (nonatomic) User* owner;
 @property (nonatomic) SonicData* sonicData;
 @property (nonatomic) Sonic* originalSonic;
+@property (nonatomic) NSString* shareUrlString;
+@property (nonatomic) NSString* sonicThumbnailUrlString;
 
 - (UIImage*) getImage;
 

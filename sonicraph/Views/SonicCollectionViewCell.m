@@ -34,7 +34,7 @@
 {
     if(_sonic != sonic){
         _sonic = sonic;
-        NSString* urlString = self.sonic.isResonic ? self.sonic.originalSonic.sonicUrl : self.sonic.sonicUrl;
+        NSString* urlString = self.sonic.isResonic ? self.sonic.originalSonic.sonicUrlString : self.sonic.sonicUrlString;
         [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:urlString]];
     }
 }

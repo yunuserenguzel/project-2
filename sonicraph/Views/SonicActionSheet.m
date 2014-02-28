@@ -12,11 +12,6 @@
 #import <Social/Social.h>
 #import "SNCAppDelegate.h"
 
-#define ShareOnFacebook @"Share on Facebook"
-#define ShareOnTwitter @"Share on Twitter"
-#define CopyUrl @"Copy URL"
-#define Delete @"Delete"
-#define OpenDetails @"Open Details"
 #define DeleteConfirmAlertViewTag 1121212
 
 @implementation SonicActionSheet
@@ -24,14 +19,15 @@
     id<UIActionSheetDelegate> actualDelegate;
 }
 
-- (id)initWithSonic:(Sonic *)sonic
+- (id)initWithSonic:(Sonic *)sonic includeOpenDetails:(BOOL)includeOpenDetails
 {
     NSString* destructiveButtonTitle = sonic.isMySonic ? Delete : nil;
+    NSString* openDetails = includeOpenDetails ? OpenDetails : nil;
     self = [self initWithTitle:sonic.tags
                       delegate:self
              cancelButtonTitle:@"Cancel"
         destructiveButtonTitle:destructiveButtonTitle
-             otherButtonTitles:ShareOnFacebook,ShareOnTwitter,CopyUrl,OpenDetails, nil];
+             otherButtonTitles:ShareOnFacebook,ShareOnTwitter,CopyUrl,openDetails, nil];
     if(self)
     {
         _sonic = sonic;
@@ -74,14 +70,16 @@
     {
         SLComposeViewController* tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         [tweetSheet setInitialText:self.sonic.owner.fullName];
-        NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",self.sonic.sonicId];
-        [tweetSheet addURL:[NSURL URLWithString:sonicPageLink]];
+        [tweetSheet addURL:[NSURL URLWithString:self.sonic.shareUrlString]];
         SNCAppDelegate* delegate = [UIApplication sharedApplication].delegate;
         [delegate.tabbarController presentViewController:tweetSheet animated:YES completion:^{
             
         }];
     }
-    
+    else if([buttonTitle isEqualToString:CopyUrl])
+    {
+        [[UIPasteboard generalPasteboard] setString:self.sonic.shareUrlString];
+    }
     if([actualDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)])
     {
         [actualDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];

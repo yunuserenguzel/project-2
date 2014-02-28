@@ -110,14 +110,13 @@
 
 + (void)postSonic:(Sonic *)sonic withCompletionBlock:(CompletionIdBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",sonic.sonicId];
     NSString* fullNameFild = [NSString stringWithFormat:@"%@ took a sonic", sonic.owner.fullName];
     NSString* name = sonic.tags ? sonic.tags : @"Sonicraph";
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                    name, @"name",
                                    fullNameFild, @"caption",
                                    @"sonicraph.com", @"description",
-                                   sonicPageLink, @"link",
+                                   sonic.shareUrlString, @"link",
                                    nil];
     
         [FBRequestConnection
@@ -148,11 +147,11 @@
 
 + (void) shareSonicWithDialog:(Sonic*)sonic withCompletionBlock:(CompletionIdBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSString* sonicPageLink = [NSString stringWithFormat:@"https://sonicraph.herokuapp.com/sonic?s=%@",sonic.sonicId];
+
     NSString* fullNameFild = [NSString stringWithFormat:@"%@ took a sonic", sonic.owner.fullName];
     NSString* name = sonic.tags ? sonic.tags : @"Sonicraph";
     FBShareDialogParams *params = [[FBShareDialogParams alloc] init];
-    params.link = [NSURL URLWithString:sonicPageLink];
+    params.link = [NSURL URLWithString:sonic.shareUrlString];
     params.name = name;
     params.caption = fullNameFild;
     params.description = @"sonicraph.com";

@@ -13,6 +13,7 @@
 #import "SNCProfileViewController.h"
 #import "TypeDefs.h"
 #import "UIViewController+CustomMethods.h"
+#import "SonicActionSheet.h"
 
 typedef enum SonicViewControllerInitiationType {
     SonicViewControllerInitiationTypeNone = 0,
@@ -29,10 +30,12 @@ typedef enum ContentType {
     ContentTypeResonics
 } ContentType;
 
-@interface SNCSonicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol, UIAlertViewDelegate>
+@interface SNCSonicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol, UIAlertViewDelegate, UIActionSheetDelegate>
 
 @property UITableView* tableView;
 @property (nonatomic) Sonic* sonic;
+
+@property SonicActionSheet* sonicActionSheet;
 
 @property SonicViewControllerHeaderView* headerView;
 

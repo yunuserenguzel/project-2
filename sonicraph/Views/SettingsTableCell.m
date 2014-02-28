@@ -8,12 +8,15 @@
 
 #import "SettingsTableCell.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "TypeDefs.h"
 
 CGFloat heightForIdentifier(NSString* identifier)
 {
     if([identifier isEqualToString:SettingsTableCellImageValueIdentifier]){
         return 120.0;
+    }
+    else if([identifier isEqualToString:SettingsTableCellDateValueIdentifier]){
+        return 44.0;
     }
     else {
         return 44.0;
@@ -24,6 +27,7 @@ CGFloat heightForIdentifier(NSString* identifier)
 @property UILabel* keyLabel;
 @property UITextField* stringValueField;
 @property UIImageView* imageValueView;
+@property UIDatePicker* dateValuePicker;
 @end
 
 
@@ -31,19 +35,24 @@ CGFloat heightForIdentifier(NSString* identifier)
 {
     UIImagePickerController* imagePickerController;
 }
-- (CGRect) keyLabelFrame
-{
-    return CGRectMake(10.0, 0.0, 100.0, 44.0);
-}
+//- (CGRect) keyLabelFrame
+//{
+//    return CGRectMake(10.0, 0.0, 100.0, 44.0);
+//}
 
 - (CGRect) stringValueFieldFrame
 {
-    return CGRectMake(120.0, 0.0, 190.0, 44.0);
+    return CGRectMake(10.0, 0.0, 300.0, 44.0);
 }
 
 - (CGRect) imageValueViewFrame
 {
-    return CGRectMake(200.0, 10.0, 100.0, 100.0);
+    return CGRectMake(110.0, 10.0, 100.0, 100.0);
+}
+
+- (CGRect) dateValuePickerFrame
+{
+    return CGRectMake(10, 0.0, 300.0, 44.0);
 }
 
 
@@ -52,11 +61,17 @@ CGFloat heightForIdentifier(NSString* identifier)
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self initViews];
-        if([reuseIdentifier isEqualToString:SettingsTableCellStringValueIdentifier]){
+        if([reuseIdentifier isEqualToString:SettingsTableCellStringValueIdentifier])
+        {
             [self initTextField];
         }
-        else if([reuseIdentifier isEqualToString:SettingsTableCellImageValueIdentifier]){
+        else if([reuseIdentifier isEqualToString:SettingsTableCellImageValueIdentifier])
+        {
             [self initImageValueView];
+        }
+        else if([reuseIdentifier isEqualToString:SettingsTableCellDateValueIdentifier])
+        {
+            [self initDateValueView];
         }
     }
     return self;
@@ -70,10 +85,10 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 - (void) initViews
 {
-    self.keyLabel = [[UILabel alloc] initWithFrame:[self keyLabelFrame]];
-    [self.contentView addSubview:self.keyLabel];
-    self.keyLabel.font = [self.keyLabel.font fontWithSize:14.0];
-    [self.keyLabel setTextAlignment:NSTextAlignmentLeft];
+//    self.keyLabel = [[UILabel alloc] initWithFrame:[self keyLabelFrame]];
+//    [self.contentView addSubview:self.keyLabel];
+//    self.keyLabel.font = [self.keyLabel.font fontWithSize:14.0];
+//    [self.keyLabel setTextAlignment:NSTextAlignmentLeft];
 }
 
 - (void) initTextField
@@ -81,8 +96,9 @@ CGFloat heightForIdentifier(NSString* identifier)
     self.stringValueField = [[UITextField alloc] initWithFrame:[self stringValueFieldFrame]];
     [self.contentView addSubview:self.stringValueField];
     [self.stringValueField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
-    [self.stringValueField setTextAlignment:NSTextAlignmentRight];
-    [self.stringValueField setFont:[self.stringValueField.font fontWithSize:14.0]];
+    [self.stringValueField setTextAlignment:NSTextAlignmentCenter];
+    [self.stringValueField setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [self.stringValueField setTextColor:rgb(242, 156, 180)];
 }
 
 - (void) initImageValueView
@@ -96,11 +112,18 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.imageValueView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showActionSheet)]];
 }
 
+- (void) initDateValueView
+{
+    self.dateValuePicker = [[UIDatePicker alloc] initWithFrame:[self dateValuePickerFrame]];
+    [self.contentView addSubview:self.dateValuePicker];
+}
+
 - (void) showActionSheet
 {
     UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:self.key delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Choose From Library",@"Take Photo", nil];
     [sheet showInView:self];
 }
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if(buttonIndex != actionSheet.cancelButtonIndex)
@@ -129,15 +152,26 @@ CGFloat heightForIdentifier(NSString* identifier)
 - (void) setKey:(NSString *)key
 {
     _key = key;
-    self.keyLabel.text = key;
+    if ([self.reuseIdentifier isEqualToString:SettingsTableCellStringValueIdentifier])
+    {
+        self.stringValueField.placeholder = key;
+    }
+    else if([self.reuseIdentifier isEqualToString:SettingsTableCellImageValueIdentifier])
+    {
+        
+    }
+    
 }
 
 - (void) setValue:(id)value
 {
     _value = value;
-    if ([self.reuseIdentifier isEqualToString:SettingsTableCellStringValueIdentifier]) {
+    if ([self.reuseIdentifier isEqualToString:SettingsTableCellStringValueIdentifier])
+    {
         self.stringValueField.text = value;
-    } else if([self.reuseIdentifier isEqualToString:SettingsTableCellImageValueIdentifier]){
+    }
+    else if([self.reuseIdentifier isEqualToString:SettingsTableCellImageValueIdentifier])
+    {
         self.imageValueView.image = value;
     }
 }

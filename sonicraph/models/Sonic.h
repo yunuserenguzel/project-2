@@ -14,7 +14,7 @@
 @interface Sonic : NSObject
 
 @property (nonatomic) NSString * sonicId;
-@property (nonatomic) NSString * sonicUrl;
+@property (nonatomic) NSString * sonicUrlString;
 @property (nonatomic) NSString* tags;
 @property (nonatomic) NSDate * creationDate;
 @property (nonatomic) CGFloat longitude;

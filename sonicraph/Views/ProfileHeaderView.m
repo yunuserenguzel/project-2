@@ -226,19 +226,19 @@
     
     self.gridViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.gridViewButton setFrame:[self gridViewButtonFrame]];
-    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewGridGrey.png"] forState:UIControlStateNormal];
+    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewGridLightPink.png"] forState:UIControlStateNormal];
     [self.gridViewButton setImage:[UIImage imageNamed:@"ViewGridPink.png"] forState:UIControlStateSelected];
     [self.buttonHolderView addSubview:self.gridViewButton];
     
     self.listViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.listViewButton setFrame:[self listViewButtonFrame]];
-    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListGrey.png"] forState:UIControlStateNormal];
+    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListLightPink.png"] forState:UIControlStateNormal];
     [self.listViewButton setImage:[UIImage imageNamed:@"ViewListPink.png"] forState:UIControlStateSelected];
     [self.buttonHolderView addSubview:self.listViewButton];
     
     self.likedSonicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.likedSonicsButton setFrame:[self likedSonicsButtonFrame]];
-    [self.likedSonicsButton setImage:[UIImage imageNamed:@"LikeTabGrey.png"] forState:UIControlStateNormal];
+    [self.likedSonicsButton setImage:[UIImage imageNamed:@"LikeTabLightPink.png"] forState:UIControlStateNormal];
     [self.likedSonicsButton setImage:[UIImage imageNamed:@"LikeTabPink.png"] forState:UIControlStateSelected];
     [self.buttonHolderView addSubview:self.likedSonicsButton];
     [self.likedSonicsButton setHidden:YES];

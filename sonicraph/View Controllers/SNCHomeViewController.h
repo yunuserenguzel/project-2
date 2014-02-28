@@ -11,7 +11,10 @@
 #import "TypeDefs.h"
 #import "UIViewController+CustomMethods.h"
 
-@interface SNCHomeViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate, UIScrollViewDelegate,SNCHomeTableCellProtocol,OpenProfileProtocol>
+@interface SNCHomeViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate, UIScrollViewDelegate,SNCHomeTableCellProtocol,OpenProfileProtocol,OpenSonicProtocol>
 //@property UITableView* tableView;
 //@property UIRefreshControl* refreshControl;
+
+- (void) openSonicDetails:(Sonic*)sonic;
+
 @end

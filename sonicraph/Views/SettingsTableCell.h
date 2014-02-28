@@ -11,6 +11,7 @@
 #define SettingsTableCellDateValueIdentifier @"SettingsTableCellDateValueIdentifier"
 #define SettingsTableCellPasswordValueIdentifier @"SettingsTableCellPasswordValueIdentifier"
 #define SettingsTableCellImageValueIdentifier @"SettingsTableCellImageValueIdentifier"
+#define SettingsTableCellGenderValueIdentifier @"SettingsTableCellGenderValueIdentifier"
 
 CGFloat heightForIdentifier(NSString* identifier);
 

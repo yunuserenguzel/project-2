@@ -67,7 +67,7 @@ static Mp3ConverterInterface* sharedInstance = nil;
     NSLog(@"Mp3ConverterInterface outputFile: %@",outputFile);
     [@"" writeToFile:outputFile atomically:YES encoding:NSStringEncodingConversionAllowLossy error:nil];
     
-    MP3Converter *mp3Converter = [[MP3Converter alloc] initWithPreset:PRESET_PHONE];
+    MP3Converter *mp3Converter = [[MP3Converter alloc] initWithPreset:PRESET_VOICE];
     mp3Converter.delegate = self;
     [mp3Converter initializeLame];
     if(start > 0){
@@ -76,9 +76,9 @@ static Mp3ConverterInterface* sharedInstance = nil;
     if(length > 0){
         [mp3Converter setConversionLength:length];
     }
-    mp3Converter.bitrate = 128;
-    mp3Converter.vbrQuality = LOW_QUALITY;
-    mp3Converter.encodingEngineQuality = Fast;
+//    mp3Converter.bitrate = 128;
+//    mp3Converter.vbrQuality = MODERATE_QUALITY; 
+//    mp3Converter.encodingEngineQuality = Standard;
     [mp3Converter convertMP3WithFilePath:inputFile.path outputName:outputFileName];
 }
 

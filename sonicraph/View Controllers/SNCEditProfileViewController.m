@@ -33,7 +33,8 @@
 
 @interface SNCEditProfileViewController ()
 
-@property NSArray* fields;
+@property NSMutableArray* fields1;
+@property NSMutableArray* fields2;
 @property NSMutableDictionary* changedFields;
 @property User* user;
 @property UIActivityIndicatorView* activityIndicator;
@@ -59,6 +60,7 @@
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellPasswordValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellDateValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellImageValueIdentifier];
+    [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellGenderValueIdentifier];
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.tableView.frame];
     [self.tableView addSubview:self.activityIndicator];
     [self.activityIndicator startAnimating];
@@ -92,7 +94,7 @@
         } andErrorBlock:^(NSError *error) {
             if(error.code == APIErrorCodeUsernameExist)
             {
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is already exist. Choose a different username." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"This username already exists. Choose a different username." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
             }
             [self.tableView setUserInteractionEnabled:YES];
             self.navigationItem.rightBarButtonItem = self.saveButton;
@@ -104,13 +106,15 @@
 - (void) prepareFields
 {
     SettingsField* imageSettings = [SettingsField k:@"Photo" sK:@"profile_image" v:nil t:SettingsTableCellImageValueIdentifier];
-    NSMutableArray* array = [NSMutableArray new];
-    [array addObject:imageSettings];
-    [array addObject:[SettingsField k:@"Name" sK:@"fullname" v:self.user.fullName t:SettingsTableCellStringValueIdentifier]];
-    [array addObject:[SettingsField k:@"Username" sK:@"username" v:self.user.username t:SettingsTableCellStringValueIdentifier]];
-    [array addObject:[SettingsField k:@"Location" sK:@"location" v:self.user.location t:SettingsTableCellStringValueIdentifier]];
-    [array addObject:[SettingsField k:@"Website" sK:@"website" v:self.user.website t:SettingsTableCellStringValueIdentifier]];
-    self.fields = array;
+    self.fields1 = [NSMutableArray new];
+    [self.fields1 addObject:imageSettings];
+    [self.fields1 addObject:[SettingsField k:@"Name" sK:@"fullname" v:self.user.fullName t:SettingsTableCellStringValueIdentifier]];
+    [self.fields1 addObject:[SettingsField k:@"Username" sK:@"username" v:self.user.username t:SettingsTableCellStringValueIdentifier]];
+    [self.fields1 addObject:[SettingsField k:@"Location" sK:@"location" v:self.user.location t:SettingsTableCellStringValueIdentifier]];
+    [self.fields1 addObject:[SettingsField k:@"Website" sK:@"website" v:self.user.website t:SettingsTableCellStringValueIdentifier]];
+    self.fields2 = [NSMutableArray new];
+    [self.fields2 addObject:[SettingsField k:@"MM / DD / YYYY" sK:@"date_of_birth" v:self.user.dateOfBirth t:SettingsTableCellDateValueIdentifier]];
+    [self.fields2 addObject:[SettingsField k:@"Gender" sK:@"gender" v:self.user.gender t:SettingsTableCellGenderValueIdentifier]];
     [self.tableView reloadData];
     [self.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
         imageSettings.value = object;
@@ -123,23 +127,31 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.fields ? self.fields.count : 0;
+    return section == 0 ? self.fields1.count : self.fields2.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SettingsField* settingsField = [self.fields objectAtIndex:indexPath.row];
+    SettingsField* settingsField;
+    if(indexPath.section == 0)
+    {
+        settingsField = [self.fields1 objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        settingsField = [self.fields2 objectAtIndex:indexPath.row];
+    }
     NSString* identifier = settingsField.type;
+//    NSLog(@"indexPath.row : %d",indexPath.row);
     SettingsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     [cell setKey:settingsField.key];
     [cell setValue:settingsField.value];
@@ -149,19 +161,28 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.fields) {
-        SettingsField* field = [self.fields objectAtIndex:indexPath.row];
+    if (indexPath.section ==0 && self.fields1)
+    {
+        SettingsField* field = [self.fields1 objectAtIndex:indexPath.row];
         return heightForIdentifier(field.type);
     }
-    else {
+    else if(indexPath.section == 1 && self.fields2)
+    {
+        SettingsField* field = [self.fields2 objectAtIndex:indexPath.row];
+        return heightForIdentifier(field.type);
+    }
+    else
+    {
         return 44.0;
     }
 }
 
 - (void) valueChanged:(id)value forKey:(NSString *)key
 {
-    for (SettingsField* field in self.fields) {
-        if([field.key isEqualToString:key]){
+    for (SettingsField* field in [self.fields1 arrayByAddingObjectsFromArray:self.fields2])
+    {
+        if([field.key isEqualToString:key])
+        {
             field.value = value;
             [self.changedFields setObject:value forKey:field.serverKey];
         }

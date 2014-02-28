@@ -53,6 +53,12 @@ CGRect CGRectByRatio(CGRect maxRect, CGRect minRect, CGFloat ratio);
 - (void) openProfileForUser:(User*)user;
 
 @end
+@class Sonic;
+@protocol OpenSonicProtocol
+
+- (void) openSonicDetails:(Sonic*)sonic;
+
+@end
 
 @class Sonic;
 typedef void (^CompletionArrayBlock) (NSArray *sonics);

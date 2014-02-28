@@ -71,7 +71,7 @@ static int previousTabIndex = 0;
                                     @"UserPink.png"];
     NSArray*imageNames  = @[@"HomeGrey.png",
                             @"SearchGrey.png",
-                            @"CameraGrey.png",
+                            @"CameraBlue.png",
                             @"GlobeGrey.png",
                             @"UserGrey.png"];
     
@@ -80,12 +80,11 @@ static int previousTabIndex = 0;
         UITabBarItem* item = [self.tabBar.items objectAtIndex:i];
         [item setImage:[[UIImage imageNamed:[imageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [item setSelectedImage:[[UIImage imageNamed:[selectedImageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-//        [item setImage:[[UIImage imageNamed:[imageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAutomatic]];
-//        [item setSelectedImage:[[UIImage imageNamed:[selectedImageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAutomatic]];
+        if([item.title isEqualToString:@"Camera"])
+        {
+            [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:NavigationBarBlueColor, NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+        }
     }
-    
-//    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:PinkColor, NSForegroundColorAttributeName, nil]
-//                                             forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:PinkColor, NSForegroundColorAttributeName, nil]
                                              forState:UIControlStateSelected];
     

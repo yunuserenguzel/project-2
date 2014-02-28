@@ -162,8 +162,6 @@
 
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
     [self.fullnameLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
-//    self.fullnameLabel.textColor = NavigationBarBlueColor;
-//    self.fullnameLabel.textColor = rgb(00.0, 00.0, 0.0);
     self.fullnameLabel.textColor = FullnameTextColor;
     [self addSubview:self.fullnameLabel];
     
@@ -243,24 +241,24 @@
 {
     self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.likeButton setFrame:[self likeButtonFrame]];
-    [self.likeButton setImage:[UIImage imageNamed:@"LikeGrey.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"LikeLightPink.png"] forState:UIControlStateNormal];
     [self.likeButton setImage:[UIImage imageNamed:@"LikePink.png"] forState:UIControlStateSelected];
     [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
 
     self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.commentButton setFrame:[self commentButtonFrame]];
-    [self.commentButton setImage:[UIImage imageNamed:@"CommentGrey.png"] forState:UIControlStateNormal];
+    [self.commentButton setImage:[UIImage imageNamed:@"CommentLightPink.png"] forState:UIControlStateNormal];
     [self.commentButton addTarget:self action:@selector(commentSonic) forControlEvents:UIControlEventTouchUpInside];
     
     self.resonicButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.resonicButton setFrame:[self resonicButtonFrame]];
-    [self.resonicButton setImage:[UIImage imageNamed:@"ResonicGrey.png"] forState:UIControlStateNormal];
+    [self.resonicButton setImage:[UIImage imageNamed:@"ResonicLightPink.png"] forState:UIControlStateNormal];
     [self.resonicButton setImage:[UIImage imageNamed:@"ResonicPink.png"] forState:UIControlStateSelected];
     [self.resonicButton addTarget:self action:@selector(resonic) forControlEvents:UIControlEventTouchUpInside];
 
     self.moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.moreButton setFrame:[self moreButtonFrame]];
-    [self.moreButton setImage:[UIImage imageNamed:@"MoreGrey.png"] forState:UIControlStateNormal];
+    [self.moreButton setImage:[UIImage imageNamed:@"MoreLightPink.png"] forState:UIControlStateNormal];
     [self.moreButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
     [@[self.likeButton,self.commentButton,self.resonicButton,self.moreButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
@@ -288,7 +286,7 @@
 //    actionSheet.tag = SonicActionSheetTag;
 //    [actionSheet showInView:self];
     
-    self.sonicActionSheet = [[SonicActionSheet alloc] initWithSonic:self.sonic];
+    self.sonicActionSheet = [[SonicActionSheet alloc] initWithSonic:self.sonic includeOpenDetails:YES];
     self.sonicActionSheet.delegate = self;
     self.sonicActionSheet.tag = SonicActionSheetTag;
     [self.sonicActionSheet showInView:self];
@@ -297,6 +295,10 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if(actionSheet.tag == SonicActionSheetTag){
+        if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:OpenDetails])
+        {
+            [self.delegate openSonicDetails:self.sonic];
+        }
 //        if(buttonIndex == 0){
 //            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
 //            alert.tag = DeleteConfirmAlertViewTag;
@@ -430,7 +432,7 @@
 - (void) configureViewsForSonic:(Sonic*)sonic
 {
     self.sonicActionSheet = nil;
-    [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrl]];
+    [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrlString]];
     [self.fullnameLabel setText:[sonic.owner fullName]];
     [self.usernameLabel setText:[NSString stringWithFormat:@"@%@",[sonic.owner username]]];
     [self.userImageView setImage:SonicPlaceholderImage];

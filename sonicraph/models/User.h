@@ -13,13 +13,14 @@
 @interface User : NSObject <NSCoding>
 
 @property (nonatomic) NSString* userId;
-
 @property (nonatomic) NSString* fullName;
-
 @property (nonatomic) NSString* username;
 
 @property NSString* website;
 @property NSString* location;
+
+@property NSString* gender;
+@property NSDate* dateOfBirth;
 
 @property (nonatomic) NSString* profileImageUrl;
 @property (nonatomic) UIImage* thumbnailProfileImage;

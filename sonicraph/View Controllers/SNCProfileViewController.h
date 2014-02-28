@@ -14,7 +14,7 @@
 #import "SonicArray.h"
 #import "UIViewController+CustomMethods.h"
 
-@interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol, OpenProfileProtocol,UIActionSheetDelegate>
+@interface SNCProfileViewController : UIViewController <UICollectionViewDataSource,UICollectionViewDelegate,UIScrollViewDelegate,UITableViewDataSource, UITableViewDelegate,SNCHomeTableCellProtocol, OpenProfileProtocol,UIActionSheetDelegate,OpenSonicProtocol>
 
 
 @property (nonatomic) User* user;

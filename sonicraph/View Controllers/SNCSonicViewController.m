@@ -236,7 +236,9 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void) openActionsMenu
 {
-    
+    self.sonicActionSheet = [[SonicActionSheet alloc] initWithSonic:self.sonic includeOpenDetails:NO];
+    self.sonicActionSheet.delegate = self;
+    [self.sonicActionSheet showInView:self.view];
 }
 
 - (void) scrollToTop
@@ -250,6 +252,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [self.headerView.sonicPlayerView stop];
     CGFloat duration = animated ? 0.3 : 0.0;
     [UIView animateWithDuration:duration animations:^{
         [self.tabBarController.tabBar setFrame:[self tabbarMaxFrame]];
@@ -345,20 +348,25 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }
     BOOL scrollToContentTop = NO;
     if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite || self.initiationType == SonicViewControllerInitiationTypeCommentRead){
-        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+//        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeComments];
         [self.headerView.segmentedBar setSelectedSegmentIndex:1];
         scrollToContentTop = YES;
     } else if(self.initiationType == SonicViewControllerInitiationTypeLikeRead){
-        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+//        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeLikes];
         [self.headerView.segmentedBar setSelectedSegmentIndex:0];
         scrollToContentTop = YES;
     } else if(self.initiationType == SonicViewControllerInitiationTypeResonicRead){
-        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
+//        [self.tableView setContentOffset:CGPointMake(0.0, HeaderViewMaxHeight - HeaderViewMinHeight)];
         [self setCurrentContentType:ContentTypeResonics];
         [self.headerView.segmentedBar setSelectedSegmentIndex:2];
         scrollToContentTop = YES;
+    }
+    else
+    {
+        [self setCurrentContentType:ContentTypeComments];
+        [self.headerView.segmentedBar setSelectedSegmentIndex:1];
     }
 //    else {
 //        [self.tableView setContentOffset:CGPointMake(0.0,0.0)];
@@ -369,7 +377,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     
     [self refreshContentWithScrollToContentTop:scrollToContentTop];
     
-    [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrl]];
+    [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrlString]];
     self.headerView.usernameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.username] ;
     self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
     self.headerView.createdAtLabel.text = [self.sonic.creationDate formattedAsTimeAgo];
@@ -381,8 +389,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }];
     
 }
-
-
 
 - (void)setSonic:(Sonic *)sonic
 {
@@ -676,7 +682,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     
     CGFloat height = HeaderViewMaxHeight + self.tableView.frame.size.height - HeaderViewMinHeight;
     CGFloat insetBottom = height - self.tableView.contentSize.height;
-    NSLog(@"insetBottom %f, tabbar: %f", insetBottom, self.tabBarController.tabBar.frame.size.height);
+//    NSLog(@"insetBottom %f, tabbar: %f", insetBottom, self.tabBarController.tabBar.frame.size.height);
     insetBottom = MAX(insetBottom, self.tabBarController.tabBar.frame.size.height);
 //    insetBottom = MAX(insetBottom, self.tabBarController.tabBar.frame.size.height);
     self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, insetBottom, 0.0);
@@ -727,8 +733,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }
 }
 
-
-
 - (void) writeComment
 {
     [self.commentField setEnabled:NO];
@@ -765,7 +769,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }
     return cell;
 }
-
 
 - (void) closeKeyboard
 {
@@ -828,6 +831,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
         [profile setUser:selectedUser];
     }
 }
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]

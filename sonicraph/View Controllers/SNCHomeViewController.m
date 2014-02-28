@@ -119,8 +119,6 @@
     [self refresh];
 }
 
-
-
 - (void) refreshFromServer
 {
     isLoadingFromServer = YES;
@@ -288,6 +286,12 @@
 {
     userToBeOpen = user;
     [self performSegueWithIdentifier:ViewUserSegue sender:self];
+}
+- (void)openSonicDetails:(Sonic *)sonic
+{
+    sonicToBeViewed = sonic;
+    sonicViewControllerInitiationType = SonicViewControllerInitiationTypeNone;
+    [self performSegueWithIdentifier:ViewSonicSegue sender:self];
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

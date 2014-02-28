@@ -32,6 +32,7 @@
     BOOL showLikedSonics;
     BOOL shouldShowFollowers;
     BOOL isLoadingFromServer;
+    SonicViewControllerInitiationType sonicViewControllerInitiationType;
 }
 
 - (CGRect) profileHeaderViewFrame
@@ -131,18 +132,20 @@
 }
 - (void)setUser:(User *)user
 {
-    _user = user;
-    [self configureViews];
-    isLoadingFromServer = YES;
-    [SNCAPIManager getUserSonics:user before:nil withCompletionBlock:^(NSArray *sonics) {
-        [self.sonics importSonicsWithArray:sonics];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self refresh];
+    if (user) {
+        _user = user;
+        [self configureViews];
+        isLoadingFromServer = YES;
+        [SNCAPIManager getUserSonics:self.user before:nil withCompletionBlock:^(NSArray *sonics) {
+            [self.sonics importSonicsWithArray:sonics];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refresh];
+                isLoadingFromServer = NO;
+            });
+        } andErrorBlock:^(NSError *error) {
             isLoadingFromServer = NO;
-        });
-    } andErrorBlock:^(NSError *error) {
-        isLoadingFromServer = NO;
-    }];
+        }];
+    }
 }
 
 - (void) configureViews
@@ -331,14 +334,7 @@
 {
     return 1;
 }
-- (void)sonic:(Sonic *)sonic actionFired:(SNCHomeTableCellActionType)actionType
-{
-    selectedSonic = sonic;
-    if(actionType == SNCHomeTableCellActionTypeComment){
-        [self performSegueWithIdentifier:ProfileToPreviewSegue sender:self];
-    }
-    
-}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SNCHomeTableCell* cell = [tableView dequeueReusableCellWithIdentifier:HomeTableCellIdentifier];
@@ -356,7 +352,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(!isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
+    if(self.user && !isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
     {
         isLoadingFromServer = YES;
         [SNCAPIManager getUserSonics:self.user before:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
@@ -436,18 +432,57 @@
     [self performSegueWithIdentifier:ProfileToPreviewSegue sender:self];
 }
 
+
+- (void)sonic:(Sonic *)sonic actionFired:(SNCHomeTableCellActionType)actionType
+{
+    selectedSonic = sonic;
+    switch (actionType) {
+        case SNCHomeTableCellActionTypeComment:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeCommentWrite;
+            break;
+        case SNCHomeTableCellActionTypeOpenComments:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeCommentRead;
+            break;
+        case SNCHomeTableCellActionTypeOpenLikes:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeLikeRead;
+            break;
+        case SNCHomeTableCellActionTypeOpenResonics:
+            sonicViewControllerInitiationType = SonicViewControllerInitiationTypeResonicRead;
+            break;
+        default:
+            break;
+    }
+    [self performSegueWithIdentifier:ProfileToPreviewSegue sender:self];
+}
+
+
+- (void)openSonicDetails:(Sonic *)sonic
+{
+    selectedSonic = sonic;
+    [self performSegueWithIdentifier:ProfileToPreviewSegue sender:self];
+}
+
+- (void)openProfileForUser:(User *)user
+{
+    if(user != self.user){
+        
+    }
+}
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString* segueIdentifier = [segue identifier];
     if ([segueIdentifier isEqualToString:ProfileToPreviewSegue]){
         SNCSonicViewController* preview = segue.destinationViewController;
         [preview setSonic:selectedSonic];
-    }else if([segueIdentifier isEqualToString:ProfileToFollowerFollowingSegue]){
+    }
+    else if([segueIdentifier isEqualToString:ProfileToFollowerFollowingSegue]){
         SNCFollowerFollowingViewController* follow = segue.destinationViewController;
         [follow setUser:self.user];
         [follow setShouldShowFollowers:shouldShowFollowers];
     }
 }
+
+
 
 - (void)dealloc
 {
@@ -455,12 +490,6 @@
      removeObserver:self
      name:nil
      object:nil];
-}
-
-- (void)openProfileForUser:(User *)user
-{
-    if(user != self.user){
-    }
 }
 
 @end

@@ -72,13 +72,15 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
     User* user = userFromServerDictionary(userDict);
     Sonic* sonic = [[Sonic alloc] init];
     sonic.sonicId = asClass([sonicDict objectForKey:@"id"], [NSString class]);
-    sonic.sonicUrl = asClass([sonicDict objectForKey:@"sonic_data"], [NSString class]);
+    sonic.sonicUrlString = asClass([sonicDict objectForKey:@"sonic_data"], [NSString class]);
     sonic.tags = asClass([sonicDict objectForKey:@"tags"], [NSString class]);
     sonic.latitude = [asClass([sonicDict objectForKey:@"latitude"], [NSNumber class]) floatValue];
     sonic.longitude= [asClass([sonicDict objectForKey:@"longitude"],[NSNumber class]) floatValue];
     sonic.isPrivate = [asClass([sonicDict objectForKey:@"is_private" ], [NSNumber class]) boolValue];
     sonic.creationDate = dateFromServerString(asClass([sonicDict objectForKey:@"created_at"], [NSString class]));
     sonic.owner = user;
+    sonic.sonicThumbnailUrlString = asClass([sonicDict objectForKey:@"sonic_thumbnail"], [NSString class]);
+    sonic.shareUrlString = asClass([sonicDict objectForKey:@"share_url"], [NSString class]);
     sonic.likeCount = [asClass([sonicDict objectForKey:@"likes_count"], [NSNumber class]) integerValue];
     sonic.resonicCount = [asClass([sonicDict objectForKey:@"resonics_count"], [NSNumber class]) integerValue];
     sonic.commentCount = [asClass([sonicDict objectForKey:@"comments_count"], [NSNumber class]) integerValue];
@@ -427,7 +429,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 {
     NSNumber* count = [NSNumber numberWithInt:10];
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-    if(user != nil){
+    if(user){
         [params setObject:user.userId forKey:@"of_user"];
     }
     if(sonic)
@@ -577,7 +579,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 NSMutableArray* users = [[NSMutableArray alloc] init];
                 [[responseDictionary objectForKey:@"users"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
-                    NSLog(@"%@",responseDictionary);
+//                    NSLog(@"%@",responseDictionary);
                     [users addObject:userFromServerDictionary(userDict)];
                     //                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
                 }];
@@ -595,7 +597,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 NSMutableArray* users = [[NSMutableArray alloc] init];
                 [[responseDictionary objectForKey:@"users"] enumerateObjectsUsingBlock:^(NSDictionary* userDict, NSUInteger idx, BOOL *stop) {
-                    NSLog(@"%@",responseDictionary);
+//                    NSLog(@"%@",responseDictionary);
                     [users addObject:userFromServerDictionary(userDict)];
                     //                    [users addObject:[User userWithId:[userDict objectForKey:@"id"] andUsername:[userDict objectForKey:@"username"] andFullname:[userDict objectForKey:@"fullname"] andProfileImage:[userDict objectForKey:@"profile_image"]]];
                 }];

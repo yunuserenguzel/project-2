@@ -136,7 +136,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationLike.png"];
+        image =  [UIImage imageNamed:@"NotificationLikeLargeLP.png"];
     }
     return image;
 }
@@ -144,7 +144,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationResonic.png"];
+        image =  [UIImage imageNamed:@"NotificationResonicLargeLP.png"];
     }
     return image;
 }
@@ -152,7 +152,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationComment.png"];
+        image =  [UIImage imageNamed:@"NotificationCommentLargeLP.png"];
     }
     return image;
 }
@@ -160,7 +160,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationFollower.png"];
+        image =  [UIImage imageNamed:@"NotificationFollowerLargeLP.png"];
     }
     return image;
 }

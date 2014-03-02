@@ -18,6 +18,7 @@
 @implementation SNCNotificationsViewController
 {
     Notification* selectedNotification;
+    BOOL isLoadingFromServer;
 }
 - (CGRect) tableViewFrame
 {
@@ -36,12 +37,19 @@
 
 - (void) refreshFromServer
 {
+    if(isLoadingFromServer)
+    {
+        return;
+    }
+    isLoadingFromServer = YES;
     [SNCAPIManager getNotificationsWithCompletionBlock:^(NSArray *notifications) {
         self.notifications = notifications;
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
+        isLoadingFromServer = NO;
     } andErrorBlock:^(NSError *error) {
         [self.refreshControl endRefreshing];
+        isLoadingFromServer = NO;
     }];
 }
 
@@ -51,6 +59,25 @@
     [self initTableView];
     [self refreshFromServer];
 	// Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(clean)
+     name:NotificationUserLoggedOut
+     object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if(self.notifications == nil)
+    {
+        [self refreshFromServer];
+    }
+}
+
+- (void) clean
+{
+    self.notifications = nil;
+    [self.tableView reloadData];
 }
 
 - (void) initTableView

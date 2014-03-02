@@ -53,6 +53,13 @@
 {
     return CGRectMake(64.0, 25.0, 244.0, 18.0);
 }
+
+- (CGRect) usernameLabelFrameWithoutResonic
+{
+    CGRect frame = [self usernameLabelFrame];
+    frame.origin.y += 5.0;
+    return frame;
+}
 - (CGRect) timestampLabelFrame
 {
     return CGRectMake(200.0, 7.0, 110.0, 20.0);
@@ -422,10 +429,12 @@
         [self configureViewsForSonic:self.sonic.originalSonic];
         [self.resonicedByUsernameLabel setText:[NSString stringWithFormat:@"resoniced by %@",self.sonic.owner.username]];
         [self.resonicImageView setHidden:NO];
+        [self.usernameLabel setFrame:[self usernameLabelFrame]];
     } else {
         [self configureViewsForSonic:self.sonic];
         [self.resonicedByUsernameLabel setText:[NSString stringWithFormat:@""]];
         [self.resonicImageView setHidden:YES];
+        [self.usernameLabel setFrame:[self usernameLabelFrameWithoutResonic]];
     }
 }
 

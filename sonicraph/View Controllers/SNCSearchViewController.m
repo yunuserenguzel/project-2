@@ -105,6 +105,17 @@ SearchContentType;
     [self initSonicCollectionView];
     [self initSearchInstruments];
     [self setSearchContentType:SearchContentTypeUsers];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clean) name:NotificationUserLoggedOut object:nil];
+}
+- (void) clean
+{
+    self.searchBar.text = @"";
+    [self.view endEditing:YES];
+    self.sonics = nil;
+    self.users = nil;
+    [self.userTableView reloadData];
+    [self.sonicsCollectionView reloadData];
 }
 
 - (void) initSegmentControl
@@ -168,9 +179,7 @@ SearchContentType;
 
 - (void) searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    self.searchBar.text = @"";
-//    [self.searchBar resignFirstResponder];
-    [self.view endEditing:YES];
+    [self clean];
 }
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar

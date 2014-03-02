@@ -20,6 +20,7 @@
 
 @property SNCSoundSlider* soundTimeSlider;
 @property NSTimer* soundTimer;
+@property SNCShareViewController* shareViewController;
 
 @end
 
@@ -126,10 +127,11 @@
 - (void) doneEdit
 {
     __block SNCEditViewController* this = self;
+    [this performSegueWithIdentifier:ShareSonicSegue sender:this];
     [self.sonic setSoundCroppingFrom:self.soundSlider.lowerValue to:self.soundSlider.upperValue withCompletionHandler:^(SonicData *sonic, NSError *error) {
         if(sonic)
         {
-            [this performSegueWithIdentifier:ShareSonicSegue sender:this];
+            [this.shareViewController setSonic:this.sonic];
         }
         else
         {
@@ -313,8 +315,8 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:ShareSonicSegue]){
-        SNCShareViewController* shareController = [segue destinationViewController];
-        [shareController setSonic:self.sonic];
+        self.shareViewController = [segue destinationViewController];
+        
     }
 }
 

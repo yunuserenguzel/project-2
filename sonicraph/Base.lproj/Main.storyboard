@@ -64,7 +64,7 @@
                         <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="5ii-yk-Nma"/>
                         <segue destination="vdQ-Dl-azo" kind="push" identifier="ProfileToSettingsSegue" id="KbH-sa-PvF"/>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="V84-TT-bI4"/>
-                        <segue destination="xrD-se-wHG" kind="push" identifier="EditProfileSegue" id="fIi-l6-w3Z"/>
+                        <segue destination="eAz-5z-Z0t" kind="modal" identifier="EditProfileSegue" id="5ZY-xa-aVr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pVH-57-z5s" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -120,16 +120,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="mFF-cn-b3p">
-                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mFF-cn-b3p" id="sgn-0H-MNl">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="xrD-se-wHG" id="l4H-JO-GO5"/>
                             <outlet property="delegate" destination="xrD-se-wHG" id="Fl0-kp-Mx3"/>
@@ -139,7 +129,22 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t88-gl-6yo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1162" y="678"/>
+            <point key="canvasLocation" x="1664" y="822"/>
+        </scene>
+        <!--Navigation View Controller-->
+        <scene sceneID="1hE-du-CnE">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="eAz-5z-Z0t" customClass="SNCNavigationViewController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Nfl-Rg-3Hx">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="xrD-se-wHG" kind="relationship" relationship="rootViewController" id="fle-IR-VxV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cIg-Ag-utZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1162" y="714"/>
         </scene>
         <!--Home View Controller - Home-->
         <scene sceneID="X6t-6R-DjG">
@@ -205,7 +210,7 @@
                     <connections>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="5Ah-IT-aOa"/>
                         <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="xgg-1F-Qkn"/>
-                        <segue destination="xrD-se-wHG" kind="push" identifier="EditProfileSegue" id="GWJ-K0-iU6"/>
+                        <segue destination="eAz-5z-Z0t" kind="modal" identifier="EditProfileSegue" id="FTh-mS-2kq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y6f-AS-Kv5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -452,7 +457,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="GWJ-K0-iU6"/>
+        <segue reference="FTh-mS-2kq"/>
         <segue reference="rEn-e1-8Y3"/>
         <segue reference="xgg-1F-Qkn"/>
         <segue reference="5Ah-IT-aOa"/>

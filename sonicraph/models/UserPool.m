@@ -7,17 +7,19 @@
 //
 
 #import "UserPool.h"
+#import "TypeDefs.h"
 
 @interface UserPool ()
 
 @property (readonly) NSMutableDictionary* users;
 
 @end
+
+static UserPool* sharedPool = nil;
 @implementation UserPool
 
 + (UserPool *)sharedPool
 {
-    static UserPool* sharedPool = nil;
     if(sharedPool == nil){
         sharedPool = [[UserPool alloc] init];
     }
@@ -29,8 +31,14 @@
 {
     if(self = [super init]){
         _users = [[NSMutableDictionary alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clean) name:NotificationUserLoggedOut object:nil];
     }
     return self;
+}
+
+- (void) clean
+{
+    sharedPool = nil;
 }
 
 - (User *)userForId:(NSString *)userId
@@ -61,5 +69,8 @@
     
     [self.users removeObjectForKey:user.userId];
 }
-
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end

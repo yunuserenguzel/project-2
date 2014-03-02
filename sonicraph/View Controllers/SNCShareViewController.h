@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SonicData.h"
 
-@interface SNCShareViewController : UIViewController
+@interface SNCShareViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @property (nonatomic) SonicData* sonic;
 

@@ -111,6 +111,7 @@
 - (void) userLoggedOut:(NSNotification*)notification
 {
     self.sonics = [[SonicArray alloc] init];
+    [self refresh];
 }
 
 - (void) newSonicArrived:(NSNotification*)notification

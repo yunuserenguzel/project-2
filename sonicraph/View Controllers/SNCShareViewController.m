@@ -26,18 +26,24 @@
 @property UIImageView* tags;
 @property UIButton* tagsDoneButton;
 @property UIBarButtonItem* shareButtonItem;
-@property UIView* keyboardCloser;
+//@property UIView* keyboardCloser;
 @property SonicPlayerView* sonicPlayerView;
 
 @property UIButton* backButton;
 @property UILabel* titleLabel;
 @property UIButton* doneButton;
 
+@property UIActivityIndicatorView* activityIndicator;
+
+@property UITapGestureRecognizer* tapGesture;
+
 @end
 
 @implementation SNCShareViewController
 {
     BOOL keyboardIsShown;
+    UIImage* textFieldBackgroundPassiveImage;
+    UIImage* textFieldBackgroundActiveImage;
 }
 - (CGRect) backButtonFrame
 {
@@ -52,9 +58,15 @@
 {
     return CGRectMake(106.0 + 108.0, 0.0, 106.0, 66.0);
 }
+
+- (CGRect) sonicPlayerViewFrame
+{
+    return CGRectMake(0.0, 66.0, 320.0, 320.0);
+}
+
 - (CGRect) tagsFrame
 {
-    return CGRectMake(0.0, 420.0, 320.0, 44.0);
+    return CGRectMake(0.0, 390.0, 320.0, 44.0);
 }
 - (CGRect) tagsFieldFrame
 {
@@ -84,11 +96,6 @@
     frame.size = CGSizeMake(110.0, 44.0);
     frame.origin = CGPointMake(105.0, self.view.frame.size.height - frame.size.height - 22.0);
     return frame;
-}
-
-- (CGRect) sonicPlayerViewFrame
-{
-    return CGRectMake(0.0, 66.0, 320.0, 320.0);
 }
 
 - (BOOL) prefersStatusBarHidden
@@ -136,6 +143,11 @@
     
     [[NSUserDefaults standardUserDefaults] synchronize];
     self.facebookSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:FacebookShareDefaultValueKey] boolValue];
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.activityIndicator setFrame:[self sonicPlayerViewFrame]];
+    [self.view addSubview:self.activityIndicator];
+    [[self activityIndicator] startAnimating];
 }
 
 - (void) configureViews
@@ -143,7 +155,11 @@
     if(![self isViewLoaded]){
         return;
     }
+    [self.doneButton setEnabled:YES];
     [self.sonicPlayerView setSonic:self.sonic];
+    [self.activityIndicator stopAnimating];
+    [self.activityIndicator removeFromSuperview];
+    self.activityIndicator = nil;
 }
 - (void) initializeTopViews
 {
@@ -170,7 +186,8 @@
     [self.doneButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     [self.doneButton setImage:[UIImage imageNamed:@"Share.png"] forState:UIControlStateNormal];
     [self.doneButton addTarget:self action:@selector(shareSonic) forControlEvents:UIControlEventTouchUpInside];
-    [self.doneButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
+    [self.doneButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
+    [self.doneButton setEnabled:NO];
     [self.view addSubview:self.doneButton];
     
 }
@@ -183,23 +200,33 @@
 {
     self.sonicPlayerView = [[SonicPlayerView alloc]initWithFrame:[self sonicPlayerViewFrame]];
     [self.view addSubview:self.sonicPlayerView];
+    [self.sonicPlayerView.longPressGesture setDelegate:self];
+    [self.sonicPlayerView.tapGesture setDelegate:self];
 //    self.sonicPlayerView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void) initTags
 {
-    self.tags = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AdCommentBoxWhite.png"]];
+    textFieldBackgroundPassiveImage = [UIImage imageNamed:@"_TextFieldBackgroundPassive.png"];
+    textFieldBackgroundActiveImage = [UIImage imageNamed:@"_TextFieldBackgroundActive.png"];
+    
+    self.tags = [[UIImageView alloc] initWithImage:textFieldBackgroundPassiveImage];
     [self.tags setFrame:[self tagsFrame]];
+    [self.tags setContentMode:UIViewContentModeCenter];
+    [self.tags setBackgroundColor:[UIColor clearColor]];
     [self.tags setUserInteractionEnabled:YES];
-    [self.tags setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.5]];
+    [self.tags setAlpha:1.0];
     [self.view addSubview:self.tags];
     
     self.tagsField = [[UITextField alloc] initWithFrame:[self tagsFieldFrame]];
     [self.tagsField setKeyboardType:UIKeyboardTypeTwitter];
     [self.tagsField setPlaceholder:@"Add tags to your sonic..."];
-    [self.tagsField setTintColor:[UIColor whiteColor]];
+    [self.tagsField setTintColor:[UIColor lightGrayColor]];
+    [self.tagsField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 0.0)]];
+    [self.tagsField setLeftViewMode:UITextFieldViewModeAlways];
     [self.tagsField setTextColor:[UIColor whiteColor]];
     [self.tagsField setValue:[UIColor lightGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [self.tagsField addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventAllEditingEvents];
     [self.tags addSubview:self.tagsField];
     
     self.tagsDoneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -207,13 +234,33 @@
     [self.tagsDoneButton setTitle:@"Done" forState:UIControlStateNormal];
     [self.tagsDoneButton setTintColor:[UIColor blackColor]];
     [self.tagsDoneButton addTarget:self action:@selector(closeKeyboard) forControlEvents:UIControlEventTouchUpInside];
+    [self.tagsDoneButton setHidden:YES];
     [self.tags addSubview:self.tagsDoneButton];
+}
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+- (void) valueChanged
+{
+    if(self.tagsField.text.length > 0)
+    {
+        [self.tags setImage:textFieldBackgroundActiveImage];
+        [self.tagsDoneButton setHidden:NO];
+    }
+    else
+    {
+        [self.tags setImage:textFieldBackgroundPassiveImage];
+        [self.tagsDoneButton setHidden:YES];
+    }
 }
 
 - (void) closeKeyboard
 {
-    [self.keyboardCloser removeFromSuperview];
+//    [self.keyboardCloser removeFromSuperview];
     [self.tagsField resignFirstResponder];
+    [self.view removeGestureRecognizer:self.tapGesture];
 }
 
 - (void) initializeFacebookAndTwitterButtons
@@ -267,8 +314,6 @@
 - (void) shareSonic
 {
     [SNCAPIManager createSonic:self.sonic withTags:self.tagsField.text withCompletionBlock:^(Sonic *sonic) {
-        
-        // Make the request
         if(self.facebookSwitch.on)
         {
             [SNCFacebookManager postSonic:sonic withCompletionBlock:nil andErrorBlock:nil];
@@ -292,6 +337,7 @@
     // The kKeyboardAnimationDuration I am using is 0.3
     [UIView setAnimationDuration:0.3];
     [self.tags setFrame:[self tagsFrame]];
+    [self.tags setBackgroundColor:[UIColor clearColor]];
     [UIView commitAnimations];
     
     keyboardIsShown = NO;
@@ -303,11 +349,9 @@
     {
         return;
     }
-    self.keyboardCloser = [[UIView alloc] initWithFrame:[self keyBoardCloserFrame]];
-    [self.keyboardCloser setUserInteractionEnabled:YES];
-    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
-    [self.keyboardCloser addGestureRecognizer:tapGesture];
-    [self.view addSubview:self.keyboardCloser];
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.tapGesture setDelegate:self];
+    [self.view addGestureRecognizer:self.tapGesture];
     
     NSDictionary* userInfo = [n userInfo];
     
@@ -320,8 +364,11 @@
     // The kKeyboardAnimationDuration I am using is 0.3
     [UIView setAnimationDuration:0.3];
     CGRect frame = [self tagsFrame];
+    [self.tags setAlpha:1.0];
+//    [self.tagsField setBackground:textFieldBackgroundActiveImage];
     frame.origin.y = self.view.frame.size.height - keyboardSize.height - frame.size.height;
     [self.tags setFrame:frame];
+    [self.tags setBackgroundColor:rgb(47.0, 98.0, 131.0)];
     [UIView commitAnimations];
     
     keyboardIsShown = YES;

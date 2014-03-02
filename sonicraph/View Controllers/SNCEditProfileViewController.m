@@ -39,6 +39,7 @@
 @property User* user;
 @property UIActivityIndicatorView* activityIndicator;
 @property UIBarButtonItem* saveButton;
+@property UIBarButtonItem* cancelButton;
 @end
 
 @implementation SNCEditProfileViewController
@@ -55,13 +56,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.changedFields = [NSMutableDictionary new];
+    [self.tableView setContentInset:UIEdgeInsetsMake(-1.0, 0.0, 0.0, 0.0)];
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellStringValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellPasswordValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellDateValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellImageValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellGenderValueIdentifier];
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.tableView.frame];
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.activityIndicator setFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, self.tableView.frame.size.height)];
     [self.tableView addSubview:self.activityIndicator];
     [self.activityIndicator startAnimating];
     [SNCAPIManager
@@ -76,6 +81,20 @@
     
     self.saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(save)];
     self.navigationItem.rightBarButtonItem = self.saveButton;
+    
+    self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+    self.navigationItem.leftBarButtonItem = self.cancelButton;
+    UILabel* beCoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.tableView.frame.size.height - 96.0, 320.0, 33.0)];
+    [beCoolLabel setText:@"Be Cool :)"];
+    [beCoolLabel setFont:[UIFont systemFontOfSize:14.0]];
+    [beCoolLabel setTextColor:self.tableView.separatorColor];
+    [beCoolLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.tableView addSubview:beCoolLabel];
+}
+
+- (void) cancel
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) save
@@ -128,6 +147,28 @@
 {
     [super didReceiveMemoryWarning];
 }
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if(section == 1)
+    {
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 33.0)];
+        [label setText:@"Birthday and Gender"];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [label setTextColor:self.tableView.separatorColor];
+        [label setFont:[UIFont systemFontOfSize:14.0]];
+        return label;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(section == 1)
+    {
+        return 33.0;
+    }
+    return 1.0;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -151,7 +192,7 @@
         settingsField = [self.fields2 objectAtIndex:indexPath.row];
     }
     NSString* identifier = settingsField.type;
-//    NSLog(@"indexPath.row : %d",indexPath.row);
+    
     SettingsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     [cell setKey:settingsField.key];
     [cell setValue:settingsField.value];

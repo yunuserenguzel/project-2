@@ -15,6 +15,10 @@
 
 @property (nonatomic) NSURL* sonicUrl;
 
+@property (readonly) UITapGestureRecognizer* tapGesture;
+
+@property (readonly) UILongPressGestureRecognizer* longPressGesture;
+
 - (void) play;
 
 - (void) pause;

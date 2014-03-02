@@ -21,7 +21,7 @@ CGFloat heightForIdentifier(NSString* identifier);
 
 @end
 
-@interface SettingsTableCell : UITableViewCell <UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface SettingsTableCell : UITableViewCell <UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic) NSString* key;
 @property (nonatomic) id value;

@@ -29,15 +29,10 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = @"My Profile";
-    [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(refreshForNewLogin:)
-     name:NotificationUserLoggedIn
-     object:nil];
     UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
     [self.navigationItem setRightBarButtonItem:barButtonItem];
     [self.profileHeaderView.likedSonicsButton setHidden:NO];
+    [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
     
     
     [[NSNotificationCenter defaultCenter]
@@ -50,6 +45,11 @@
      selector:@selector(userChanged:)
      name:NotificationUpdateUser
      object:self.user];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(refreshForNewLogin:)
+     name:NotificationUserLoggedIn
+     object:nil];
 }
 
 - (void) userChanged:(NSNotification*)notification
@@ -57,8 +57,7 @@
     User* user = notification.object;
     if(self.user == user)
     {
-        self.user = user;
-        [self configureViews];
+        [self setUser:user];
     }
 }
 
@@ -68,8 +67,6 @@
     [[self sonicCollectionView] reloadData];
     [[self sonicListTableView] reloadData];
 }
-
-
 
 - (void) openSettings
 {

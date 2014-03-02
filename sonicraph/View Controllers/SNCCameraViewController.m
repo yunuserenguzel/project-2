@@ -347,7 +347,7 @@ typedef enum SonicRecordType {
         }
         [self.view setUserInteractionEnabled:YES];
     };
-    [self.mediaManager performSelector:@selector(takePictureWithCompletionBlock:) withObject:block afterDelay:0.5];
+    [self.mediaManager performSelector:@selector(takePictureWithCompletionBlock:) withObject:block afterDelay:0.0];
 }
 
 - (void) formatCapturedImage:(UIImage*)image

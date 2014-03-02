@@ -108,6 +108,7 @@ static AuthenticationManager* sharedInstance = nil;
 {
     _token = token;
     [self saveToUserDefaults:token forKey:AuthenticationManagerUserDefaultsTokenKey];
+
 }
 
 - (NSString *)token
@@ -155,7 +156,14 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (void) saveToUserDefaults:(id)value forKey:(NSString*)key
 {
-    [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
+    if(value == nil)
+    {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
+    }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -169,15 +177,15 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (void)logout
 {
-    [SNCAPIManager destroyAuthenticationWithCompletionBlock:^(NSDictionary *responseDictionary) {
-        [self setToken:nil];
-        [self setAuthenticatedUser:nil];
-        [self checkAuthentication];
-        [self clearThirdPartyAppLogins];
-        [[NSNotificationCenter defaultCenter]
-         postNotificationName:NotificationUserLoggedOut
-         object:nil];
-    } andErrorBlock:nil];
+    [self setToken:nil];
+    [self setAuthenticatedUser:nil];
+    [self checkAuthentication];
+    [self clearThirdPartyAppLogins];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:NotificationUserLoggedOut
+     object:nil];
+
+    [SNCAPIManager destroyAuthenticationWithCompletionBlock:nil andErrorBlock:nil];
     
 }
 

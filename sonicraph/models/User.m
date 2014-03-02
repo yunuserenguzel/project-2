@@ -75,6 +75,8 @@
         self.sonicCount = user.sonicCount;
         self.followerCount = user.followerCount;
         self.followingCount = user.followingCount;
+        self.dateOfBirth = user.dateOfBirth;\
+        self.gender = user.gender;
         [self fireUserUpdatedForViewNotification];
     }
 }

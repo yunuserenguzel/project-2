@@ -129,6 +129,8 @@
 - (void) userLoggedOut:(NSNotification*)notification
 {
     self.sonics = [[SonicArray alloc] init];
+    self.likedSonics = [[SonicArray alloc] init];
+    [self refresh];
 }
 - (void)setUser:(User *)user
 {

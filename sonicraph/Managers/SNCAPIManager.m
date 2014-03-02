@@ -29,6 +29,14 @@ NSDate* dateFromServerString(NSString* dateString)
     return [dateFormatter dateFromString:dateString];
 }
 
+NSDate* birthDayFromServerString(NSString* dateString)
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    return [dateFormatter dateFromString:dateString];
+}
+
 SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary)
 {
     if(dictionary == nil || [dictionary isKindOfClass:[NSNull class]]){
@@ -59,6 +67,8 @@ User* userFromServerDictionary(NSDictionary* dictionary)
     user.sonicCount = [asClass([dictionary objectForKey:@"sonic_count"], [NSNumber class]) integerValue];
     user.followerCount = [asClass([dictionary objectForKey:@"follower_count"], [NSNumber class]) integerValue];
     user.followingCount = [asClass([dictionary objectForKey:@"following_count"], [NSNumber class]) integerValue];
+    user.dateOfBirth = birthDayFromServerString(asClass([dictionary objectForKey:@"date_of_birth"], [NSString class]));
+    user.gender = asClass([dictionary objectForKey:@"gender"], [NSString class]);
     return [[UserPool sharedPool] addOrUpdateUser:user];
     
 }

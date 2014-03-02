@@ -122,13 +122,13 @@
     [self.soundSlider setBaseColor:[UIColor clearColor]];
     [self addSubview:self.soundSlider];
     
-    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
-    [tapGesture setNumberOfTapsRequired:1];
-    [self addGestureRecognizer:tapGesture];
+    _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
+    [self.tapGesture setNumberOfTapsRequired:1];
+    [self addGestureRecognizer:self.tapGesture];
     
-    UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    [longPressGesture setMinimumPressDuration:1.5];
-    [self addGestureRecognizer:longPressGesture];
+    _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    [self.longPressGesture setMinimumPressDuration:1.5];
+    [self addGestureRecognizer:self.longPressGesture];
     
     self.pausedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Paused.png"]];
     [self.pausedImageView setContentMode:UIViewContentModeScaleAspectFit];

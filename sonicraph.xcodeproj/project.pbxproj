@@ -19,6 +19,12 @@
 		AE14799218C0071C00046C06 /* LikeTabLightPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE14798F18C0071C00046C06 /* LikeTabLightPink@2x.png */; };
 		AE14799318C0071C00046C06 /* ViewGridLightPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE14799018C0071C00046C06 /* ViewGridLightPink@2x.png */; };
 		AE14799418C0071C00046C06 /* ViewListLightPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE14799118C0071C00046C06 /* ViewListLightPink@2x.png */; };
+		AE1479AE18C13CFD00046C06 /* TextFieldBackgroundActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1479AD18C13CFD00046C06 /* TextFieldBackgroundActive@2x.png */; };
+		AE1479B018C13D4300046C06 /* TextFieldBaseBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1479AF18C13D4300046C06 /* TextFieldBaseBackground@2x.png */; };
+		AE1479B218C13DAD00046C06 /* TextFieldBackgroundPassive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1479B118C13DAD00046C06 /* TextFieldBackgroundPassive@2x.png */; };
+		AE1479B618C13F0800046C06 /* _TextFieldBackgroundActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1479B318C13F0800046C06 /* _TextFieldBackgroundActive@2x.png */; };
+		AE1479B718C13F0800046C06 /* _TextFieldBackgroundPassive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1479B418C13F0800046C06 /* _TextFieldBackgroundPassive@2x.png */; };
+		AE1479B818C13F0800046C06 /* _TextFieldBaseBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1479B518C13F0800046C06 /* _TextFieldBaseBackground@2x.png */; };
 		AE15967B181BE95E00929D1D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967A181BE95E00929D1D /* AVFoundation.framework */; };
 		AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE15967C181BF64800929D1D /* AudioToolbox.framework */; };
 		AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B6182452CF00929D1D /* slider-default7-trackBackground.png */; };
@@ -71,6 +77,7 @@
 		AE9E4C2218899AE900C2E870 /* UserPool.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9E4C2118899AE900C2E870 /* UserPool.m */; };
 		AE9E4C251889A73200C2E870 /* SonicArray.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9E4C241889A73200C2E870 /* SonicArray.m */; };
 		AEAB5BC818B20916004641DA /* SNCNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEAB5BC718B20916004641DA /* SNCNavigationViewController.m */; };
+		AEAE6E4F18C2B1CC00169596 /* EditProfilePhotoBase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEAE6E4E18C2B1CC00169596 /* EditProfilePhotoBase@2x.png */; };
 		AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945A01874DA3200FCE111 /* SegmentedBar.m */; };
 		AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945EE1876047900FCE111 /* SonicCommentCell.m */; };
 		AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB946001877571B00FCE111 /* ProfileHeaderView.m */; };
@@ -277,6 +284,12 @@
 		AE14798F18C0071C00046C06 /* LikeTabLightPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LikeTabLightPink@2x.png"; sourceTree = "<group>"; };
 		AE14799018C0071C00046C06 /* ViewGridLightPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewGridLightPink@2x.png"; sourceTree = "<group>"; };
 		AE14799118C0071C00046C06 /* ViewListLightPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ViewListLightPink@2x.png"; sourceTree = "<group>"; };
+		AE1479AD18C13CFD00046C06 /* TextFieldBackgroundActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TextFieldBackgroundActive@2x.png"; sourceTree = "<group>"; };
+		AE1479AF18C13D4300046C06 /* TextFieldBaseBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TextFieldBaseBackground@2x.png"; sourceTree = "<group>"; };
+		AE1479B118C13DAD00046C06 /* TextFieldBackgroundPassive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TextFieldBackgroundPassive@2x.png"; sourceTree = "<group>"; };
+		AE1479B318C13F0800046C06 /* _TextFieldBackgroundActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "_TextFieldBackgroundActive@2x.png"; sourceTree = "<group>"; };
+		AE1479B418C13F0800046C06 /* _TextFieldBackgroundPassive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "_TextFieldBackgroundPassive@2x.png"; sourceTree = "<group>"; };
+		AE1479B518C13F0800046C06 /* _TextFieldBaseBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "_TextFieldBaseBackground@2x.png"; sourceTree = "<group>"; };
 		AE15967A181BE95E00929D1D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AE15967C181BF64800929D1D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AE1596B6182452CF00929D1D /* slider-default7-trackBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground.png"; sourceTree = "<group>"; };
@@ -370,6 +383,7 @@
 		AE9E4C241889A73200C2E870 /* SonicArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicArray.m; sourceTree = "<group>"; };
 		AEAB5BC618B20916004641DA /* SNCNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCNavigationViewController.h; sourceTree = "<group>"; };
 		AEAB5BC718B20916004641DA /* SNCNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCNavigationViewController.m; sourceTree = "<group>"; };
+		AEAE6E4E18C2B1CC00169596 /* EditProfilePhotoBase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditProfilePhotoBase@2x.png"; sourceTree = "<group>"; };
 		AEB9459F1874DA3200FCE111 /* SegmentedBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedBar.h; sourceTree = "<group>"; };
 		AEB945A01874DA3200FCE111 /* SegmentedBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedBar.m; sourceTree = "<group>"; };
 		AEB945ED1876047900FCE111 /* SonicCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicCommentCell.h; sourceTree = "<group>"; };
@@ -791,6 +805,12 @@
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				AE1479B318C13F0800046C06 /* _TextFieldBackgroundActive@2x.png */,
+				AE1479B418C13F0800046C06 /* _TextFieldBackgroundPassive@2x.png */,
+				AE1479B518C13F0800046C06 /* _TextFieldBaseBackground@2x.png */,
+				AE1479AD18C13CFD00046C06 /* TextFieldBackgroundActive@2x.png */,
+				AE1479B118C13DAD00046C06 /* TextFieldBackgroundPassive@2x.png */,
+				AE1479AF18C13D4300046C06 /* TextFieldBaseBackground@2x.png */,
 				AED3320818BBD4D5002FB70A /* sonicraphcameramodeelementspng */,
 				AE00351318B7744200CB8BC0 /* retry_icon.png */,
 				AED2780318B1429000C17F19 /* notificationlargeiconspng */,
@@ -1043,6 +1063,7 @@
 		AEB945F41877566D00FCE111 /* profile */ = {
 			isa = PBXGroup;
 			children = (
+				AEAE6E4E18C2B1CC00169596 /* EditProfilePhotoBase@2x.png */,
 				AE14798F18C0071C00046C06 /* LikeTabLightPink@2x.png */,
 				AE14799018C0071C00046C06 /* ViewGridLightPink@2x.png */,
 				AE14799118C0071C00046C06 /* ViewListLightPink@2x.png */,
@@ -1979,6 +2000,7 @@
 				AEDED1D818BDD50A00FEB636 /* FacebookShareButtonBase@2x.png in Resources */,
 				AED277AA18AFDE1800C17F19 /* SearchBlue@2x.png in Resources */,
 				AED277A418AFDE1800C17F19 /* HomeBlue@2x.png in Resources */,
+				AE1479B218C13DAD00046C06 /* TextFieldBackgroundPassive@2x.png in Resources */,
 				AED277F618B023A900C17F19 /* FollowingPink@2x.png in Resources */,
 				AED277D118AFE21D00C17F19 /* CommentGrey@2x.png in Resources */,
 				AED3321918BBD4D5002FB70A /* GleamWhite@2x.png in Resources */,
@@ -1989,6 +2011,7 @@
 				AE14796D18BFFB0400046C06 /* LikeLightPink@2x.png in Resources */,
 				AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */,
 				AED277A818AFDE1800C17F19 /* HomePink@2x.png in Resources */,
+				AE1479B818C13F0800046C06 /* _TextFieldBaseBackground@2x.png in Resources */,
 				AED277B118AFDE1800C17F19 /* UserDarkGrey@2x.png in Resources */,
 				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
 				AED2780A18B1429000C17F19 /* NotificationLike@2x.png in Resources */,
@@ -2004,7 +2027,10 @@
 				AED277D018AFE21D00C17F19 /* CommentDarkGrey@2x.png in Resources */,
 				AE946D7C18A83FF500EAD9AD /* ViewGridPink@2x.png in Resources */,
 				AED2780B18B1429000C17F19 /* NotificationResonic@2x.png in Resources */,
+				AE1479B618C13F0800046C06 /* _TextFieldBackgroundActive@2x.png in Resources */,
 				AED3322818BBDED8002FB70A /* MiniMicRight@2x.png in Resources */,
+				AE1479AE18C13CFD00046C06 /* TextFieldBackgroundActive@2x.png in Resources */,
+				AEAE6E4F18C2B1CC00169596 /* EditProfilePhotoBase@2x.png in Resources */,
 				AED277A318AFDE1800C17F19 /* GlobeWhite@2x.png in Resources */,
 				AED277E118AFE21D00C17F19 /* ResonicBlue@2x.png in Resources */,
 				AED277AD18AFDE1800C17F19 /* SearchLightGrey@2x.png in Resources */,
@@ -2016,6 +2042,7 @@
 				AED2779818AFDE1800C17F19 /* CameraBlue@2x.png in Resources */,
 				AED277D218AFE21D00C17F19 /* CommentLightGrey@2x.png in Resources */,
 				AE14796E18BFFB0400046C06 /* MoreLightPink@2x.png in Resources */,
+				AE1479B718C13F0800046C06 /* _TextFieldBackgroundPassive@2x.png in Resources */,
 				AED3321518BBD4D5002FB70A /* Cancel.png in Resources */,
 				AED277A218AFDE1800C17F19 /* GlobePink@2x.png in Resources */,
 				AED277D418AFE21D00C17F19 /* CommentWhite@2x.png in Resources */,
@@ -2033,6 +2060,7 @@
 				AEDED1D918BDD50A00FEB636 /* FacebookShareButtonIcon@2x.png in Resources */,
 				AEB9F7B2187B442E005F4988 /* Settings@2x.png in Resources */,
 				AED277F218B00D5000C17F19 /* WebIcon@2x.png in Resources */,
+				AE1479B018C13D4300046C06 /* TextFieldBaseBackground@2x.png in Resources */,
 				AED277AC18AFDE1800C17F19 /* SearchGrey@2x.png in Resources */,
 				AED2779918AFDE1800C17F19 /* CameraDarkGrey@2x.png in Resources */,
 				AED277D318AFE21D00C17F19 /* CommentPink@2x.png in Resources */,

@@ -15,5 +15,6 @@
 @property (nonatomic) Sonic* sonic;
 @property SonicPlayerView* sonicPlayerView;
 
+@property UIImageView* resonicImageView;
 
 @end

@@ -13,12 +13,12 @@
 {
     CompletionIdBlock completionBlock;
     ErrorBlock errorBlock;
-    FloatBlock refreshBlock;
+    RefreshBlock refreshBlock;
 }
 @property NSURL* fileURL;
 - (void) setCompletionBlock:(CompletionIdBlock)completionBlock;
 - (void) setErrorBlock:(ErrorBlock)errorBlock;
-- (void) setRefreshBlock:(FloatBlock)refreshBlock;
+- (void) setRefreshBlock:(RefreshBlock)refreshBlock;
 
 - (void) startDownload;
 
@@ -40,7 +40,7 @@
     errorBlock = _errorBlock;
 }
 
-- (void)setRefreshBlock:(FloatBlock)_refreshBlock
+- (void)setRefreshBlock:(RefreshBlock)_refreshBlock
 {
     refreshBlock = _refreshBlock;
 }
@@ -67,7 +67,7 @@
     float progressive = (float)[receivedData length] / (float)expectedBytes;
     if(refreshBlock)
     {
-        refreshBlock(progressive);
+        refreshBlock(progressive, self.fileURL);
     }
 }
 
@@ -125,7 +125,7 @@
     return self;
 }
 
-- (void)getImageWithUrl:(NSURL *)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(FloatBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock
+- (void)getImageWithUrl:(NSURL *)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(RefreshBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         UIImage* image = [self getCachedImageWithUrl:url];
@@ -151,7 +151,7 @@
         }
     });
 }
-- (void)getSonicDataWithUrl:(NSURL *)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(FloatBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock
+- (void)getSonicDataWithUrl:(NSURL *)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(RefreshBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         SonicData* sonicData = [self getCachedSonicDataWithUrl:url];
@@ -178,7 +178,7 @@
         }
     });
 }
-- (void) getFileDataWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(FloatBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock
+- (void) getFileDataWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(RefreshBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     ResourceDownloader* resourceDownloader = [[ResourceDownloader alloc] init];
     [resourceDownloader setFileURL:url];

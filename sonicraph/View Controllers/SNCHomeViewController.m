@@ -223,7 +223,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [cellWiningTheCenter cellWonCenterOfTableView];
         });
-
     }
     else {
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {

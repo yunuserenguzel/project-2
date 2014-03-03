@@ -78,6 +78,7 @@
 		AE9E4C251889A73200C2E870 /* SonicArray.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9E4C241889A73200C2E870 /* SonicArray.m */; };
 		AEAB5BC818B20916004641DA /* SNCNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEAB5BC718B20916004641DA /* SNCNavigationViewController.m */; };
 		AEAE6E4F18C2B1CC00169596 /* EditProfilePhotoBase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEAE6E4E18C2B1CC00169596 /* EditProfilePhotoBase@2x.png */; };
+		AEAE6E5B18C4393300169596 /* SilentSwitchDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = AEAE6E5A18C4393300169596 /* SilentSwitchDetector.m */; };
 		AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945A01874DA3200FCE111 /* SegmentedBar.m */; };
 		AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945EE1876047900FCE111 /* SonicCommentCell.m */; };
 		AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB946001877571B00FCE111 /* ProfileHeaderView.m */; };
@@ -384,6 +385,8 @@
 		AEAB5BC618B20916004641DA /* SNCNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCNavigationViewController.h; sourceTree = "<group>"; };
 		AEAB5BC718B20916004641DA /* SNCNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCNavigationViewController.m; sourceTree = "<group>"; };
 		AEAE6E4E18C2B1CC00169596 /* EditProfilePhotoBase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditProfilePhotoBase@2x.png"; sourceTree = "<group>"; };
+		AEAE6E5918C4393300169596 /* SilentSwitchDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilentSwitchDetector.h; sourceTree = "<group>"; };
+		AEAE6E5A18C4393300169596 /* SilentSwitchDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SilentSwitchDetector.m; sourceTree = "<group>"; };
 		AEB9459F1874DA3200FCE111 /* SegmentedBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedBar.h; sourceTree = "<group>"; };
 		AEB945A01874DA3200FCE111 /* SegmentedBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedBar.m; sourceTree = "<group>"; };
 		AEB945ED1876047900FCE111 /* SonicCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicCommentCell.h; sourceTree = "<group>"; };
@@ -941,6 +944,8 @@
 				AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */,
 				AEDAAE171863A015001DD389 /* UIImage+imageForSoundData.h */,
 				AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */,
+				AEAE6E5918C4393300169596 /* SilentSwitchDetector.h */,
+				AEAE6E5A18C4393300169596 /* SilentSwitchDetector.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -2128,6 +2133,7 @@
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
 				AED3323118BC888A002FB70A /* SNCSwitchView.m in Sources */,
 				AE7E18DF18906859009A9B7F /* SNCSearchViewController.m in Sources */,
+				AEAE6E5B18C4393300169596 /* SilentSwitchDetector.m in Sources */,
 				AE9ABCFB18799E71008FE96B /* SNCFollowerFollowingViewController.m in Sources */,
 				AE86EECD18316CA800F74F1D /* MP3Converter.m in Sources */,
 				AED56EF81801A39F000DF866 /* MKNetworkEngine.m in Sources */,

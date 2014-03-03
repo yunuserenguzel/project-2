@@ -23,6 +23,9 @@ id asClass(id object, Class class)
 
 NSDate* dateFromServerString(NSString* dateString)
 {
+    if (dateString == nil) {
+        return nil;
+    }
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
@@ -31,6 +34,8 @@ NSDate* dateFromServerString(NSString* dateString)
 
 NSDate* birthDayFromServerString(NSString* dateString)
 {
+    if(dateString == nil)
+        return nil;
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];

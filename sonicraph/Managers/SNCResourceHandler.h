@@ -18,9 +18,9 @@
 
 + (SNCResourceHandler*) sharedInstance;
 
-- (void) getSonicDataWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(FloatBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock;
+- (void) getSonicDataWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(RefreshBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock;
 
-- (void) getImageWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(FloatBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock;
+- (void) getImageWithUrl:(NSURL*)url withCompletionBlock:(CompletionIdBlock)completionBlock andRefreshBlock:(RefreshBlock)refreshBlock andErrorBlock:(ErrorBlock)errorBlock;
 
 + (NSString*) getAndCreateFolderAtApplicationDirectory:(NSString*)folderName;
 

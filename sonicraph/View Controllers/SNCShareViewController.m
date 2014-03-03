@@ -74,7 +74,7 @@
 }
 - (CGRect) tagsDoneButtonFrame
 {
-    return CGRectMake(260.0, 0.0, 60.0, 44.0);
+    return CGRectMake(255.0, 0.0, 60.0, 44.0);
 }
 
 - (CGRect) keyBoardCloserFrame
@@ -163,7 +163,6 @@
 }
 - (void) initializeTopViews
 {
-    
     self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.backButton setFrame:[self backButtonFrame]];
     [self.backButton setTitle:@"Edit" forState:UIControlStateNormal];
@@ -189,7 +188,6 @@
     [self.doneButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
     [self.doneButton setEnabled:NO];
     [self.view addSubview:self.doneButton];
-    
 }
 
 - (void) back
@@ -232,7 +230,7 @@
     self.tagsDoneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.tagsDoneButton.frame = [self tagsDoneButtonFrame];
     [self.tagsDoneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [self.tagsDoneButton setTintColor:[UIColor blackColor]];
+    [self.tagsDoneButton setTintColor:[UIColor whiteColor]];
     [self.tagsDoneButton addTarget:self action:@selector(closeKeyboard) forControlEvents:UIControlEventTouchUpInside];
     [self.tagsDoneButton setHidden:YES];
     [self.tags addSubview:self.tagsDoneButton];

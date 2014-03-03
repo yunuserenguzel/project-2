@@ -84,7 +84,7 @@
     
     self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.leftBarButtonItem = self.cancelButton;
-    UILabel* beCoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.tableView.frame.size.height - 96.0, 320.0, 33.0)];
+    UILabel* beCoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 472, 320.0, 33.0)];
     [beCoolLabel setText:@"Be Cool :)"];
     [beCoolLabel setFont:[UIFont systemFontOfSize:14.0]];
     [beCoolLabel setTextColor:self.tableView.separatorColor];
@@ -99,6 +99,7 @@
 
 - (void) save
 {
+    [self.view endEditing:YES];
     if(self.changedFields.count > 0)
     {
         [self.tableView setUserInteractionEnabled:NO];
@@ -107,9 +108,11 @@
         [activityIndicator sizeToFit];
         [activityIndicator startAnimating];
         [SNCAPIManager editProfileWithFields:self.changedFields withCompletionBlock:^(User *user, NSString *token) {
+            self.changedFields = [NSMutableDictionary new];
             [self.tableView setUserInteractionEnabled:YES];
             self.navigationItem.rightBarButtonItem = self.saveButton;
             [activityIndicator stopAnimating];
+            [self dismissViewControllerAnimated:YES completion:nil];
         } andErrorBlock:^(NSError *error) {
             if(error.code == APIErrorCodeUsernameExist)
             {
@@ -147,6 +150,7 @@
 {
     [super didReceiveMemoryWarning];
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if(section == 1)
@@ -226,6 +230,7 @@
         {
             field.value = value;
             [self.changedFields setObject:value forKey:field.serverKey];
+            break;
         }
     }
 }

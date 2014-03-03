@@ -50,6 +50,8 @@ typedef enum SonicRecordType {
     SonicRecordTypeSoundFirst
 } SonicRecordType;
 
+#define DefaultSonicRecordType SonicRecordTypePhotoFirst
+
 @interface SNCCameraViewController ()
 
 @property UIImageView* maskView;
@@ -138,7 +140,7 @@ typedef enum SonicRecordType {
 {
     [super viewDidLoad];
     isMediaManagerReady = NO;
-    self.recordType = SonicRecordTypeSoundFirst;
+    self.recordType = DefaultSonicRecordType;
     [self.view setBackgroundColor:CameraViewControllersBackgroundColor];
     self.cameraView = [[UIView alloc] initWithFrame:[self cameraViewFrame]];
     [self.view addSubview:self.cameraView];
@@ -151,7 +153,7 @@ typedef enum SonicRecordType {
     [self initializeRetakeAndCancelButton];
     
     self.recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.recordButton setImage:[UIImage imageNamed:@"Camera Button.png"] forState:UIControlStateNormal];
+    [self.recordButton setImage:RecordButtonCameraImage forState:UIControlStateNormal];
     [self.recordButton setFrame:[self recordButtonFrame]];
     [self.recordButton setEnabled:NO];
     [self.view addSubview:self.recordButton];
@@ -209,18 +211,18 @@ typedef enum SonicRecordType {
     }];
     if(device.orientation == UIDeviceOrientationLandscapeLeft)
     {
-        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniMicLeft.png"] forSegmentAtIndex:0];
-        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniCameraLeft.png"] forSegmentAtIndex:1];
+        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniCameraLeft.png"] forSegmentAtIndex:0];
+        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniMicLeft.png"] forSegmentAtIndex:1];
     }
     else if(device.orientation == UIDeviceOrientationLandscapeRight)
     {
-        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniMicRight.png"] forSegmentAtIndex:0];
-        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniCameraRight.png"] forSegmentAtIndex:1];
+        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniCameraRight.png"] forSegmentAtIndex:0];
+        [self.recordTypeSwitch setImage:[UIImage imageNamed:@"MiniMicRight.png"] forSegmentAtIndex:1];
     }
     else
     {
-        [self.recordTypeSwitch setTitle:@"Sound First" forSegmentAtIndex:0];
-        [self.recordTypeSwitch setTitle:@"Photo First" forSegmentAtIndex:1];
+        [self.recordTypeSwitch setTitle:@"Photo First" forSegmentAtIndex:0];
+        [self.recordTypeSwitch setTitle:@"Sound First" forSegmentAtIndex:1];
     }
 }
 
@@ -462,8 +464,8 @@ typedef enum SonicRecordType {
     self.recordTypeSwitch = [[UISegmentedControl alloc] initWithFrame:[self recordTypeSwitchFrame]];
     [self.cameraFeaturesBar addSubview:self.recordTypeSwitch];
     [self.recordTypeSwitch addTarget:self action:@selector(recordTypeSwitchChanged) forControlEvents:UIControlEventValueChanged];
-    [self.recordTypeSwitch insertSegmentWithTitle:@"Sound First" atIndex:0 animated:NO];
-    [self.recordTypeSwitch insertSegmentWithTitle:@"Photo First" atIndex:1 animated:NO];
+    [self.recordTypeSwitch insertSegmentWithTitle:@"Photo First" atIndex:0 animated:NO];
+    [self.recordTypeSwitch insertSegmentWithTitle:@"Sound First" atIndex:1 animated:NO];
     [self.recordTypeSwitch setTintColor:[UIColor whiteColor]];
 
     self.cameraTypeToggleButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -531,7 +533,7 @@ typedef enum SonicRecordType {
 
 - (void) recordTypeSwitchChanged
 {
-    if(self.recordTypeSwitch.selectedSegmentIndex == 0)
+    if(self.recordTypeSwitch.selectedSegmentIndex == 1)
     {
         self.recordType = SonicRecordTypeSoundFirst;
         [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];

@@ -38,17 +38,17 @@ CGFloat heightForIdentifier(NSString* identifier)
 @property UIButton* maleButton;
 @property UIButton* femaleButton;
 
+@property UIButton* dateOfBirthButton;
+
 @end
 
 
 @implementation SettingsTableCell
 {
     UIImagePickerController* imagePickerController;
+    UIWindow* window;
+    UIDatePicker* datePicker;
 }
-//- (CGRect) keyLabelFrame
-//{
-//    return CGRectMake(10.0, 0.0, 100.0, 44.0);
-//}
 
 - (CGRect) stringValueFieldFrame
 {
@@ -118,26 +118,24 @@ CGFloat heightForIdentifier(NSString* identifier)
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
+
 }
 
 - (void) initViews
 {
-//    self.keyLabel = [[UILabel alloc] initWithFrame:[self keyLabelFrame]];
-//    [self.contentView addSubview:self.keyLabel];
-//    self.keyLabel.font = [self.keyLabel.font fontWithSize:14.0];
-//    [self.keyLabel setTextAlignment:NSTextAlignmentLeft];
+    
 }
 
 - (void) initTextField
 {
     self.stringValueField = [[UITextField alloc] initWithFrame:[self stringValueFieldFrame]];
+    self.stringValueField.delegate = self;
     [self.contentView addSubview:self.stringValueField];
-    [self.stringValueField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     [self.stringValueField setTextAlignment:NSTextAlignmentCenter];
     [self.stringValueField setFont:[UIFont boldSystemFontOfSize:18.0]];
     [self.stringValueField setTextColor:LightPinkTextColor];
     [self.stringValueField setValue:UITextFieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
+    [self.stringValueField setReturnKeyType:UIReturnKeyDone];
 }
 
 - (void) initImageValueView
@@ -157,29 +155,87 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 - (void) initDateValueView
 {
-    
-    self.monthField = [[UITextField alloc] initWithFrame:[self monthFieldFrame]];
-    [self.monthField setPlaceholder:@"mm"];
-    
-    self.dayField = [[UITextField alloc] initWithFrame:[self dayFieldFrame]];
-    [self.dayField setPlaceholder:@"dd"];
-    
-    self.yearField = [[UITextField alloc] initWithFrame:[self yearFieldFrame]];
-    [self.yearField setPlaceholder:@"yyyy"];
-    
-    for(UITextField* textField in @[self.monthField, self.dayField, self.yearField])
-    {
-        [textField setTextAlignment:NSTextAlignmentLeft];
-        textField.keyboardType = UIKeyboardTypeNumberPad;
-        [self.contentView addSubview:textField];
-        [textField setFont:[UIFont boldSystemFontOfSize:18.0]];
-        [textField setTextColor:LightPinkTextColor];
-        [textField setDelegate:self];
-        [textField setTintColor:LightPinkTextColor];
-        [textField addTarget:self action:@selector(textFieldEdited:) forControlEvents:UIControlEventEditingChanged];
-        [textField setValue:UITextFieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    }
+
+    self.dateOfBirthButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.dateOfBirthButton setFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
+    [self.dateOfBirthButton addTarget:self action:@selector(dateCellTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self.dateOfBirthButton setTitleColor:UITextFieldPlaceholderColor forState:UIControlStateNormal];
+    [self.dateOfBirthButton setTitleColor:LightPinkTextColor forState:UIControlStateSelected];
+    [self.dateOfBirthButton setTitle:@"mm / dd / yyyy" forState:UIControlStateNormal];
+    [self.dateOfBirthButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [self.contentView addSubview:self.dateOfBirthButton];
 }
+
+- (void) dateCellTapped
+{
+    UIViewController* viewController = [[UIViewController alloc] init];
+    [viewController.view setUserInteractionEnabled:YES];
+    
+    datePicker = [[UIDatePicker alloc] init];
+    [datePicker setDate:self.value animated:YES];
+    [datePicker setDatePickerMode:UIDatePickerModeDate];
+    [datePicker setFrame:CGRectMake(0.0, viewController.view.frame.size.height-datePicker.frame.size.height, 320.0, datePicker.frame.size.height)];
+    [datePicker setBackgroundColor:[UIColor whiteColor]];
+    [datePicker setTintColor:LightPinkTextColor];
+    [viewController.view addSubview:datePicker];
+    
+    
+    UIView* view = [[UIView alloc] initWithFrame:CGRectMake(0.0, datePicker.frame.origin.y - 44.0, 320.0, 44.0)];
+    [viewController.view addSubview:view];
+    [view setBackgroundColor:[UIColor whiteColor]];
+    UIView* borderView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
+    [borderView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [borderView.layer setBorderWidth:1.0];
+    [view addSubview:borderView];
+    
+    UIButton* doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton setTitleColor:LightPinkTextColor forState:UIControlStateNormal];
+    [doneButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [doneButton setFrame:CGRectMake(200.0, datePicker.frame.origin.y - 44.0, 120.0, 44.0)];
+    [doneButton addTarget:self action:@selector(donePickingDate) forControlEvents:UIControlEventTouchUpInside];
+    [viewController.view addSubview:doneButton];
+    
+    UIButton* cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setTitleColor:UITextFieldPlaceholderColor forState:UIControlStateNormal];
+    [cancelButton setFrame:CGRectMake(0.0, datePicker.frame.origin.y - 44.0, 120.0, 44.0)];
+    [cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [cancelButton addTarget:self action:@selector(closeDatePicker) forControlEvents:UIControlEventTouchUpInside];
+    [viewController.view addSubview:cancelButton];
+    
+    window = [[UIWindow alloc] init];
+    [window setRootViewController:viewController];
+    [window setUserInteractionEnabled:YES];
+    [window setBounds:[[UIScreen mainScreen] bounds]];
+    [window setFrame:[[UIScreen mainScreen] bounds]];
+    [window setWindowLevel:UIWindowLevelAlert+1];
+    [window makeKeyAndVisible];
+    
+    viewController.view.transform = CGAffineTransformMakeTranslation(0.0, viewController.view.frame.size.height);
+    [UIView animateWithDuration:0.5 animations:^{
+        viewController.view.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
+    }];
+    
+}
+
+- (void) closeDatePicker
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        window.rootViewController.view.transform = CGAffineTransformMakeTranslation(0.0, window.rootViewController.view.frame.size.height);
+    } completion:^(BOOL finished) {
+        [window resignKeyWindow];
+        window = nil;
+    }];
+}
+
+- (void) donePickingDate
+{
+    self.value = datePicker.date;
+    [self.delegate valueChanged:self.value forKey:self.key];
+    [self closeDatePicker];
+}
+
 
 - (void) initGenderValueView
 {
@@ -210,69 +266,49 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.delegate valueChanged:value forKey:self.key];
 }
 
-- (void) textFieldEdited:(UITextField*)textField
+- (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if(textField == self.monthField)
+    
+    if(textField == self.stringValueField)
     {
-        if(textField.text.length >= 2)
-        {
-            [self.dayField becomeFirstResponder];
-        }
+        self.value = [textField.text copy];
+        [self.delegate valueChanged:self.value forKey:self.key];
     }
-    else if(textField == self.dayField)
-    {
-        if(textField.text.length >= 2)
-        {
-            [self.yearField becomeFirstResponder];
-        }
-    }
-    [self checkDateValueIsReady];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if(string.length == 0)
+    if(string.length == 0 )
     {
         return YES;
     }
+    NSLog(@"string:%@ range: %d,%d",string,range.location,range.length);
     NSString* resultingText = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if(textField == self.dayField || textField == self.monthField)
+    if ([self.key isEqualToString:@"Username"] && textField == self.stringValueField)
     {
-        if ([textField.text length] >= 2) {
-            textField.text = [textField.text substringToIndex:2];
-            return NO;
+        NSString *searchedString = resultingText;
+        NSRange   searchedRange = NSMakeRange(0, [searchedString length]);
+        NSString *pattern = @"[a-zA-Z][a-zA-Z0-9]*";
+        NSError  *error = nil;
+        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern: pattern options:0 error:&error];
+        NSRange range = [regex rangeOfFirstMatchInString:searchedString options:0 range: searchedRange];
+        textField.text = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if (range.length == searchedRange.length) {
+            return YES;
         }
-        if(textField == self.dayField && [resultingText intValue] > 31)
+        else
         {
-            return NO;
-        }
-        else if(textField == self.monthField && [resultingText intValue] > 12)
-        {
-            return NO;
-        }
-    }
-    else if(textField == self.yearField)
-    {
-        if([textField.text length] >= 4)
-        {
-            textField.text = [textField.text substringToIndex:4];
             return NO;
         }
     }
     return YES;
 }
 
-- (void) checkDateValueIsReady
-{
-    if(self.monthField.text.length > 0 && self.dayField.text.length > 0 && self.yearField.text.length == 4)
-    {
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"yyyy-MM-dd"];
-        [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-        NSString* dateString = [NSString stringWithFormat:@"%@-%@-%@",self.yearField.text,self.monthField.text,self.dayField.text];
-        NSDate *date = [dateFormat dateFromString:dateString];
-        [self.delegate valueChanged:date forKey:self.key];
-    }
-}
 
 - (void) showActionSheet
 {
@@ -310,10 +346,24 @@ CGFloat heightForIdentifier(NSString* identifier)
     {
         self.stringValueField.placeholder = key;
         [self.stringValueField setValue:UITextFieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    }
-    else if([self.reuseIdentifier isEqualToString:SettingsTableCellImageValueIdentifier])
-    {
-        
+        if ([key isEqualToString:@"Username"] || [key isEqualToString:@"Website"])
+        {
+            [self.stringValueField setSpellCheckingType:UITextSpellCheckingTypeNo];
+            [self.stringValueField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+        }
+        else if([key isEqualToString:@"Name"] || [key isEqualToString:@"Location"])
+        {
+            [self.stringValueField setSpellCheckingType:UITextSpellCheckingTypeNo];
+            [self.stringValueField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
+        }
+        if([key isEqualToString:@"Website"])
+        {
+            [self.stringValueField setKeyboardType:UIKeyboardTypeURL];
+        }
+        else
+        {
+            [self.stringValueField setKeyboardType:UIKeyboardTypeDefault];
+        }
     }
     
 }
@@ -331,10 +381,13 @@ CGFloat heightForIdentifier(NSString* identifier)
     }
     else if([self.reuseIdentifier isEqualToString:SettingsTableCellDateValueIdentifier])
     {
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:value];
-        [self.dayField setText:[NSString stringWithFormat:@"%d",components.day]];
-        [self.monthField setText:[NSString stringWithFormat:@"%d",components.month]];
-        [self.yearField setText:[NSString stringWithFormat:@"%d",components.year]];
+        if(value)
+        {
+            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:value];
+            NSString* titleString = [NSString stringWithFormat:@"%d / %d / %d",components.month,components.day,components.year];
+            [self.dateOfBirthButton setTitle:titleString forState:UIControlStateSelected];
+            [self.dateOfBirthButton setSelected:YES];
+        }
     }
     else if([self.reuseIdentifier isEqualToString:SettingsTableCellGenderValueIdentifier])
     {
@@ -347,12 +400,6 @@ CGFloat heightForIdentifier(NSString* identifier)
             [self.femaleButton setSelected:YES];
         }
     }
-}
-
-- (void) textFieldValueChanged:(UITextField*)textField
-{
-    self.value = textField.text;
-    [self.delegate valueChanged:self.value forKey:self.key];
 }
 
 - (void) imageValueChanged:(UIImage*)image

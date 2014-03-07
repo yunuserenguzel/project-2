@@ -74,7 +74,7 @@
     [self importSonicsWithArray:@[sonic]];
 }
 
-- (NSInteger)count
+- (NSUInteger)count
 {
     return [self.sonics count];
 }

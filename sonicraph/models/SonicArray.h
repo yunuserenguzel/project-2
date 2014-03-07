@@ -19,5 +19,5 @@
 
 - (BOOL) deleteSonicWithId:(NSString*)sonicId;
 
-@property (readonly,nonatomic) NSInteger count;
+@property (readonly,nonatomic) NSUInteger count;
 @end

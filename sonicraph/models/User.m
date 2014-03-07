@@ -117,7 +117,7 @@
             isInProcess = NO;
             [arrayOfCallBacksForThumbnail enumerateObjectsUsingBlock:^(CompletionIdBlock completionBlock, NSUInteger idx, BOOL *stop) {
                 if(completionBlock){
-                    NSLog(@"calling completion block at index %d",idx);
+//                    NSLog(@"calling completion block at index %d",idx);
                     completionBlock(self.thumbnailProfileImage);
                 }
             }];

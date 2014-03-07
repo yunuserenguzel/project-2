@@ -12,7 +12,6 @@
 #import "Configurations.h"
 #import "UIButton+StateProperties.h"
 
-
 CGFloat heightForIdentifier(NSString* identifier)
 {
     if([identifier isEqualToString:SettingsTableCellImageValueIdentifier]){
@@ -46,6 +45,7 @@ CGFloat heightForIdentifier(NSString* identifier)
 @implementation SettingsTableCell
 {
     UIImagePickerController* imagePickerController;
+//    GKImagePicker* imagePicker;
     UIWindow* window;
     UIDatePicker* datePicker;
 }
@@ -323,19 +323,22 @@ CGFloat heightForIdentifier(NSString* identifier)
         if(imagePickerController == nil)
         {
             imagePickerController = [[UIImagePickerController alloc] init];
+            imagePickerController.allowsEditing = YES;
             imagePickerController.delegate = self;
         }
         imagePickerController.sourceType = buttonIndex ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypePhotoLibrary;
         [self.delegate presentViewController:imagePickerController animated:YES completion:^{
             
         }];
+        
     }
 }
+
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [picker dismissViewControllerAnimated:YES completion:^{
-        [self imageValueChanged:[info objectForKey:UIImagePickerControllerOriginalImage]];
+        [self imageValueChanged:[info objectForKey:UIImagePickerControllerEditedImage]];
     }];
     
 }

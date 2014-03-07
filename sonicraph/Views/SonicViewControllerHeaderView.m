@@ -10,6 +10,7 @@
 #import "Configurations.h"
 
 
+
 @implementation SonicViewControllerHeaderView
 {
     BOOL isInitCalled;
@@ -133,11 +134,11 @@
 }
 - (void) inititalizeTab
 {
-    self.segmentedBar = [[UISegmentedControl alloc]
-                         initWithItems:@[@"Likes",@"Comments",@"Resonics"]];
-    [self addSubview:self.segmentedBar];
-    [self.segmentedBar setFrame:[self segmentedBarMaxFrame]];
-    [self.segmentedBar setTintColor:PinkColor];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Likes",@"Comments",@"Resonics"]];
+    [self addSubview:self.segmentedControl];
+    [self.segmentedControl sizeToFit];
+    [self.segmentedControl setFrame:[self segmentedBarMaxFrame]];
+    [self.segmentedControl setTintColor:PinkColor];
 }
 - (void) addTargetForTapToTop:(id)target action:(SEL)selector
 {
@@ -152,7 +153,7 @@
 //    [self.fullnameLabel setFrame:CGRectByRatio([self fullnameLabelMaxFrame], [self fullnameLabelMinFrame], ratio)];
 //    [self.usernameLabel setFrame:CGRectByRatio([self usernameLabelMaxFrame], [self usernameLabelMinFrame], ratio)];
 //    [self.createdAtLabel setFrame:CGRectByRatio([self createdAtLabelMaxFrame], [self createdAtLabelMinFrame], ratio)];
-    [self.segmentedBar setFrame:CGRectByRatio([self segmentedBarMaxFrame], [self segmentedBarMinFrame], ratio)];
+    [self.segmentedControl setFrame:CGRectByRatio([self segmentedBarMaxFrame], [self segmentedBarMinFrame], ratio)];
     if(ratio < 1.0){
         [self.sonicPlayerView stop];
         [self.tapToTopView setHidden:NO];

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "SonicPlayerView.h"
 #import "TypeDefs.h"
-#import "SegmentedBar.h"
 
 #define LikesTabButtonTag 5111
 #define CommentsTabButtonTag 5112
@@ -26,11 +25,7 @@
 @property UIImageView* profileImageView;
 @property UILabel* createdAtLabel;
 
-//@property SegmentedBar* segmentedBar;
-//@property SegmentedBarItem* likesBarItem;
-//@property SegmentedBarItem* commentsBarItem;
-//@property SegmentedBarItem* resonicsBarItem;
-@property UISegmentedControl* segmentedBar;
+@property UISegmentedControl* segmentedControl;
 
 @property UIView* tapToTopView;
 

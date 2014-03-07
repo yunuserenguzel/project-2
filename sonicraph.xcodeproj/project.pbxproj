@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		AE00351418B7744200CB8BC0 /* retry_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE00351318B7744200CB8BC0 /* retry_icon.png */; };
+		AE10C3DE18C721D200AD4D1A /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10C3DB18C721D200AD4D1A /* HPGrowingTextView.m */; };
+		AE10C3DF18C721D200AD4D1A /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10C3DD18C721D200AD4D1A /* HPTextViewInternal.m */; };
 		AE14796C18BFFB0400046C06 /* CommentLightPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE14796818BFFB0400046C06 /* CommentLightPink@2x.png */; };
 		AE14796D18BFFB0400046C06 /* LikeLightPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE14796918BFFB0400046C06 /* LikeLightPink@2x.png */; };
 		AE14796E18BFFB0400046C06 /* MoreLightPink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE14796A18BFFB0400046C06 /* MoreLightPink@2x.png */; };
@@ -79,7 +81,6 @@
 		AEAB5BC818B20916004641DA /* SNCNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEAB5BC718B20916004641DA /* SNCNavigationViewController.m */; };
 		AEAE6E4F18C2B1CC00169596 /* EditProfilePhotoBase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AEAE6E4E18C2B1CC00169596 /* EditProfilePhotoBase@2x.png */; };
 		AEAE6E5B18C4393300169596 /* SilentSwitchDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = AEAE6E5A18C4393300169596 /* SilentSwitchDetector.m */; };
-		AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945A01874DA3200FCE111 /* SegmentedBar.m */; };
 		AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB945EE1876047900FCE111 /* SonicCommentCell.m */; };
 		AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB946001877571B00FCE111 /* ProfileHeaderView.m */; };
 		AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB9F7AC187B34EC005F4988 /* SNCSettingsViewController.m */; };
@@ -274,6 +275,10 @@
 
 /* Begin PBXFileReference section */
 		AE00351318B7744200CB8BC0 /* retry_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retry_icon.png; sourceTree = "<group>"; };
+		AE10C3DA18C721D200AD4D1A /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
+		AE10C3DB18C721D200AD4D1A /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
+		AE10C3DC18C721D200AD4D1A /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
+		AE10C3DD18C721D200AD4D1A /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
 		AE14796818BFFB0400046C06 /* CommentLightPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CommentLightPink@2x.png"; sourceTree = "<group>"; };
 		AE14796918BFFB0400046C06 /* LikeLightPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LikeLightPink@2x.png"; sourceTree = "<group>"; };
 		AE14796A18BFFB0400046C06 /* MoreLightPink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoreLightPink@2x.png"; sourceTree = "<group>"; };
@@ -387,8 +392,6 @@
 		AEAE6E4E18C2B1CC00169596 /* EditProfilePhotoBase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditProfilePhotoBase@2x.png"; sourceTree = "<group>"; };
 		AEAE6E5918C4393300169596 /* SilentSwitchDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilentSwitchDetector.h; sourceTree = "<group>"; };
 		AEAE6E5A18C4393300169596 /* SilentSwitchDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SilentSwitchDetector.m; sourceTree = "<group>"; };
-		AEB9459F1874DA3200FCE111 /* SegmentedBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedBar.h; sourceTree = "<group>"; };
-		AEB945A01874DA3200FCE111 /* SegmentedBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedBar.m; sourceTree = "<group>"; };
 		AEB945ED1876047900FCE111 /* SonicCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicCommentCell.h; sourceTree = "<group>"; };
 		AEB945EE1876047900FCE111 /* SonicCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicCommentCell.m; sourceTree = "<group>"; };
 		AEB945FF1877571B00FCE111 /* ProfileHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileHeaderView.h; sourceTree = "<group>"; };
@@ -805,6 +808,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE10C3D918C721D200AD4D1A /* HPGrowingTextView */ = {
+			isa = PBXGroup;
+			children = (
+				AE10C3DA18C721D200AD4D1A /* HPGrowingTextView.h */,
+				AE10C3DB18C721D200AD4D1A /* HPGrowingTextView.m */,
+				AE10C3DC18C721D200AD4D1A /* HPTextViewInternal.h */,
+				AE10C3DD18C721D200AD4D1A /* HPTextViewInternal.m */,
+			);
+			path = HPGrowingTextView;
+			sourceTree = "<group>";
+		};
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -925,6 +939,8 @@
 		AE86EE82182C0DF300F74F1D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AE10C3D918C721D200AD4D1A /* HPGrowingTextView */,
+				AE86EE83182C0DF300F74F1D /* JSONKit */,
 				AE7E18FD1896641D009A9B7F /* UIImage+Alpha.h */,
 				AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */,
 				AE7E18FF1896641D009A9B7F /* UIImage+RoundedCorner.h */,
@@ -937,7 +953,6 @@
 				AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */,
 				AE86EE9A182E741900F74F1D /* NSData+Base64.h */,
 				AE86EE9B182E741900F74F1D /* NSData+Base64.m */,
-				AE86EE83182C0DF300F74F1D /* JSONKit */,
 				AE86EE86182C0DF300F74F1D /* SNCAPIConnector.h */,
 				AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */,
 				AEDAAE04185DBD77001DD389 /* UIButton+StateProperties.h */,
@@ -1090,8 +1105,6 @@
 			children = (
 				AE2B4E7B18737677006BD456 /* SonicViewControllerHeaderView.h */,
 				AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */,
-				AEB9459F1874DA3200FCE111 /* SegmentedBar.h */,
-				AEB945A01874DA3200FCE111 /* SegmentedBar.m */,
 				AEB945ED1876047900FCE111 /* SonicCommentCell.h */,
 				AEB945EE1876047900FCE111 /* SonicCommentCell.m */,
 				AEDED1DA18BDEB9800FEB636 /* SonicActionSheet.h */,
@@ -2152,6 +2165,7 @@
 				AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */,
 				AE86EECA18316CA800F74F1D /* AudioConverter.m in Sources */,
 				AE7E19021896641D009A9B7F /* UIImage+RoundedCorner.m in Sources */,
+				AE10C3DF18C721D200AD4D1A /* HPTextViewInternal.m in Sources */,
 				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
 				AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */,
 				AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */,
@@ -2175,6 +2189,7 @@
 				AEDAAE191863A015001DD389 /* UIImage+imageForSoundData.m in Sources */,
 				AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */,
 				AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */,
+				AE10C3DE18C721D200AD4D1A /* HPGrowingTextView.m in Sources */,
 				AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */,
 				AED56EF51801A39F000DF866 /* NSString+MKNetworkKitAdditions.m in Sources */,
 				AEAB5BC818B20916004641DA /* SNCNavigationViewController.m in Sources */,
@@ -2188,7 +2203,6 @@
 				AED0C48818B3598900725867 /* SNCResourceHandler.m in Sources */,
 				AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */,
 				AEB9F7BC187CA955005F4988 /* SNCMyProfileViewController.m in Sources */,
-				AEB945A11874DA3200FCE111 /* SegmentedBar.m in Sources */,
 				AEDED1DC18BDEB9800FEB636 /* SonicActionSheet.m in Sources */,
 				AE9E4C251889A73200C2E870 /* SonicArray.m in Sources */,
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,

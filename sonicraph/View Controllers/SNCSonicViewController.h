@@ -14,6 +14,7 @@
 #import "TypeDefs.h"
 #import "UIViewController+CustomMethods.h"
 #import "SonicActionSheet.h"
+#import "HPGrowingTextView.h"
 
 typedef enum SonicViewControllerInitiationType {
     SonicViewControllerInitiationTypeNone = 0,
@@ -30,7 +31,10 @@ typedef enum ContentType {
     ContentTypeResonics
 } ContentType;
 
-@interface SNCSonicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol, UIAlertViewDelegate, UIActionSheetDelegate>
+@interface SNCSonicViewController : UIViewController
+<HPGrowingTextViewDelegate,
+UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol,
+UIAlertViewDelegate, UIActionSheetDelegate>
 
 @property UITableView* tableView;
 @property (nonatomic) Sonic* sonic;
@@ -45,12 +49,14 @@ typedef enum ContentType {
 
 @property UIView* tabActionBarView;
 
-@property UITextField* commentField;
+@property HPGrowingTextView* commentField;
 @property UIButton* commentSubmitButton;
 @property UIView* writeCommentView;
 
 @property UIButton* likeButton;
 @property UIButton* resonicButton;
+
+@property (nonatomic) UITapGestureRecognizer* closeKeyboardTapGesture;
 
 @property SonicViewControllerInitiationType initiationType;
 

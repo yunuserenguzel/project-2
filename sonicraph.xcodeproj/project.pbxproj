@@ -35,6 +35,10 @@
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
 		AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */; };
 		AE2B4E80187457E6006BD456 /* SonicComment.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7F187457E6006BD456 /* SonicComment.m */; };
+		AE50426A18CB472900CD13ED /* SNCResizableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE50426918CB472900CD13ED /* SNCResizableTextView.m */; };
+		AE50426E18CB549900CD13ED /* AddCommentIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE50426B18CB549900CD13ED /* AddCommentIcon@2x.png */; };
+		AE50426F18CB549900CD13ED /* AddTagIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE50426C18CB549900CD13ED /* AddTagIcon@2x.png */; };
+		AE50427018CB549900CD13ED /* CancelCommentandTag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE50426D18CB549900CD13ED /* CancelCommentandTag@2x.png */; };
 		AE5B5F4C18A38A8100059077 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5B5F4B18A38A8100059077 /* CoreLocation.framework */; };
 		AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */; };
 		AE7E18DF18906859009A9B7F /* SNCSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18DE18906859009A9B7F /* SNCSearchViewController.m */; };
@@ -306,6 +310,11 @@
 		AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicViewControllerHeaderView.m; sourceTree = "<group>"; };
 		AE2B4E7E187457E6006BD456 /* SonicComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicComment.h; sourceTree = "<group>"; };
 		AE2B4E7F187457E6006BD456 /* SonicComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicComment.m; sourceTree = "<group>"; };
+		AE50426818CB472900CD13ED /* SNCResizableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCResizableTextView.h; sourceTree = "<group>"; };
+		AE50426918CB472900CD13ED /* SNCResizableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCResizableTextView.m; sourceTree = "<group>"; };
+		AE50426B18CB549900CD13ED /* AddCommentIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddCommentIcon@2x.png"; sourceTree = "<group>"; };
+		AE50426C18CB549900CD13ED /* AddTagIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddTagIcon@2x.png"; sourceTree = "<group>"; };
+		AE50426D18CB549900CD13ED /* CancelCommentandTag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CancelCommentandTag@2x.png"; sourceTree = "<group>"; };
 		AE5B5F4B18A38A8100059077 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		AE637F32184BBCE700DDEE21 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		AE637F33184BBCE700DDEE21 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
@@ -822,6 +831,9 @@
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				AE50426B18CB549900CD13ED /* AddCommentIcon@2x.png */,
+				AE50426C18CB549900CD13ED /* AddTagIcon@2x.png */,
+				AE50426D18CB549900CD13ED /* CancelCommentandTag@2x.png */,
 				AE1479B318C13F0800046C06 /* _TextFieldBackgroundActive@2x.png */,
 				AE1479B418C13F0800046C06 /* _TextFieldBackgroundPassive@2x.png */,
 				AE1479B518C13F0800046C06 /* _TextFieldBaseBackground@2x.png */,
@@ -922,6 +934,8 @@
 				AE7E18EA18954102009A9B7F /* SNCNotificationCell.m */,
 				AED3322F18BC888A002FB70A /* SNCSwitchView.h */,
 				AED3323018BC888A002FB70A /* SNCSwitchView.m */,
+				AE50426818CB472900CD13ED /* SNCResizableTextView.h */,
+				AE50426918CB472900CD13ED /* SNCResizableTextView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2027,6 +2041,7 @@
 				AED277D718AFE21D00C17F19 /* LikeGrey@2x.png in Resources */,
 				AED277AB18AFDE1800C17F19 /* SearchDarkGrey@2x.png in Resources */,
 				AE14796D18BFFB0400046C06 /* LikeLightPink@2x.png in Resources */,
+				AE50426E18CB549900CD13ED /* AddCommentIcon@2x.png in Resources */,
 				AED56EBC1801A35D000DF866 /* Images.xcassets in Resources */,
 				AED277A818AFDE1800C17F19 /* HomePink@2x.png in Resources */,
 				AE1479B818C13F0800046C06 /* _TextFieldBaseBackground@2x.png in Resources */,
@@ -2036,6 +2051,7 @@
 				AE14799318C0071C00046C06 /* ViewGridLightPink@2x.png in Resources */,
 				AED2780918B1429000C17F19 /* NotificationFollower@2x.png in Resources */,
 				AE14796C18BFFB0400046C06 /* CommentLightPink@2x.png in Resources */,
+				AE50427018CB549900CD13ED /* CancelCommentandTag@2x.png in Resources */,
 				AED3321618BBD4D5002FB70A /* CaptureButtonCamera@2x.png in Resources */,
 				AED277A118AFDE1800C17F19 /* GlobeLightGrey@2x.png in Resources */,
 				AED277E218AFE21D00C17F19 /* ResonicDarkGrey@2x.png in Resources */,
@@ -2124,6 +2140,7 @@
 				AED2780818B1429000C17F19 /* NotificationComment@2x.png in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
 				AED277A918AFDE1800C17F19 /* HomeWhite@2x.png in Resources */,
+				AE50426F18CB549900CD13ED /* AddTagIcon@2x.png in Resources */,
 				AED277AF18AFDE1800C17F19 /* SearchWhite@2x.png in Resources */,
 				AE14798718BFFDDF00046C06 /* NotificationLikeLargeLP@2x.png in Resources */,
 				AED3321718BBD4D5002FB70A /* CaptureButtonMic@2x.png in Resources */,
@@ -2201,6 +2218,7 @@
 				AEDED1E818BE682900FEB636 /* SNCFacebookManager.m in Sources */,
 				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
 				AED0C48818B3598900725867 /* SNCResourceHandler.m in Sources */,
+				AE50426A18CB472900CD13ED /* SNCResizableTextView.m in Sources */,
 				AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */,
 				AEB9F7BC187CA955005F4988 /* SNCMyProfileViewController.m in Sources */,
 				AEDED1DC18BDEB9800FEB636 /* SonicActionSheet.m in Sources */,

@@ -52,6 +52,7 @@ UIAlertViewDelegate, UIActionSheetDelegate>
 @property HPGrowingTextView* commentField;
 @property UIButton* commentSubmitButton;
 @property UIView* writeCommentView;
+@property UIButton* commentCancelButton;
 
 @property UIButton* likeButton;
 @property UIButton* resonicButton;

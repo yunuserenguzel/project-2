@@ -90,15 +90,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height - 44.0, 320.0, 44.0);
 }
 
-- (CGRect) commentFieldFrame
-{
-    return CGRectMake(10.0, 7.0, 300.0, 30.0);
-}
 
-- (CGRect) commentSubmitButtonFrame
-{
-    return CGRectMake(260.0, 0.0, 55.0, 50.0);
-}
 #pragma mark initialize views
 - (void)viewDidLoad
 {
@@ -176,30 +168,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     [self.writeCommentView setUserInteractionEnabled:YES];
     self.writeCommentView.backgroundColor = rgb(235, 235, 235);
     
-    self.commentField = [[HPGrowingTextView alloc] initWithFrame:[self commentFieldFrame]];
-    [self.commentField setMinNumberOfLines:1];
-    [self.commentField setMaxNumberOfLines:5];
-    self.commentField.delegate = self;
-    [self.commentField setMinHeight:[self commentFieldFrame].size.height];
-    [self.commentField setContentInset:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
-    [self.commentField setPlaceholder:@"Say something nice.."];
-    [self.commentField setFont:[self.commentField.font fontWithSize:14.0]];
-    [self.commentField setBackgroundColor:[UIColor whiteColor]];
-    [self.commentField setUserInteractionEnabled:YES];
-    [self.commentField.layer setCornerRadius:5.0];
-    [self.commentField setClipsToBounds:YES];
-    [self.commentField.layer setBorderWidth:1.0];
-    [self.commentField.layer setBorderColor:self.tabActionBarView.backgroundColor.CGColor];
-    [self.writeCommentView addSubview:self.commentField];
-    
-    self.commentSubmitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.commentSubmitButton setTitle:@"Post" forState:UIControlStateNormal];
-    [self.commentSubmitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
-    [self.commentSubmitButton setTitleColor:PinkColor forState:UIControlStateNormal];
-    [self.commentSubmitButton setFrame:[self commentSubmitButtonFrame]];
-    [self.commentSubmitButton addTarget:self action:@selector(writeComment) forControlEvents:UIControlEventTouchUpInside];
-    self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
-    [self.writeCommentView addSubview:self.commentSubmitButton];
     
     self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.likeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
@@ -807,6 +775,12 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }];
 }
 
+- (void) cancelComment
+{
+    self.commentField.text = @"";
+    [self.commentField resignFirstResponder];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
@@ -842,23 +816,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     [self.commentField resignFirstResponder];
 }
 
--(void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
-{
-    if (self.commentField.text.length > 0)
-    {
-        CGRect frame = self.commentField.frame;
-        frame.size.width = [self commentFieldFrame].size.width - [self commentSubmitButtonFrame].size.width;
-        [self.commentField setFrame:frame];
-        self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
-    }
-    else
-    {
-        CGRect frame = self.commentField.frame;
-        frame.size.width = [self commentFieldFrame].size.width;
-        [self.commentField setFrame:frame];
-        self.commentSubmitButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
-    }
-}
+
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {

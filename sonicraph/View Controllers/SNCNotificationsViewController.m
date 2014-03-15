@@ -155,10 +155,16 @@
         [sonicVC setInitiationType:SonicViewControllerInitiationTypeCommentRead];
         [sonicVC setSonic:selectedNotification.toSonic];
     }
-    else if(selectedNotification.notificationType == NotificationTypeLike || selectedNotification.notificationType == NotificationTypeResonic)
+    else if(selectedNotification.notificationType == NotificationTypeLike)
     {
         SNCSonicViewController* sonicVC = segue.destinationViewController;
-        [sonicVC setInitiationType:SonicViewControllerInitiationTypeNone];
+        [sonicVC setInitiationType:SonicViewControllerInitiationTypeLikeSelected];
+        [sonicVC setSonic:selectedNotification.toSonic];
+    }
+    else if(selectedNotification.notificationType == NotificationTypeResonic)
+    {
+        SNCSonicViewController* sonicVC = segue.destinationViewController;
+        [sonicVC setInitiationType:SonicViewControllerInitiationTypeResonicSelected];
         [sonicVC setSonic:selectedNotification.toSonic];
     }
     

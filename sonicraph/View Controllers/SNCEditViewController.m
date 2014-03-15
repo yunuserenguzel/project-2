@@ -203,7 +203,6 @@
     [self.doneButton addTarget:self action:@selector(doneEdit) forControlEvents:UIControlEventTouchUpInside];
     [self.doneButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
     [self.view addSubview:self.doneButton];
-    
 }
 
 - (void) back
@@ -233,10 +232,10 @@
     [self.soundSlider setUpperValue:1.0];
     [self.soundSlider setMaximumValue:1.0];
     [self.soundSlider setMinimumRange:1.0];
-    [self.soundSlider setLowerHandleImageNormal:[UIImage imageNamed:@"TrimHandle.png"]];
-    [self.soundSlider setUpperHandleImageNormal:[UIImage imageNamed:@"TrimHandle.png"]];
-    [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimHandle.png"]];
-    [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimHandle.png"]];
+    [self.soundSlider setLowerHandleImageNormal:[UIImage imageNamed:@"TrimSoundHandle.png"]];
+    [self.soundSlider setUpperHandleImageNormal:[UIImage imageNamed:@"TrimSoundHandle.png"]];
+    [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimSoundHandle.png"]];
+    [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimSoundHandle.png"]];
     [self.view addSubview:self.soundSlider];
 }
 

@@ -21,12 +21,9 @@
 @interface SNCShareViewController ()
 
 @property SNCSwitchView* facebookSwitch;
-@property UIButton* twitterButton;
-@property UITextField* tagsField;
-@property UIImageView* tags;
-@property UIButton* tagsDoneButton;
+@property SNCResizableTextView* tagsTextView;
 @property UIBarButtonItem* shareButtonItem;
-//@property UIView* keyboardCloser;
+@property UIView* keyboardCloser;
 @property SonicPlayerView* sonicPlayerView;
 
 @property UIButton* backButton;
@@ -44,6 +41,7 @@
     BOOL keyboardIsShown;
     UIImage* textFieldBackgroundPassiveImage;
     UIImage* textFieldBackgroundActiveImage;
+    CGFloat keyboardHeight;
 }
 - (CGRect) backButtonFrame
 {
@@ -68,14 +66,7 @@
 {
     return CGRectMake(0.0, 390.0, 320.0, 44.0);
 }
-- (CGRect) tagsFieldFrame
-{
-    return CGRectMake(0.0, 0.0, 260.0, 44.0);
-}
-- (CGRect) tagsDoneButtonFrame
-{
-    return CGRectMake(255.0, 0.0, 60.0, 44.0);
-}
+
 
 - (CGRect) keyBoardCloserFrame
 {
@@ -205,59 +196,36 @@
 
 - (void) initTags
 {
-    textFieldBackgroundPassiveImage = [UIImage imageNamed:@"_TextFieldBackgroundPassive.png"];
-    textFieldBackgroundActiveImage = [UIImage imageNamed:@"_TextFieldBackgroundActive.png"];
+    self.keyboardCloser = [[UIView alloc] initWithFrame:[self keyBoardCloserFrame]];
+    [self.view addSubview:self.keyboardCloser];
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.keyboardCloser addGestureRecognizer:self.tapGesture];
+    [self.keyboardCloser setHidden:YES];
     
-    self.tags = [[UIImageView alloc] initWithImage:textFieldBackgroundPassiveImage];
-    [self.tags setFrame:[self tagsFrame]];
-    [self.tags setContentMode:UIViewContentModeCenter];
-    [self.tags setBackgroundColor:[UIColor clearColor]];
-    [self.tags setUserInteractionEnabled:YES];
-    [self.tags setAlpha:1.0];
-    [self.view addSubview:self.tags];
-    
-    self.tagsField = [[UITextField alloc] initWithFrame:[self tagsFieldFrame]];
-    [self.tagsField setKeyboardType:UIKeyboardTypeTwitter];
-    [self.tagsField setPlaceholder:@"Add tags to your sonic..."];
-    [self.tagsField setTintColor:[UIColor lightGrayColor]];
-    [self.tagsField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 0.0)]];
-    [self.tagsField setLeftViewMode:UITextFieldViewModeAlways];
-    [self.tagsField setTextColor:[UIColor whiteColor]];
-    [self.tagsField setValue:[UIColor lightGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [self.tagsField addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventAllEditingEvents];
-    [self.tags addSubview:self.tagsField];
-    
-    self.tagsDoneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.tagsDoneButton.frame = [self tagsDoneButtonFrame];
-    [self.tagsDoneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [self.tagsDoneButton setTintColor:[UIColor whiteColor]];
-    [self.tagsDoneButton addTarget:self action:@selector(closeKeyboard) forControlEvents:UIControlEventTouchUpInside];
-    [self.tagsDoneButton setHidden:YES];
-    [self.tags addSubview:self.tagsDoneButton];
+    self.tagsTextView = [[SNCResizableTextView alloc] initWithFrame:[self tagsFrame]];
+    self.tagsTextView.delegate = self;
+    self.tagsTextView.backgroundColor = self.view.backgroundColor;
+    [self.view addSubview:self.tagsTextView];
+    [self.tagsTextView.doneButton setImage:[UIImage imageNamed:@"AddTagIcon.png"] forState:UIControlStateNormal];
 }
+
+- (void)SNCResizableTextView:(SNCResizableTextView *)textView willChangeHeight:(float)height
+{
+    CGRect frame = [self tagsFrame];
+    frame.size.height = height;
+    CGFloat bottom = MIN(([[UIScreen mainScreen] bounds].size.height - keyboardHeight), frame.origin.y+frame.size.height) ;
+    frame.origin.y = bottom - frame.size.height;
+    [self.tagsTextView setFrame:frame];
+}
+
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
 }
 
-- (void) valueChanged
-{
-    if(self.tagsField.text.length > 0)
-    {
-        [self.tags setImage:textFieldBackgroundActiveImage];
-        [self.tagsDoneButton setHidden:NO];
-    }
-    else
-    {
-        [self.tags setImage:textFieldBackgroundPassiveImage];
-        [self.tagsDoneButton setHidden:YES];
-    }
-}
-
 - (void) closeKeyboard
 {
-//    [self.keyboardCloser removeFromSuperview];
-    [self.tagsField resignFirstResponder];
+    [self.tagsTextView.growingTextView resignFirstResponder];
     [self.view removeGestureRecognizer:self.tapGesture];
 }
 
@@ -311,7 +279,7 @@
 
 - (void) shareSonic
 {
-    [SNCAPIManager createSonic:self.sonic withTags:self.tagsField.text withCompletionBlock:^(Sonic *sonic) {
+    [SNCAPIManager createSonic:self.sonic withTags:self.tagsTextView.growingTextView.text withCompletionBlock:^(Sonic *sonic) {
         if(self.facebookSwitch.on)
         {
             [SNCFacebookManager postSonic:sonic withCompletionBlock:nil andErrorBlock:nil];
@@ -330,15 +298,22 @@
 
 - (void)keyboardWillHide:(NSNotification *)n
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    // The kKeyboardAnimationDuration I am using is 0.3
-    [UIView setAnimationDuration:0.3];
-    [self.tags setFrame:[self tagsFrame]];
-    [self.tags setBackgroundColor:[UIColor clearColor]];
-    [UIView commitAnimations];
     
     keyboardIsShown = NO;
+    [self.keyboardCloser setHidden:YES];
+    NSNumber *duration = [n.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [n.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration floatValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    
+    [self.tagsTextView setBackgroundColor:self.view.backgroundColor];
+    keyboardHeight = 0;
+    [self.tagsTextView setFrame:[self tagsFrame]];
+    
+    [UIView commitAnimations];
 }
 
 - (void)keyboardWillShow:(NSNotification *)n
@@ -347,29 +322,28 @@
     {
         return;
     }
-    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
-    [self.tapGesture setDelegate:self];
-    [self.view addGestureRecognizer:self.tapGesture];
+    [self.keyboardCloser setHidden:NO];
     
+    NSNumber *duration = [n.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [n.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    //    [self.view addGestureRecognizer:[[UIGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)]];
     NSDictionary* userInfo = [n userInfo];
     
     // get the size of the keyboard
     CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    
+    keyboardHeight = keyboardSize.height;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration floatValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    [self.tagsTextView setBackgroundColor:rgb(235, 235, 235)];
     // The kKeyboardAnimationDuration I am using is 0.3
-    [UIView setAnimationDuration:0.3];
-    CGRect frame = [self tagsFrame];
-    [self.tags setAlpha:1.0];
-//    [self.tagsField setBackground:textFieldBackgroundActiveImage];
-    frame.origin.y = self.view.frame.size.height - keyboardSize.height - frame.size.height;
-    [self.tags setFrame:frame];
-    [self.tags setBackgroundColor:rgb(47.0, 98.0, 131.0)];
+    [self SNCResizableTextView:self.tagsTextView willChangeHeight:self.tagsTextView.frame.size.height];
+    
     [UIView commitAnimations];
     
     keyboardIsShown = YES;
+
 }
 
 - (void)dealloc {

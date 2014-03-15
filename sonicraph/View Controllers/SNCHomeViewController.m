@@ -22,6 +22,7 @@
 
 @property UIActivityIndicatorView* bottomActivityIndicator;
 
+
 @end
 
 @implementation SNCHomeViewController
@@ -70,7 +71,7 @@
     [self initRefreshController];
     [self refreshFromServer];
     
-    // If the session state is any of the two "open" states when the button is clicked
+    
 }
 - (void) initTableView
 {
@@ -89,7 +90,6 @@
     self.bottomActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.bottomActivityIndicator.frame = [self tableFooterViewRect];
     [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
-
 }
 
 - (void) initRefreshController

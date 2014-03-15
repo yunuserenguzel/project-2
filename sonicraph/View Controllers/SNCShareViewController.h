@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SonicData.h"
-
-@interface SNCShareViewController : UIViewController <UIGestureRecognizerDelegate>
+#import "SNCResizableTextView.h"
+@interface SNCShareViewController : UIViewController <UIGestureRecognizerDelegate,SNCResizableTextViewProtocol>
 
 @property (nonatomic) SonicData* sonic;
 

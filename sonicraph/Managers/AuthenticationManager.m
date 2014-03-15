@@ -46,7 +46,11 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (void) updateUser:(NSNotification*)notification
 {
-    [self setAuthenticatedUser:notification.object];
+    User* user = notification.object;
+    if([user.userId isEqualToString:self.authenticatedUser.userId])
+    {
+        [self setAuthenticatedUser:notification.object];
+    }
 }
 
 - (void)registerUserWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock

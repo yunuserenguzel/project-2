@@ -63,10 +63,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 {
     return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height + self.tabBarController.tabBar.frame.size.height, 320.0, self.tabBarController.tabBar.frame.size.height);
 }
-- (CGRect) keyBoardCloserFrame
-{
-    return CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
-}
 - (CGRect) tableHeaderViewFrame
 {
     return CGRectMake(0.0, 0.0, 320.0, HeaderViewMaxHeight);
@@ -160,14 +156,13 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     self.tabActionBarView = [[UIView alloc] initWithFrame:[self tabActionBarViewMaxFrame]];
     [self.tabActionBarView setUserInteractionEnabled:YES];
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.tabActionBarView];
-//    [self.view addSubview:self.tabActionBarView];
     self.tabActionBarView.backgroundColor = rgb(235, 235, 235);
     
-    self.writeCommentView = [[UIView alloc] initWithFrame:[self tabActionBarContentFrame]];
-    [self.writeCommentView.layer setCornerRadius:5.0];
+    self.writeCommentView = [[SNCResizableTextView alloc] initWithFrame:[self tabActionBarContentFrame]];
+//    [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.writeCommentView.frame.size.height];
+    self.writeCommentView.delegate = self;
     [self.writeCommentView setUserInteractionEnabled:YES];
     self.writeCommentView.backgroundColor = rgb(235, 235, 235);
-    
     
     self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.likeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
@@ -192,7 +187,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     [self.tableView.tableHeaderView addSubview:self.headerView];
     
     [self.headerView.segmentedControl addTarget:self action:@selector(segmentedControlChanged) forControlEvents:UIControlEventAllEvents];
-//    [self.headerView addTargetForTapToTop:self action:@selector(scrollToTop)];
     
     UITapGestureRecognizer* tapGesture;
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
@@ -243,7 +237,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 - (void)viewDidAppear:(BOOL)animated
 {
     if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
-        [self.commentField becomeFirstResponder];
+        [self.writeCommentView.growingTextView becomeFirstResponder];
         self.initiationType = SonicViewControllerInitiationTypeNone;
     }
 }
@@ -293,7 +287,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self getCurrentTabActionBarMinFrame], ratio)];
     
     [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio > 1.0 ? 1.0 : ratio)];
-    [self.commentField resignFirstResponder];
+    [self.writeCommentView.growingTextView resignFirstResponder];
 }
 
 
@@ -357,6 +351,17 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
         [self setCurrentContentType:ContentTypeResonics];
         [self.headerView.segmentedControl setSelectedSegmentIndex:2];
         scrollToContentTop = YES;
+    }
+    else if(self.initiationType == SonicViewControllerInitiationTypeLikeSelected)
+    {
+        [self setCurrentContentType:ContentTypeLikes];
+        [self.headerView.segmentedControl setSelectedSegmentIndex:0];
+    }
+    else if(self.initiationType == SonicViewControllerInitiationTypeResonicSelected)
+    {
+        
+        [self setCurrentContentType:ContentTypeResonics];
+        [self.headerView.segmentedControl setSelectedSegmentIndex:2];
     }
     else
     {
@@ -752,33 +757,20 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     }
     else
     {
-        return [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.commentField.frame.size.height];
+        return [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.writeCommentView.frame.size.height];
     }
 }
 
-- (void) writeComment
+- (void)SNCResizableTextViewDoneButtonPressed:(SNCResizableTextView *)textView
 {
-    [self.commentField setEditable:NO];
-//    [self.commentField setEnabled:NO];
-
-    [self closeKeyboard];
-    [SNCAPIManager writeCommentToSonic:self.sonic withText:self.commentField.text withCompletionBlock:^(id object) {
+    [SNCAPIManager writeCommentToSonic:self.sonic withText:self.writeCommentView.growingTextView.text withCompletionBlock:^(id object) {
         [self.commentsContent addObject:object];
         [self reloadData];
-        [self.commentField setText:@""];
-        [self.commentField setEditable:YES];
-//        [self.commentField setEnabled:YES];
-        //        [self refreshContent];
+        [self.writeCommentView.growingTextView setText:@""];
+        [self.writeCommentView.growingTextView setEditable:YES];
     } andErrorBlock:^(NSError *error) {
-        [self.commentField setEditable:YES];
-//        [self.commentField setEnabled:YES];
+        [self.writeCommentView.growingTextView setEditable:YES];
     }];
-}
-
-- (void) cancelComment
-{
-    self.commentField.text = @"";
-    [self.commentField resignFirstResponder];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -813,26 +805,23 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void) closeKeyboard
 {
-    [self.commentField resignFirstResponder];
+    [self.writeCommentView.growingTextView resignFirstResponder];
 }
 
-
-
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+- (void)SNCResizableTextView:(SNCResizableTextView *)textView willChangeHeight:(float)height
 {
+    
     [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:height];
     [self setTableViewContentSize];
 }
 
+
 - (CGRect) calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:(CGFloat)height
 {
     CGRect frame = [self tabActionBarViewMinFrame];
-    frame.origin.y -= keyboardHeight + ((height + 14) - frame.size.height);
-    frame.size.height = (height + 14);
+    frame.origin.y -= keyboardHeight + (height - frame.size.height);
+    frame.size.height = height;
     [self.tabActionBarView setFrame:frame];
-    CGRect writeCommentFieldFrame = [self tabActionBarContentFrame];
-    writeCommentFieldFrame.size.height = frame.size.height;
-    [self.writeCommentView setFrame:writeCommentFieldFrame];
     return frame;
 }
 
@@ -858,7 +847,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     
     // The kKeyboardAnimationDuration I am using is 0.3
     keyboardHeight = 0;
-    [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.commentField.frame.size.height];
+    [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.writeCommentView.frame.size.height];
 
     [UIView commitAnimations];
     
@@ -886,7 +875,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     [UIView setAnimationCurve:[curve intValue]];
     
     // The kKeyboardAnimationDuration I am using is 0.3
-    [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.commentField.frame.size.height];
+    [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.writeCommentView.frame.size.height];
 
     [UIView commitAnimations];
     

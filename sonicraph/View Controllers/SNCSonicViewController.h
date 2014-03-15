@@ -14,10 +14,13 @@
 #import "TypeDefs.h"
 #import "UIViewController+CustomMethods.h"
 #import "SonicActionSheet.h"
-#import "HPGrowingTextView.h"
+#import "SNCResizableTextView.h"
+
 
 typedef enum SonicViewControllerInitiationType {
     SonicViewControllerInitiationTypeNone = 0,
+    SonicViewControllerInitiationTypeLikeSelected = 1,
+    SonicViewControllerInitiationTypeResonicSelected = 2,
     SonicViewControllerInitiationTypeCommentWrite = 101,
     SonicViewControllerInitiationTypeCommentRead = 102,
     SonicViewControllerInitiationTypeLikeRead = 103,
@@ -32,7 +35,7 @@ typedef enum ContentType {
 } ContentType;
 
 @interface SNCSonicViewController : UIViewController
-<HPGrowingTextViewDelegate,
+<SNCResizableTextViewProtocol,
 UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,OpenProfileProtocol,
 UIAlertViewDelegate, UIActionSheetDelegate>
 
@@ -49,10 +52,7 @@ UIAlertViewDelegate, UIActionSheetDelegate>
 
 @property UIView* tabActionBarView;
 
-@property HPGrowingTextView* commentField;
-@property UIButton* commentSubmitButton;
-@property UIView* writeCommentView;
-@property UIButton* commentCancelButton;
+@property SNCResizableTextView* writeCommentView;
 
 @property UIButton* likeButton;
 @property UIButton* resonicButton;

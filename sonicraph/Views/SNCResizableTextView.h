@@ -12,6 +12,7 @@
 
 @protocol SNCResizableTextViewProtocol
 
+@optional;
 - (void) SNCResizableTextViewDoneButtonPressed:(SNCResizableTextView*)textView;
 - (void) SNCResizableTextViewCancelButtonPressed:(SNCResizableTextView*)textView;
 
@@ -23,7 +24,7 @@
 
 @interface SNCResizableTextView : UIView <HPGrowingTextViewDelegate>
 
-@property id<SNCResizableTextViewProtocol> delegate;
+@property NSObject<SNCResizableTextViewProtocol>* delegate;
 
 @property HPGrowingTextView* growingTextView;
 @property UIButton* cancelButton;

@@ -12,6 +12,7 @@
 #import "SNCSoundSlider.h"
 #import "Configurations.h"
 #import "SNCResourceHandler.h"
+#import "SNCPreloaderImageView.h"
 
 //@interface LoadingView : UIView
 //@property (nonatomic) CGFloat ratio;
@@ -70,6 +71,8 @@
 
 @property UIImageView* pausedImageView;
 
+@property SNCPreloaderImageView* preloader;
+
 @end
 
 @implementation SonicPlayerView
@@ -93,6 +96,16 @@
 {
     CGFloat w = 70.0 / 1.5, h = 74.0 / 1.5;
     return CGRectMake(160.0-(w*0.5), 160.0-(h*0.5), w, h);
+}
+
+- (CGRect) preloaderViewFrame
+{
+    CGRect frame = [self imageViewFrame];
+    frame.origin.x = (frame.size.width - frame.size.width * 0.3) * 0.5;
+    frame.origin.y = (frame.size.height - frame.size.height * 0.3) * 0.5;
+    frame.size.width = frame.size.width * 0.3;
+    frame.size.height = frame.size.height * 0.3;
+    return frame;
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -136,9 +149,9 @@
     [self.pausedImageView setHidden:YES];
     [self.imageView addSubview:self.pausedImageView];
     
-//    loadingView = [[LoadingView alloc] initWithFrame:[self imageViewFrame]];
-//    loadingView.backgroundColor = [UIColor clearColor];
-//    [self addSubview:loadingView];
+    self.preloader = [[SNCPreloaderImageView alloc] initWithFrame:[self preloaderViewFrame]];
+    [self.imageView addSubview:self.preloader];
+    [self.preloader setHidden:YES];
 
 }
 - (void) longPress:(UILongPressGestureRecognizer* )longGesture
@@ -195,8 +208,7 @@
 - (void) downloadSonicData
 {
     [self setSonic:nil];
-//    loadingView.hidden = NO;
-    self.imageView.image = SonicPlaceholderImage;
+    [self.preloader setHidden:NO];
     [[SNCResourceHandler sharedInstance]
      getSonicDataWithUrl:self.sonicUrl
      withCompletionBlock:^(SonicData *sonic) {
@@ -240,7 +252,7 @@
 - (void)setSonic:(SonicData *)sonic
 {
     _sonic = sonic;
-//    loadingView.hidden = YES;
+    [self.preloader setHidden:YES];
     self.imageView.image = self.sonic.image;
     if(sonic == nil){
         [self.audioPlayer stop];
@@ -256,7 +268,6 @@
 
 - (void)setFrame:(CGRect)frame
 {
-//    frame.size = SonicPlayerViewSize;
     [super setFrame:frame];
     CGRect imageViewframe = [self imageViewFrame];;
     imageViewframe.size = frame.size;

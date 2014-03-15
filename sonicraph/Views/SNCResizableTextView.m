@@ -64,9 +64,10 @@
     [self.growingTextView setUserInteractionEnabled:YES];
     [self.growingTextView.layer setCornerRadius:5.0];
     [self.growingTextView setClipsToBounds:YES];
-    [self.growingTextView.layer setBorderWidth:1.0];
+    [self.growingTextView.layer setBorderWidth:0.0];
 //    [self.growingTextView.layer setBorderColor:self.tabActionBarView.backgroundColor.CGColor];
     [self addSubview:self.growingTextView];
+    [self growingTextView:self.growingTextView willChangeHeight:self.growingTextView.frame.size.height];
     
     self.doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
 
@@ -88,14 +89,20 @@
 - (void) done
 {
     [self.growingTextView resignFirstResponder];
-    [self.delegate SNCResizableTextViewDoneButtonPressed:self];
+    if([self.delegate respondsToSelector:@selector(SNCResizableTextViewDoneButtonPressed:)])
+    {
+        [self.delegate SNCResizableTextViewDoneButtonPressed:self];
+    }
 }
 
 - (void) cancel
 {
     self.growingTextView.text = @"";
     [self.growingTextView resignFirstResponder];
-    [self.delegate SNCResizableTextViewCancelButtonPressed:self];
+    if([self.delegate respondsToSelector:@selector(SNCResizableTextViewCancelButtonPressed:)])
+    {
+        [self.delegate SNCResizableTextViewCancelButtonPressed:self];
+    }
 }
 
 - (void) growingTextViewDidChange:(HPGrowingTextView *)growingTextView
@@ -118,7 +125,10 @@
         self.doneButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
         self.cancelButton.transform = CGAffineTransformMakeTranslation(-320.0, 0.0);
     }
-    [self.delegate SNCResizableTextViewDidChange:self];
+    if([self.delegate respondsToSelector:@selector(SNCResizableTextViewDidChange:)])
+    {
+        [self.delegate SNCResizableTextViewDidChange:self];
+    }
 }
 
 - (void) growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
@@ -127,7 +137,10 @@
     frame.size.height = height + 14;
     [self setFrame:frame];
     
-    [self.delegate SNCResizableTextView:self willChangeHeight:frame.size.height];
+    if([self.delegate respondsToSelector:@selector(SNCResizableTextView:willChangeHeight:)])
+    {
+        [self.delegate SNCResizableTextView:self willChangeHeight:frame.size.height];
+    }
 }
 
 

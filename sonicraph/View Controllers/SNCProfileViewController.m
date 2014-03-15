@@ -112,6 +112,11 @@
     tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
     [self.profileHeaderView.numberOfFollowingsLabel addGestureRecognizer:tapGestureRecognizer];
     
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setGridViewModeOn)];
+    [self.profileHeaderView.sonicsLabel addGestureRecognizer:tapGestureRecognizer];
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setGridViewModeOn)];
+    [self.profileHeaderView.numberOfSonicsLabel addGestureRecognizer:tapGestureRecognizer];
+    
 }
 
 - (void) openEditProfile

@@ -7,6 +7,7 @@
 //
 
 #import "SNCChangePasswordViewController.h"
+#import "SNCAPIManager.h"
 #import "Configurations.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -74,17 +75,34 @@
         field.rightView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)];
         field.rightViewMode = UITextFieldViewModeAlways;
         field.tintColor = PinkColor;
+        [field addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
     }
     
     self.saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.saveButton setFrame:[self saveButtonFrame]];
-    [self.saveButton setTitle:@"Change" forState:UIControlStateNormal];
     [self.saveButton setTitle:@"Changing..." forState:UIControlStateSelected];
+    [self.saveButton setTitle:@"Change" forState:UIControlStateNormal];
     [self.saveButton setTitleColor:PinkColor forState:UIControlStateNormal];
     [self.saveButton setTitleColor:LightPinkTextColor forState:UIControlStateSelected];
     [self.saveButton setTitleColor:LightPinkTextColor forState:UIControlStateHighlighted];
+    [self.saveButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
     [self.scrollView addSubview:self.saveButton];
     [self.saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
+    [self.saveButton setEnabled:NO];
+}
+
+- (void)textFieldDidChange
+{
+    [self.cancelButton setTitle:@"Cancel"];
+    [self.saveButton setTitle:@"Change" forState:UIControlStateDisabled];
+    if(self.oldPassword.text.length > 0 && self.password.text.length > 0)
+    {
+        [self.saveButton setEnabled:YES];
+    }
+    else
+    {
+        [self.saveButton setEnabled:NO];
+    }
 }
 
 - (void) cancel
@@ -95,6 +113,23 @@
 - (void) save
 {
     [self.saveButton setSelected:YES];
+//    [self.saveButton setEnabled:NO];
+    [SNCAPIManager
+     editProfileWithFields:@{@"old_password" : self.oldPassword.text, @"password" : self.password.text}
+     withCompletionBlock:^(User *user, NSString *token) {
+         [UIView animateWithDuration:0.5 animations:^{
+             [self.oldPassword setText:nil];
+             [self.password setText:nil];
+             [self.saveButton setSelected:NO];
+             [self.saveButton setEnabled:NO];
+             [self.saveButton setTitle:@"Changed" forState:UIControlStateDisabled];
+             [self.cancelButton setTitle:@"Done"];
+         }];
+     } andErrorBlock:^(NSError *error) {
+         if (error.code == 220) {
+             
+         }
+     }];
     
 }
 

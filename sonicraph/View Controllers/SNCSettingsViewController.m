@@ -33,12 +33,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.logoutButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    self.logoutButton.frame = [self logoutButtonFrame];
-//    [self.logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
-//    [self.logoutButton addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
-//    [self.logoutButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    [self.view addSubview:self.logoutButton];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(-1.0, 0.0, 0.0, 0.0)];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];

@@ -10,4 +10,10 @@
 
 @interface SNCChangePasswordViewController : UIViewController
 
+@property UITextField* oldPassword;
+@property UITextField* password;
+@property UIButton* saveButton;
+
+@property UIScrollView* scrollView;
+
 @end

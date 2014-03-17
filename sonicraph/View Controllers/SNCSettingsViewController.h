@@ -11,6 +11,4 @@
 
 @interface SNCSettingsViewController : UITableViewController <SettingsTableCellProtocol>
 
-@property UIButton* logoutButton;
-
 @end

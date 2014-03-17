@@ -91,6 +91,11 @@ SearchContentType;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.userTableView deselectRowAtIndexPath:[self.userTableView indexPathForSelectedRow] animated:YES];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -136,6 +141,7 @@ SearchContentType;
     [self.userTableView setTableHeaderView:[[UIView alloc] initWithFrame:[self searchFieldFrame]]];
     self.userTableView.delegate = self;
     self.userTableView.dataSource = self;
+    [self.userTableView setSeparatorInset:UIEdgeInsetsZero];
     [self.userTableView setUserInteractionEnabled:YES];
 //    [self.userTableView setAllowsSelection:YES];
 }

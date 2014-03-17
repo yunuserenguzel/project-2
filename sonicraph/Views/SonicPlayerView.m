@@ -130,8 +130,8 @@
     
     self.soundSlider = [[SNCSoundSlider alloc] init];
     [self.soundSlider setFrame:[self soundSliderFrame]];
-    [self.soundSlider setMinimumValue:0.0];
-    [self.soundSlider setMaximumValue:0.1];
+    [self.soundSlider setMinimumValue:0.1];
+    [self.soundSlider setMaximumValue:1.0];
     [self.soundSlider setBaseColor:[UIColor clearColor]];
     [self addSubview:self.soundSlider];
     
@@ -261,9 +261,10 @@
     else {
         NSError* error;
         self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:&error];
+        [self.audioPlayer setCurrentTime:0.1];
         [self.soundSlider setMaximumValue:self.audioPlayer.duration];
     }
-    [self.soundSlider setValue:0.0];
+    [self.soundSlider setValue:0.1];
 }
 
 - (void)setFrame:(CGRect)frame
@@ -298,8 +299,8 @@
 {
     [self.timer invalidate];
     [self.audioPlayer stop];
-    [self.audioPlayer setCurrentTime:0.0];
-    [self.soundSlider setValue:0.0];
+    [self.audioPlayer setCurrentTime:0.1];
+    [self.soundSlider setValue:0.1];
 }
 
 - (void)pause

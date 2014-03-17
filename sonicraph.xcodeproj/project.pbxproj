@@ -35,6 +35,8 @@
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
 		AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */; };
 		AE2B4E80187457E6006BD456 /* SonicComment.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7F187457E6006BD456 /* SonicComment.m */; };
+		AE3E12A018D70CFC006801FC /* SNCChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E129F18D70CFC006801FC /* SNCChangePasswordViewController.m */; };
+		AE3E12A318D70D09006801FC /* SNCAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E12A218D70D09006801FC /* SNCAboutUsViewController.m */; };
 		AE50426A18CB472900CD13ED /* SNCResizableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE50426918CB472900CD13ED /* SNCResizableTextView.m */; };
 		AE50426E18CB549900CD13ED /* AddCommentIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE50426B18CB549900CD13ED /* AddCommentIcon@2x.png */; };
 		AE50426F18CB549900CD13ED /* AddTagIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE50426C18CB549900CD13ED /* AddTagIcon@2x.png */; };
@@ -342,6 +344,10 @@
 		AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicViewControllerHeaderView.m; sourceTree = "<group>"; };
 		AE2B4E7E187457E6006BD456 /* SonicComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicComment.h; sourceTree = "<group>"; };
 		AE2B4E7F187457E6006BD456 /* SonicComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicComment.m; sourceTree = "<group>"; };
+		AE3E129E18D70CFC006801FC /* SNCChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCChangePasswordViewController.h; sourceTree = "<group>"; };
+		AE3E129F18D70CFC006801FC /* SNCChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCChangePasswordViewController.m; sourceTree = "<group>"; };
+		AE3E12A118D70D09006801FC /* SNCAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCAboutUsViewController.h; sourceTree = "<group>"; };
+		AE3E12A218D70D09006801FC /* SNCAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCAboutUsViewController.m; sourceTree = "<group>"; };
 		AE50426818CB472900CD13ED /* SNCResizableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCResizableTextView.h; sourceTree = "<group>"; };
 		AE50426918CB472900CD13ED /* SNCResizableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCResizableTextView.m; sourceTree = "<group>"; };
 		AE50426B18CB549900CD13ED /* AddCommentIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddCommentIcon@2x.png"; sourceTree = "<group>"; };
@@ -931,11 +937,22 @@
 			path = rangeslider;
 			sourceTree = "<group>";
 		};
-		AE7E18E218953EC4009A9B7F /* Profile View Controllers */ = {
+		AE3E129D18D70CDF006801FC /* Settings View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				AEB9F7AB187B34EC005F4988 /* SNCSettingsViewController.h */,
 				AEB9F7AC187B34EC005F4988 /* SNCSettingsViewController.m */,
+				AE3E129E18D70CFC006801FC /* SNCChangePasswordViewController.h */,
+				AE3E129F18D70CFC006801FC /* SNCChangePasswordViewController.m */,
+				AE3E12A118D70D09006801FC /* SNCAboutUsViewController.h */,
+				AE3E12A218D70D09006801FC /* SNCAboutUsViewController.m */,
+			);
+			name = "Settings View Controllers";
+			sourceTree = "<group>";
+		};
+		AE7E18E218953EC4009A9B7F /* Profile View Controllers */ = {
+			isa = PBXGroup;
+			children = (
 				AE86EE97182D7D2000F74F1D /* SNCProfileViewController.h */,
 				AE86EE98182D7D2000F74F1D /* SNCProfileViewController.m */,
 				AE9ABCF918799E71008FE96B /* SNCFollowerFollowingViewController.h */,
@@ -1062,6 +1079,7 @@
 		AE86EE8D182C0E0E00F74F1D /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AE3E129D18D70CDF006801FC /* Settings View Controllers */,
 				AE7E18E318953EDE009A9B7F /* Camera View Controllers */,
 				AE7E18E218953EC4009A9B7F /* Profile View Controllers */,
 				AEB9F7B3187B51DC005F4988 /* Login/Register Group */,
@@ -2341,6 +2359,7 @@
 				AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */,
+				AE3E12A018D70CFC006801FC /* SNCChangePasswordViewController.m in Sources */,
 				AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */,
 				AEDAAE0D185DDAFC001DD389 /* TypeDefs.m in Sources */,
 				AEDAAE191863A015001DD389 /* UIImage+imageForSoundData.m in Sources */,
@@ -2365,6 +2384,7 @@
 				AEDED1DC18BDEB9800FEB636 /* SonicActionSheet.m in Sources */,
 				AE9E4C251889A73200C2E870 /* SonicArray.m in Sources */,
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,
+				AE3E12A318D70D09006801FC /* SNCAboutUsViewController.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
 				AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */,
 				AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */,
@@ -2705,6 +2725,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
 				INFOPLIST_FILE = "sonicraph/sonicraph-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/yunuserenguzel/Documents/sonicraph_ios/sonicraph/AudioConverterKit/3rd-party/lib",
@@ -2713,7 +2734,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C6B3CC05-31C7-4194-8BDE-085A697812EC";
+				PROVISIONING_PROFILE = "C28F436D-8366-415F-9EDE-F7319D7A3003";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2734,6 +2755,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/sonicraph-Prefix.pch";
 				INFOPLIST_FILE = "sonicraph/sonicraph-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/yunuserenguzel/Documents/sonicraph/sonicraph/AudioConverterKit/3rd-party/lib",
@@ -2744,7 +2766,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C6B3CC05-31C7-4194-8BDE-085A697812EC";
+				PROVISIONING_PROFILE = "C28F436D-8366-415F-9EDE-F7319D7A3003";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

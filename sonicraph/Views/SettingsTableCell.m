@@ -12,6 +12,19 @@
 #import "Configurations.h"
 #import "UIButton+StateProperties.h"
 
+
+@implementation SettingsField
++(SettingsField *)k:(NSString *)key sK:(NSString*)serverKey v:(id)value t:(NSString *)type
+{
+    SettingsField* settingsField = [[SettingsField alloc] init];
+    settingsField.key = key;
+    settingsField.serverKey = serverKey;
+    settingsField.value = value;
+    settingsField.type = type;
+    return settingsField;
+}
+@end
+
 CGFloat heightForIdentifier(NSString* identifier)
 {
     if([identifier isEqualToString:SettingsTableCellImageValueIdentifier]){
@@ -111,6 +124,10 @@ CGFloat heightForIdentifier(NSString* identifier)
         {
             [self initGenderValueView];
         }
+        else if([reuseIdentifier isEqualToString:SettingsTableCellButtonIdentifier])
+        {
+            [self initButtonView];
+        }
     }
     return self;
 }
@@ -122,6 +139,11 @@ CGFloat heightForIdentifier(NSString* identifier)
 }
 
 - (void) initViews
+{
+    
+}
+
+- (void) initButtonView
 {
     
 }
@@ -172,7 +194,10 @@ CGFloat heightForIdentifier(NSString* identifier)
     [viewController.view setUserInteractionEnabled:YES];
     
     datePicker = [[UIDatePicker alloc] init];
-    [datePicker setDate:self.value animated:YES];
+    if([self.value isKindOfClass:[NSDate class]])
+    {
+        [datePicker setDate:self.value animated:YES];
+    }
     [datePicker setDatePickerMode:UIDatePickerModeDate];
     [datePicker setFrame:CGRectMake(0.0, viewController.view.frame.size.height-datePicker.frame.size.height, 320.0, datePicker.frame.size.height)];
     [datePicker setBackgroundColor:[UIColor whiteColor]];
@@ -367,6 +392,10 @@ CGFloat heightForIdentifier(NSString* identifier)
         {
             [self.stringValueField setKeyboardType:UIKeyboardTypeDefault];
         }
+    }
+    else if([self.reuseIdentifier isEqualToString:SettingsTableCellButtonIdentifier])
+    {
+        [self.textLabel setText:key];
     }
     
 }

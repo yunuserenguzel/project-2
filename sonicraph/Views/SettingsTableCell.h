@@ -12,6 +12,7 @@
 #define SettingsTableCellPasswordValueIdentifier @"SettingsTableCellPasswordValueIdentifier"
 #define SettingsTableCellImageValueIdentifier @"SettingsTableCellImageValueIdentifier"
 #define SettingsTableCellGenderValueIdentifier @"SettingsTableCellGenderValueIdentifier"
+#define SettingsTableCellButtonIdentifier @"SettingsTableCellButtonIdentifier"
 
 CGFloat heightForIdentifier(NSString* identifier);
 
@@ -20,6 +21,17 @@ CGFloat heightForIdentifier(NSString* identifier);
 - (void) valueChanged:(id)value forKey:(NSString*)string;
 
 @end
+
+
+@interface SettingsField : NSObject
+@property NSString* key;
+@property NSString* serverKey;
+@property id value;
+@property NSString* type;
++ (SettingsField*) k:(NSString*)key sK:(NSString*)serverKey v:(id)value t:(NSString*)type;
+
+@end
+
 
 @interface SettingsTableCell : UITableViewCell <UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 

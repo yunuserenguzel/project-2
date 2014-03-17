@@ -86,7 +86,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height - 44.0, 320.0, 44.0);
 }
 
-
 #pragma mark initialize views
 - (void)viewDidLoad
 {
@@ -232,6 +231,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 {
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.tabActionBarView];
     [self setTableViewContentSize];
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -746,6 +746,13 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
     if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row)
     {
         [self setTableViewContentSize];
+    }
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(currentContentType == ContentTypeLikes || currentContentType == ContentTypeResonics)
+    {
+        [self openProfileForUser:[[self currentContent] objectAtIndex:indexPath.row]];
     }
 }
 

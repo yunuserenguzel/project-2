@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SettingsTableCell.h"
 
-@interface SNCSettingsViewController : UIViewController
+@interface SNCSettingsViewController : UITableViewController <SettingsTableCellProtocol>
 
 @property UIButton* logoutButton;
 

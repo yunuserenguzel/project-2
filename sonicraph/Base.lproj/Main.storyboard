@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d7G-lq-cZK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d7G-lq-cZK">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Camera View Controller-->
@@ -62,9 +62,9 @@
                     </navigationItem>
                     <connections>
                         <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="5ii-yk-Nma"/>
-                        <segue destination="vdQ-Dl-azo" kind="push" identifier="ProfileToSettingsSegue" id="KbH-sa-PvF"/>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="V84-TT-bI4"/>
                         <segue destination="eAz-5z-Z0t" kind="modal" identifier="EditProfileSegue" id="5ZY-xa-aVr"/>
+                        <segue destination="xLm-uF-05U" kind="push" identifier="ProfileToSettingsSegue" id="1u3-r6-fFi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pVH-57-z5s" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -94,23 +94,46 @@
             <point key="canvasLocation" x="1162" y="1384"/>
         </scene>
         <!--Settings View Controller-->
-        <scene sceneID="jqc-ns-HgC">
+        <scene sceneID="XWz-m4-vcq">
             <objects>
-                <viewController id="vdQ-Dl-azo" customClass="SNCSettingsViewController" sceneMemberID="viewController">
+                <tableViewController id="xLm-uF-05U" customClass="SNCSettingsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="MJo-iw-rEg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="xLm-uF-05U" id="ElH-MK-N0T"/>
+                            <outlet property="delegate" destination="xLm-uF-05U" id="6bF-2b-Dsr"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="bmr-ro-wkW"/>
+                    <connections>
+                        <segue destination="oou-KZ-Vf7" kind="push" identifier="AboutUsSegue" id="paS-Gf-uno"/>
+                        <segue destination="v5U-zV-2yU" kind="modal" identifier="ChangePasswordSegue" id="9WZ-Xw-He1"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F5e-xg-ExZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1566" y="43"/>
+        </scene>
+        <!--About Us View Controller-->
+        <scene sceneID="ScX-IJ-su6">
+            <objects>
+                <viewController id="oou-KZ-Vf7" customClass="SNCAboutUsViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jFv-DF-K4O"/>
-                        <viewControllerLayoutGuide type="bottom" id="xtO-Ap-Iok"/>
+                        <viewControllerLayoutGuide type="top" id="FKw-qv-PDO"/>
+                        <viewControllerLayoutGuide type="bottom" id="Sge-vC-TSh"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="F3m-3K-pzG">
+                    <view key="view" contentMode="scaleToFill" id="ybU-Gi-CEI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="1WK-O9-egg"/>
+                    <navigationItem key="navigationItem" id="iMB-uf-vZe"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UvS-WY-P0t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sI1-dM-9uR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1614" y="36"/>
+            <point key="canvasLocation" x="2200" y="-184"/>
         </scene>
         <!--Edit Profile View Controller - Edit Profile-->
         <scene sceneID="HW5-Mq-Tho">
@@ -130,6 +153,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t88-gl-6yo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1664" y="822"/>
+        </scene>
+        <!--Change Password View Controller-->
+        <scene sceneID="P2a-pp-NfB">
+            <objects>
+                <viewController id="ed8-8y-Ys9" customClass="SNCChangePasswordViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2vz-gN-FPi"/>
+                        <viewControllerLayoutGuide type="bottom" id="tlP-Rb-pSn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uDN-zu-ajd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="gdN-oi-F9C"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aYI-rg-c2R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2860" y="684"/>
+        </scene>
+        <!--Navigation View Controller-->
+        <scene sceneID="jma-j3-EX9">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="v5U-zV-2yU" customClass="SNCNavigationViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="16W-pj-v62"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s4e-sz-kvp">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ed8-8y-Ys9" kind="relationship" relationship="rootViewController" id="dC5-4d-7Od"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PGz-NC-iW0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2332" y="677"/>
         </scene>
         <!--Navigation View Controller-->
         <scene sceneID="1hE-du-CnE">
@@ -457,9 +515,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="FTh-mS-2kq"/>
+        <segue reference="5ii-yk-Nma"/>
+        <segue reference="V84-TT-bI4"/>
+        <segue reference="5ZY-xa-aVr"/>
         <segue reference="rEn-e1-8Y3"/>
-        <segue reference="xgg-1F-Qkn"/>
-        <segue reference="5Ah-IT-aOa"/>
     </inferredMetricsTieBreakers>
 </document>

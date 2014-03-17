@@ -69,7 +69,16 @@
     else if([buttonTitle isEqualToString:ShareOnTwitter])
     {
         SLComposeViewController* tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [tweetSheet setInitialText:self.sonic.owner.fullName];
+        NSString* postText;
+        if([self.sonic isMySonic])
+        {
+            postText = @"Check out my sonic";
+        }
+        else
+        {
+            postText = [NSString stringWithFormat:@"Check out %@'s sonic",self.sonic.owner.username];
+        }
+        [tweetSheet setInitialText:postText];
         [tweetSheet addURL:[NSURL URLWithString:self.sonic.shareUrlString]];
         SNCAppDelegate* delegate = [UIApplication sharedApplication].delegate;
         [delegate.tabbarController presentViewController:tweetSheet animated:YES completion:^{

@@ -73,6 +73,7 @@
 
     [self.doneButton setImage:[UIImage imageNamed:@"AddCommentIcon.png"] forState:UIControlStateNormal];
     [self.doneButton setFrame:[self doneButtonFrame]];
+    [self.doneButton setHidden:YES];
     [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
     self.doneButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
     [self addSubview:self.doneButton];
@@ -80,6 +81,7 @@
     
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.cancelButton setFrame:[self cancelButtonFrame]];
+    [self.cancelButton setHidden:YES];
     [self.cancelButton setImage:[UIImage imageNamed:@"CancelCommentandTag.png"] forState:UIControlStateNormal];
     [self.cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     self.cancelButton.transform = CGAffineTransformMakeTranslation(-320.0, 0.0);
@@ -113,6 +115,8 @@
         frame.size.width = [self textFieldActiveFrame].size.width;
         frame.origin.x = [self textFieldActiveFrame].origin.x;
         [self.growingTextView setFrame:frame];
+        [self.doneButton setHidden:NO];
+        [self.cancelButton setHidden:NO];
         self.doneButton.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
         self.cancelButton.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
     }
@@ -122,6 +126,8 @@
         frame.size.width = [self textFieldPassiveFrame].size.width;
         frame.origin.x = [self textFieldPassiveFrame].origin.x;
         [self.growingTextView setFrame:frame];
+        [self.doneButton setHidden:YES];
+        [self.cancelButton setHidden:YES];
         self.doneButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
         self.cancelButton.transform = CGAffineTransformMakeTranslation(-320.0, 0.0);
     }

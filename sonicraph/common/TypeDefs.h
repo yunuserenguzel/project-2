@@ -24,6 +24,8 @@
 #define SearchToSonicSegue @"SearchToSonicSegue"
 #define EditProfileSegue @"EditProfileSegue"
 #define ViewUserSegue @"ViewUserSegue"
+#define ChangePasswordSegue @"ChangePasswordSegue"
+#define AboutUsSegue @"AboutUsSegue"
 
 #define CommentsText @"Comments"
 #define LikesText @"Likes"

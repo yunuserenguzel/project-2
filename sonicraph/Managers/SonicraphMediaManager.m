@@ -175,6 +175,7 @@
             if([device isExposurePointOfInterestSupported]){
                 [device setExposurePointOfInterest:point];
             } else {
+                
             }
             if([device isExposureModeSupported:AVCaptureExposureModeAutoExpose]){
                 [device setExposureMode:AVCaptureExposureModeAutoExpose];

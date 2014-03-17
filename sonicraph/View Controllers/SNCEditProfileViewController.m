@@ -10,26 +10,6 @@
 #import "SNCAPIManager.h"
 #import "AuthenticationManager.h"
 
-@interface SettingsField : NSObject 
-@property NSString* key;
-@property NSString* serverKey;
-@property id value;
-@property NSString* type;
-+ (SettingsField*) k:(NSString*)key sK:(NSString*)serverKey v:(id)value t:(NSString*)type;
-
-@end
-
-@implementation SettingsField
-+(SettingsField *)k:(NSString *)key sK:(NSString*)serverKey v:(id)value t:(NSString *)type
-{
-    SettingsField* settingsField = [[SettingsField alloc] init];
-    settingsField.key = key;
-    settingsField.serverKey = serverKey;
-    settingsField.value = value;
-    settingsField.type = type;
-    return settingsField;
-}
-@end
 
 @interface SNCEditProfileViewController ()
 

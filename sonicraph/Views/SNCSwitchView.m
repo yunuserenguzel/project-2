@@ -156,14 +156,7 @@
     CGPoint currentLocation = [panGesture locationInView:self];
     if(panGesture.state == UIGestureRecognizerStateEnded)
     {
-        if(currentLocation.x > self.frame.size.width * 0.5)
-        {
-            [self setOn:YES];
-        }
-        else
-        {
-            [self setOn:NO];
-        }
+        
     }
     else
     {
@@ -174,6 +167,14 @@
             self.imageView.frame = imageViewFrame;
 //            [self calculateAlphaForImageView];
         }
+    }
+    if(currentLocation.x > self.frame.size.width * 0.5)
+    {
+        [self setOn:YES];
+    }
+    else
+    {
+        [self setOn:NO];
     }
 }
 

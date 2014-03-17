@@ -34,6 +34,8 @@
 
 @property UITapGestureRecognizer* tapGesture;
 
+@property UILabel* shareOnFacebook;
+
 @end
 
 @implementation SNCShareViewController
@@ -86,6 +88,14 @@
     CGRect frame = CGRectZero;
     frame.size = CGSizeMake(110.0, 44.0);
     frame.origin = CGPointMake(105.0, self.view.frame.size.height - frame.size.height - 22.0);
+    return frame;
+}
+
+- (CGRect) shareOnFacebookFrame
+{
+    CGRect frame = [self facebookButtonFrame];
+    frame.origin.y += frame.size.height + 5;
+    frame.size.height = 15.0;
     return frame;
 }
 
@@ -205,6 +215,7 @@
     self.tagsTextView = [[SNCResizableTextView alloc] initWithFrame:[self tagsFrame]];
     self.tagsTextView.delegate = self;
     self.tagsTextView.backgroundColor = self.view.backgroundColor;
+    [self.tagsTextView.growingTextView setPlaceholder:@"Add tags"];
     [self.view addSubview:self.tagsTextView];
     [self.tagsTextView.doneButton setImage:[UIImage imageNamed:@"AddTagIcon.png"] forState:UIControlStateNormal];
 }
@@ -237,6 +248,14 @@
     [self.facebookSwitch setImage:[UIImage imageNamed:@"FacebookShareButtonIcon.png"]];
     [self.facebookSwitch setBackgroundImage:[UIImage imageNamed:@"FacebookShareButtonBase.png"]];
     [self.view addSubview:self.facebookSwitch];
+    
+    self.shareOnFacebook = [[UILabel alloc] initWithFrame:[self shareOnFacebookFrame]];
+    [self.shareOnFacebook setText:@"Share on facebook"];
+    [self.shareOnFacebook setFont:[UIFont systemFontOfSize:12.0]];
+    [self.shareOnFacebook setTextColor:[[UIColor whiteColor] colorWithAlphaComponent:0.6]];
+    [self.shareOnFacebook setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:self.shareOnFacebook];
+    
 }
 
 - (void) facebookButtonChanged:(SNCSwitchView*)switchView
@@ -311,7 +330,7 @@
     
     [self.tagsTextView setBackgroundColor:self.view.backgroundColor];
     keyboardHeight = 0;
-    [self.tagsTextView setFrame:[self tagsFrame]];
+    [self SNCResizableTextView:self.tagsTextView willChangeHeight:self.tagsTextView.frame.size.height];
     
     [UIView commitAnimations];
 }

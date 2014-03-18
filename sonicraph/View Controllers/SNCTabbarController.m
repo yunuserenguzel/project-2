@@ -10,7 +10,7 @@
 #import "UIButton+StateProperties.h"
 
 #import "Configurations.h"
-
+#import "SNCGoThroughViewController.h"
 
 #define CameraTabbarIndex 1
 
@@ -47,6 +47,15 @@ static int previousTabIndex = 0;
 {
     [self setSelectedIndex:previousTabIndex];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    
+    [self presentViewController:[SNCGoThroughViewController create] animated:YES completion:^{
+        
+    }];
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];

@@ -1,5 +1,5 @@
 //
-//  SNCJoinNowPageContentViewController.h
+//  SNCPageContentViewController.h
 //  sonicraph
 //
 //  Created by Yunus Eren Guzel on 18/03/14.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SNCJoinNowPageContentViewController : UIViewController
+@interface SNCPageContentViewController : UIViewController
+
+- (id) initWithUIImage:(UIImage*)image;
 
 @end

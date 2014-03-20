@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SNCRegisterViewController : UIViewController
+@interface SNCRegisterViewController : UIViewController <UITextFieldDelegate>
 
 @property UITextField* emailField;
-@property UITextField* usernameField;
 @property UITextField* passwordField;
 
 @property UIScrollView* scrollView;
 
-@property UIButton* registerButton;
+@property UILabel* termsLabel;
 
+@property UIButton* loginButton;
+
+@property UILabel* titleLabel;
 @end

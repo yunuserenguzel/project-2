@@ -1,24 +1,27 @@
 //
-//  SNCTakeAPhotoPageContentViewController.m
+//  SNCPageContentViewController.m
 //  sonicraph
 //
 //  Created by Yunus Eren Guzel on 18/03/14.
 //  Copyright (c) 2014 Yunus Eren Guzel. All rights reserved.
 //
 
-#import "SNCTakeAPhotoPageContentViewController.h"
+#import "SNCPageContentViewController.h"
 
-@interface SNCTakeAPhotoPageContentViewController ()
+@interface SNCPageContentViewController ()
 
 @end
 
-@implementation SNCTakeAPhotoPageContentViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+@implementation SNCPageContentViewController
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    UIImage* image;
+}
+
+- (id)initWithUIImage:(UIImage *)_image
+{
+    if(self = [super init])
+    {
+        image = _image;
     }
     return self;
 }
@@ -26,9 +29,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Take-A-Photo-Photo-.jpg"]];
-    [imageView setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:imageView];
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:image];
+    [imageView setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height-200)];
+    [imageView setContentMode:UIViewContentModeCenter];
+    [self.view insertSubview:imageView atIndex:0];
     // Do any additional setup after loading the view.
 }
 

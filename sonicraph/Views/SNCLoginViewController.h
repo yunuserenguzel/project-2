@@ -8,19 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SNCLoginViewController : UIViewController
+@interface SNCLoginViewController : UIViewController <UITextFieldDelegate>
 
 + (SNCLoginViewController*) sharedInstance;
 
-@property UIWindow* window;
 @property NSString* username;
 @property NSString* password;
 @property UITextField* usernameField;
 @property UITextField* passwordField;
 @property UIButton* registerButton;
 @property UIButton* loginButton;
+@property UIButton* forgotPassword;
 
-//- (void) display;
-//- (void) close;
+@property UILabel* titleLabel;
 
 @end

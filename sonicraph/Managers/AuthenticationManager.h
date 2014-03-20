@@ -26,8 +26,9 @@
 
 - (void) registerUserWithEmail:(NSString*)email andUsername:(NSString*)username andPassword:(NSString*)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
 
-- (void) checkAuthentication;
 
 - (void) logout;
 
+- (void) displayAuthenticationView;
+- (void) displayApplicationView;
 @end

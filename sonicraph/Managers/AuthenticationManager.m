@@ -14,6 +14,8 @@
 #define AuthenticationManagerUserDefaultsTokenKey @"AuthenticationManagerUserDefaultsTokenKey"
 #define AuthenticationManagerUserDefaultsUserKey @"AuthenticationManagerUserDefaultsUserKey"
 
+#import "SNCGoThroughViewController.h"
+
 static AuthenticationManager* sharedInstance = nil;
 
 @implementation AuthenticationManager
@@ -62,6 +64,7 @@ static AuthenticationManager* sharedInstance = nil;
         _isUserAuthenticated = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
+            [self displayApplicationView];
         });
         if(completionBlock){
             completionBlock(user,token);
@@ -92,6 +95,7 @@ static AuthenticationManager* sharedInstance = nil;
         _isUserAuthenticated = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:user];
+            [self displayApplicationView];
         });
         if(block){
             block( user, token );
@@ -183,7 +187,8 @@ static AuthenticationManager* sharedInstance = nil;
 {
     [self setToken:nil];
     [self setAuthenticatedUser:nil];
-    [self checkAuthentication];
+//    [self checkAuthentication];
+    [self displayAuthenticationView];
     [self clearThirdPartyAppLogins];
     [[NSNotificationCenter defaultCenter]
      postNotificationName:NotificationUserLoggedOut
@@ -193,22 +198,24 @@ static AuthenticationManager* sharedInstance = nil;
     
 }
 
-- (void) checkAuthentication
+//- (void) checkAuthentication
+//{
+////    Actual Code
+//    if(self.token == nil){
+//        [self displayAuthenticationView];
+//    }
+//}
+
+- (void) displayApplicationView
 {
-//    Actual Code
-    if(self.token == nil){
-        [self displayAuthenticationView];
-    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MainTabbar"];
+    [[[[UIApplication sharedApplication] delegate] window] setRootViewController:vc];
 }
 
 - (void) displayAuthenticationView
 {
-    UITabBarController* tabbarController = [[SNCAppDelegate sharedInstance] tabbarController];
-    [[tabbarController viewControllers] enumerateObjectsUsingBlock:^(UINavigationController* navController, NSUInteger idx, BOOL *stop) {
-        [navController popToRootViewControllerAnimated:NO];
-    }];
-    
-    [tabbarController performSegueWithIdentifier:TabbarToLoginRegisterSegue sender:tabbarController];
+    [[[[UIApplication sharedApplication] delegate] window] setRootViewController:[SNCGoThroughViewController create]];
 }
 
 @end

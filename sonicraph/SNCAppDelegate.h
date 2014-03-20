@@ -18,7 +18,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-@property (readonly) UITabBarController* tabbarController;
+@property (readonly, nonatomic) UITabBarController* tabbarController;
 
 + (SNCAppDelegate*) sharedInstance;
 

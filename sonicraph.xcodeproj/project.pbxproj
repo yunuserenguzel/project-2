@@ -34,17 +34,14 @@
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
 		AE2AF54C18D82FE5007C9BB1 /* SNCGoThroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF54B18D82FE5007C9BB1 /* SNCGoThroughViewController.m */; };
-		AE2AF54F18D8322B007C9BB1 /* SNCTakeAPhotoPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF54E18D8322B007C9BB1 /* SNCTakeAPhotoPageContentViewController.m */; };
-		AE2AF55218D8324A007C9BB1 /* SNCCaptureTheSoundPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF55118D8324A007C9BB1 /* SNCCaptureTheSoundPageContentViewController.m */; };
-		AE2AF55518D8328D007C9BB1 /* SNCShareWithWorldPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF55418D8328D007C9BB1 /* SNCShareWithWorldPageContentViewController.m */; };
-		AE2AF55818D832A1007C9BB1 /* SNCJoinNowPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF55718D832A1007C9BB1 /* SNCJoinNowPageContentViewController.m */; };
-		AE2AF56118D83FA2007C9BB1 /* Capture-The-Sound-Photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF55A18D83FA2007C9BB1 /* Capture-The-Sound-Photo.jpg */; };
-		AE2AF56218D83FA2007C9BB1 /* Get-Started-Photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF55B18D83FA2007C9BB1 /* Get-Started-Photo.jpg */; };
-		AE2AF56318D83FA2007C9BB1 /* Log-In-Photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF55C18D83FA2007C9BB1 /* Log-In-Photo.jpg */; };
-		AE2AF56418D83FA2007C9BB1 /* OpeningPhoto.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF55D18D83FA2007C9BB1 /* OpeningPhoto.jpg */; };
-		AE2AF56518D83FA2007C9BB1 /* Share-With-World-Photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF55E18D83FA2007C9BB1 /* Share-With-World-Photo.jpg */; };
-		AE2AF56618D83FA2007C9BB1 /* Sign-Up-Photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF55F18D83FA2007C9BB1 /* Sign-Up-Photo.jpg */; };
-		AE2AF56718D83FA2007C9BB1 /* Take-A-Photo-Photo-.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF56018D83FA2007C9BB1 /* Take-A-Photo-Photo-.jpg */; };
+		AE2AF57718D8BBC1007C9BB1 /* 0001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF57118D8BBC1007C9BB1 /* 0001@2x.png */; };
+		AE2AF57818D8BBC1007C9BB1 /* 0002@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF57218D8BBC1007C9BB1 /* 0002@2x.png */; };
+		AE2AF57918D8BBC1007C9BB1 /* 0003@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF57318D8BBC1007C9BB1 /* 0003@2x.png */; };
+		AE2AF57A18D8BBC1007C9BB1 /* 0004@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF57418D8BBC1007C9BB1 /* 0004@2x.png */; };
+		AE2AF57B18D8BBC1007C9BB1 /* 0005@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF57518D8BBC1007C9BB1 /* 0005@2x.png */; };
+		AE2AF57C18D8BBC1007C9BB1 /* 0006@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF57618D8BBC1007C9BB1 /* 0006@2x.png */; };
+		AE2AF58718D8BC4F007C9BB1 /* 0000@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE2AF58618D8BC4F007C9BB1 /* 0000@2x.png */; };
+		AE2AF58A18D8BFE9007C9BB1 /* SNCPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF58918D8BFE9007C9BB1 /* SNCPageContentViewController.m */; };
 		AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */; };
 		AE2B4E80187457E6006BD456 /* SonicComment.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2B4E7F187457E6006BD456 /* SonicComment.m */; };
 		AE3E12A018D70CFC006801FC /* SNCChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3E129F18D70CFC006801FC /* SNCChangePasswordViewController.m */; };
@@ -354,21 +351,15 @@
 		AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver@2x.png"; sourceTree = "<group>"; };
 		AE2AF54A18D82FE5007C9BB1 /* SNCGoThroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCGoThroughViewController.h; sourceTree = "<group>"; };
 		AE2AF54B18D82FE5007C9BB1 /* SNCGoThroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCGoThroughViewController.m; sourceTree = "<group>"; };
-		AE2AF54D18D8322B007C9BB1 /* SNCTakeAPhotoPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCTakeAPhotoPageContentViewController.h; sourceTree = "<group>"; };
-		AE2AF54E18D8322B007C9BB1 /* SNCTakeAPhotoPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCTakeAPhotoPageContentViewController.m; sourceTree = "<group>"; };
-		AE2AF55018D8324A007C9BB1 /* SNCCaptureTheSoundPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCCaptureTheSoundPageContentViewController.h; sourceTree = "<group>"; };
-		AE2AF55118D8324A007C9BB1 /* SNCCaptureTheSoundPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCCaptureTheSoundPageContentViewController.m; sourceTree = "<group>"; };
-		AE2AF55318D8328D007C9BB1 /* SNCShareWithWorldPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCShareWithWorldPageContentViewController.h; sourceTree = "<group>"; };
-		AE2AF55418D8328D007C9BB1 /* SNCShareWithWorldPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCShareWithWorldPageContentViewController.m; sourceTree = "<group>"; };
-		AE2AF55618D832A1007C9BB1 /* SNCJoinNowPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCJoinNowPageContentViewController.h; sourceTree = "<group>"; };
-		AE2AF55718D832A1007C9BB1 /* SNCJoinNowPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCJoinNowPageContentViewController.m; sourceTree = "<group>"; };
-		AE2AF55A18D83FA2007C9BB1 /* Capture-The-Sound-Photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Capture-The-Sound-Photo.jpg"; sourceTree = "<group>"; };
-		AE2AF55B18D83FA2007C9BB1 /* Get-Started-Photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Get-Started-Photo.jpg"; sourceTree = "<group>"; };
-		AE2AF55C18D83FA2007C9BB1 /* Log-In-Photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Log-In-Photo.jpg"; sourceTree = "<group>"; };
-		AE2AF55D18D83FA2007C9BB1 /* OpeningPhoto.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = OpeningPhoto.jpg; sourceTree = "<group>"; };
-		AE2AF55E18D83FA2007C9BB1 /* Share-With-World-Photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Share-With-World-Photo.jpg"; sourceTree = "<group>"; };
-		AE2AF55F18D83FA2007C9BB1 /* Sign-Up-Photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Sign-Up-Photo.jpg"; sourceTree = "<group>"; };
-		AE2AF56018D83FA2007C9BB1 /* Take-A-Photo-Photo-.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Take-A-Photo-Photo-.jpg"; sourceTree = "<group>"; };
+		AE2AF57118D8BBC1007C9BB1 /* 0001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0001@2x.png"; sourceTree = "<group>"; };
+		AE2AF57218D8BBC1007C9BB1 /* 0002@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0002@2x.png"; sourceTree = "<group>"; };
+		AE2AF57318D8BBC1007C9BB1 /* 0003@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0003@2x.png"; sourceTree = "<group>"; };
+		AE2AF57418D8BBC1007C9BB1 /* 0004@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0004@2x.png"; sourceTree = "<group>"; };
+		AE2AF57518D8BBC1007C9BB1 /* 0005@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0005@2x.png"; sourceTree = "<group>"; };
+		AE2AF57618D8BBC1007C9BB1 /* 0006@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0006@2x.png"; sourceTree = "<group>"; };
+		AE2AF58618D8BC4F007C9BB1 /* 0000@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0000@2x.png"; sourceTree = "<group>"; };
+		AE2AF58818D8BFE9007C9BB1 /* SNCPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCPageContentViewController.h; sourceTree = "<group>"; };
+		AE2AF58918D8BFE9007C9BB1 /* SNCPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCPageContentViewController.m; sourceTree = "<group>"; };
 		AE2B4E7B18737677006BD456 /* SonicViewControllerHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicViewControllerHeaderView.h; sourceTree = "<group>"; };
 		AE2B4E7C18737677006BD456 /* SonicViewControllerHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicViewControllerHeaderView.m; sourceTree = "<group>"; };
 		AE2B4E7E187457E6006BD456 /* SonicComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicComment.h; sourceTree = "<group>"; };
@@ -967,33 +958,16 @@
 			path = rangeslider;
 			sourceTree = "<group>";
 		};
-		AE2AF54018D82FAA007C9BB1 /* Go Through View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				AE2AF54A18D82FE5007C9BB1 /* SNCGoThroughViewController.h */,
-				AE2AF54B18D82FE5007C9BB1 /* SNCGoThroughViewController.m */,
-				AE2AF54D18D8322B007C9BB1 /* SNCTakeAPhotoPageContentViewController.h */,
-				AE2AF54E18D8322B007C9BB1 /* SNCTakeAPhotoPageContentViewController.m */,
-				AE2AF55018D8324A007C9BB1 /* SNCCaptureTheSoundPageContentViewController.h */,
-				AE2AF55118D8324A007C9BB1 /* SNCCaptureTheSoundPageContentViewController.m */,
-				AE2AF55318D8328D007C9BB1 /* SNCShareWithWorldPageContentViewController.h */,
-				AE2AF55418D8328D007C9BB1 /* SNCShareWithWorldPageContentViewController.m */,
-				AE2AF55618D832A1007C9BB1 /* SNCJoinNowPageContentViewController.h */,
-				AE2AF55718D832A1007C9BB1 /* SNCJoinNowPageContentViewController.m */,
-			);
-			name = "Go Through View Controllers";
-			sourceTree = "<group>";
-		};
 		AE2AF55918D83FA2007C9BB1 /* walkthroughsphotos */ = {
 			isa = PBXGroup;
 			children = (
-				AE2AF55A18D83FA2007C9BB1 /* Capture-The-Sound-Photo.jpg */,
-				AE2AF55B18D83FA2007C9BB1 /* Get-Started-Photo.jpg */,
-				AE2AF55C18D83FA2007C9BB1 /* Log-In-Photo.jpg */,
-				AE2AF55D18D83FA2007C9BB1 /* OpeningPhoto.jpg */,
-				AE2AF55E18D83FA2007C9BB1 /* Share-With-World-Photo.jpg */,
-				AE2AF55F18D83FA2007C9BB1 /* Sign-Up-Photo.jpg */,
-				AE2AF56018D83FA2007C9BB1 /* Take-A-Photo-Photo-.jpg */,
+				AE2AF58618D8BC4F007C9BB1 /* 0000@2x.png */,
+				AE2AF57118D8BBC1007C9BB1 /* 0001@2x.png */,
+				AE2AF57218D8BBC1007C9BB1 /* 0002@2x.png */,
+				AE2AF57318D8BBC1007C9BB1 /* 0003@2x.png */,
+				AE2AF57418D8BBC1007C9BB1 /* 0004@2x.png */,
+				AE2AF57518D8BBC1007C9BB1 /* 0005@2x.png */,
+				AE2AF57618D8BBC1007C9BB1 /* 0006@2x.png */,
 			);
 			path = walkthroughsphotos;
 			sourceTree = "<group>";
@@ -1140,7 +1114,6 @@
 		AE86EE8D182C0E0E00F74F1D /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				AE2AF54018D82FAA007C9BB1 /* Go Through View Controllers */,
 				AE3E129D18D70CDF006801FC /* Settings View Controllers */,
 				AE7E18E318953EDE009A9B7F /* Camera View Controllers */,
 				AE7E18E218953EC4009A9B7F /* Profile View Controllers */,
@@ -1281,6 +1254,10 @@
 		AEB9F7B3187B51DC005F4988 /* Login/Register Group */ = {
 			isa = PBXGroup;
 			children = (
+				AE2AF54A18D82FE5007C9BB1 /* SNCGoThroughViewController.h */,
+				AE2AF54B18D82FE5007C9BB1 /* SNCGoThroughViewController.m */,
+				AE2AF58818D8BFE9007C9BB1 /* SNCPageContentViewController.h */,
+				AE2AF58918D8BFE9007C9BB1 /* SNCPageContentViewController.m */,
 				AECBA63F1856408600DE8EDE /* SNCLoginViewController.h */,
 				AECBA6401856408600DE8EDE /* SNCLoginViewController.m */,
 				AEB9F7B7187B521F005F4988 /* SNCRegisterViewController.h */,
@@ -2220,6 +2197,7 @@
 				AECAB02018D4B0EC007BC760 /* Preloader_10_00001.png in Resources */,
 				AED277E318AFE21D00C17F19 /* ResonicGrey@2x.png in Resources */,
 				AEDED1D818BDD50A00FEB636 /* FacebookShareButtonBase@2x.png in Resources */,
+				AE2AF57918D8BBC1007C9BB1 /* 0003@2x.png in Resources */,
 				AED277AA18AFDE1800C17F19 /* SearchBlue@2x.png in Resources */,
 				AED277A418AFDE1800C17F19 /* HomeBlue@2x.png in Resources */,
 				AE1479B218C13DAD00046C06 /* TextFieldBackgroundPassive@2x.png in Resources */,
@@ -2239,11 +2217,13 @@
 				AED277B118AFDE1800C17F19 /* UserDarkGrey@2x.png in Resources */,
 				AED56EA81801A35D000DF866 /* InfoPlist.strings in Resources */,
 				AED2780A18B1429000C17F19 /* NotificationLike@2x.png in Resources */,
+				AE2AF57A18D8BBC1007C9BB1 /* 0004@2x.png in Resources */,
 				AE14799318C0071C00046C06 /* ViewGridLightPink@2x.png in Resources */,
 				AED2780918B1429000C17F19 /* NotificationFollower@2x.png in Resources */,
 				AE14796C18BFFB0400046C06 /* CommentLightPink@2x.png in Resources */,
 				AE50427018CB549900CD13ED /* CancelCommentandTag@2x.png in Resources */,
 				AED3321618BBD4D5002FB70A /* CaptureButtonCamera@2x.png in Resources */,
+				AE2AF57B18D8BBC1007C9BB1 /* 0005@2x.png in Resources */,
 				AED277A118AFDE1800C17F19 /* GlobeLightGrey@2x.png in Resources */,
 				AED277E218AFE21D00C17F19 /* ResonicDarkGrey@2x.png in Resources */,
 				AED277DF18AFE21D00C17F19 /* MorePink@2x.png in Resources */,
@@ -2252,7 +2232,6 @@
 				AECAB03A18D4B0EC007BC760 /* Preloader_10_00027.png in Resources */,
 				AECAB03018D4B0EC007BC760 /* Preloader_10_00017.png in Resources */,
 				AED277D018AFE21D00C17F19 /* CommentDarkGrey@2x.png in Resources */,
-				AE2AF56418D83FA2007C9BB1 /* OpeningPhoto.jpg in Resources */,
 				AE946D7C18A83FF500EAD9AD /* ViewGridPink@2x.png in Resources */,
 				AED2780B18B1429000C17F19 /* NotificationResonic@2x.png in Resources */,
 				AECAB02818D4B0EC007BC760 /* Preloader_10_00009.png in Resources */,
@@ -2263,7 +2242,6 @@
 				AEAE6E4F18C2B1CC00169596 /* EditProfilePhotoBase@2x.png in Resources */,
 				AED277A318AFDE1800C17F19 /* GlobeWhite@2x.png in Resources */,
 				AED277E118AFE21D00C17F19 /* ResonicBlue@2x.png in Resources */,
-				AE2AF56318D83FA2007C9BB1 /* Log-In-Photo.jpg in Resources */,
 				AED277AD18AFDE1800C17F19 /* SearchLightGrey@2x.png in Resources */,
 				AED277A018AFDE1800C17F19 /* GlobeGrey@2x.png in Resources */,
 				AED277DE18AFE21D00C17F19 /* MoreLightGrey@2x.png in Resources */,
@@ -2274,14 +2252,15 @@
 				AED2779818AFDE1800C17F19 /* CameraBlue@2x.png in Resources */,
 				AED277D218AFE21D00C17F19 /* CommentLightGrey@2x.png in Resources */,
 				AE14796E18BFFB0400046C06 /* MoreLightPink@2x.png in Resources */,
+				AE2AF58718D8BC4F007C9BB1 /* 0000@2x.png in Resources */,
 				AE1479B718C13F0800046C06 /* _TextFieldBackgroundPassive@2x.png in Resources */,
 				AED3321518BBD4D5002FB70A /* Cancel.png in Resources */,
 				AECAB02618D4B0EC007BC760 /* Preloader_10_00007.png in Resources */,
+				AE2AF57C18D8BBC1007C9BB1 /* 0006@2x.png in Resources */,
 				AECAB02918D4B0EC007BC760 /* Preloader_10_00010.png in Resources */,
 				AED277A218AFDE1800C17F19 /* GlobePink@2x.png in Resources */,
 				AED277D418AFE21D00C17F19 /* CommentWhite@2x.png in Resources */,
 				AED277DA18AFE21D00C17F19 /* LikeWhite@2x.png in Resources */,
-				AE2AF56718D83FA2007C9BB1 /* Take-A-Photo-Photo-.jpg in Resources */,
 				AECAB03918D4B0EC007BC760 /* Preloader_10_00026.png in Resources */,
 				AE946D7D18A83FF500EAD9AD /* ViewListGrey@2x.png in Resources */,
 				AED277E518AFE21D00C17F19 /* ResonicPink@2x.png in Resources */,
@@ -2292,7 +2271,6 @@
 				AED277B018AFDE1800C17F19 /* UserBlue@2x.png in Resources */,
 				AED277B318AFDE1800C17F19 /* UserLightGrey@2x.png in Resources */,
 				AED2779A18AFDE1800C17F19 /* CameraGrey@2x.png in Resources */,
-				AE2AF56618D83FA2007C9BB1 /* Sign-Up-Photo.jpg in Resources */,
 				AED3322518BBDED8002FB70A /* MiniCameraLeft@2x.png in Resources */,
 				AED277EA18B0004700C17F19 /* LikeTabPink@2x.png in Resources */,
 				AECAB02A18D4B0EC007BC760 /* Preloader_10_00011.png in Resources */,
@@ -2306,6 +2284,7 @@
 				AED277D318AFE21D00C17F19 /* CommentPink@2x.png in Resources */,
 				AECAB02C18D4B0EC007BC760 /* Preloader_10_00013.png in Resources */,
 				AED2779B18AFDE1800C17F19 /* CameraLightGrey@2x.png in Resources */,
+				AE2AF57718D8BBC1007C9BB1 /* 0001@2x.png in Resources */,
 				AED277E918B0004700C17F19 /* LikeTabGrey@2x.png in Resources */,
 				AE14798518BFFDDF00046C06 /* NotificationCommentLargeLP@2x.png in Resources */,
 				AED56EB11801A35D000DF866 /* Main.storyboard in Resources */,
@@ -2317,14 +2296,12 @@
 				AECAB03618D4B0EC007BC760 /* Preloader_10_00023.png in Resources */,
 				AED277B418AFDE1800C17F19 /* UserPink@2x.png in Resources */,
 				AED3322618BBDED8002FB70A /* MiniCameraRight@2x.png in Resources */,
-				AE2AF56518D83FA2007C9BB1 /* Share-With-World-Photo.jpg in Resources */,
 				AED277DC18AFE21D00C17F19 /* MoreDarkGrey@2x.png in Resources */,
 				AED277B518AFDE1800C17F19 /* UserWhite@2x.png in Resources */,
 				AECAB02318D4B0EC007BC760 /* Preloader_10_00004.png in Resources */,
 				AE00351418B7744200CB8BC0 /* retry_icon.png in Resources */,
 				AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */,
 				AECAB03118D4B0EC007BC760 /* Preloader_10_00018.png in Resources */,
-				AE2AF56118D83FA2007C9BB1 /* Capture-The-Sound-Photo.jpg in Resources */,
 				AED2779D18AFDE1800C17F19 /* CameraWhite@2x.png in Resources */,
 				AED3321418BBD4D5002FB70A /* CameraFrontBackWhite@2x.png in Resources */,
 				AECAB02118D4B0EC007BC760 /* Preloader_10_00002.png in Resources */,
@@ -2361,7 +2338,6 @@
 				AED277B218AFDE1800C17F19 /* UserGrey@2x.png in Resources */,
 				AECAB02E18D4B0EC007BC760 /* Preloader_10_00015.png in Resources */,
 				AED2780818B1429000C17F19 /* NotificationComment@2x.png in Resources */,
-				AE2AF56218D83FA2007C9BB1 /* Get-Started-Photo.jpg in Resources */,
 				AE1596BE182452CF00929D1D /* slider-default7-trackBackground.png in Resources */,
 				AED277A918AFDE1800C17F19 /* HomeWhite@2x.png in Resources */,
 				AE50426F18CB549900CD13ED /* AddTagIcon@2x.png in Resources */,
@@ -2369,6 +2345,7 @@
 				AECAB03B18D4B0EC007BC760 /* Preloader_10_00028.png in Resources */,
 				AED277AF18AFDE1800C17F19 /* SearchWhite@2x.png in Resources */,
 				AE14798718BFFDDF00046C06 /* NotificationLikeLargeLP@2x.png in Resources */,
+				AE2AF57818D8BBC1007C9BB1 /* 0002@2x.png in Resources */,
 				AED3321718BBD4D5002FB70A /* CaptureButtonMic@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2413,11 +2390,10 @@
 				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
 				AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */,
 				AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */,
-				AE2AF55218D8324A007C9BB1 /* SNCCaptureTheSoundPageContentViewController.m in Sources */,
 				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
 				AE7E18E618953F19009A9B7F /* SNCNotificationsViewController.m in Sources */,
 				AEDAAE371866D184001DD389 /* SNCSonicViewController.m in Sources */,
-				AE2AF55818D832A1007C9BB1 /* SNCJoinNowPageContentViewController.m in Sources */,
+				AE2AF58A18D8BFE9007C9BB1 /* SNCPageContentViewController.m in Sources */,
 				AEDAAE2418650B5B001DD389 /* NSDate+NVTimeAgo.m in Sources */,
 				AEDAADF6185DB802001DD389 /* SNCTabbarController.m in Sources */,
 				AE2B4E80187457E6006BD456 /* SonicComment.m in Sources */,
@@ -2439,7 +2415,6 @@
 				AE86EEDA1835590F00F74F1D /* SNCHomeTableCell.m in Sources */,
 				AE10C3DE18C721D200AD4D1A /* HPGrowingTextView.m in Sources */,
 				AE637F34184BBCE700DDEE21 /* AuthenticationManager.m in Sources */,
-				AE2AF54F18D8322B007C9BB1 /* SNCTakeAPhotoPageContentViewController.m in Sources */,
 				AED56EF51801A39F000DF866 /* NSString+MKNetworkKitAdditions.m in Sources */,
 				AEAB5BC818B20916004641DA /* SNCNavigationViewController.m in Sources */,
 				AED56EF31801A39F000DF866 /* NSDate+RFC1123.m in Sources */,
@@ -2457,7 +2432,6 @@
 				AE9E4C251889A73200C2E870 /* SonicArray.m in Sources */,
 				AE2B4E7D18737677006BD456 /* SonicViewControllerHeaderView.m in Sources */,
 				AE3E12A318D70D09006801FC /* SNCAboutUsViewController.m in Sources */,
-				AE2AF55518D8328D007C9BB1 /* SNCShareWithWorldPageContentViewController.m in Sources */,
 				AE86EE9C182E741900F74F1D /* NSData+Base64.m in Sources */,
 				AEB946011877571B00FCE111 /* ProfileHeaderView.m in Sources */,
 				AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */,

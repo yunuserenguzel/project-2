@@ -51,9 +51,6 @@ static int previousTabIndex = 0;
 - (void)viewDidAppear:(BOOL)animated
 {
     
-    [self presentViewController:[SNCGoThroughViewController create] animated:YES completion:^{
-        
-    }];
 }
 
 - (void) viewDidLoad
@@ -110,6 +107,11 @@ static int previousTabIndex = 0;
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
+}
+
+- (void)dealloc
+{
+    NSLog(@"tabbar dealloc");
 }
 
 - (void)didReceiveMemoryWarning

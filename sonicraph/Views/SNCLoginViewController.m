@@ -11,24 +11,42 @@
 #import "AuthenticationManager.h"
 #import "TypeDefs.h"
 #import "Configurations.h"
+#import "SNCGoThroughViewController.h"
+
 
 static SNCLoginViewController* sharedInstance = nil;
 
 @implementation SNCLoginViewController
 
+- (CGRect) titleLabelFrame
+{
+    return CGRectMake(0.0, 15.0, 320.0, 50.0);
+}
+
 - (CGRect) usernameFieldFrame
 {
-    return CGRectMake(10.0, 80.0, 300.0, 50.0);
+    return CGRectMake(0.0, 80.0, 320.0, 50.0);
 }
 
 - (CGRect) passwordFieldFrame
 {
-    return CGRectMake(10.0, 140.0, 300.0, 50.0);
+    return CGRectMake(0.0, 132.0, 320.0, 50.0);
+}
+
+- (CGRect) forgotPasswordFrame
+{
+    return CGRectMake(10.0, 200.0, 300.0, 50.0);
 }
 
 - (CGRect) loginButtonFrame
 {
     return CGRectMake(10.0, 200.0, 300.0, 50.0);
+}
+
+
+- (CGRect) registerButtonFrame
+{
+    return CGRectMake(10.0, self.view.frame.size.height-50.0, 300, 50.0);
 }
 
 + (SNCLoginViewController *)sharedInstance
@@ -41,51 +59,78 @@ static SNCLoginViewController* sharedInstance = nil;
 
 - (void)viewDidLoad
 {
-    self.view.backgroundColor = [UIColor whiteColor];
+//    self.view.backgroundColor = [UIColor whiteColor];
     
 //    [self.navigationController.navigationBar setHidden:NO];
     
-    [self.navigationItem setTitle:@"Welcome!"];
+    self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
+    [self.view addSubview:self.titleLabel];
+    [self.titleLabel setText:@"Log in"];
+    [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.titleLabel setTextColor:[UIColor whiteColor]];
+    [self.titleLabel setFont:[UIFont systemFontOfSize:26.0]];
     
     self.usernameField = [[UITextField alloc] initWithFrame:[self usernameFieldFrame]];
     self.passwordField = [[UITextField alloc] initWithFrame:[self passwordFieldFrame]];
     
-    [self.usernameField setPlaceholder:@"username"];
-    [self.passwordField setPlaceholder:@"password"];
+    [self.usernameField setPlaceholder:@"Username"];
+    [self.passwordField setPlaceholder:@"Password"];
     
     [self.passwordField setSecureTextEntry:YES];
     
     [self.view addSubview:self.usernameField];
     for(UITextField* textField in @[self.usernameField,self.passwordField]){
-        textField.layer.borderColor = NavigationBarBlueColor.CGColor;
-        textField.layer.borderWidth = 1.0f;
-        textField.layer.cornerRadius = 4.0f;
-        [textField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)]];
-        [textField setLeftViewMode:UITextFieldViewModeAlways];
-        [textField setSpellCheckingType:UITextSpellCheckingTypeNo];
-        [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-        [textField setAutocorrectionType:UITextAutocorrectionTypeNo];
-//        [textField.layer setRasterizationScale:YES];
-//        [textField.layer setRasterizationScale:4.0f];
-        textField.backgroundColor = [UIColor whiteColor];
-        [self.view addSubview:textField];
+        UIView* base = textFieldWithBaseAndLabel(textField);
+        [textField setDelegate:self];
+        [self.view addSubview:base];
     }
     
-    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.loginButton.frame = [self loginButtonFrame];
-    [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
-    [self.loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.loginButton];
+    [self.usernameField setPlaceholder:@"or e-mail"];
     
-    UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Register" style:UIBarButtonItemStylePlain target:self action:@selector(openRegisterForm)];
-    [self.navigationItem setRightBarButtonItem:barButtonItem];
+    [self.usernameField setReturnKeyType:UIReturnKeyNext];
+    [self.passwordField setReturnKeyType:UIReturnKeyDone];
     
+    self.forgotPassword = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.forgotPassword setFrame:[self forgotPasswordFrame]];
+    [self.forgotPassword setTitle:@"Forgot Password ? " forState:UIControlStateNormal];
+    [self.view addSubview:self.forgotPassword];
+    
+    self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.registerButton.frame = [self registerButtonFrame];
+    [self.registerButton setTitle:@"Not yet registered? Sign up" forState:UIControlStateNormal];
+    [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.registerButton addTarget:self action:@selector(openRegister) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.registerButton];
+    
+    UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.view addGestureRecognizer:tapGesture];
 }
-- (void) openRegisterForm
+
+- (void) openRegister
 {
-    [self performSegueWithIdentifier:LoginToRegisterSegue sender:self];
+    SNCGoThroughViewController* goThrough = (SNCGoThroughViewController*)self.parentViewController;
+    [goThrough showRegisterViewController];
 }
+
+- (void) closeKeyboard
+{
+    [self.view endEditing:YES];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.usernameField)
+    {
+        [self.passwordField becomeFirstResponder];
+    }
+    else if(textField == self.passwordField)
+    {
+        [self.view endEditing:YES];
+        [self login];
+    }
+    return YES;
+}
+
  - (void) login
 {
     [[AuthenticationManager sharedInstance]
@@ -93,9 +138,7 @@ static SNCLoginViewController* sharedInstance = nil;
      andPassword:self.passwordField.text
      shouldRemember:YES
      withCompletionBlock:^(User *user, NSString *token) {
-         [self dismissViewControllerAnimated:YES completion:^{
-             
-         }];
+
      }
      andErrorBlock:^(NSError *error) {
          

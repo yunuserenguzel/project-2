@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+UIView* textFieldWithBaseAndLabel(UITextField*);
+
+
 @interface SNCGoThroughViewController : UIPageViewController
 
 + (SNCGoThroughViewController*) create;
 
+- (void) showViewController:(UIViewController*)viewController;
+
+- (void) showRegisterViewController;
+
+- (void) showLoginViewController;
 @end

@@ -10,13 +10,17 @@
 #import "Configurations.h"
 #import "AuthenticationManager.h"
 #import "SNCAPIManager.h"
-
+#import "SNCGoThroughViewController.h"
 @interface SNCRegisterViewController ()
 
 @end
 
 @implementation SNCRegisterViewController
 
+- (CGRect) titleLabelFrame
+{
+    return CGRectMake(0.0, 15.0, 320.0, 50.0);
+}
 - (CGRect) scrollViewFrame
 {
     CGFloat y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
@@ -25,22 +29,22 @@
 
 - (CGRect) emailFieldFrame
 {
-    return CGRectMake(10.0, 20.0, 300.0, 50.0);
-}
-
-- (CGRect) usernameFieldFrame
-{
-    return CGRectMake(10.0, 90.0, 300.0, 50.0);
+    return CGRectMake(00.0, 80.0, 320.0, 50.0);
 }
 
 - (CGRect) passwordFieldFrame
 {
-    return CGRectMake(10.0, 160.0, 300.0, 50.0);
+    return CGRectMake(00.0, 132.0, 320.0, 50.0);
 }
 
-- (CGRect) registerButtonFrame
+- (CGRect) termsLabelFrame
 {
-    return CGRectMake(10.0, 230.0, 300.0, 50.0);
+    return CGRectMake(10.0, 200.0, 300.0, 50.0);
+}
+
+- (CGRect) loginButtonFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height - 50.0, 320.0, 50.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -55,58 +59,67 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
+    [self.view addSubview:self.titleLabel];
+    [self.titleLabel setText:@"Sign up"];
+    [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.titleLabel setTextColor:[UIColor whiteColor]];
+    [self.titleLabel setFont:[UIFont systemFontOfSize:26.0]];
+    
     self.scrollView = [[UIScrollView alloc] initWithFrame:[self scrollViewFrame]];
     [self.view addSubview:self.scrollView];
     
     self.emailField = [[UITextField alloc] initWithFrame:[self emailFieldFrame]];
-    self.usernameField = [[UITextField alloc] initWithFrame:[self usernameFieldFrame]];
     self.passwordField = [[UITextField alloc] initWithFrame:[self passwordFieldFrame]];
     
-    [self.emailField setPlaceholder:@"e-mail"];
-    [self.usernameField setPlaceholder:@"username"];
-    [self.passwordField setPlaceholder:@"password"];
-    
-//    [self.emailField setText:@"test@test.com"];
-//    [self.usernameField setText:@"test1"];
-//    [self.passwordField setText:@"12345"];
+    [self.emailField setPlaceholder:@"Email"];
+    [self.passwordField setPlaceholder:@"Password"];
     
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
     [self.passwordField setSecureTextEntry:YES];
     
-    [@[self.emailField, self.usernameField, self.passwordField] enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger idx, BOOL *stop) {
-        textField.layer.borderColor = NavigationBarBlueColor.CGColor;
-        textField.layer.borderWidth = 1.0f;
-        textField.layer.cornerRadius = 4.0f;
-        [textField setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)]];
-        [textField setLeftViewMode:UITextFieldViewModeAlways];
-        [textField setSpellCheckingType:UITextSpellCheckingTypeNo];
-        [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-        [textField setAutocorrectionType:UITextAutocorrectionTypeNo];
-        textField.backgroundColor = [UIColor whiteColor];
-        [self.scrollView addSubview:textField];
+    [@[self.emailField,self.passwordField] enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger idx, BOOL *stop) {
+        UIView* base = textFieldWithBaseAndLabel(textField);
+        [textField setDelegate:self];
+        [self.view addSubview:base];
     }];
+
+    self.termsLabel = [[UILabel alloc] initWithFrame:[self termsLabelFrame]];
+    [self.scrollView addSubview:self.termsLabel];
+    self.termsLabel.numberOfLines = 2;
+    self.termsLabel.text = @"by signing up \n I agree the Terms of Service";
+    self.termsLabel.textColor = [UIColor whiteColor];
+    self.termsLabel.textAlignment = NSTextAlignmentCenter;
     
-    self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.registerButton setTitle:@"Register" forState:UIControlStateNormal];
-    [self.registerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    self.registerButton.frame = [self registerButtonFrame];
-    [self.registerButton addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:self.registerButton];
+    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.loginButton setTitle:@"Already signed up? Log in" forState:UIControlStateNormal];
+    [self.loginButton setFrame:[self loginButtonFrame]];
+    [self.scrollView addSubview:self.loginButton];
+    [self.loginButton addTarget:self action:@selector(openLogin) forControlEvents:UIControlEventTouchUpInside];
     
-	// Do any additional setup after loading the view.
+    UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.view addGestureRecognizer:tapGesture];
+}
+
+- (void) openLogin
+{
+    
+    SNCGoThroughViewController* goThrough = (SNCGoThroughViewController*)self.parentViewController;
+    [goThrough showLoginViewController];
+}
+
+- (void) closeKeyboard
+{
+    [self.view endEditing:YES];
 }
 
 - (void) registerUser
 {
-    
-    [[AuthenticationManager sharedInstance] registerUserWithEmail:self.emailField.text andUsername:self.usernameField.text andPassword:self.passwordField.text andCompletionBlock:^(User *user, NSString *token) {
-        [self.navigationController dismissViewControllerAnimated:YES completion:^{
-            
-        }];
-    } andErrorBlock:^(NSError *error) {
-        
-    }];
-    
+//    [[AuthenticationManager sharedInstance] registerUserWithEmail:self.emailField.text andUsername:nil andPassword:self.passwordField.text andCompletionBlock:^(User *user, NSString *token) {
+//
+//    } andErrorBlock:^(NSError *error) {
+//        
+//    }];
 }
 
 - (void)didReceiveMemoryWarning

@@ -33,65 +33,15 @@ static SNCAppDelegate* sharedInstance = nil;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     sharedInstance = self;
-    _tabbarController = (UITabBarController *)self.window.rootViewController;
-    CGRect frame = CGRectMake(0.0, 0.0, 320, 48);//Setting a Frame.
-    
-    UIView* myTabView = [[UIView alloc] initWithFrame:frame];//Making Tab View
-    
-    // not supported on iOS4
-    UITabBar *tabBarr = [self.tabbarController tabBar];
-    if ([tabBarr respondsToSelector:@selector(setBackgroundImage:)])
-    {
-        // set it just for this instance
-        [tabBarr setBackgroundImage:[UIImage imageNamed:@"2013-11-07 09.52.53.png"]];
-        
-        
-        // set for all
-        // [[UITabBar appearance] setBackgroundImage: ...
-    }
-    else
-    {
-        // ios 4 code here
-        //[tabBarr setBackgroundColor:c];
-    }
-    
-    //[myTabView  setBackgroundColor:c];//Setting Color Of TaBar.
-    
-    [myTabView  setAlpha:0.8];//Setting Alpha of TabView.
-    
-    [[self.tabbarController tabBar] insertSubview:myTabView  atIndex:0];//Insert
-//    NSLog(@"%@",[Sonic getFrom:1 to:1]);
-    
-//    [SNCAPIManager registerWithUsername:@"yeguzel" email:@"exculuber@gmail.com" password:@"741285" andCompletionBlock:^(NSDictionary *responseDictionary) {
-//        NSString* validationCode = [responseDictionary objectForKey:@"validation_code"];
-//        [SNCAPIManager validateWithEmail:@"exculuber@gmail.com" andValidationCode:validationCode withCompletionBlock:^(BOOL successful) {
-//            [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
-//                [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-//            } andErrorBlock:^(NSError *error) {
-//                
-//            }];
-//        } andErrorBlock:^(NSError *error) {
-//            NSLog(@"%@",error);
-//        }];
-//
-//    } andErrorBlock:^(NSError *error) {
-//        
-//    }];
-    
-    //TEST
-//    [SNCAPITest start];
-
-    
-//    [[AuthenticationManager sharedInstance] authenticateWithUsername:@"yeguzel" andPassword:@"741285" shouldRemember:YES withCompletionBlock:^(User *user, NSString* token) {
-//        [[[UIAlertView alloc] initWithTitle:@"Successful!" message:@"Successfully Logged In!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-//        [SNCAPIManager getUserSonics:[[AuthenticationManager sharedInstance] authenticatedUser] saveToDatabase:YES withCompletionBlock:^(NSArray *sonics) {
-//        } andErrorBlock:^(NSError *error) {
-//        }];
-//    } andErrorBlock:^(NSError *error) {
-//    }];
-    NSLog(@"token: %@",[[AuthenticationManager sharedInstance] token]);
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[AuthenticationManager sharedInstance] checkAuthentication];
+        if([[AuthenticationManager sharedInstance] token])
+        {
+            [[AuthenticationManager sharedInstance] displayApplicationView];
+        }
+        else
+        {
+            [[AuthenticationManager sharedInstance] displayAuthenticationView];
+        }
     });
     
     return YES;
@@ -199,6 +149,15 @@ static SNCAppDelegate* sharedInstance = nil;
     {
         [self.tabbarController setSelectedIndex:3];
     }
+}
+
+- (UITabBarController *)tabbarController
+{
+    if([self.window.rootViewController isKindOfClass:[UITabBarController class]])
+    {
+        return (UITabBarController*)self.window.rootViewController;
+    }
+    return nil;
 }
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {

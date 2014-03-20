@@ -15,8 +15,6 @@
 #define ViewSonicSegue @"ViewSonicSegue"
 #define ProfileToFollowerFollowingSegue @"ProfileToFollowerFollowingSegue"
 #define ProfileToSettingsSegue @"ProfileToSettingsSegue"
-#define TabbarToLoginRegisterSegue @"TabbarToLoginRegisterSegue"
-#define LoginToRegisterSegue @"LoginToRegisterSegue"
 #define HomeToProfileSegue @"HomeToProfileSegue"
 #define SonicToProfileSegue @"SonicToProfileSegue"
 #define FollowerFollowingToProfileSegue @"FollowerFollowingToProfileSegue"

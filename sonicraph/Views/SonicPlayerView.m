@@ -200,6 +200,7 @@
 - (void)setSonicUrl:(NSURL *)sonicUrl
 {
     if(![[self.sonicUrl path] isEqualToString:sonicUrl.path]){
+        [self setSonic:nil];
         _sonicUrl = sonicUrl;
         [self downloadSonicData];
     }
@@ -207,7 +208,6 @@
 
 - (void) downloadSonicData
 {
-    [self setSonic:nil];
     [self.preloader setHidden:NO];
     [[SNCResourceHandler sharedInstance]
      getSonicDataWithUrl:self.sonicUrl

@@ -23,6 +23,7 @@ static AuthenticationManager* sharedInstance = nil;
     NSString* _token;
     User* _authenticatedUser;
     NSString* _password;
+    UIViewController* goThrough;
 }
 + (AuthenticationManager *)sharedInstance
 {
@@ -208,14 +209,18 @@ static AuthenticationManager* sharedInstance = nil;
 
 - (void) displayApplicationView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"MainTabbar"];
-    [[[[UIApplication sharedApplication] delegate] window] setRootViewController:vc];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController *vc = [storyboard instantiateInitialViewController];
+//    [[[[UIApplication sharedApplication] delegate] window] setRootViewController:vc];
+    [goThrough dismissViewControllerAnimated:YES completion:nil];
+    UITabBarController* tabbar = (UITabBarController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    [tabbar setSelectedIndex:0];
 }
 
 - (void) displayAuthenticationView
 {
-    [[[[UIApplication sharedApplication] delegate] window] setRootViewController:[SNCGoThroughViewController create]];
+    goThrough = [SNCGoThroughViewController create];
+    [[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentViewController:goThrough animated:YES completion:nil];
 }
 
 @end

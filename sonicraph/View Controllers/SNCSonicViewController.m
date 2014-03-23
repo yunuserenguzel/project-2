@@ -23,27 +23,27 @@
 
 #define CellIdentifierSonicComment @"CellIdentifierSonicComment"
 
-typedef void (^AnimationFrame)(CGFloat ratio);
-void animateWithFrameRecursive(NSDate* startTime, CGFloat duration, AnimationFrame frame){
-    NSDate* currentTime = [NSDate date];
-    CGFloat ratio = 0.0;
-    CGFloat interval = [currentTime timeIntervalSinceDate:startTime];
-    if( duration > interval ){
-        ratio = interval / duration;
-    } else if (duration <= interval){
-        ratio = 1.0;
-    }
-    frame(ratio);
-    if (ratio <= 1.0){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            animateWithFrameRecursive(startTime, duration, frame);
-        });
-    }
-}
-void animateWithFrame(CGFloat duration,AnimationFrame frame){
-    NSDate* startTime = [NSDate date];
-    animateWithFrameRecursive(startTime, duration, frame);
-}
+//typedef void (^AnimationFrame)(CGFloat ratio);
+//void animateWithFrameRecursive(NSDate* startTime, CGFloat duration, AnimationFrame frame){
+//    NSDate* currentTime = [NSDate date];
+//    CGFloat ratio = 0.0;
+//    CGFloat interval = [currentTime timeIntervalSinceDate:startTime];
+//    if( duration > interval ){
+//        ratio = interval / duration;
+//    } else if (duration <= interval){
+//        ratio = 1.0;
+//    }
+//    frame(ratio);
+//    if (ratio <= 1.0){
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            animateWithFrameRecursive(startTime, duration, frame);
+//        });
+//    }
+//}
+//void animateWithFrame(CGFloat duration,AnimationFrame frame){
+//    NSDate* startTime = [NSDate date];
+//    animateWithFrameRecursive(startTime, duration, frame);
+//}
 
 
 @implementation SNCSonicViewController
@@ -219,6 +219,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [self.headerView.sonicPlayerView stop];
     CGFloat duration = animated ? 0.3 : 0.0;
     [UIView animateWithDuration:duration animations:^{
@@ -229,6 +230,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.tabActionBarView];
     [self setTableViewContentSize];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
@@ -236,6 +238,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     if(self.initiationType == SonicViewControllerInitiationTypeCommentWrite){
         [self.writeCommentView.growingTextView becomeFirstResponder];
         self.initiationType = SonicViewControllerInitiationTypeNone;
@@ -450,7 +453,6 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void) refreshNavigationItemText
 {
-    NSLog(@"refreshNavigationItemText");
     switch (currentContentType)
     {
         case ContentTypeComments:
@@ -907,6 +909,7 @@ void animateWithFrame(CGFloat duration,AnimationFrame frame){
 
 - (void)dealloc
 {
+    NSLog(@"SNCViewController dealloced");
     [[NSNotificationCenter defaultCenter]
      removeObserver:self
      name:nil

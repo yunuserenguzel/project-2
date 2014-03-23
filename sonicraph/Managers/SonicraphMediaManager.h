@@ -27,7 +27,7 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 @property (nonatomic) UIView* cameraView;
 
-@property id<SonicraphMediaProtocol> delegate;
+@property (weak) id<SonicraphMediaProtocol> delegate;
 
 @property (readonly) AVAudioRecorder *audioRecorder;
 

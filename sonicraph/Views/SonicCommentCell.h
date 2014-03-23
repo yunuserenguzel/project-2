@@ -19,7 +19,7 @@
 @property UIButton* deleteButton;
 @property UIImageView* userProfileImageView;
 
-@property id<OpenProfileProtocol> delegate;
+@property (weak) id<OpenProfileProtocol> delegate;
 
 + (CGFloat) cellHeightForText:(NSString*)text;
 

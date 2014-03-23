@@ -363,7 +363,9 @@
     {
         isLoadingFromServer = YES;
         [SNCAPIManager getUserSonics:self.user before:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
+//            NSUInteger from = self.sonics.count-1;
             [self.sonics importSonicsWithArray:sonics];
+//            NSUInteger to = self.sonics.count;
             if(sonics.count > 0)
             {
                 isLoadingFromServer = NO;
@@ -371,7 +373,6 @@
             [self refresh];
         } andErrorBlock:^(NSError *error) {
             isLoadingFromServer = NO;
-            [self refresh];
         }];
     }
 }
@@ -382,6 +383,20 @@
     
 }
 
+//- (void) refreshFrom:(NSUInteger)from to:(NSUInteger)to
+//{
+//    if (from < to) {
+//        NSMutableArray* indexPaths = [NSMutableArray new];
+//        
+//        for (int i=from; from < to; from++) {
+//            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+//        
+//        }
+//        [self.sonicListTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+//        [self.sonicCollectionView reloadItemsAtIndexPaths:indexPaths];
+//    }
+//    
+//}
 
 - (void) refresh
 {

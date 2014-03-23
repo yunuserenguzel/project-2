@@ -34,11 +34,7 @@ static SNCAppDelegate* sharedInstance = nil;
 {
     sharedInstance = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if([[AuthenticationManager sharedInstance] token])
-        {
-            [[AuthenticationManager sharedInstance] displayApplicationView];
-        }
-        else
+        if(![[AuthenticationManager sharedInstance] token])
         {
             [[AuthenticationManager sharedInstance] displayAuthenticationView];
         }

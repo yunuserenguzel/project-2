@@ -32,7 +32,7 @@
 @property UILabel* locationLabel;
 @property UIImageView* locationImageView;
 
-@property id<OpenProfileProtocol> delegate;
+@property (weak) id<OpenProfileProtocol> delegate;
 
 - (void) initViews;
 - (void) configureViews;
@@ -47,6 +47,6 @@
 
 @property UIButton* unfollowButton;
 
-@property id<SNCPersonFollowableTableCellProtocol,OpenProfileProtocol> delegate;
+@property (weak) id<SNCPersonFollowableTableCellProtocol,OpenProfileProtocol> delegate;
 
 @end

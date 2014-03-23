@@ -372,7 +372,7 @@
         <!--Tabbar Controller-->
         <scene sceneID="1ni-4e-taB">
             <objects>
-                <tabBarController storyboardIdentifier="MainTabbar" definesPresentationContext="YES" id="d7G-lq-cZK" customClass="SNCTabbarController" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabbar" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="d7G-lq-cZK" customClass="SNCTabbarController" sceneMemberID="viewController">
                     <keyCommands/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="NER-0T-Y3q">
@@ -458,8 +458,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="zbi-XO-ZOa"/>
-        <segue reference="rEn-e1-8Y3"/>
+        <segue reference="FBU-PY-Jaz"/>
+        <segue reference="hm7-BI-Gmx"/>
         <segue reference="xgg-1F-Qkn"/>
         <segue reference="FTh-mS-2kq"/>
     </inferredMetricsTieBreakers>

@@ -54,6 +54,7 @@
 - (void) configureViews
 {
     NSString* urlString = self.sonic.isResonic ? self.sonic.originalSonic.sonicUrlString : self.sonic.sonicUrlString;
+//    [self.sonicPlayerView setSonic:nil];
     [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:urlString]];
     if([self.sonic isResonic])
     {

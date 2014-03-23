@@ -44,10 +44,6 @@ static SNCLoginViewController* sharedInstance = nil;
 }
 
 
-- (CGRect) registerButtonFrame
-{
-    return CGRectMake(10.0, self.view.frame.size.height-50.0, 300, 50.0);
-}
 
 + (SNCLoginViewController *)sharedInstance
 {
@@ -95,22 +91,11 @@ static SNCLoginViewController* sharedInstance = nil;
     [self.forgotPassword setTitle:@"Forgot Password ? " forState:UIControlStateNormal];
     [self.view addSubview:self.forgotPassword];
     
-    self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.registerButton.frame = [self registerButtonFrame];
-    [self.registerButton setTitle:@"Not yet registered? Sign up" forState:UIControlStateNormal];
-    [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.registerButton addTarget:self action:@selector(openRegister) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.registerButton];
     
     UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
     [self.view addGestureRecognizer:tapGesture];
 }
 
-- (void) openRegister
-{
-    SNCGoThroughViewController* goThrough = (SNCGoThroughViewController*)self.parentViewController;
-    [goThrough showRegisterViewController];
-}
 
 - (void) closeKeyboard
 {

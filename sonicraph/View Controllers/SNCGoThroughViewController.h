@@ -15,9 +15,12 @@ UIView* textFieldWithBaseAndLabel(UITextField*);
 
 + (SNCGoThroughViewController*) create;
 
-- (void) showViewController:(UIViewController*)viewController;
+- (void) showViewController:(UIViewController*)viewController direction:(UIPageViewControllerNavigationDirection)direction;
 
 - (void) showRegisterViewController;
 
 - (void) showLoginViewController;
+
+- (void) startGoThrough;
+
 @end

@@ -30,7 +30,7 @@
 {
     [super viewDidLoad];
     UIImageView* imageView = [[UIImageView alloc] initWithImage:image];
-    [imageView setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height-200)];
+    [imageView setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     [imageView setContentMode:UIViewContentModeCenter];
     [self.view insertSubview:imageView atIndex:0];
     // Do any additional setup after loading the view.

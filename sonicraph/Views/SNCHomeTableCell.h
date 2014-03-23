@@ -31,7 +31,7 @@ SNCHomeTableCellActionType;
 
 @interface SNCHomeTableCell : UITableViewCell
 
-@property id<SNCHomeTableCellProtocol,OpenProfileProtocol,OpenSonicProtocol> delegate;
+@property (weak) id<SNCHomeTableCellProtocol,OpenProfileProtocol,OpenSonicProtocol> delegate;
 
 @property (nonatomic) Sonic* sonic;
 

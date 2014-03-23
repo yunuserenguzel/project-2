@@ -10,8 +10,6 @@
 
 @interface SNCTabbarController : UITabBarController
 
-+ (SNCTabbarController*) sharedInstance;
-
 - (void) openPreviousTab;
 
 @end

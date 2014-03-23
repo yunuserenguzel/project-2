@@ -16,7 +16,6 @@
 @property NSString* password;
 @property UITextField* usernameField;
 @property UITextField* passwordField;
-@property UIButton* registerButton;
 @property UIButton* loginButton;
 @property UIButton* forgotPassword;
 

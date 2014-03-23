@@ -10,6 +10,8 @@
 #import "SNCPageContentViewController.h"
 #import "SNCLoginViewController.h"
 #import "SNCRegisterViewController.h"
+#import "SMPageControl.h"
+#import "SNCGetStartedPageContentViewController.h"
 
 #import "UIButton+StateProperties.h"
 #import "Configurations.h"
@@ -18,15 +20,15 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 {
     UIView* base = [[UIView alloc] initWithFrame:CGRectMake(textField.frame.origin.x, textField.frame.origin.y, textField.frame.size.width, textField.frame.size.height)];
     [base setUserInteractionEnabled:YES];
-    [base setBackgroundColor:PinkColor];
+    [base setBackgroundColor:[[UIColor whiteColor] colorWithAlphaComponent:0.3]];
     UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 0.0, 90.0, textField.frame.size.height)];
     [label setFont:[UIFont boldSystemFontOfSize:18.0]];
     [label setTextColor:[UIColor whiteColor]];
     [label setText:textField.placeholder];
     textField.placeholder = @"";
     [textField setTintColor:[UIColor whiteColor]];
-    [textField setTextAlignment:NSTextAlignmentRight];
-    [textField setFrame:CGRectMake(100.0, 0.0, textField.frame.size.width - 100.0, textField.frame.size.height)];
+    [textField setTextAlignment:NSTextAlignmentLeft];
+    [textField setFrame:CGRectMake(126.0, 0.0, textField.frame.size.width - 126.0, textField.frame.size.height)];
     [textField setTextColor:[UIColor whiteColor]];
     [textField setRightView:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)]];
     [textField setRightViewMode:UITextFieldViewModeAlways];
@@ -49,11 +51,25 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 
 @property SNCLoginViewController* loginViewController;
 @property SNCRegisterViewController* registerViewController;
+@property UIButton* registerButton;
+
+@property SMPageControl* pageControl;
+
 @end
 
 @implementation SNCGoThroughViewController
 {
     NSInteger currentIndex;
+}
+
+- (CGRect) registerButtonFrame
+{
+    return CGRectMake(10.0, self.view.frame.size.height-50.0, 300, 50.0);
+}
+
+- (CGRect) pageControlFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height-130.0, 320.0,22.0);
 }
 
 + (SNCGoThroughViewController *)create
@@ -85,18 +101,30 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     [super viewDidLoad];
     UIView* indicator = [self.view.subviews objectAtIndex:0];
     [indicator setFrame:CGRectMake(indicator.frame.origin.x, self.view.frame.size.height - 150.0, indicator.frame.size.width, indicator.frame.size.height)];
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"0000.png"]];
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gothroughbackground.png"]];
     [imageView setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     [imageView setContentMode:UIViewContentModeCenter];
     [self.view insertSubview:imageView atIndex:0];
     
     self.loginButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height-100.0, 320.0, 44.0)];
-    [self.loginButton setBackgroundImageWithColor:PinkColor forState:UIControlStateNormal];
+    [self.loginButton setBackgroundImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5] forState:UIControlStateNormal];
     [self.loginButton setTitle:@"Log in" forState:UIControlStateNormal];
     [self.view addSubview:self.loginButton];
     [self.loginButton addTarget:self action:@selector(showLoginViewController) forControlEvents:UIControlEventTouchUpInside];
     
-    NSLog(@"%@",self.view.subviews);
+    self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.registerButton.frame = [self registerButtonFrame];
+    [self.registerButton setTitle:@"Not yet registered? Sign up" forState:UIControlStateNormal];
+    [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.registerButton addTarget:self action:@selector(openRegister) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.registerButton];
+    
+    self.pageControl = [[SMPageControl alloc] initWithFrame:[self pageControlFrame]];
+    [self.pageControl setNumberOfPages:4];
+    [self.pageControl setCurrentPage:0];
+    [self.pageControl setIndicatorDiameter:10.0];
+    [self.view addSubview:self.pageControl];
+    [self hidePageControl];
     
     self.dataSource = self;
     self.delegate = self;
@@ -104,27 +132,41 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     
     self.loginViewController = [[SNCLoginViewController alloc] init];
     self.contentViewControllers = @[
-                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"0001.png"]],
-                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"0003.png"]],
-                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"0004.png"]],
-                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"0005.png"]],
-                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"0006.png"]]
+                                    [[SNCGetStartedPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"gothroughstep_0.png"]],
+                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"gothroughstep_1.png"]],
+                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"gothroughstep_2.png"]],
+                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"gothroughstep_3.png"]],
+                                    [[SNCPageContentViewController alloc] initWithUIImage:[UIImage imageNamed:@"gothroughstep_4.png"]]
                                  ];
     [self setViewControllers:[NSArray arrayWithObject:[self.contentViewControllers objectAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
         
     }];
 }
 
+- (void)startGoThrough
+{
+    [self showViewController:[self.contentViewControllers objectAtIndex:1] direction:UIPageViewControllerNavigationDirectionForward];
+    [self.pageControl setCurrentPage:0];
+    [self showPageControl];
+}
+
+- (void) openRegister
+{
+    [self hideLoginButton];
+    [self hideRegisterButton];
+    [self hidePageControl];
+    [self showRegisterViewController];
+}
 - (void) showRegisterViewController
 {
     if(self.registerViewController == nil)
     {
         self.registerViewController = [[SNCRegisterViewController alloc] init];
     }
-    [self showViewController:self.registerViewController];
+    [self showViewController:self.registerViewController direction:UIPageViewControllerNavigationDirectionReverse];
 }
 
-- (void) showStaticButtons
+- (void) showLoginButton
 {
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -132,29 +174,57 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     }];
 }
 
-- (void) hideStaticButtons
+- (void) hideLoginButton
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.loginButton.transform = CGAffineTransformMakeTranslation(0.0, 200);
+    }];
+}
+- (void) showRegisterButton
 {
     
     [UIView animateWithDuration:0.3 animations:^{
-        self.loginButton.transform = CGAffineTransformMakeTranslation(0.0, 200);
+        self.registerButton.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
+    }];
+}
+
+- (void) hideRegisterButton
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.registerButton.transform = CGAffineTransformMakeTranslation(0.0, 200);
+    }];
+}
+-(void) showPageControl
+{
+    [UIView animateWithDuration:0.1 animations:^{
+        self.pageControl.alpha = 1.0;
+    }];
+}
+
+- (void) hidePageControl
+{
+    [UIView animateWithDuration:0.1 animations:^{
+        self.pageControl.alpha = 0.0;
     }];
 }
 
 - (void) showLoginViewController
 {
-    [self hideStaticButtons];
-    [self showViewController:self.loginViewController];
+    [self hideLoginButton];
+    [self showRegisterButton];
+    [self hidePageControl];
+    [self showViewController:self.loginViewController direction:UIPageViewControllerNavigationDirectionForward];
    
 }
 
-- (void) showViewController:(UIViewController*)viewController
+- (void) showViewController:(UIViewController*)viewController direction:(UIPageViewControllerNavigationDirection)direction
 {
     __block SNCGoThroughViewController *blocksafeSelf = self;
-    [self setViewControllers:@[viewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished){
+    [self setViewControllers:@[viewController] direction:direction animated:YES completion:^(BOOL finished){
         if(finished)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [blocksafeSelf setViewControllers:@[viewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];// bug fix for uipageview controller
+                [blocksafeSelf setViewControllers:@[viewController] direction:direction animated:NO completion:NULL];// bug fix for uipageview controller
             });
         }
     }];
@@ -178,6 +248,7 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 }
 
 
+
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     
@@ -199,23 +270,43 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     UIViewController* viewController = [pendingViewControllers objectAtIndex:0];
     if(viewController == self.loginViewController || viewController == self.registerViewController)
     {
-        [self hideStaticButtons];
+        [self hideLoginButton];
+        [self hidePageControl];
     }
     else
     {
-        [self showStaticButtons];
+        [self showLoginButton];
+    }
+    NSInteger index = [self.contentViewControllers indexOfObject:viewController];
+    index--;
+    if(index < 0)
+    {
+        [self hidePageControl];
     }
 }
+
 -(void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
     UIViewController* viewController = [self.viewControllers objectAtIndex:0];
     if(viewController == self.loginViewController || viewController == self.registerViewController)
     {
-        [self hideStaticButtons];
+        [self hideLoginButton];
+        [self hidePageControl];
     }
     else
     {
-        [self showStaticButtons];
+        [self showLoginButton];
+    }
+    NSInteger index = [self.contentViewControllers indexOfObject:viewController];
+    index--;
+    if(index >= 0)
+    {
+        [self showPageControl];
+        [self.pageControl setCurrentPage:index];
+    }
+    else
+    {
+        [self hidePageControl];
     }
 }
 - (void)didReceiveMemoryWarning
@@ -224,19 +315,6 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     // Dispose of any resources that can be recreated.
 }
 
-//- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
-//{
-//    return 6;
-//}
-//
-//- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
-//{
-//    if(self.contentViewControllers.count > 0)
-//    {
-//        return [self.contentViewControllers indexOfObject:[self.viewControllers objectAtIndex:0]];
-//    }
-//    return -1;
-//}
 //
 /*
 #pragma mark - Navigation

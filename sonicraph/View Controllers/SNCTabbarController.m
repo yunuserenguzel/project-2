@@ -14,7 +14,6 @@
 
 #define CameraTabbarIndex 1
 
-static SNCTabbarController* sharedInstance;
 static int previousTabIndex = 0;
 
 @interface SNCTabbarController () <UIGestureRecognizerDelegate,UITabBarControllerDelegate>
@@ -24,10 +23,6 @@ static int previousTabIndex = 0;
 @implementation SNCTabbarController
 {
     UIView* cameraItemBackground;
-}
-+ (SNCTabbarController *) sharedInstance
-{
-    return sharedInstance;
 }
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,16 +42,15 @@ static int previousTabIndex = 0;
 {
     [self setSelectedIndex:previousTabIndex];
 }
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    
-}
+//
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//}
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    sharedInstance = self;
 
     [self.tabBar setBarStyle:UIBarStyleDefault];
     [self.tabBar setBarTintColor:[UIColor whiteColor]];
@@ -70,20 +64,22 @@ static int previousTabIndex = 0;
     for (UIView* view in self.tabBar.subviews) {
         [view setBackgroundColor:[UIColor clearColor]];
     }
-    NSArray* selectedImageNames = @[@"HomePink.png",
-                                    @"SearchPink.png",
-                                    @"CameraPink.png",
-                                    @"GlobePink.png",
-                                    @"UserPink.png"];
-    NSArray*imageNames  = @[@"HomeGrey.png",
-                            @"SearchGrey.png",
-                            @"CameraBlue.png",
-                            @"GlobeGrey.png",
-                            @"UserGrey.png"];
-    
+    NSArray* selectedImageNames = @[@"homeactive.png",
+                                    @"searchactive.png",
+                                    @"cameraactive.png",
+                                    @"notificationsactive.png",
+                                    @"profileactive.png"];
+    NSArray*imageNames  = @[@"home.png",
+                            @"search.png",
+                            @"camera.png",
+                            @"notifications.png",
+                            @"profile.png"];
+    NSLog(@"tabbar height: %f",self.tabBar.frame.size.height);
     for(int i=0; i<self.tabBar.items.count; i++)
     {
         UITabBarItem* item = [self.tabBar.items objectAtIndex:i];
+        [item setTitle:nil];
+        [item setImageInsets:UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
         [item setImage:[[UIImage imageNamed:[imageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [item setSelectedImage:[[UIImage imageNamed:[selectedImageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         if([item.title isEqualToString:@"Camera"])

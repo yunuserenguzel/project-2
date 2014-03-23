@@ -24,7 +24,7 @@
 
 @interface SNCResizableTextView : UIView <HPGrowingTextViewDelegate>
 
-@property NSObject<SNCResizableTextViewProtocol>* delegate;
+@property (weak) NSObject<SNCResizableTextViewProtocol>* delegate;
 
 @property HPGrowingTextView* growingTextView;
 @property UIButton* cancelButton;

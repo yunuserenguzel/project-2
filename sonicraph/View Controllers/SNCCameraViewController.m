@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SNCEditViewController.h"
 #import "Configurations.h"
+#import "SNCAppDelegate.h"
 #import "SNCTabbarController.h"
 #import "SNCSoundSlider.h"
 #import "UIImage+Resize.h"
@@ -600,7 +601,8 @@ typedef enum SonicRecordType {
     [self.soundTimer invalidate];
     [self.mediaManager stopAudioRecording];
     [self.navigationController popToRootViewControllerAnimated:YES];
-    [[SNCTabbarController sharedInstance] openPreviousTab];
+    SNCTabbarController* tabbar = (SNCTabbarController*)[[SNCAppDelegate sharedInstance] tabbarController];
+    [tabbar openPreviousTab];
 
 }
 - (void) prepareForRetake

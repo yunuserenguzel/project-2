@@ -37,7 +37,7 @@ CGFloat heightForIdentifier(NSString* identifier);
 
 @property (nonatomic) NSString* key;
 @property (nonatomic) id value;
-@property UITableViewController<SettingsTableCellProtocol>* delegate;
+@property (weak) UITableViewController<SettingsTableCellProtocol>* delegate;
 
 
 @end

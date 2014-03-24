@@ -26,6 +26,9 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                             withTags:(NSString*)tags
                  withCompletionBlock:(CompletionSonicBlock)completionBlock;
 
++ (MKNetworkOperation*) getSonicWithId:(NSString*)sonicId
+                   withCompletionBlock:(CompletionIdBlock)completionBlock
+                         andErrorBlock:(ErrorBlock)errorBlock;
 
 
 + (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params

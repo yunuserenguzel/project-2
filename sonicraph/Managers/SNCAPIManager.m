@@ -507,6 +507,23 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 //    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
 //}
 //
+
++ (MKNetworkOperation *)getSonicWithId:(NSString *)sonicId withCompletionBlock:(CompletionIdBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSString* operation = @"sonic/get_sonic";
+    NSDictionary* params = @{@"sonic":sonicId};
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:params
+            useToken:YES
+            andOperation:operation
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"]);
+                if(completionBlock){
+                    completionBlock(sonic);
+                }
+            }
+            andErrorBlock:errorBlock];
+}
 + (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock

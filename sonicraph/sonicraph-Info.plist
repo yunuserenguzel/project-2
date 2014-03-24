@@ -23,6 +23,14 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.sonicraph.sonicraph</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sonicraph</string>
+			</array>
+		</dict>
+		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb676721915713071</string>

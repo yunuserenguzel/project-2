@@ -68,8 +68,8 @@
      object:nil];
     
     self.sonics  = [[SonicArray alloc] init];
-//    [self initRefreshController];
-//    [self refreshFromServer];
+    [self initRefreshController];
+    [self refreshFromServer];
     
     
 }
@@ -171,12 +171,6 @@
 }
 
 #pragma mark - Table view data source
-
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-////    [self refresh];
-//}
 
 - (void) viewWillDisappear:(BOOL)animated
 {

@@ -227,7 +227,24 @@
     }];
     [self closeKeyboard];
     [self.tabActionBarView removeFromSuperview];
+    
+//    UIView *keyboardSuperview = self.writeCommentView.growingTextView.inputAccessoryView.superview;
+//    [self.transitionCoordinator
+//     animateAlongsideTransitionInView:keyboardSuperview
+//     animation:
+//     ^(id<UIViewControllerTransitionCoordinatorContext> context) {
+//         CGRect keyboardFrame = keyboardSuperview.frame;
+//         keyboardFrame.origin.x = self.view.bounds.size.width;
+//         keyboardSuperview.frame = keyboardFrame;
+//     }
+//     completion:nil];
 }
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

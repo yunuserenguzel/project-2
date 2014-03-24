@@ -43,10 +43,10 @@ static int previousTabIndex = 0;
     [self setSelectedIndex:previousTabIndex];
 }
 //
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
 
 - (void) viewDidLoad
 {

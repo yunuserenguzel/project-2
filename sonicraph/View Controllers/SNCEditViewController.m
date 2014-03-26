@@ -114,7 +114,7 @@
     [self.soundTimeSlider setFrame:[self soundTimeSliderFrame]];
     [self.soundTimeSlider setMinimumValue:0.0];
     [self.soundTimeSlider setMaximumValue:SonicMaximumSoundInterval];
-    [self.soundTimeSlider setFillColor:PinkColor];
+    [self.soundTimeSlider setFillColor:MainThemeColor];
     [self.soundTimeSlider setBaseColor:[UIColor whiteColor]];
     [self.view addSubview:self.soundTimeSlider];
 }
@@ -226,7 +226,7 @@
     self.soundSlider = [[NMRangeSlider alloc] initWithFrame:[self soundSliderFrame]];
     [self.soundSlider setTrackBackgroundImage:[UIImage imageNamed:@"TtimBar.png"]];
 //    [self.soundSlider setTrackBackgroundImage:[UIImage imageWithColor:[PinkColor colorWithAlphaComponent:0.5] withSize:CGSizeMake(276.0, 3.0)]];
-    [self.soundSlider setTrackImage:[UIImage imageWithColor:[PinkColor colorWithAlphaComponent:1.0] withSize:CGSizeMake(276.0, 3.0)]];
+    [self.soundSlider setTrackImage:[UIImage imageWithColor:[MainThemeColor colorWithAlphaComponent:1.0] withSize:CGSizeMake(276.0, 3.0)]];
     [self.soundSlider setMinimumValue:0.0];
     [self.soundSlider setLowerValue:0.0];
     [self.soundSlider setUpperValue:1.0];

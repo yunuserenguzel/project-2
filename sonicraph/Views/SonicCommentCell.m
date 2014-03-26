@@ -143,7 +143,7 @@
 
 - (void) configureViews
 {
-    [self.userProfileImageView setImage:SonicPlaceholderImage];
+    [self.userProfileImageView setImage:UserPlaceholderImage];
     [self.sonicComment.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
        dispatch_async(dispatch_get_main_queue(), ^{
            if(object){

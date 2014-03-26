@@ -31,7 +31,7 @@
     [self.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationBar setTintColor:[UIColor whiteColor]];
     [self.navigationBar setTranslucent:NO];
-    [self.navigationBar setBarTintColor:PinkColor];
+    [self.navigationBar setBarTintColor:MainThemeColor];
     [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_background.png"] forBarMetrics:UIBarMetricsDefault];
 }
 

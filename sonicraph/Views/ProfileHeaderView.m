@@ -15,34 +15,34 @@
 @implementation ProfileHeaderView
 - (CGRect) userProfileImageViewFrame
 {
-    return CGRectMake(10.0, 10.0, 120.0, 120.0);
+    return CGRectMake(15.0, 20.0, 110.0, 110.0);
 }
 
 - (CGRect) fullnameLabelFrame
 {
-    return CGRectMake(140.0, 10.0, 160.0, 22.0);
+    return CGRectMake(140.0, 18.0, 160.0, 22.0);
 }
 
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(140.0, 28.0, 160.0, 20.0);
+    return CGRectMake(140.0, 35.0, 160.0, 20.0);
 }
 
 - (CGRect) locationLabelFrame
 {
-    return CGRectMake(154.0, 54.0, 160.0, 20.0);
+    return CGRectMake(156.0, 60.0, 160.0, 20.0);
 }
 - (CGRect) locationImageViewFrame
 {
-    return CGRectMake(140.0, 58.0, 12.0, 12.0);
+    return CGRectMake(140.0, 64.0, 12.0, 12.0);
 }
 - (CGRect) websiteLabelFrame
 {
-    return CGRectMake(154.0, 70.0, 160.0, 20.0);
+    return CGRectMake(156.0, 76.0, 160.0, 20.0);
 }
 - (CGRect) websiteImageViewFrame
 {
-    return CGRectMake(140.0, 74.0, 12.0, 12.0);
+    return CGRectMake(140.0, 80.0, 12.0, 12.0);
 }
 - (CGRect) followButtonFrame
 {
@@ -51,7 +51,7 @@
 
 - (CGRect) numberOfSonicsLabelFrame
 {
-    return CGRectMake(10.0, 145.0, 96.6, 22.0);
+    return CGRectMake(10.0, 160.0, 96.6, 24.0);
 }
 
 - (CGRect) numberOfFollowersLabelFrame
@@ -70,7 +70,7 @@
 
 - (CGRect) sonicsLabelFrame
 {
-    return CGRectMake(10.0, 165.0, 96.6, 22.0);
+    return CGRectMake(10.0, 140.0, 96.6, 22.0);
 }
 
 - (CGRect) followersLabelFrame
@@ -95,7 +95,8 @@
 - (CGRect) gridViewButtonFrame
 {
     CGRect frame = CGRectZero;
-    frame.size.width = 80.0;
+    frame.origin.x = 10;
+    frame.size.width = 96.6;
     frame.size.height = [self buttonHolderViewFrame].size.height;
     return frame;
 }
@@ -125,15 +126,15 @@
         [self initTabButtons];
         
         self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.followButton setBackgroundImageWithColor:PinkColor forState:UIControlStateNormal];
+        [self.followButton setBackgroundImageWithColor:MainThemeColor forState:UIControlStateNormal];
         [self.followButton setBackgroundImageWithColor:[UIColor whiteColor] forState:UIControlStateSelected];
         [self.followButton setFrame:[self followButtonFrame]];
         [self.followButton setTitle:@"Follow" forState:UIControlStateNormal];
         [self.followButton setTitle:@"Following" forState:UIControlStateSelected];
         [self.followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.followButton setTitleColor:PinkColor forState:UIControlStateSelected];
+        [self.followButton setTitleColor:MainThemeColor forState:UIControlStateSelected];
         [self.followButton.layer setCornerRadius:5.0];
-        self.followButton.layer.borderColor = PinkColor.CGColor;
+        self.followButton.layer.borderColor = MainThemeColor.CGColor;
         self.followButton.layer.borderWidth = 1.0;
         self.followButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
         [self.followButton setClipsToBounds:YES];
@@ -145,41 +146,53 @@
 
 - (void) initProfileImageAndUserInfoLabels
 {
-    self.userProfileImageView = [[UIImageView alloc] initWithImage:SonicPlaceholderImage];
+    self.userProfileImageView = [[UIImageView alloc] initWithImage:UserPlaceholderImage];
     [self.userProfileImageView setFrame:[self userProfileImageViewFrame]];
-    [self.userProfileImageView.layer setCornerRadius:10.0];
+    [self.userProfileImageView.layer setCornerRadius:[self userProfileImageViewFrame].size.width * 0.5];
     [self.userProfileImageView setClipsToBounds:YES];
     [self.userProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self addSubview:self.userProfileImageView];
     
+    UIView* userProfileImageBorder = [[UIView alloc] init];
+    CGRect frame = [self userProfileImageViewFrame];
+    frame.size.height += 2;
+    frame.size.width += 2;
+    frame.origin.x -=1;
+    frame.origin.y -=1;
+    [userProfileImageBorder setFrame:frame];
+    [userProfileImageBorder.layer setCornerRadius:frame.size.height * 0.5];
+    [userProfileImageBorder.layer setBorderColor:rgb(240, 240, 240).CGColor];
+    [userProfileImageBorder.layer setBorderWidth:3.0];
+    [self addSubview:userProfileImageBorder];
+    
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
-    self.fullnameLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    self.fullnameLabel.font = [UIFont systemFontOfSize:16.0];
     self.fullnameLabel.textColor = FullnameTextColor;
     [self addSubview:self.fullnameLabel];
     
     self.usernamelabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
-    self.usernamelabel.font = [UIFont boldSystemFontOfSize:14.0];
+    self.usernamelabel.font = [UIFont systemFontOfSize:14.0];
     self.usernamelabel.textColor = [UIColor lightGrayColor];
     [self addSubview:self.usernamelabel];
     
     self.locationLabel = [[UILabel alloc] initWithFrame:[self locationLabelFrame]];
-    self.locationLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    self.locationLabel.font = [UIFont systemFontOfSize:14.0];
     self.locationLabel.textColor = [UIColor lightGrayColor];
     [self addSubview:self.locationLabel];
     
     self.locationImageView = [[UIImageView alloc] initWithFrame:[self locationImageViewFrame]];
     [self addSubview:self.locationImageView];
-    self.locationImageView.image = [UIImage imageNamed:@"Location.png"];
+    self.locationImageView.image = [UIImage imageNamed:@"location.png"];
     self.locationImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     self.websiteLabel = [[UILabel alloc] initWithFrame:[self websiteLabelFrame]];
-    self.websiteLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    self.websiteLabel.font = [UIFont systemFontOfSize:13.0];
     self.websiteLabel.textColor = [UIColor lightGrayColor];
     [self addSubview:self.websiteLabel];
     
     self.websiteImageView = [[UIImageView alloc] initWithFrame:[self websiteImageViewFrame]];
     [self addSubview:self.websiteImageView];
-    self.websiteImageView.image = [UIImage imageNamed:@"WebIcon.png"];
+    self.websiteImageView.image = [UIImage imageNamed:@"el.png"];
     self.websiteImageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
@@ -198,8 +211,8 @@
     [@[self.numberOfSonicsLabel,self.numberOfFollowingsLabel,self.numberOfFollowersLabel] enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
         [self addSubview:label];
         label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont boldSystemFontOfSize:20.0];
-        label.textColor = PinkColor;
+        label.font = [UIFont systemFontOfSize:22.0];
+        label.textColor = MainThemeColor;
         [label setUserInteractionEnabled:YES];
     }];
     
@@ -226,21 +239,25 @@
     
     self.gridViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.gridViewButton setFrame:[self gridViewButtonFrame]];
-    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewGridLightPink.png"] forState:UIControlStateNormal];
-    [self.gridViewButton setImage:[UIImage imageNamed:@"ViewGridPink.png"] forState:UIControlStateSelected];
+    [self.gridViewButton setImage:[UIImage imageNamed:@"gridview.png"] forState:UIControlStateNormal];
+    [self.gridViewButton setImage:[UIImage imageNamed:@"gridviewactive.png"] forState:UIControlStateSelected];
+    [self.gridViewButton setContentMode:UIViewContentModeCenter];
     [self.buttonHolderView addSubview:self.gridViewButton];
     
     self.listViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.listViewButton setFrame:[self listViewButtonFrame]];
-    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListLightPink.png"] forState:UIControlStateNormal];
-    [self.listViewButton setImage:[UIImage imageNamed:@"ViewListPink.png"] forState:UIControlStateSelected];
+    [self.listViewButton setImage:[UIImage imageNamed:@"listview.png"] forState:UIControlStateNormal];
+    [self.listViewButton setImage:[UIImage imageNamed:@"listviewactive.png"] forState:UIControlStateSelected];
+    [self.listViewButton setContentMode:UIViewContentModeCenter];
     [self.buttonHolderView addSubview:self.listViewButton];
     
     self.likedSonicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.likedSonicsButton setFrame:[self likedSonicsButtonFrame]];
-    [self.likedSonicsButton setImage:[UIImage imageNamed:@"LikeTabLightPink.png"] forState:UIControlStateNormal];
-    [self.likedSonicsButton setImage:[UIImage imageNamed:@"LikeTabPink.png"] forState:UIControlStateSelected];
+    [self.likedSonicsButton setImage:[UIImage imageNamed:@"likedsonics.png"] forState:UIControlStateNormal];
+    [self.likedSonicsButton setImage:[UIImage imageNamed:@"likedsonicsactive.png"] forState:UIControlStateSelected];
+    [self.likedSonicsButton setContentMode:UIViewContentModeCenter];
     [self.buttonHolderView addSubview:self.likedSonicsButton];
+    
     [self.likedSonicsButton setHidden:YES];
     
 }

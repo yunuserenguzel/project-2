@@ -103,7 +103,7 @@ SearchContentType;
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    [self.navigationController.navigationBar setBarTintColor:PinkColor];
+    [self.navigationController.navigationBar setBarTintColor:MainThemeColor];
     
     [self initSegmentControl];
     [self initUserTableView];

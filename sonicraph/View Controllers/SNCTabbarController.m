@@ -54,8 +54,8 @@ static int previousTabIndex = 0;
 
     [self.tabBar setBarStyle:UIBarStyleDefault];
     [self.tabBar setBarTintColor:[UIColor whiteColor]];
-    [self.tabBar setTintColor:PinkColor];
-    [self.tabBar setSelectedImageTintColor:PinkColor];
+    [self.tabBar setTintColor:MainThemeColor];
+    [self.tabBar setSelectedImageTintColor:MainThemeColor];
     self.tabBar.backgroundColor = [UIColor clearColor];
     [[self.tabBar.subviews objectAtIndex:0] setAlpha:0.1];
     self.tabBar.superview.backgroundColor = [UIColor clearColor];
@@ -87,7 +87,7 @@ static int previousTabIndex = 0;
             [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:NavigationBarBlueColor, NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
         }
     }
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:PinkColor, NSForegroundColorAttributeName, nil]
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:MainThemeColor, NSForegroundColorAttributeName, nil]
                                              forState:UIControlStateSelected];
     
     

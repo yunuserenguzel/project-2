@@ -78,31 +78,31 @@
 }
 - (CGRect) likeButtonFrame
 {
-    return CGRectMake(0.0, ButtonsTop, 44.0, 44.0);
+    return CGRectMake(10.0, ButtonsTop, 44.0, 44.0);
 }
 - (CGRect) likesLabelFrame
 {
-    return CGRectMake(44.0, LabelsTop, 44.0, 44.0);
+    return CGRectMake(54.0, LabelsTop, 44.0, 44.0);
 }
 - (CGRect) commentButtonFrame
 {
-    return CGRectMake(88.0, ButtonsTop, 44.0, 44.0);
+    return CGRectMake(98.0, ButtonsTop, 44.0, 44.0);
 }
 - (CGRect) commentsLabelFrame
 {
-    return CGRectMake(132.0, LabelsTop, 44.0, 44.0);
+    return CGRectMake(142.0, LabelsTop, 44.0, 44.0);
 }
 - (CGRect) resonicButtonFrame
 {
-    return CGRectMake(176.0, ButtonsTop, 44.0, 44.0);
+    return CGRectMake(186.0, ButtonsTop, 44.0, 44.0);
 }
 - (CGRect) resonicsLabelFrame
 {
-    return CGRectMake(220.0, LabelsTop, 44.0, 44.0);
+    return CGRectMake(230.0, LabelsTop, 44.0, 44.0);
 }
 - (CGRect) moreButtonFrame
 {
-    return CGRectMake(264.0, ButtonsTop, 44.0, 44.0);
+    return CGRectMake(274.0, ButtonsTop, 44.0, 44.0);
 }
 - (CGRect) cellSpacingViewFrame
 {
@@ -159,7 +159,7 @@
 {
     self.userImageView = [[UIImageView alloc] initWithFrame:[self userImageViewFrame]];
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self.userImageView setImage:SonicPlaceholderImage];
+    [self.userImageView setImage:UserPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
     [self.userImageView.layer setCornerRadius:8.0];
     [self addSubview:self.userImageView];
@@ -235,7 +235,7 @@
     
     for(UILabel* label in @[self.likesCountLabel,self.commentsCountLabel, self.resonicsCountLabel])
     {
-        [label setFont:[UIFont boldSystemFontOfSize:16.0]];
+        [label setFont:[UIFont systemFontOfSize:16.0]];
         [label setTextColor:[UIColor grayColor]];
         [label setTextAlignment:NSTextAlignmentLeft];
         [self addSubview:label];
@@ -248,28 +248,28 @@
 {
     self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.likeButton setFrame:[self likeButtonFrame]];
-    [self.likeButton setImage:[UIImage imageNamed:@"LikeLightPink.png"] forState:UIControlStateNormal];
-    [self.likeButton setImage:[UIImage imageNamed:@"LikePink.png"] forState:UIControlStateSelected];
+    [self.likeButton setImage:[UIImage imageNamed:@"like.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"likeactive.png"] forState:UIControlStateSelected];
     [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
 
     self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.commentButton setFrame:[self commentButtonFrame]];
-    [self.commentButton setImage:[UIImage imageNamed:@"CommentLightPink.png"] forState:UIControlStateNormal];
+    [self.commentButton setImage:[UIImage imageNamed:@"comment.png"] forState:UIControlStateNormal];
     [self.commentButton addTarget:self action:@selector(commentSonic) forControlEvents:UIControlEventTouchUpInside];
     
     self.resonicButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.resonicButton setFrame:[self resonicButtonFrame]];
-    [self.resonicButton setImage:[UIImage imageNamed:@"ResonicLightPink.png"] forState:UIControlStateNormal];
-    [self.resonicButton setImage:[UIImage imageNamed:@"ResonicPink.png"] forState:UIControlStateSelected];
+    [self.resonicButton setImage:[UIImage imageNamed:@"resonic.png"] forState:UIControlStateNormal];
+    [self.resonicButton setImage:[UIImage imageNamed:@"resonicactive.png"] forState:UIControlStateSelected];
     [self.resonicButton addTarget:self action:@selector(resonic) forControlEvents:UIControlEventTouchUpInside];
 
     self.moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.moreButton setFrame:[self moreButtonFrame]];
-    [self.moreButton setImage:[UIImage imageNamed:@"MoreLightPink.png"] forState:UIControlStateNormal];
+    [self.moreButton setImage:[UIImage imageNamed:@"more.png"] forState:UIControlStateNormal];
     [self.moreButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
     [@[self.likeButton,self.commentButton,self.resonicButton,self.moreButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
-        [button setTintColor:PinkColor];
+        [button setTintColor:MainThemeColor];
         [button addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:nil];
         [self addSubview:button];
     }];
@@ -280,9 +280,9 @@
     if([object isKindOfClass:[UIButton class]]){
         UIButton* button = object;
         if([button state] == UIControlStateHighlighted){
-            [button setTintColor:[PinkColor colorWithAlphaComponent:0.5]];
+            [button setTintColor:[MainThemeColor colorWithAlphaComponent:0.5]];
         } else {
-            [button setTintColor:PinkColor];
+            [button setTintColor:MainThemeColor];
         }
     }
 }
@@ -444,7 +444,7 @@
     [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrlString]];
     [self.fullnameLabel setText:[sonic.owner fullName]];
     [self.usernameLabel setText:[NSString stringWithFormat:@"@%@",[sonic.owner username]]];
-    [self.userImageView setImage:SonicPlaceholderImage];
+    [self.userImageView setImage:UserPlaceholderImage];
     [sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.userImageView setImage:object];

@@ -100,7 +100,7 @@
     self.fullnameLabel.text = self.notification.byUser.fullName;
     self.usernameLabel.text = [NSString stringWithFormat:@"@%@",self.notification.byUser.username];
     self.createdAtLabel.text = [self.notification.createdAt formattedAsTimeAgo];
-    self.profileImageView.image = SonicPlaceholderImage;
+    self.profileImageView.image = UserPlaceholderImage;
     [self updateNotificationTextAndImage];
     [self.notification.byUser getThumbnailProfileImageWithCompletionBlock:^(UIImage* image) {
         dispatch_async(dispatch_get_main_queue(), ^{

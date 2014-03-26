@@ -276,7 +276,7 @@
 
 - (void) configureViews
 {
-    self.profileHeaderView.userProfileImageView.image = SonicPlaceholderImage;
+    self.profileHeaderView.userProfileImageView.image = UserPlaceholderImage;
     [self.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.profileHeaderView.userProfileImageView.image = (UIImage*) object;
@@ -491,7 +491,10 @@
         
         }
         [self.sonicListTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-        [self.sonicCollectionView insertItemsAtIndexPaths:indexPaths];
+        if(!showLikedSonics)
+        {
+            [self.sonicCollectionView insertItemsAtIndexPaths:indexPaths];
+        }
     }
     
 }

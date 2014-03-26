@@ -56,7 +56,7 @@
     [self.profileImageView setClipsToBounds:YES];
     [self.profileImageView.layer setCornerRadius:8.0];
     [self.profileImageView setUserInteractionEnabled:YES];
-    [self.profileImageView setImage:SonicPlaceholderImage];
+    [self.profileImageView setImage:UserPlaceholderImage];
     [self.contentView addSubview:self.profileImageView];
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
@@ -143,7 +143,7 @@
 
 - (void)prepareForReuse
 {
-    [self.profileImageView setImage:SonicPlaceholderImage];
+    [self.profileImageView setImage:UserPlaceholderImage];
     [self.usernameLabel setText:@""];
 }
 
@@ -177,11 +177,11 @@
     self.followButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.followButton setClipsToBounds:YES];
     [self.followButton setBackgroundImageWithColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.followButton setBackgroundImageWithColor:PinkColor forState:UIControlStateHighlighted];
-    [self.followButton setTitleColor:PinkColor forState:UIControlStateNormal];
+    [self.followButton setBackgroundImageWithColor:MainThemeColor forState:UIControlStateHighlighted];
+    [self.followButton setTitleColor:MainThemeColor forState:UIControlStateNormal];
     [self.followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [self.followButton.layer setBorderWidth:1.0];
-    [self.followButton.layer setBorderColor:PinkColor.CGColor];
+    [self.followButton.layer setBorderColor:MainThemeColor.CGColor];
     [self.followButton.layer setCornerRadius:5.0];
     [self.followContent addSubview:self.followButton];
 

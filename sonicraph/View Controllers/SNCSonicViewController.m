@@ -401,7 +401,7 @@
     self.headerView.usernameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.username] ;
     self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
     self.headerView.createdAtLabel.text = [self.sonic.creationDate formattedAsTimeAgo];
-    [self.headerView.profileImageView setImage:SonicPlaceholderImage];
+    [self.headerView.profileImageView setImage:UserPlaceholderImage];
     [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.headerView.profileImageView.image = (UIImage*) object;
@@ -581,7 +581,7 @@
 
 - (void) setLikeButtonSelected
 {
-    [self.likeButton setBackgroundImageWithColor:PinkColor forState:UIControlStateNormal];
+    [self.likeButton setBackgroundImageWithColor:MainThemeColor forState:UIControlStateNormal];
     [self.likeButton setImage:[UIImage imageNamed:@"LikeWhite.png"] forState:UIControlStateNormal];
     [self.likeButton setTitle:@"You liked this sonic :)" forState:UIControlStateNormal];
     [self.likeButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
@@ -633,7 +633,7 @@
 
 - (void) setResonicButtonSelected
 {
-    [self.resonicButton setBackgroundImageWithColor:PinkColor forState:UIControlStateNormal];
+    [self.resonicButton setBackgroundImageWithColor:MainThemeColor forState:UIControlStateNormal];
     [self.resonicButton setImage:[UIImage imageNamed:@"ResonicWhite.png"] forState:UIControlStateNormal];
     [self.resonicButton setTitle:@"You resoniced this sonic :)" forState:UIControlStateNormal];
     [self.resonicButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];

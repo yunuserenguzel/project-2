@@ -570,7 +570,7 @@ typedef enum SonicRecordType {
     [self.soundTimeSlider setFrame:[self soundTimeSliderFrame]];
     [self.soundTimeSlider setMinimumValue:0.0];
     [self.soundTimeSlider setMaximumValue:SonicMaximumSoundInterval];
-    [self.soundTimeSlider setFillColor:PinkColor];
+    [self.soundTimeSlider setFillColor:MainThemeColor];
     [self.soundTimeSlider setBaseColor:[UIColor whiteColor]];
     [self.view addSubview:self.soundTimeSlider];
 }

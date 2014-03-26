@@ -33,7 +33,8 @@
 
 #define FullnameTextColor rgb(101.0,101.0,101.0)
 
-#define SonicPlaceholderImage [UIImage imageNamed:@"PhotoBaseWithLogo.png"]
+//#define SonicPlaceholderImage [UIImage imageNamed:@"PhotoBaseWithLogo.png"]
+#define UserPlaceholderImage [UIImage imageNamed:@"avatar.png"]
 
 #define PersonTableCellHeight 66.0
 #define NotificationTableCellHeight 64.0

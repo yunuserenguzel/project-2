@@ -138,7 +138,7 @@
     [self addSubview:self.segmentedControl];
     [self.segmentedControl sizeToFit];
     [self.segmentedControl setFrame:[self segmentedBarMaxFrame]];
-    [self.segmentedControl setTintColor:PinkColor];
+    [self.segmentedControl setTintColor:MainThemeColor];
 }
 - (void) addTargetForTapToTop:(id)target action:(SEL)selector
 {

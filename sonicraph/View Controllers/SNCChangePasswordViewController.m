@@ -67,14 +67,14 @@
         field.textAlignment = NSTextAlignmentCenter;
         field.borderStyle = UITextBorderStyleNone;
         field.font = [UIFont boldSystemFontOfSize:16.0];
-        field.textColor = PinkColor;
+        field.textColor = MainThemeColor;
         field.layer.borderColor = CellSpacingLineGrayColor.CGColor;
         field.layer.borderWidth = 1.0;
         field.leftView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)];
         field.leftViewMode = UITextFieldViewModeAlways;
         field.rightView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)];
         field.rightViewMode = UITextFieldViewModeAlways;
-        field.tintColor = PinkColor;
+        field.tintColor = MainThemeColor;
         [field addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
     }
     
@@ -82,7 +82,7 @@
     [self.saveButton setFrame:[self saveButtonFrame]];
     [self.saveButton setTitle:@"Changing..." forState:UIControlStateSelected];
     [self.saveButton setTitle:@"Change" forState:UIControlStateNormal];
-    [self.saveButton setTitleColor:PinkColor forState:UIControlStateNormal];
+    [self.saveButton setTitleColor:MainThemeColor forState:UIControlStateNormal];
     [self.saveButton setTitleColor:LightPinkTextColor forState:UIControlStateSelected];
     [self.saveButton setTitleColor:LightPinkTextColor forState:UIControlStateHighlighted];
     [self.saveButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];

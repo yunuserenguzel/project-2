@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = @"My Profile";
-    UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
+    UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
     [self.navigationItem setRightBarButtonItem:barButtonItem];
     [self.profileHeaderView.likedSonicsButton setHidden:NO];
     [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
@@ -75,6 +75,7 @@
 
 - (void) refreshForNewLogin:(NSNotification*)notification
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
     [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];
 }
 

@@ -18,10 +18,25 @@
 #import "SNCAppDelegate.h"
 #import "UIButton+StateProperties.h"
 #import "AuthenticationManager.h"
+
+@interface UICollectionViewFlowLayout (WihtoutInsertAnimation)
+
+@end
+
+@implementation UICollectionViewFlowLayout (WihtoutInsertAnimation)
+
+- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    return nil;
+}
+
+@end
+
 @interface SNCProfileViewController ()
 
 
 @property SonicArray* likedSonics;
+@property UIActivityIndicatorView* activityIndicator;
 
 @end
 
@@ -33,6 +48,7 @@
     BOOL shouldShowFollowers;
     BOOL isLoadingFromServer;
     SonicViewControllerInitiationType sonicViewControllerInitiationType;
+    SNCHomeTableCell* cellWiningTheCenter;
 }
 
 - (CGRect) profileHeaderViewFrame
@@ -119,10 +135,112 @@
     
 }
 
+
+- (void) autoPlay:(UIScrollView*)scrollView
+{
+    if(scrollView != self.sonicListTableView)
+    {
+        return;
+    }
+    
+    CGFloat x = self.sonicListTableView.contentOffset.x;
+    CGFloat y = self.sonicListTableView.contentOffset.y + self.sonicListTableView.frame.size.height * 0.5;
+    CGFloat width = self.sonicListTableView.frame.size.width;
+    CGFloat height = HeightForHomeCell * 0.5;
+    y -= height * 0.5;
+    CGRect rect = CGRectMake(x, y, width, height);
+    
+    NSArray* indexPaths = [self.sonicListTableView indexPathsForRowsInRect:rect];
+    if([indexPaths count] == 1 && scrollView.contentOffset.y > -75){
+        cellWiningTheCenter = (SNCHomeTableCell*)[self.sonicListTableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cellWiningTheCenter cellWonCenterOfTableView];
+        });
+    }
+    else {
+        for(NSIndexPath* indexPath in indexPaths)
+        {
+            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.sonicListTableView cellForRowAtIndexPath:indexPath];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cell cellLostCenterOfTableView];
+            });
+        }
+    }
+    
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    //stop auto playing
+    [cellWiningTheCenter cellLostCenterOfTableView];
+    
+    if(self.user && !isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0 && !showLikedSonics)
+    {
+        isLoadingFromServer = YES;
+        if(self.activityIndicator == nil)
+        {
+            self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        }
+        [self.activityIndicator setFrame:CGRectMake(0.0, scrollView.contentSize.height, 320.0, 44.0)];
+        [scrollView addSubview:self.activityIndicator];
+        [self.activityIndicator startAnimating];
+        [SNCAPIManager getUserSonics:self.user before:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
+            NSUInteger from = self.sonics.count;
+            [self.sonics importSonicsWithArray:sonics];
+            NSUInteger to = self.sonics.count;
+            if(sonics.count > 0)
+            {
+                isLoadingFromServer = NO;
+            }
+            [self.activityIndicator stopAnimating];
+            [self.activityIndicator removeFromSuperview];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshFrom:from to:to];
+                [self.activityIndicator setFrame:CGRectMake(0.0, scrollView.contentSize.height, 320.0, 44.0)];
+            });
+        } andErrorBlock:^(NSError *error) {
+            isLoadingFromServer = NO;
+            [self.activityIndicator removeFromSuperview];
+        }];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!decelerate)
+    {
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self autoPlay:scrollView];
+        });
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self autoPlay:scrollView];
+    });
+}
+
+- (void) stopPlaying
+{
+    for(SNCHomeTableCell* cell in [self.sonicListTableView visibleCells])
+    {
+        [cell cellLostCenterOfTableView];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self stopPlaying];
+}
+
 - (void) openEditProfile
 {
     [self performSegueWithIdentifier:EditProfileSegue sender:self];
 }
+
 -(void) removeSonic:(NSNotification*)notification
 {
     Sonic* sonic = notification.object;
@@ -139,7 +257,8 @@
 }
 - (void)setUser:(User *)user
 {
-    if (user) {
+    if (user)
+    {
         _user = user;
         [self configureViews];
         isLoadingFromServer = YES;
@@ -170,7 +289,6 @@
     self.profileHeaderView.numberOfSonicsLabel.text = [NSString stringWithFormat:@"%d",self.user.sonicCount];
     self.profileHeaderView.numberOfFollowersLabel.text = [NSString stringWithFormat:@"%d",self.user.followerCount];
     self.profileHeaderView.numberOfFollowingsLabel.text = [NSString stringWithFormat:@"%d",self.user.followingCount];
-    
     [self configureFollowButton];
 }
 
@@ -240,9 +358,7 @@
     {
         [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
     }
-    
 }
-
 
 - (void) tapGesture:(UIGestureRecognizer*)tapGesture
 {
@@ -266,7 +382,7 @@
     self.sonicCollectionView = [[UICollectionView alloc] initWithFrame:[self sonicCollectionViewFrame] collectionViewLayout:self.sonicCollectionViewFlowLayout];
     [self.sonicCollectionView setDataSource:self];
     [self.sonicCollectionView setDelegate:self];
-    [self.sonicCollectionView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 0.0, 0.0)];
+    [self.sonicCollectionView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 44.0, 0.0)];
     [self.sonicCollectionView registerClass:[SonicCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.sonicCollectionView setBackgroundColor:[UIColor lightGrayColor]];
     [self.sonicCollectionView setShowsVerticalScrollIndicator:NO];
@@ -294,12 +410,15 @@
     [self.profileHeaderView.gridViewButton setSelected:NO];
     [self.profileHeaderView.likedSonicsButton setSelected:NO];
     [self.sonicListTableView addSubview:self.profileHeaderView];
-    
+    [self stopPlaying];
     if([self.sonicListTableView isHidden] == YES){
         [self.sonicCollectionView setHidden:YES];
         [self.sonicListTableView setHidden:NO];
     }
     [self.sonicListTableView reloadData];
+    [self.sonicListTableView setContentOffset:self.sonicCollectionView.contentOffset animated:NO];
+    [self.sonicListTableView setContentOffset:CGPointMake(0.0, -44.0) animated:YES];
+    [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -44.0) animated:NO];
 }
 
 - (void) setGridViewModeOn
@@ -309,11 +428,15 @@
     [self.profileHeaderView.likedSonicsButton setSelected:NO];
     [self.sonicCollectionView addSubview:self.profileHeaderView];
     showLikedSonics = NO;
+    [self stopPlaying];
     if([self.sonicCollectionView isHidden] == YES){
         [self.sonicCollectionView setHidden:NO];
         [self.sonicListTableView setHidden:YES];
     }
     [self.sonicCollectionView reloadData];
+    [self.sonicCollectionView setContentOffset:self.sonicListTableView.contentOffset animated:NO];
+    [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -44.0) animated:YES];
+    [self.sonicListTableView setContentOffset:CGPointMake(0.0, -44.0) animated:NO];
 }
 - (void) showLikedSonics
 {
@@ -357,46 +480,21 @@
     return HeightForHomeCell;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+
+- (void) refreshFrom:(NSUInteger)from to:(NSUInteger)to
 {
-    if(self.user && !isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
-    {
-        isLoadingFromServer = YES;
-        [SNCAPIManager getUserSonics:self.user before:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
-//            NSUInteger from = self.sonics.count-1;
-            [self.sonics importSonicsWithArray:sonics];
-//            NSUInteger to = self.sonics.count;
-            if(sonics.count > 0)
-            {
-                isLoadingFromServer = NO;
-            }
-            [self refresh];
-        } andErrorBlock:^(NSError *error) {
-            isLoadingFromServer = NO;
-        }];
+    if (from < to) {
+        NSMutableArray* indexPaths = [NSMutableArray new];
+        
+        for (int i=from; i < to; i++) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        }
+        [self.sonicListTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        [self.sonicCollectionView insertItemsAtIndexPaths:indexPaths];
     }
-}
-
-
-- (void) viewWillAppear:(BOOL)animated
-{
     
 }
-
-//- (void) refreshFrom:(NSUInteger)from to:(NSUInteger)to
-//{
-//    if (from < to) {
-//        NSMutableArray* indexPaths = [NSMutableArray new];
-//        
-//        for (int i=from; from < to; from++) {
-//            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-//        
-//        }
-//        [self.sonicListTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-//        [self.sonicCollectionView reloadItemsAtIndexPaths:indexPaths];
-//    }
-//    
-//}
 
 - (void) refresh
 {

@@ -230,7 +230,7 @@
         <!--Sonic View Controller-->
         <scene sceneID="5vf-Bv-5ay">
             <objects>
-                <viewController id="N56-gF-1FD" customClass="SNCSonicViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SonicViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="N56-gF-1FD" customClass="SNCSonicViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EG2-UR-2Ig"/>
                         <viewControllerLayoutGuide type="bottom" id="a3g-iN-MI0"/>
@@ -458,9 +458,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="FBU-PY-Jaz"/>
+        <segue reference="FTh-mS-2kq"/>
+        <segue reference="djt-so-LCv"/>
         <segue reference="hm7-BI-Gmx"/>
         <segue reference="xgg-1F-Qkn"/>
-        <segue reference="FTh-mS-2kq"/>
     </inferredMetricsTieBreakers>
 </document>

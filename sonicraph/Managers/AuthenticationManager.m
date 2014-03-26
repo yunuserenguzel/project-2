@@ -56,9 +56,9 @@ static AuthenticationManager* sharedInstance = nil;
     }
 }
 
-- (void)registerUserWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+- (void)registerUserWithEmail:(NSString *)email andPassword:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    [SNCAPIManager registerWithUsername:username email:email password:password andCompletionBlock:^(User *user, NSString *token) {
+    [SNCAPIManager registerWithEmail:email password:password andCompletionBlock:^(User *user, NSString *token) {
         [self clearThirdPartyAppLogins];
         self.token = token;
         self.authenticatedUser = user;

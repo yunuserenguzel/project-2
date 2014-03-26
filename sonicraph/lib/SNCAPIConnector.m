@@ -16,8 +16,7 @@
 {
     static SNCAPIConnector* sharedInstance = nil;
     if(sharedInstance == nil){
-        sharedInstance = [[SNCAPIConnector alloc] initWithHostName:@"sonicraph.herokuapp.com/api"];
-//        sharedInstance = [[SNCAPIConnector alloc] initWithHostName:@"localhost:3000/api"];
+        sharedInstance = [[SNCAPIConnector alloc] initWithHostName:@"www.sonicraph.com/api"];
     }
     return sharedInstance;
 }

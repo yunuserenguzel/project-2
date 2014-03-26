@@ -14,9 +14,8 @@
 #import "SNCCameraViewController.h"
 
 #import "AuthenticationManager.h"
+#import "SonicPresenter.h"
 
-#import "SNCSonicViewController.h"
-#import "SNCNavigationViewController.h"
 
 static SNCAppDelegate* sharedInstance = nil;
 
@@ -46,15 +45,7 @@ static SNCAppDelegate* sharedInstance = nil;
 
 - (void) userLoggedIn
 {
-}
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
-{
-    if (!url) {  return NO; }
     
-    UIAlertView *alertView;
-    alertView = [[UIAlertView alloc] initWithTitle:@"Launch by URL" message:[NSString stringWithFormat:@"This app was launched from a URL: %@",url] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
-    return YES;
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -69,24 +60,8 @@ static SNCAppDelegate* sharedInstance = nil;
     {
         if([url.host isEqualToString:@"sonic"])
         {
-            SNCNavigationViewController* navigationController = [[SNCNavigationViewController alloc] init];
-            SNCSonicViewController* sonicViewController = [[SNCSonicViewController alloc] init];
-//            navigationController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] init];
-            [navigationController pushViewController:sonicViewController animated:NO];
-            dispatch_async(dispatch_get_main_queue(), ^{
-               [self.tabbarController presentViewController:navigationController animated:YES completion:^{
-                   
-               }];
-            });
-            [SNCAPIManager getSonicWithId:url.lastPathComponent withCompletionBlock:^(id object) {
-                [sonicViewController setSonic:object];
-            } andErrorBlock:^(NSError *error) {
-                
-            }];
+            [[SonicPresenter sharedInstance] presentSonicWithId:url.lastPathComponent];
         }
-//        UIAlertView *alertView;
-//        alertView = [[UIAlertView alloc] initWithTitle:@"Launch by URL" message:[NSString stringWithFormat:@"This app was launched from (%@) a URL: %@",sourceApplication,url] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//        [alertView show];
         return YES;
         
     }

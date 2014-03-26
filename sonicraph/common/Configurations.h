@@ -19,6 +19,8 @@
 #define SonicCollectionViewCellSize CGSizeMake(106.0,106.0)
 #define HeightForHomeCell 455.0
 
+#define MainThemeColor rgb(221, 90, 98)
+
 #define NavigationBarBlueColor rgb(45.0, 173.0, 254.0)
 #define PinkColor rgb(244.0, 75.0, 122.0)
 #define DarkPinkColor rgb(244.0*0.9, 75.0*0.9, 122.0*0.9)

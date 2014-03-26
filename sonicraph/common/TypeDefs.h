@@ -9,6 +9,9 @@
 #ifndef sonicraph_TypeDefs_h
 #define sonicraph_TypeDefs_h
 
+
+#define ErrorCodeUsernameOrPasswordIsWrong 320
+
 #define EditSonicSegue @"EditSonicSegue"
 #define ShareSonicSegue @"ShareSonicSegue"
 #define ProfileToPreviewSegue @"ProfileToPreviewSegue"

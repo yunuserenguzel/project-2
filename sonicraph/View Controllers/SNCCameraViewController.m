@@ -381,11 +381,11 @@ typedef enum SonicRecordType {
     capturedImage = [UIImage imageWithData:UIImageJPEGRepresentation(image, 0.33)];
     if(capturedImageOrientation == UIDeviceOrientationLandscapeLeft)
     {
-        capturedImage = [self image:capturedImage rotate:UIImageOrientationLeft];
+        capturedImage = [self image:capturedImage rotate:(isMainCamera?UIImageOrientationLeft:UIImageOrientationRight)];
     }
     else if (capturedImageOrientation == UIDeviceOrientationLandscapeRight)
     {
-        capturedImage = [self image:capturedImage rotate:UIImageOrientationRight];
+        capturedImage = [self image:capturedImage rotate:(isMainCamera?UIImageOrientationRight:UIImageOrientationLeft)];
     }
     else if (capturedImageOrientation == UIDeviceOrientationPortraitUpsideDown)
     {
@@ -609,6 +609,7 @@ typedef enum SonicRecordType {
 {
     capturedAudio = nil;
     capturedImage = nil;
+    [self.equalizer stopAnimating];
     [self.soundTimer invalidate];
     [self.mediaManager stopAudioRecording];
     [self.recordButton setEnabled:YES];
@@ -691,14 +692,7 @@ typedef enum SonicRecordType {
 // Failed to get current location
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-//    UIAlertView *errorAlert = [[UIAlertView alloc]
-//							   initWithTitle:@"Error"
-//                               message:@"Failed to Get Your Location"
-//                               delegate:nil
-//                               cancelButtonTitle:@"OK"
-//                               otherButtonTitles:nil];
-//    // Call alert
-//	[errorAlert show];
+
 }
 
 // Got location and now update

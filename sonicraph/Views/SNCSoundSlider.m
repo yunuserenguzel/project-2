@@ -8,6 +8,8 @@
 
 #import "SNCSoundSlider.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Configurations.h"
+
 
 @interface SNCSoundSlider ()
 
@@ -48,6 +50,7 @@
     [self.fillView.layer setShadowOpacity:1.0f];
     [self.fillView.layer setShadowRadius:1.0f];
     [self setFillColor:[UIColor redColor]];
+    [self setFillColor:MainThemeColor];
     [self setBaseColor:[UIColor clearColor]];
 }
 

@@ -111,7 +111,6 @@
 - (id) initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]){
-//        NSLog(@"sonicplayerviewframe: %@", CGRectCreateDictionaryRepresentation(frame));
         [self initViews];
     }
     return self;
@@ -196,10 +195,10 @@
     }
 }
 
-
 - (void)setSonicUrl:(NSURL *)sonicUrl
 {
     if(![[self.sonicUrl path] isEqualToString:sonicUrl.path]){
+        [self.soundSlider setValue:0.0];
         [self setSonic:nil];
         _sonicUrl = sonicUrl;
         [self downloadSonicData];

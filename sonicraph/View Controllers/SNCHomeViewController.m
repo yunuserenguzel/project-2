@@ -156,12 +156,13 @@
             break;
     }
     [self performSegueWithIdentifier:ViewSonicSegue sender:self];
-    
 }
 
 - (void) refresh
 {
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -175,7 +176,7 @@
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [cellWiningTheCenter cellLostCenterOfTableView];
+    [self stopPlaying];
 }
 
 
@@ -200,12 +201,23 @@
         [cell setSonic:[self.sonics objectAtIndex:indexPath.row]];
         cell.delegate = self;
     }
-
     return cell;
+}
+
+- (void) stopPlaying
+{
+    for(SNCHomeTableCell* cell in [self.tableView visibleCells])
+    {
+        [cell cellLostCenterOfTableView];
+    }
 }
 
 - (void) autoPlay:(UIScrollView*)scrollView
 {
+    if([self.refreshControl isRefreshing])
+    {
+        return;
+    }
     CGFloat x = self.tableView.contentOffset.x;
     CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
     CGFloat width = self.tableView.frame.size.width;
@@ -221,15 +233,16 @@
         });
     }
     else {
-        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath* indexPath, NSUInteger idx, BOOL *stop) {
+        for(NSIndexPath* indexPath in indexPaths)
+        {
             SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [cell cellLostCenterOfTableView];
             });
-        }];
+        }
     }
-    
 }
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

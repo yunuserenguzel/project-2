@@ -30,7 +30,6 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                    withCompletionBlock:(CompletionIdBlock)completionBlock
                          andErrorBlock:(ErrorBlock)errorBlock;
 
-
 + (MKNetworkOperation*)getSonicsWithParams:(NSMutableDictionary *)params
                        withCompletionBlock:(CompletionArrayBlock)completionBlock
                              andErrorBlock:(ErrorBlock)errorBlock;
@@ -39,11 +38,10 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                       withCompletionBlock:(CompletionUserBlock)block
                             andErrorBlock:(ErrorBlock)errorBlock;
 
-+ (MKNetworkOperation *) registerWithUsername:(NSString*)username
-                                        email:(NSString*)email
-                                     password:(NSString*)password
-                           andCompletionBlock:(CompletionUserBlock)completionBlock
-                                andErrorBlock:(ErrorBlock)errorBlock;
++ (MKNetworkOperation *) registerWithEmail:(NSString*)email
+                                  password:(NSString*)password
+                        andCompletionBlock:(CompletionUserBlock)completionBlock
+                             andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation *) loginWithUsername:(NSString*) username
                                andPassword:(NSString*)password

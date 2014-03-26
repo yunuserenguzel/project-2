@@ -24,7 +24,7 @@
 
 - (void)authenticateWithUsername:(NSString *)username andPassword:(NSString *)password shouldRemember:(BOOL)shouldRemember withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 
-- (void) registerUserWithEmail:(NSString*)email andUsername:(NSString*)username andPassword:(NSString*)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
+- (void) registerUserWithEmail:(NSString*)email andPassword:(NSString*)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock;
 
 
 - (void) logout;

@@ -220,6 +220,7 @@
 		AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EED1801A39F000DF866 /* MKNetworkOperation.m */; };
 		AED56EFA1801A39F000DF866 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56EF01801A39F000DF866 /* Reachability.m */; };
 		AED56F081801B425000DF866 /* SNCAPITest.m in Sources */ = {isa = PBXBuildFile; fileRef = AED56F071801B425000DF866 /* SNCAPITest.m */; };
+		AEDA48EB18E17EF0006D42B8 /* SonicPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA48EA18E17EF0006D42B8 /* SonicPresenter.m */; };
 		AEDAADF6185DB802001DD389 /* SNCTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAADF5185DB802001DD389 /* SNCTabbarController.m */; };
 		AEDAAE06185DBD77001DD389 /* UIButton+StateProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */; };
 		AEDAAE0D185DDAFC001DD389 /* TypeDefs.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAAE0C185DDAFC001DD389 /* TypeDefs.m */; };
@@ -825,6 +826,8 @@
 		AED56EF01801A39F000DF866 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		AED56F061801B425000DF866 /* SNCAPITest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNCAPITest.h; path = test/SNCAPITest.h; sourceTree = "<group>"; };
 		AED56F071801B425000DF866 /* SNCAPITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SNCAPITest.m; path = test/SNCAPITest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		AEDA48E918E17EF0006D42B8 /* SonicPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicPresenter.h; sourceTree = "<group>"; };
+		AEDA48EA18E17EF0006D42B8 /* SonicPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicPresenter.m; sourceTree = "<group>"; };
 		AEDAADD9185C941C001DD389 /* Configurations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurations.h; sourceTree = "<group>"; };
 		AEDAADF4185DB802001DD389 /* SNCTabbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCTabbarController.h; sourceTree = "<group>"; };
 		AEDAADF5185DB802001DD389 /* SNCTabbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCTabbarController.m; sourceTree = "<group>"; };
@@ -1103,6 +1106,8 @@
 				AED277F818B0FA5400C17F19 /* UIViewController+CustomMethods.m */,
 				AEAB5BC618B20916004641DA /* SNCNavigationViewController.h */,
 				AEAB5BC718B20916004641DA /* SNCNavigationViewController.m */,
+				AEDA48E918E17EF0006D42B8 /* SonicPresenter.h */,
+				AEDA48EA18E17EF0006D42B8 /* SonicPresenter.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -2315,6 +2320,7 @@
 				AE7E18FC18966334009A9B7F /* UIImage+Resize.m in Sources */,
 				AED56EFA1801A39F000DF866 /* Reachability.m in Sources */,
 				AE2768C718DE21D7008D75F4 /* SMPageControl.m in Sources */,
+				AEDA48EB18E17EF0006D42B8 /* SonicPresenter.m in Sources */,
 				AE86EECE18316CA800F74F1D /* Mp3ConverterInterface.m in Sources */,
 				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
 				AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */,

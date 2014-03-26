@@ -494,19 +494,6 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                           withCompletionBlock:completionBlock
                                 andErrorBlock:errorBlock];
 }
-//
-//+ (void) getSonicsBefore:(Sonic*)sonic withCompletionBlock:(Block)completionBlock
-//{
-//    NSNumber* count = [NSNumber numberWithInt:20];
-//    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
-//    [params setObject:token forKey:@"token"];
-//    if(sonic != nil){
-//        [params setObject:sonic.sonicId forKey:@"before_sonic"];
-//    }
-//    [params setObject:count forKey:@"count"];
-//    [SNCAPIManager getSonicsWithParams:params saveToDatabase:YES withCompletionBlock:completionBlock andErrorBlock:nil];
-//}
-//
 
 + (MKNetworkOperation *)getSonicWithId:(NSString *)sonicId withCompletionBlock:(CompletionIdBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
@@ -578,11 +565,9 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             } andErrorBlock:errorBlock];
 }
 
-
-+ (MKNetworkOperation *)registerWithUsername:(NSString *)username email:(NSString *)email password:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
++ (MKNetworkOperation *)registerWithEmail:(NSString *)email password:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSDictionary* params = @{@"username": username,
-                             @"email":email,
+    NSDictionary* params = @{@"email":email,
                              @"password":password};
     return [[SNCAPIConnector sharedInstance]
             postRequestWithParams:params
@@ -596,8 +581,6 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 }
             } andErrorBlock:errorBlock];
 }
-
-
 
 + (MKNetworkOperation *)getLikesOfSonic:(Sonic *)sonic withCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {

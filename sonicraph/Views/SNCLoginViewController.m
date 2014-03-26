@@ -55,10 +55,6 @@ static SNCLoginViewController* sharedInstance = nil;
 
 - (void)viewDidLoad
 {
-//    self.view.backgroundColor = [UIColor whiteColor];
-    
-//    [self.navigationController.navigationBar setHidden:NO];
-    
     self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
     [self.view addSubview:self.titleLabel];
     [self.titleLabel setText:@"Log in"];
@@ -71,7 +67,6 @@ static SNCLoginViewController* sharedInstance = nil;
     
     [self.usernameField setPlaceholder:@"Username"];
     [self.passwordField setPlaceholder:@"Password"];
-    
     [self.passwordField setSecureTextEntry:YES];
     
     [self.view addSubview:self.usernameField];
@@ -115,18 +110,26 @@ static SNCLoginViewController* sharedInstance = nil;
     }
     return YES;
 }
-
- - (void) login
+ 
+- (void) login
 {
+    UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [indicator setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:indicator];
+    [indicator startAnimating];
+    [self.view setUserInteractionEnabled:NO];
     [[AuthenticationManager sharedInstance]
      authenticateWithUsername:self.usernameField.text
      andPassword:self.passwordField.text
      shouldRemember:YES
-     withCompletionBlock:^(User *user, NSString *token) {
-
-     }
+     withCompletionBlock:nil
      andErrorBlock:^(NSError *error) {
-         
+         [indicator removeFromSuperview];
+         [self.view setUserInteractionEnabled:YES];
+         if(error.code == ErrorCodeUsernameOrPasswordIsWrong)
+         {
+             [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"Username or password is wrong please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+         }
      }];
 }
 

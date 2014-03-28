@@ -11,6 +11,7 @@
 #import "SNCFacebookManager.h"
 #import <Social/Social.h>
 #import "SNCAppDelegate.h"
+#import "NSString+Extended.h"
 
 #define DeleteConfirmAlertViewTag 1121212
 
@@ -27,7 +28,7 @@
                       delegate:self
              cancelButtonTitle:@"Cancel"
         destructiveButtonTitle:destructiveButtonTitle
-             otherButtonTitles:ShareOnFacebook,ShareOnTwitter,CopyUrl,openDetails, nil];
+             otherButtonTitles:ShareOnFacebook, ShareOnTwitter, ShareWithWhatsapp, CopyUrl, openDetails, nil];
     if(self)
     {
         _sonic = sonic;
@@ -76,7 +77,7 @@
         }
         else
         {
-            postText = [NSString stringWithFormat:@"Check out %@'s sonic",self.sonic.owner.username];
+            postText = [NSString stringWithFormat:@"Check out %@'s sonic",self.sonic.owner.fullName];
         }
         [tweetSheet setInitialText:postText];
         [tweetSheet addURL:[NSURL URLWithString:self.sonic.shareUrlString]];
@@ -88,6 +89,17 @@
     else if([buttonTitle isEqualToString:CopyUrl])
     {
         [[UIPasteboard generalPasteboard] setString:self.sonic.shareUrlString];
+    }
+    else if([buttonTitle isEqualToString:ShareWithWhatsapp])
+    {
+        NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",[self.sonic.shareUrlString urlencode]];
+        NSURL* whatsappURL = [NSURL URLWithString:urlWhats];
+        if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
+            [[UIApplication sharedApplication] openURL: whatsappURL];
+        } else {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has WhatsApp installed." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
     }
     if([actualDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)])
     {
@@ -122,7 +134,7 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0){
+    if(alertView.tag == DeleteConfirmAlertViewTag && buttonIndex == 0){
         [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
     }
 }

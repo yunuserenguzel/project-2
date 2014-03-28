@@ -11,6 +11,7 @@
 
 #define ShareOnFacebook @"Share on Facebook"
 #define ShareOnTwitter @"Share on Twitter"
+#define ShareWithWhatsapp @"Share with Whatsapp"
 #define CopyUrl @"Copy URL"
 #define Delete @"Delete"
 #define OpenDetails @"Open Details"

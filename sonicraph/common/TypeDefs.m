@@ -24,3 +24,4 @@ CGRect CGRectByRatio(CGRect maxRect, CGRect minRect, CGFloat ratio)
     
     return rect;
 }
+

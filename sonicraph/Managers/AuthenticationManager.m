@@ -11,11 +11,13 @@
 #import "SNCLoginViewController.h"
 #import "TypeDefs.h"
 #import "UserPool.h"
+#import "SNCEditProfileViewController.h"
+#import "SNCGoThroughViewController.h"
+#import "SNCNavigationViewController.h"
+
+
 #define AuthenticationManagerUserDefaultsTokenKey @"AuthenticationManagerUserDefaultsTokenKey"
 #define AuthenticationManagerUserDefaultsUserKey @"AuthenticationManagerUserDefaultsUserKey"
-
-#import "SNCGoThroughViewController.h"
-
 static AuthenticationManager* sharedInstance = nil;
 
 @implementation AuthenticationManager
@@ -54,19 +56,27 @@ static AuthenticationManager* sharedInstance = nil;
     {
         [self setAuthenticatedUser:notification.object];
     }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self checkUsernameAndFullname];
+    });
 }
-
+- (void) initializeSessionWithToken:(NSString*)token andUser:(User*)user
+{
+    [self clearThirdPartyAppLogins];
+    self.token = token;
+    self.authenticatedUser = user;
+    _isUserAuthenticated = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:user];
+        [self displayApplicationView];
+        
+    });
+    
+}
 - (void)registerUserWithEmail:(NSString *)email andPassword:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     [SNCAPIManager registerWithEmail:email password:password andCompletionBlock:^(User *user, NSString *token) {
-        [self clearThirdPartyAppLogins];
-        self.token = token;
-        self.authenticatedUser = user;
-        _isUserAuthenticated = YES;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:nil];
-            [self displayApplicationView];
-        });
+        [self initializeSessionWithToken:token andUser:user];
         if(completionBlock){
             completionBlock(user,token);
         }
@@ -90,14 +100,7 @@ static AuthenticationManager* sharedInstance = nil;
     
     [SNCAPIManager loginWithUsername:username andPassword:password withCompletionBlock:^(User *user,NSString* token) {
         NSLog(@"%@",user);
-        [self clearThirdPartyAppLogins];
-        self.token = token;
-        self.authenticatedUser = user;
-        _isUserAuthenticated = YES;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:user];
-            [self displayApplicationView];
-        });
+        [self initializeSessionWithToken:token andUser:user];
         if(block){
             block( user, token );
         }
@@ -110,8 +113,9 @@ static AuthenticationManager* sharedInstance = nil;
         }
         NSLog(@"%@", error );
     }];
-    
 }
+
+
 
 - (void)setToken:(NSString *)token
 {
@@ -207,12 +211,27 @@ static AuthenticationManager* sharedInstance = nil;
 //    }
 //}
 
+- (void) checkUsernameAndFullname
+{
+    if (self.authenticatedUser.username == nil || self.authenticatedUser.username.length == 0 || self.authenticatedUser.fullName == nil || self.authenticatedUser.fullName.length == 0)
+    {
+        [self editProfileView];
+    }
+}
+
+- (void) editProfileView
+{
+    SNCNavigationViewController* navigationController = [[SNCNavigationViewController alloc] init];
+    SNCEditProfileForRegistrationViewController* editProfile = [[SNCEditProfileForRegistrationViewController alloc] init];
+    [navigationController pushViewController:editProfile animated:YES];
+    [[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentViewController:navigationController animated:YES completion:nil];
+}
+
 - (void) displayApplicationView
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    UIViewController *vc = [storyboard instantiateInitialViewController];
-//    [[[[UIApplication sharedApplication] delegate] window] setRootViewController:vc];
-    [goThrough dismissViewControllerAnimated:YES completion:nil];
+    [goThrough dismissViewControllerAnimated:YES completion:^{
+        [self checkUsernameAndFullname];
+    }];
     UITabBarController* tabbar = (UITabBarController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
     [tabbar setSelectedIndex:0];
 }

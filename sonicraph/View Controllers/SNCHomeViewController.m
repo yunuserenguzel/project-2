@@ -90,6 +90,11 @@
     self.bottomActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.bottomActivityIndicator.frame = [self tableFooterViewRect];
     [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
+    
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gothroughbackground.png"]];
+    imageView.alpha = 0.2;
+    imageView.frame = CGRectMake(0.0, 0.0, self.tableView.frame.size.width, self.tableView.frame.size.height);
+    self.tableView.backgroundView = imageView;
 }
 
 - (void) initRefreshController

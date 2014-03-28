@@ -76,6 +76,7 @@
 		AE7E18FC18966334009A9B7F /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FB18966334009A9B7F /* UIImage+Resize.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		AE7E19011896641D009A9B7F /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		AE7E19021896641D009A9B7F /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		AE86E9F818E40B0D00DF82BA /* NSString+Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86E9F718E40B0D00DF82BA /* NSString+Extended.m */; };
 		AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* SonicData.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
 		AE86EE8A182C0DF300F74F1D /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE85182C0DF300F74F1D /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -373,6 +374,8 @@
 		AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		AE7E18FF1896641D009A9B7F /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
 		AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		AE86E9F618E40B0D00DF82BA /* NSString+Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extended.h"; sourceTree = "<group>"; };
+		AE86E9F718E40B0D00DF82BA /* NSString+Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extended.m"; sourceTree = "<group>"; };
 		AE86EE79182C0DA800F74F1D /* SonicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicData.h; sourceTree = "<group>"; };
 		AE86EE7A182C0DA800F74F1D /* SonicData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicData.m; sourceTree = "<group>"; };
 		AE86EE7D182C0DC000F74F1D /* NMRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMRangeSlider.h; sourceTree = "<group>"; };
@@ -953,6 +956,31 @@
 			name = "Camera View Controllers";
 			sourceTree = "<group>";
 		};
+		AE86E9EC18E40AEC00DF82BA /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				AEDAAE04185DBD77001DD389 /* UIButton+StateProperties.h */,
+				AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */,
+				AEDAAE171863A015001DD389 /* UIImage+imageForSoundData.h */,
+				AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */,
+				AE7E18FD1896641D009A9B7F /* UIImage+Alpha.h */,
+				AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */,
+				AE7E18FF1896641D009A9B7F /* UIImage+RoundedCorner.h */,
+				AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */,
+				AE7E18FA18966334009A9B7F /* UIImage+Resize.h */,
+				AE7E18FB18966334009A9B7F /* UIImage+Resize.m */,
+				AEDAEEA418A02FFC00D38D6C /* UIImage+scaleToSize.h */,
+				AEDAEEA518A02FFC00D38D6C /* UIImage+scaleToSize.m */,
+				AEDAAE2218650B5B001DD389 /* NSDate+NVTimeAgo.h */,
+				AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */,
+				AE86EE9A182E741900F74F1D /* NSData+Base64.h */,
+				AE86EE9B182E741900F74F1D /* NSData+Base64.m */,
+				AE86E9F618E40B0D00DF82BA /* NSString+Extended.h */,
+				AE86E9F718E40B0D00DF82BA /* NSString+Extended.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		AE86EE77182C0DA800F74F1D /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1016,28 +1044,13 @@
 		AE86EE82182C0DF300F74F1D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AE86E9EC18E40AEC00DF82BA /* Categories */,
 				AE2768C518DE21D7008D75F4 /* SMPageControl.h */,
 				AE2768C618DE21D7008D75F4 /* SMPageControl.m */,
 				AE10C3D918C721D200AD4D1A /* HPGrowingTextView */,
 				AE86EE83182C0DF300F74F1D /* JSONKit */,
-				AE7E18FD1896641D009A9B7F /* UIImage+Alpha.h */,
-				AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */,
-				AE7E18FF1896641D009A9B7F /* UIImage+RoundedCorner.h */,
-				AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */,
-				AE7E18FA18966334009A9B7F /* UIImage+Resize.h */,
-				AE7E18FB18966334009A9B7F /* UIImage+Resize.m */,
-				AEDAEEA418A02FFC00D38D6C /* UIImage+scaleToSize.h */,
-				AEDAEEA518A02FFC00D38D6C /* UIImage+scaleToSize.m */,
-				AEDAAE2218650B5B001DD389 /* NSDate+NVTimeAgo.h */,
-				AEDAAE2318650B5B001DD389 /* NSDate+NVTimeAgo.m */,
-				AE86EE9A182E741900F74F1D /* NSData+Base64.h */,
-				AE86EE9B182E741900F74F1D /* NSData+Base64.m */,
 				AE86EE86182C0DF300F74F1D /* SNCAPIConnector.h */,
 				AE86EE87182C0DF300F74F1D /* SNCAPIConnector.m */,
-				AEDAAE04185DBD77001DD389 /* UIButton+StateProperties.h */,
-				AEDAAE05185DBD77001DD389 /* UIButton+StateProperties.m */,
-				AEDAAE171863A015001DD389 /* UIImage+imageForSoundData.h */,
-				AEDAAE181863A015001DD389 /* UIImage+imageForSoundData.m */,
 				AEAE6E5918C4393300169596 /* SilentSwitchDetector.h */,
 				AEAE6E5A18C4393300169596 /* SilentSwitchDetector.m */,
 			);
@@ -2277,6 +2290,7 @@
 				AEDAAE1018623B0F001DD389 /* SNCSoundSlider.m in Sources */,
 				AEDED1E818BE682900FEB636 /* SNCFacebookManager.m in Sources */,
 				AE86EED41832C69600F74F1D /* SNCHomeViewController.m in Sources */,
+				AE86E9F818E40B0D00DF82BA /* NSString+Extended.m in Sources */,
 				AED0C48818B3598900725867 /* SNCResourceHandler.m in Sources */,
 				AE50426A18CB472900CD13ED /* SNCResizableTextView.m in Sources */,
 				AEB9F7AD187B34EC005F4988 /* SNCSettingsViewController.m in Sources */,

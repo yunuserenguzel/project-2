@@ -80,6 +80,18 @@
 - (void) save
 {
     [self.view endEditing:YES];
+
+    if(![self checkFullname])
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Name" message:@"name cannot be empty" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        return;
+    }
+    if(![self checkUsername])
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Username" message:@"Username cannot be empty" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        return;
+    }
+    
     if(self.changedFields.count > 0)
     {
         [self.tableView setUserInteractionEnabled:NO];
@@ -110,13 +122,13 @@
     SettingsField* imageSettings = [SettingsField k:@"Photo" sK:@"profile_image" v:nil t:SettingsTableCellImageValueIdentifier];
     self.fields1 = [NSMutableArray new];
     [self.fields1 addObject:imageSettings];
-    [self.fields1 addObject:[SettingsField k:@"Name" sK:@"fullname" v:self.user.fullName t:SettingsTableCellStringValueIdentifier]];
-    [self.fields1 addObject:[SettingsField k:@"Username" sK:@"username" v:self.user.username t:SettingsTableCellStringValueIdentifier]];
-    [self.fields1 addObject:[SettingsField k:@"Location" sK:@"location" v:self.user.location t:SettingsTableCellStringValueIdentifier]];
-    [self.fields1 addObject:[SettingsField k:@"Website" sK:@"website" v:self.user.website t:SettingsTableCellStringValueIdentifier]];
+    [self.fields1 addObject:[SettingsField k:FullNameVisibleKey sK:@"fullname" v:self.user.fullName t:SettingsTableCellStringValueIdentifier r:YES]];
+    [self.fields1 addObject:[SettingsField k:UserNameVisibleKey sK:@"username" v:self.user.username t:SettingsTableCellStringValueIdentifier r:YES]];
+    [self.fields1 addObject:[SettingsField k:LocationVisibleKey sK:@"location" v:self.user.location t:SettingsTableCellStringValueIdentifier]];
+    [self.fields1 addObject:[SettingsField k:WebsiteVisibleKey sK:@"website" v:self.user.website t:SettingsTableCellStringValueIdentifier]];
     self.fields2 = [NSMutableArray new];
     [self.fields2 addObject:[SettingsField k:@"MM / DD / YYYY" sK:@"date_of_birth" v:self.user.dateOfBirth t:SettingsTableCellDateValueIdentifier]];
-    [self.fields2 addObject:[SettingsField k:@"Gender" sK:@"gender" v:self.user.gender t:SettingsTableCellGenderValueIdentifier]];
+    [self.fields2 addObject:[SettingsField k:GenderVisibleKey sK:@"gender" v:self.user.gender t:SettingsTableCellGenderValueIdentifier]];
     [self.tableView reloadData];
     [self.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
         imageSettings.value = object;
@@ -180,6 +192,7 @@
     SettingsTableCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     [cell setKey:settingsField.key];
     [cell setValue:settingsField.value];
+    [cell setRequired:settingsField.required];
     [cell setDelegate:self];
     return cell;
 }
@@ -215,5 +228,38 @@
     }
 }
 
+- (BOOL) checkUsername
+{
+    if(self.user.username == nil || self.user.username.length == 0)
+    {
+        NSString* value = [self.changedFields objectForKey:@"username"];
+        if(value == nil || value.length == 0)
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+- (BOOL) checkFullname
+{
+    if(self.user.fullName == nil || self.user.fullName.length == 0)
+    {
+        NSString* value = [self.changedFields objectForKey:@"fullname"];
+        if(value == nil || value.length == 0)
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+@end
+
+@implementation SNCEditProfileForRegistrationViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = nil;
+}
 
 @end

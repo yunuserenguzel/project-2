@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "SettingsTableCell.h"
 
+
 @interface SNCEditProfileViewController : UITableViewController <SettingsTableCellProtocol>
+
+@end
+
+
+@interface SNCEditProfileForRegistrationViewController : SNCEditProfileViewController
 
 @end

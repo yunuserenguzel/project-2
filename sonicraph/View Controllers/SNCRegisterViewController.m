@@ -78,6 +78,9 @@
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
     [self.passwordField setSecureTextEntry:YES];
     
+    [self.emailField setReturnKeyType:UIReturnKeyNext];
+    [self.passwordField setReturnKeyType:UIReturnKeyDone];
+    
     [@[self.emailField,self.passwordField] enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger idx, BOOL *stop) {
         UIView* base = textFieldWithBaseAndLabel(textField);
         [textField setDelegate:self];
@@ -100,10 +103,22 @@
     UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
     [self.view addGestureRecognizer:tapGesture];
 }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.emailField)
+    {
+        [self.passwordField becomeFirstResponder];
+    }
+    else if(textField == self.passwordField)
+    {
+        [self.view endEditing:YES];
+        [self registerUser];
+    }
+    return YES;
+}
 
 - (void) openLogin
 {
-    
     SNCGoThroughViewController* goThrough = (SNCGoThroughViewController*)self.parentViewController;
     [goThrough showLoginViewController];
 }
@@ -115,11 +130,11 @@
 
 - (void) registerUser
 {
-//    [[AuthenticationManager sharedInstance] registerUserWithEmail:self.emailField.text andUsername:nil andPassword:self.passwordField.text andCompletionBlock:^(User *user, NSString *token) {
-//
-//    } andErrorBlock:^(NSError *error) {
-//        
-//    }];
+    [[AuthenticationManager sharedInstance] registerUserWithEmail:self.emailField.text andPassword:self.passwordField.text andCompletionBlock:^(User *user, NSString *token) {
+        
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning

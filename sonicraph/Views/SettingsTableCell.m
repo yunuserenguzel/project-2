@@ -14,10 +14,22 @@
 
 
 @implementation SettingsField
-+(SettingsField *)k:(NSString *)key sK:(NSString*)serverKey v:(id)value t:(NSString *)type
+
++ (SettingsField*) k:(NSString*)key sK:(NSString*)serverKey v:(id)value t:(NSString*)type;
 {
     SettingsField* settingsField = [[SettingsField alloc] init];
     settingsField.key = key;
+    settingsField.required = NO;
+    settingsField.serverKey = serverKey;
+    settingsField.value = value;
+    settingsField.type = type;
+    return settingsField;
+}
++(SettingsField *)k:(NSString *)key sK:(NSString*)serverKey v:(id)value t:(NSString *)type r:(BOOL)required
+{
+    SettingsField* settingsField = [[SettingsField alloc] init];
+    settingsField.key = key;
+    settingsField.required = required;
     settingsField.serverKey = serverKey;
     settingsField.value = value;
     settingsField.type = type;
@@ -163,7 +175,7 @@ CGFloat heightForIdentifier(NSString* identifier)
 - (void) initImageValueView
 {
     UIImageView* baseImageView = [[UIImageView alloc] initWithFrame:[self imageValueViewFrame]];
-    baseImageView.image = [UIImage imageNamed:@"EditProfilePhotoBase.png"];
+    baseImageView.image = UserPlaceholderImage;
     [self.contentView addSubview:baseImageView];
     
     self.imageValueView = [[UIImageView alloc] initWithFrame:[self imageValueViewFrame]];
@@ -314,7 +326,7 @@ CGFloat heightForIdentifier(NSString* identifier)
     }
     NSLog(@"string:%@ range: %d,%d",string,range.location,range.length);
     NSString* resultingText = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if ([self.key isEqualToString:@"Username"] && textField == self.stringValueField)
+    if ([self.key isEqualToString:UserNameVisibleKey] && textField == self.stringValueField)
     {
         NSString *searchedString = resultingText;
         NSRange   searchedRange = NSMakeRange(0, [searchedString length]);
@@ -374,17 +386,17 @@ CGFloat heightForIdentifier(NSString* identifier)
     {
         self.stringValueField.placeholder = key;
         [self.stringValueField setValue:UITextFieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-        if ([key isEqualToString:@"Username"] || [key isEqualToString:@"Website"])
+        if ([key isEqualToString:UserNameVisibleKey] || [key isEqualToString:WebsiteVisibleKey])
         {
             [self.stringValueField setSpellCheckingType:UITextSpellCheckingTypeNo];
             [self.stringValueField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         }
-        else if([key isEqualToString:@"Name"] || [key isEqualToString:@"Location"])
+        else if([key isEqualToString:FullNameVisibleKey] || [key isEqualToString:LocationVisibleKey])
         {
             [self.stringValueField setSpellCheckingType:UITextSpellCheckingTypeNo];
             [self.stringValueField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         }
-        if([key isEqualToString:@"Website"])
+        if([key isEqualToString:WebsiteVisibleKey])
         {
             [self.stringValueField setKeyboardType:UIKeyboardTypeURL];
         }

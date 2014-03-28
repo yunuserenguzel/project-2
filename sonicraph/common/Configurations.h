@@ -40,4 +40,11 @@
 #define NotificationTableCellHeight 64.0
 
 #define UserThumbnailSize CGSizeMake(200.0,200.0)
+
+#define FullNameVisibleKey @"Name (required)"
+#define UserNameVisibleKey @"Username (required)"
+#define LocationVisibleKey @"Location"
+#define WebsiteVisibleKey @"Website"
+#define GenderVisibleKey @"Gender"
+
 #endif

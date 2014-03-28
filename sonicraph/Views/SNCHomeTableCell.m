@@ -128,6 +128,11 @@
 - (void) initViews
 {
     
+    UIView* backgoundView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0,HeightForHomeCell-[self cellSpacingViewFrame].size.height)];
+    [self addSubview:backgoundView];
+    [backgoundView setBackgroundColor:[UIColor whiteColor]];
+    
+    
     self.sonicPlayerView = [[SonicPlayerView alloc] initWithFrame:[self sonicPlayerViewFrame]];
     [self addSubview:self.sonicPlayerView];
     [self addSubview:self.usernameLabel];
@@ -138,10 +143,12 @@
     self.cellSpacingView = [[UIImageView alloc] initWithFrame:[self cellSpacingViewFrame]];
     [self.cellSpacingView setBackgroundColor:CellSpacingGrayColor];
     [self addSubview:self.cellSpacingView];
+
     
     UIView* lineViewTop = [[UIView alloc] initWithFrame:CGRectMake(0.0, [self cellSpacingViewFrame].size.height-1.0, 320.0, 1.0)];
     [lineViewTop setBackgroundColor:CellSpacingLineGrayColor];
     [self.cellSpacingView addSubview:lineViewTop];
+    self.cellSpacingView.alpha = 0.0;
     
     UIView* lineViewBottom = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
     [lineViewBottom setBackgroundColor:CellSpacingLineGrayColor];
@@ -202,6 +209,7 @@
     [self.usernameLabel addGestureRecognizer:tapGesture];
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.userImageView addGestureRecognizer:tapGesture];
+    [self setBackgroundColor:[UIColor clearColor]];
 }
 
 - (void) tapGesture

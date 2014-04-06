@@ -28,6 +28,7 @@
 #define CellSpacingLineGrayColor rgb(230.0, 230.0, 230.0)
 #define LightPinkTextColor rgb(242, 156, 180)
 #define UITextFieldPlaceholderColor rgb(195, 195, 195)
+#define TabbarNonActiveButtonTintColor rgb(134, 134, 134)
 
 //#define CameraViewControllersBackgroundColor rgb(38.0,79.0,113.0)
 #define CameraViewControllersBackgroundColor rgb(59, 59, 59)

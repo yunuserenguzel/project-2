@@ -29,6 +29,7 @@
         self.commentCount = sonic.commentCount;
         self.isLikedByMe = sonic.isLikedByMe;
         self.isResonicedByMe = sonic.isResonicedByMe;
+        self.isCommentedByMe = sonic.isCommentedByMe;
         [[NSNotificationCenter defaultCenter]
          postNotificationName:NotificationUpdateViewForSonic
          object:self];

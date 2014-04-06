@@ -56,6 +56,7 @@
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellImageValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellGenderValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellButtonIdentifier];
+    [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellInfoIdentifier];
     [self prepareFields];
     [self.tableView reloadData];
 }
@@ -75,7 +76,7 @@
     [self.fields addObject:[NSMutableArray new]];
     [[self.fields objectAtIndex:2] addObject:[SettingsField k:FAQ sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
     [[self.fields objectAtIndex:2] addObject:[SettingsField k:LegalPrivacy sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
-    [[self.fields objectAtIndex:2] addObject:[SettingsField k:AppVersion sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    [[self.fields objectAtIndex:2] addObject:[SettingsField k:AppVersion sK:nil v:@"1.0" t:SettingsTableCellInfoIdentifier]];
     
     [self.fields addObject:[NSMutableArray new]];
     [[self.fields objectAtIndex:3] addObject:[SettingsField k:@"Logout" sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
@@ -152,6 +153,22 @@
     {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id828320730"]];
     }
+    else if ([settingsField.key isEqualToString:SendFeedback])
+    {
+        MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+        controller.mailComposeDelegate = self;
+        [controller setSubject:[NSString stringWithFormat:@"Feedback | %@ | %@",[[AuthenticationManager sharedInstance] authenticatedUser].fullName, [[AuthenticationManager sharedInstance] authenticatedUser].userId]];
+        [controller setToRecipients:@[@"feedback@sonicraph.com"]];
+        [self presentViewController:controller animated:YES completion:nil];
+    }
+    else if([settingsField.key isEqualToString:FAQ])
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/faq"]];
+    }
+    else if([settingsField.key isEqualToString:LegalPrivacy])
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/legal"]];
+    }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -176,6 +193,30 @@
             [self presentViewController:smsController animated:YES completion:nil];
         }
     }
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if(section == 2)
+    {
+        UITextView* textView = [[UITextView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 20.0)];
+        [textView setText:@"About Us"];
+        [textView setBackgroundColor:[UIColor clearColor]];
+        [textView setTextContainerInset:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
+        [textView setTextAlignment:NSTextAlignmentLeft];
+        [textView setTextColor:TabbarNonActiveButtonTintColor];
+        [textView setFont:[UIFont systemFontOfSize:16.0]];
+        return textView;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(section == 2)
+    {
+        return 25.0;
+    }
+    return 0.0;
 }
 
 - (void) messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result

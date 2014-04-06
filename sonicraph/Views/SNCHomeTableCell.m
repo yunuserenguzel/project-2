@@ -263,6 +263,7 @@
     self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.commentButton setFrame:[self commentButtonFrame]];
     [self.commentButton setImage:[UIImage imageNamed:@"comment.png"] forState:UIControlStateNormal];
+    [self.commentButton setImage:[UIImage imageNamed:@"commentactive.png"] forState:UIControlStateSelected];
     [self.commentButton addTarget:self action:@selector(commentSonic) forControlEvents:UIControlEventTouchUpInside];
     
     self.resonicButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -466,6 +467,7 @@
         [self.resonicButton setSelected:sonic.isResonicedByMe];
     }
     [self.likeButton setSelected:sonic.isLikedByMe];
+    [self.commentButton setSelected:sonic.isCommentedByMe];
     self.likesCountLabel.text = [NSString stringWithFormat:@"%d",sonic.likeCount];
     self.commentsCountLabel.text = [NSString stringWithFormat:@"%d",sonic.commentCount];
     self.resonicsCountLabel.text = [NSString stringWithFormat:@"%d",sonic.resonicCount];

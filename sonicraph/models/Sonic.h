@@ -24,6 +24,7 @@
 @property (nonatomic) NSInteger commentCount;
 @property (nonatomic) BOOL isLikedByMe;
 @property (nonatomic) BOOL isResonicedByMe;
+@property (nonatomic) BOOL isCommentedByMe;
 @property (nonatomic) BOOL isResonic;
 @property (nonatomic) BOOL isPrivate;
 @property (nonatomic) User* owner;

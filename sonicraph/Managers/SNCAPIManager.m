@@ -101,6 +101,7 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
     sonic.commentCount = [asClass([sonicDict objectForKey:@"comments_count"], [NSNumber class]) integerValue];
     sonic.isLikedByMe = [asClass([sonicDict objectForKey:@"liked_by_me"], [NSNumber class]) boolValue];
     sonic.isResonicedByMe = [asClass([sonicDict objectForKey:@"resoniced_by_me"], [NSNumber class]) boolValue];
+    sonic.isCommentedByMe = [asClass([sonicDict objectForKey:@"commented_by_me"], [NSNumber class]) boolValue];
     sonic.isResonic = [asClass([sonicDict objectForKey:@"is_resonic"], [NSNumber class]) boolValue];
     if(sonic.isResonic){
         sonic.originalSonic = sonicFromServerDictionary([sonicDict objectForKey:@"original_sonic"]);

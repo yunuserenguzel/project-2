@@ -48,7 +48,9 @@ CGFloat heightForIdentifier(NSString* identifier)
 }
 @interface SettingsTableCell ()
 
-@property UILabel* keyLabel;
+@property UILabel* infoKeyLabel;
+@property UILabel* infoValueLabel;
+
 @property UITextField* stringValueField;
 @property UIImageView* imageValueView;
 
@@ -111,6 +113,16 @@ CGFloat heightForIdentifier(NSString* identifier)
     return CGRectMake(160.0, 3.0, 80.0, 49.0);
 }
 
+- (CGRect) infoKeyLabelFrame
+{
+    return CGRectMake(15.0, 0.0, 150.0, 55.0);
+}
+
+- (CGRect) infoValueLabelFrame
+{
+    return CGRectMake(160, 0.0, 145.0, 55.0);
+}
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -136,6 +148,10 @@ CGFloat heightForIdentifier(NSString* identifier)
         {
             [self initButtonView];
         }
+        else if([reuseIdentifier isEqualToString:SettingsTableCellInfoIdentifier])
+        {
+            [self initInfoView];
+        }
     }
     return self;
 }
@@ -154,15 +170,30 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.borderView.layer setCornerRadius:8.0];
     [self.contentView addSubview:self.borderView];
 }
+- (void) initInfoView
+{
+    [self.borderView setHidden:YES];
+    
+    self.infoKeyLabel = [[UILabel alloc] initWithFrame:[self infoKeyLabelFrame]];
+    [self.contentView addSubview:self.infoKeyLabel];
+    
+    self.infoValueLabel = [[UILabel alloc] initWithFrame:[self infoValueLabelFrame]];
+    [self.infoValueLabel setTextAlignment:NSTextAlignmentRight];
+    [self.contentView addSubview:self.infoValueLabel];
+    
+    [self.infoKeyLabel setTextColor:TabbarNonActiveButtonTintColor];
+    [self.infoKeyLabel setFont:[UIFont systemFontOfSize:16.0]];
+    
+    [self.infoValueLabel setTextColor:TabbarNonActiveButtonTintColor];
+    [self.infoValueLabel setFont:[UIFont systemFontOfSize:16.0]];
+}
 
 - (void) initButtonView
 {
     [self.borderView setHidden:YES];
-    [self.textLabel setTextColor:rgb(134, 134, 134)];
+    [self.textLabel setTextColor:TabbarNonActiveButtonTintColor];
     [self.textLabel setFont:[UIFont systemFontOfSize:16.0]];
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//    [self.textLabel setTextColor:MainThemeColor];
-    
 }
 
 - (void) initTextField
@@ -429,6 +460,10 @@ CGFloat heightForIdentifier(NSString* identifier)
     {
         [self.textLabel setText:key];
     }
+    else if([self.reuseIdentifier isEqualToString:SettingsTableCellInfoIdentifier])
+    {
+        [self.infoKeyLabel setText:key];
+    }
     
 }
 
@@ -463,6 +498,10 @@ CGFloat heightForIdentifier(NSString* identifier)
         {
             [self.femaleButton setSelected:YES];
         }
+    }
+    else if([self.reuseIdentifier isEqualToString:SettingsTableCellInfoIdentifier])
+    {
+        [self.infoValueLabel setText:value];
     }
 }
 

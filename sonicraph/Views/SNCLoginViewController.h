@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SNCLoginViewController : UIViewController <UITextFieldDelegate>
+@interface SNCLoginViewController : UIViewController <UITextFieldDelegate,UIAlertViewDelegate>
 
 + (SNCLoginViewController*) sharedInstance;
 

@@ -35,7 +35,7 @@
 
 - (CGRect) locationImageViewFrame
 {
-    return CGRectMake(64.0, 48.0, 10.0, 10.0);
+    return CGRectMake(64.0, 48.0, 12.0, 12.0);
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -54,7 +54,7 @@
     [self.profileImageView setFrame:[self profileImageViewFrame]];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
-    [self.profileImageView.layer setCornerRadius:8.0];
+    [self.profileImageView.layer setCornerRadius:[self profileImageViewFrame].size.height * 0.5];
     [self.profileImageView setUserInteractionEnabled:YES];
     [self.profileImageView setImage:UserPlaceholderImage];
     [self.contentView addSubview:self.profileImageView];
@@ -78,7 +78,7 @@
     self.locationImageView = [[UIImageView alloc] initWithFrame:[self locationImageViewFrame]];
     [self.contentView addSubview:self.locationImageView];
     [self.locationImageView setContentMode:UIViewContentModeScaleAspectFit];
-    self.locationImageView.image = [UIImage imageNamed:@"Location.png"];
+    self.locationImageView.image = [UIImage imageNamed:@"location.png"];
     
     UIGestureRecognizer* tapGesture;
 //    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];

@@ -66,11 +66,11 @@
 }
 - (CGRect) resonicedByUsernameLabelFrame
 {
-    return CGRectMake(78, 43.0, 200.0, 16.0);
+    return CGRectMake(74, 43.0, 200.0, 16.0);
 }
 - (CGRect) resonicImageFrame
 {
-    return CGRectMake(64.0, 43.0, 12.0  , 16.0);
+    return CGRectMake(63.0, 43.0, 12.0, 16.0);
 }
 - (CGRect) sonicPlayerViewFrame
 {
@@ -168,7 +168,7 @@
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.userImageView setImage:UserPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
-    [self.userImageView.layer setCornerRadius:8.0];
+    [self.userImageView.layer setCornerRadius:[self userImageViewFrame].size.height * 0.5];
     [self addSubview:self.userImageView];
     
     self.userImageMaskView = [[UIImageView alloc] initWithFrame:[self userImageMaskViewFrame]];
@@ -198,7 +198,7 @@
     self.resonicImageView = [[UIImageView alloc] initWithFrame:[self resonicImageFrame]];
     self.resonicImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.resonicImageView.clipsToBounds = YES;
-    [self.resonicImageView setImage:[UIImage imageNamed:@"ResonicGrey.png"]];
+    [self.resonicImageView setImage:[UIImage imageNamed:@"smallresonic.png"]];
     [self addSubview:self.resonicImageView];
     
     [self.usernameLabel setUserInteractionEnabled:YES];

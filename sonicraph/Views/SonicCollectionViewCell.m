@@ -33,7 +33,7 @@
         [self.sonicPlayerView setUserInteractionEnabled:NO];
         [self.contentView addSubview:self.sonicPlayerView];
         
-        self.resonicImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ResonicWhite.png"]];
+        self.resonicImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"whiteresonic.png"]];
         [self.resonicImageView setAlpha:0.85];
         [self.resonicImageView setFrame:[self resonicImageViewFrame]];
         [self.resonicImageView setContentMode:UIViewContentModeScaleAspectFit];

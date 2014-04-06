@@ -30,6 +30,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"My Profile";
     UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
+    [barButtonItem setImageInsets:UIEdgeInsetsMake(0.0, -10.0, 0.0, 10.0)];
     [self.navigationItem setRightBarButtonItem:barButtonItem];
     [self.profileHeaderView.likedSonicsButton setHidden:NO];
     [self setUser:[[AuthenticationManager sharedInstance] authenticatedUser]];

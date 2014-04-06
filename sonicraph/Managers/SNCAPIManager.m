@@ -121,6 +121,18 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 }
 
 @implementation SNCAPIManager
+
++ (MKNetworkOperation *)resetPasswordForEmail:(NSString *)email withCompletionBlock:(CompletionBoolBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    return [[SNCAPIConnector sharedInstance] getRequestWithParams:@{@"email": email} useToken:NO    andOperation:@"user/reset_password" andCompletionBlock:^(NSDictionary *responseDictionary) {
+        BOOL result = [[responseDictionary objectForKeyedSubscript:@"result"] boolValue];
+        if(completionBlock)
+        {
+            completionBlock(result);
+        }
+    } andErrorBlock:errorBlock];
+}
+
 + (MKNetworkOperation *)destroyAuthenticationWithCompletionBlock:(CompletionBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     return [[SNCAPIConnector sharedInstance] getRequestWithParams:@{} useToken:YES andOperation:@"user/destroy_authentication" andCompletionBlock:completionBlock  andErrorBlock:errorBlock];
@@ -132,7 +144,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             useToken:YES
             andOperation:@"user/register_device_token"
             andCompletionBlock:completionBlock
-            andErrorBlock:nil];
+            andErrorBlock:errorBlock];
 }
 
 + (MKNetworkOperation *)editProfileWithFields:(NSDictionary *)fields withCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock

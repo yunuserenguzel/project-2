@@ -16,7 +16,7 @@
 @property UILabel* fullnameLabel;
 @property UILabel* usernamelabel;
 @property UILabel* locationLabel;
-@property UILabel* websiteLabel;
+@property UITextView* websiteTextView;
 @property UIImageView* locationImageView;
 @property UIImageView* websiteImageView;
 

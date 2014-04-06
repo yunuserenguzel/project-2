@@ -12,6 +12,7 @@
 
 @property UITextField* oldPassword;
 @property UITextField* password;
+@property UITextField* repassword;
 @property UIButton* saveButton;
 
 @property UIScrollView* scrollView;

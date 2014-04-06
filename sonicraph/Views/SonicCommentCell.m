@@ -74,7 +74,7 @@
     [self.contentView addSubview:self.userProfileImageView];
     [self.userProfileImageView setClipsToBounds:YES];
     [self.userProfileImageView setUserInteractionEnabled:YES];
-    [self.userProfileImageView.layer setCornerRadius:8.0];
+    [self.userProfileImageView.layer setCornerRadius:[self userProfileImageViewFrame].size.height * 0.5];
     [self.userProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];

@@ -29,7 +29,8 @@
 #define LightPinkTextColor rgb(242, 156, 180)
 #define UITextFieldPlaceholderColor rgb(195, 195, 195)
 
-#define CameraViewControllersBackgroundColor rgb(38.0,79.0,113.0)
+//#define CameraViewControllersBackgroundColor rgb(38.0,79.0,113.0)
+#define CameraViewControllersBackgroundColor rgb(59, 59, 59)
 
 #define FullnameTextColor rgb(101.0,101.0,101.0)
 
@@ -37,11 +38,11 @@
 #define UserPlaceholderImage [UIImage imageNamed:@"avatar.png"]
 
 #define PersonTableCellHeight 66.0
-#define NotificationTableCellHeight 64.0
+#define NotificationTableCellHeight 65.0
 
 #define UserThumbnailSize CGSizeMake(200.0,200.0)
 
-#define FullNameVisibleKey @"Name (required)"
+#define FullNameVisibleKey @"Name & Lastname (required)"
 #define UserNameVisibleKey @"Username (required)"
 #define LocationVisibleKey @"Location"
 #define WebsiteVisibleKey @"Website"

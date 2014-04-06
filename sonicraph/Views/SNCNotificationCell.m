@@ -14,22 +14,22 @@
 
 - (CGRect) notificationTypeImageViewFrame
 {
-    return CGRectMake(0.0, 0.0, 30.0, NotificationTableCellHeight);
+    return CGRectMake(275.0, 5.0, 30.0, NotificationTableCellHeight);
 }
 
 - (CGRect) profileImageViewFrame
 {
-    return CGRectMake(33.0, 7.0 , 49.0, 49.0);
+    return CGRectMake(10.0, 8.0 , 49.0, 49.0);
 }
 
 - (CGRect) fullnameLabelFrame
 {
-    return CGRectMake(88.0, 5.0, 150.0, 18.0);
+    return CGRectMake(68.0, 5.0, 150.0, 18.0);
 }
 
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(88.0, 22.0, 150.0, 16.0);
+    return CGRectMake(68.0, 26.0, 150.0, 16.0);
 }
 
 - (CGRect) createAtLabelFrame
@@ -39,7 +39,7 @@
 
 - (CGRect) notificationTextLabelFrame
 {
-    return CGRectMake(88.0, 38.0, 210.0, 18.0);
+    return CGRectMake(68.0, 42.0, 210.0, 18.0);
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -58,7 +58,7 @@
     
     self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageViewFrame]];
     [self.contentView addSubview:self.profileImageView];
-    self.profileImageView.layer.cornerRadius = 8.0;
+    self.profileImageView.layer.cornerRadius = [self profileImageViewFrame].size.height * 0.5;
     [self.profileImageView setClipsToBounds:YES];
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
@@ -75,7 +75,7 @@
     self.notificationTextLabel = [[UILabel alloc] initWithFrame:[self notificationTextLabelFrame]];
     [self.contentView addSubview:self.notificationTextLabel];
     self.notificationTextLabel.numberOfLines = 0;
-    self.notificationTextLabel.font = [self.notificationTextLabel.font fontWithSize:14.0];
+    self.notificationTextLabel.font = [self.notificationTextLabel.font fontWithSize:10.0];
     self.notificationTextLabel.textColor = [UIColor grayColor];
     
     self.createdAtLabel = [[UILabel alloc] initWithFrame:[self createAtLabelFrame]];
@@ -136,7 +136,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationLikeLargeLP.png"];
+        image =  [UIImage imageNamed:@"notificationlike.png"];
     }
     return image;
 }
@@ -144,7 +144,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationResonicLargeLP.png"];
+        image =  [UIImage imageNamed:@"notificationresonic.png"];
     }
     return image;
 }
@@ -152,7 +152,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationCommentLargeLP.png"];
+        image =  [UIImage imageNamed:@"notificationcomment.png"];
     }
     return image;
 }
@@ -160,7 +160,7 @@
 {
     static UIImage* image = nil;
     if(image == nil){
-        image =  [UIImage imageNamed:@"NotificationFollowerLargeLP.png"];
+        image =  [UIImage imageNamed:@"notificationfollow.png"];
     }
     return image;
 }

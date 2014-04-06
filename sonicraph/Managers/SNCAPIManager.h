@@ -142,4 +142,9 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
 + (MKNetworkOperation*) destroyAuthenticationWithCompletionBlock:(CompletionBlock)completionBlock
                               andErrorBlock:(ErrorBlock)errorBlock;
 
++ (MKNetworkOperation*) resetPasswordForEmail:(NSString*)email
+                          withCompletionBlock:(CompletionBoolBlock)completionBlock
+                                andErrorBlock:(ErrorBlock)errorBlock;
+
+
 @end

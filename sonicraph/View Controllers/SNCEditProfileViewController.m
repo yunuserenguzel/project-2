@@ -39,7 +39,9 @@
     
     self.changedFields = [NSMutableDictionary new];
     [self.tableView setContentInset:UIEdgeInsetsMake(-1.0, 0.0, 0.0, 0.0)];
-    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+//    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellStringValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellPasswordValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellDateValueIdentifier];
@@ -66,10 +68,18 @@
     self.navigationItem.leftBarButtonItem = self.cancelButton;
     UILabel* beCoolLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 472, 320.0, 33.0)];
     [beCoolLabel setText:@"Be Cool :)"];
-    [beCoolLabel setFont:[UIFont systemFontOfSize:14.0]];
+    [beCoolLabel setFont:[UIFont systemFontOfSize:12.0]];
     [beCoolLabel setTextColor:self.tableView.separatorColor];
     [beCoolLabel setTextAlignment:NSTextAlignmentCenter];
     [self.tableView addSubview:beCoolLabel];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.view addGestureRecognizer:tapGesture];
+}
+
+- (void) closeKeyboard
+{
+    [self.view endEditing:YES];
 }
 
 - (void) cancel
@@ -147,11 +157,11 @@
 {
     if(section == 1)
     {
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 33.0)];
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 15.0)];
         [label setText:@"Birthday and Gender"];
         [label setTextAlignment:NSTextAlignmentCenter];
         [label setTextColor:self.tableView.separatorColor];
-        [label setFont:[UIFont systemFontOfSize:14.0]];
+        [label setFont:[UIFont systemFontOfSize:12.0]];
         return label;
     }
     return nil;
@@ -161,7 +171,7 @@
 {
     if(section == 1)
     {
-        return 33.0;
+        return 20.0;
     }
     return 1.0;
 }

@@ -77,7 +77,7 @@
 {
 
     self.tableView.contentInset = [self edgeInsetsForScrollContent];
-    [self.tableView setBackgroundColor:CellSpacingGrayColor];
+//    [self.tableView setBackgroundColor:CellSpacingGrayColor];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView setScrollsToTop:YES];
@@ -91,10 +91,10 @@
     self.bottomActivityIndicator.frame = [self tableFooterViewRect];
     [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
     
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gothroughbackground.png"]];
-    imageView.alpha = 0.2;
-    imageView.frame = CGRectMake(0.0, 0.0, self.tableView.frame.size.width, self.tableView.frame.size.height);
-    self.tableView.backgroundView = imageView;
+//    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gothroughbackground.png"]];
+//    imageView.alpha = 0.2;
+//    imageView.frame = CGRectMake(0.0, 0.0, self.tableView.frame.size.width, self.tableView.frame.size.height);
+//    self.tableView.backgroundView = imageView;
 }
 
 - (void) initRefreshController
@@ -252,7 +252,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [cellWiningTheCenter cellLostCenterOfTableView];
-    if(!isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
+    if(!isLoadingFromServer && self.sonics.count > 0 && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
     {
         isLoadingFromServer = YES;
         [self.bottomActivityIndicator startAnimating];

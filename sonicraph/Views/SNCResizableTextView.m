@@ -73,6 +73,7 @@
 
     [self.doneButton setImage:[UIImage imageNamed:@"AddCommentIcon.png"] forState:UIControlStateNormal];
     [self.doneButton setFrame:[self doneButtonFrame]];
+    self.doneButton.contentMode = UIViewContentModeScaleAspectFit;
     [self.doneButton setHidden:YES];
     [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
     self.doneButton.transform = CGAffineTransformMakeTranslation(320.0, 0.0);
@@ -80,6 +81,7 @@
     
     
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.cancelButton.contentMode = UIViewContentModeCenter;
     [self.cancelButton setFrame:[self cancelButtonFrame]];
     [self.cancelButton setHidden:YES];
     [self.cancelButton setImage:[UIImage imageNamed:@"CancelCommentandTag.png"] forState:UIControlStateNormal];

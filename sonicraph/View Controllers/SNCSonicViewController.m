@@ -95,7 +95,7 @@
     self.resonicsContent = [NSMutableArray new];
     [self initTableView];
     
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MoreWhite.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openActionsMenu)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"whitemore.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openActionsMenu)]];
     
     [self initHeaderViews];
     [self initTabsViews];
@@ -171,6 +171,7 @@
 
     [@[self.likeButton, self.resonicButton] enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger idx, BOOL *stop) {
         [button setFrame:[self tabActionBarContentFrame]];
+        [button setContentEdgeInsets:UIEdgeInsetsMake(-3.0, 0.0, 0.0, 0.0)];
         [button setBackgroundImageWithColor:self.tabActionBarView.backgroundColor forState:UIControlStateNormal];
     }];
 
@@ -582,7 +583,7 @@
 - (void) setLikeButtonSelected
 {
     [self.likeButton setBackgroundImageWithColor:MainThemeColor forState:UIControlStateNormal];
-    [self.likeButton setImage:[UIImage imageNamed:@"LikeWhite.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"whitelike.png"] forState:UIControlStateNormal];
     [self.likeButton setTitle:@"You liked this sonic :)" forState:UIControlStateNormal];
     [self.likeButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.likeButton addTarget:self action:@selector(unlikeSonic) forControlEvents:UIControlEventTouchUpInside];
@@ -592,7 +593,7 @@
 - (void) setLikeButtonUnselected
 {
     [self.likeButton setBackgroundImageWithColor:self.tabActionBarView.backgroundColor forState:UIControlStateNormal];
-    [self.likeButton setImage:[UIImage imageNamed:@"LikePink.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"like.png"] forState:UIControlStateNormal];
     [self.likeButton setTitle:@"" forState:UIControlStateNormal];
     [self.likeButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.likeButton addTarget:self action:@selector(likeSonic) forControlEvents:UIControlEventTouchUpInside];
@@ -634,7 +635,7 @@
 - (void) setResonicButtonSelected
 {
     [self.resonicButton setBackgroundImageWithColor:MainThemeColor forState:UIControlStateNormal];
-    [self.resonicButton setImage:[UIImage imageNamed:@"ResonicWhite.png"] forState:UIControlStateNormal];
+    [self.resonicButton setImage:[UIImage imageNamed:@"whiteresonic.png"] forState:UIControlStateNormal];
     [self.resonicButton setTitle:@"You resoniced this sonic :)" forState:UIControlStateNormal];
     [self.resonicButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.resonicButton addTarget:self action:@selector(deleteResonic) forControlEvents:UIControlEventTouchUpInside];
@@ -644,7 +645,7 @@
 - (void) setResonicButtonUnselected
 {
     [self.resonicButton setBackgroundImageWithColor:self.tabActionBarView.backgroundColor forState:UIControlStateNormal];
-    [self.resonicButton setImage:[UIImage imageNamed:@"ResonicPink.png"] forState:UIControlStateNormal];
+    [self.resonicButton setImage:[UIImage imageNamed:@"resonic.png"] forState:UIControlStateNormal];
     [self.resonicButton setTitle:@"" forState:UIControlStateNormal];
     [self.resonicButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.resonicButton addTarget:self action:@selector(resonic) forControlEvents:UIControlEventTouchUpInside];

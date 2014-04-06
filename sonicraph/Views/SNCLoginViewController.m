@@ -13,6 +13,7 @@
 #import "Configurations.h"
 #import "SNCGoThroughViewController.h"
 
+#define ResetPasswordConfirmAlertViewTag 123123
 
 static SNCLoginViewController* sharedInstance = nil;
 
@@ -42,8 +43,6 @@ static SNCLoginViewController* sharedInstance = nil;
 {
     return CGRectMake(10.0, 200.0, 300.0, 50.0);
 }
-
-
 
 + (SNCLoginViewController *)sharedInstance
 {
@@ -84,6 +83,7 @@ static SNCLoginViewController* sharedInstance = nil;
     self.forgotPassword = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.forgotPassword setFrame:[self forgotPasswordFrame]];
     [self.forgotPassword setTitle:@"Forgot Password ? " forState:UIControlStateNormal];
+    [self.forgotPassword addTarget:self action:@selector(resetPassword) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.forgotPassword];
     
     
@@ -91,6 +91,45 @@ static SNCLoginViewController* sharedInstance = nil;
     [self.view addGestureRecognizer:tapGesture];
 }
 
+- (void) resetPassword
+{
+    if(self.usernameField.text.length > 0)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Forgot Password ?" message:@"Press OK to receive reset password email" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        
+        alert.tag = ResetPasswordConfirmAlertViewTag;
+        [alert show];
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Write your email to receive reset password mail" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == ResetPasswordConfirmAlertViewTag)
+    {
+        if(buttonIndex != alertView.cancelButtonIndex)
+        {
+            UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            [indicator setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
+            [self.view addSubview:indicator];
+            [indicator startAnimating];
+            [self.view setUserInteractionEnabled:NO];
+            [SNCAPIManager resetPasswordForEmail:self.usernameField.text withCompletionBlock:^(BOOL successful) {
+                [indicator removeFromSuperview];
+                [self.view setUserInteractionEnabled:YES];
+                [self.usernameField setText:nil];
+                [[[UIAlertView alloc] initWithTitle:@"Successful" message:@"Your reset password request is successfully completed. Please check your inbox" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            } andErrorBlock:^(NSError *error) {
+                [indicator removeFromSuperview];
+                [self.view setUserInteractionEnabled:YES];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"An error occured. Please try again later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            }];
+        }
+    }
+}
 
 - (void) closeKeyboard
 {

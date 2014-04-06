@@ -8,7 +8,19 @@
 
 #import "SNCSettingsViewController.h"
 #import "AuthenticationManager.h"
-@interface SNCSettingsViewController () <UIAlertViewDelegate>
+#import <MessageUI/MessageUI.h>
+
+#define InviteFriendsActionSheetTag 781234
+
+#define InviteViaEmail @"Invite Friends"
+#define RateApp @"Rate This App"
+#define SendFeedback @"Send Feedback"
+
+#define FAQ @"FAQ"
+#define LegalPrivacy @"Legal & Privacy"
+#define AppVersion @"App Version"
+
+@interface SNCSettingsViewController () <UIAlertViewDelegate,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate,UIActionSheetDelegate>
 
 @property NSMutableArray* fields;
 
@@ -34,8 +46,10 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = @"Settings";
+//    [self.tableView setBackgroundColor:[UIColor whiteColor]];
     [self.tableView setContentInset:UIEdgeInsetsMake(-1.0, 0.0, 0.0, 0.0)];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+//    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellStringValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellPasswordValueIdentifier];
     [self.tableView registerClass:[SettingsTableCell class] forCellReuseIdentifier:SettingsTableCellDateValueIdentifier];
@@ -49,12 +63,22 @@
 -(void) prepareFields
 {
     self.fields = [NSMutableArray new];
-    [self.fields addObject:[NSMutableArray new]];
-    [[self.fields objectAtIndex:0] addObject:[SettingsField k:@"Change Password" sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
-    [[self.fields objectAtIndex:0] addObject:[SettingsField k:@"Logout" sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
     
     [self.fields addObject:[NSMutableArray new]];
-    [[self.fields objectAtIndex:1] addObject:[SettingsField k:@"About Us" sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    [[self.fields objectAtIndex:0] addObject:[SettingsField k:@"Change Password" sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    
+    [self.fields addObject:[NSMutableArray new]];
+    [[self.fields objectAtIndex:1] addObject:[SettingsField k:InviteViaEmail sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    [[self.fields objectAtIndex:1] addObject:[SettingsField k:RateApp sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    [[self.fields objectAtIndex:1] addObject:[SettingsField k:SendFeedback sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    
+    [self.fields addObject:[NSMutableArray new]];
+    [[self.fields objectAtIndex:2] addObject:[SettingsField k:FAQ sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    [[self.fields objectAtIndex:2] addObject:[SettingsField k:LegalPrivacy sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    [[self.fields objectAtIndex:2] addObject:[SettingsField k:AppVersion sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
+    
+    [self.fields addObject:[NSMutableArray new]];
+    [[self.fields objectAtIndex:3] addObject:[SettingsField k:@"Logout" sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
 }
 
 - (void) logout
@@ -98,6 +122,11 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return heightForIdentifier(SettingsTableCellButtonIdentifier);
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SettingsField* settingsField = [[self.fields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -113,7 +142,50 @@
     {
         [self performSegueWithIdentifier:AboutUsSegue sender:self];
     }
+    else if([settingsField.key isEqualToString:InviteViaEmail])
+    {
+        UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Invite friends" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"via E-mail",@"via Message", nil];
+        sheet.tag = InviteFriendsActionSheetTag;
+        [sheet showInView:self.view];
+    }
+    else if([settingsField.key isEqualToString:RateApp])
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id828320730"]];
+    }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(actionSheet.tag == InviteFriendsActionSheetTag)
+    {
+        NSString* appUrl = @"http://itunes.apple.com/app/id828320730";
+        if(buttonIndex == 0)
+        {
+            MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+            controller.mailComposeDelegate = self;
+            [controller setSubject:@"Sonicraph "];
+            [controller setMessageBody:[NSString stringWithFormat:@"Hello, check out this app %@",appUrl] isHTML:NO];
+            [self presentViewController:controller animated:YES completion:nil];
+        }
+        else if(buttonIndex == 1)
+        {
+            MFMessageComposeViewController *smsController = [[MFMessageComposeViewController alloc] init];
+            smsController.messageComposeDelegate = self;
+            smsController.body = [NSString stringWithFormat:@"Hello, check out this app %@",appUrl];
+            [self presentViewController:smsController animated:YES completion:nil];
+        }
+    }
+}
+
+- (void) messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)valueChanged:(id)value forKey:(NSString *)string

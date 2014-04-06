@@ -42,11 +42,8 @@ CGFloat heightForIdentifier(NSString* identifier)
     if([identifier isEqualToString:SettingsTableCellImageValueIdentifier]){
         return 120.0;
     }
-    else if([identifier isEqualToString:SettingsTableCellDateValueIdentifier]){
-        return 44.0;
-    }
     else {
-        return 44.0;
+        return 55.0;
     }
 }
 @interface SettingsTableCell ()
@@ -64,6 +61,10 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 @property UIButton* dateOfBirthButton;
 
+@property UIView* borderView;
+
+//@property UILabel* titleLabel;
+
 @end
 
 
@@ -75,44 +76,39 @@ CGFloat heightForIdentifier(NSString* identifier)
     UIDatePicker* datePicker;
 }
 
+- (CGRect) borderViewFrame
+{
+    return CGRectMake(33.0, 3.0, 255.0, 49.0);
+}
+
 - (CGRect) stringValueFieldFrame
 {
-    return CGRectMake(10.0, 0.0, 300.0, 44.0);
+    return CGRectMake(43.0, 3.0, 245.0, 49.0);
 }
+//
+//- (CGRect) titleLabelFrame
+//{
+//    return CGRectMake(43.0, 3.0, 245.0, 49.0);
+//}
 
 - (CGRect) imageValueViewFrame
 {
     return CGRectMake(110.0, 10.0, 100.0, 100.0);
 }
 
-- (CGRect) dateValuePickerFrame
+- (CGRect) dateOfBirthButtonFrame
 {
-    return CGRectMake(10, 0.0, 300.0, 44.0);
-}
-
-- (CGRect) monthFieldFrame
-{
-    return CGRectMake(96.0, 0.0, 44.0, 44.0);
-}
-
-- (CGRect) dayFieldFrame
-{
-    return CGRectMake(8.0 + [self monthFieldFrame].origin.x + [self monthFieldFrame].size.width, 0.0, 44.0, 44.0);
-}
-
-- (CGRect) yearFieldFrame
-{
-    return CGRectMake([self dayFieldFrame].origin.x + [self dayFieldFrame].size.width, 0.0, 66.0, 44.0);
+    return CGRectMake(37.0, 3.0, 245.0, 49.0);
 }
 
 - (CGRect) maleButtonFrame
 {
-    return CGRectMake(80.0, 0.0, 80.0, 44.0);
+    return CGRectMake(80.0, 3.0, 80.0, 49.0);
 }
 
 - (CGRect) femaleButtonFrame
 {
-    return CGRectMake(160.0, 0.0, 80.0, 44.0);
+    return CGRectMake(160.0, 3.0, 80.0, 49.0);
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -152,11 +148,20 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 - (void) initViews
 {
-    
+    self.borderView = [[UIView alloc] initWithFrame:[self borderViewFrame]];
+    [self.borderView.layer setBorderColor:rgb(229,229,229).CGColor];
+    [self.borderView.layer setBorderWidth:1.0];
+    [self.borderView.layer setCornerRadius:8.0];
+    [self.contentView addSubview:self.borderView];
 }
 
 - (void) initButtonView
 {
+    [self.borderView setHidden:YES];
+    [self.textLabel setTextColor:rgb(134, 134, 134)];
+    [self.textLabel setFont:[UIFont systemFontOfSize:16.0]];
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    [self.textLabel setTextColor:MainThemeColor];
     
 }
 
@@ -165,8 +170,8 @@ CGFloat heightForIdentifier(NSString* identifier)
     self.stringValueField = [[UITextField alloc] initWithFrame:[self stringValueFieldFrame]];
     self.stringValueField.delegate = self;
     [self.contentView addSubview:self.stringValueField];
-    [self.stringValueField setTextAlignment:NSTextAlignmentCenter];
-    [self.stringValueField setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [self.stringValueField setTextAlignment:NSTextAlignmentLeft];
+    [self.stringValueField setFont:[UIFont systemFontOfSize:15.0]];
     [self.stringValueField setTextColor:LightPinkTextColor];
     [self.stringValueField setValue:UITextFieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
     [self.stringValueField setReturnKeyType:UIReturnKeyDone];
@@ -174,6 +179,7 @@ CGFloat heightForIdentifier(NSString* identifier)
 
 - (void) initImageValueView
 {
+    [self.borderView setHidden:YES];
     UIImageView* baseImageView = [[UIImageView alloc] initWithFrame:[self imageValueViewFrame]];
     baseImageView.image = UserPlaceholderImage;
     [self.contentView addSubview:baseImageView];
@@ -182,21 +188,35 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.contentView addSubview:self.imageValueView];
     [self.imageValueView setContentMode:UIViewContentModeScaleAspectFill];
     [self.imageValueView setClipsToBounds:YES];
-    self.imageValueView.layer.cornerRadius = 10.0;
+    self.imageValueView.layer.cornerRadius = [self imageValueViewFrame].size.height * 0.5;
     [self.imageValueView setUserInteractionEnabled:YES];
     [self.imageValueView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showActionSheet)]];
+    
+    UIView* userProfileImageBorder = [[UIView alloc] init];
+    CGRect frame = [self imageValueViewFrame];
+    frame.size.height += 2;
+    frame.size.width += 2;
+    frame.origin.x -=1;
+    frame.origin.y -=1;
+    [userProfileImageBorder setUserInteractionEnabled:NO];
+    [userProfileImageBorder setFrame:frame];
+    [userProfileImageBorder.layer setCornerRadius:frame.size.height * 0.5];
+    [userProfileImageBorder.layer setBorderColor:rgb(240, 240, 240).CGColor];
+    [userProfileImageBorder.layer setBorderWidth:2.0];
+    [self addSubview:userProfileImageBorder];
 }
 
 - (void) initDateValueView
 {
 
     self.dateOfBirthButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.dateOfBirthButton setFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
+    [self.dateOfBirthButton setFrame:[self dateOfBirthButtonFrame]];
+//    [self.dateOfBirthButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [self.dateOfBirthButton addTarget:self action:@selector(dateCellTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.dateOfBirthButton setTitleColor:UITextFieldPlaceholderColor forState:UIControlStateNormal];
     [self.dateOfBirthButton setTitleColor:LightPinkTextColor forState:UIControlStateSelected];
     [self.dateOfBirthButton setTitle:@"mm / dd / yyyy" forState:UIControlStateNormal];
-    [self.dateOfBirthButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [self.dateOfBirthButton.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
     [self.contentView addSubview:self.dateOfBirthButton];
 }
 
@@ -221,13 +241,13 @@ CGFloat heightForIdentifier(NSString* identifier)
     [viewController.view addSubview:view];
     [view setBackgroundColor:[UIColor whiteColor]];
     UIView* borderView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
-    [borderView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [borderView.layer setBorderColor:rgb(229,229,229).CGColor];
     [borderView.layer setBorderWidth:1.0];
     [view addSubview:borderView];
     
     UIButton* doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [doneButton setTitleColor:LightPinkTextColor forState:UIControlStateNormal];
+    [doneButton setTitleColor:MainThemeColor forState:UIControlStateNormal];
     [doneButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
     [doneButton setFrame:CGRectMake(200.0, datePicker.frame.origin.y - 44.0, 120.0, 44.0)];
     [doneButton addTarget:self action:@selector(donePickingDate) forControlEvents:UIControlEventTouchUpInside];
@@ -286,8 +306,8 @@ CGFloat heightForIdentifier(NSString* identifier)
     
     for (UIButton* button in @[self.maleButton, self.femaleButton]) {
         [self.contentView addSubview:button];
-        [button.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
-        
+        [button.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
+//        [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [button setTitleColor:UITextFieldPlaceholderColor forState:UIControlStateNormal];
         [button setTitleColor:LightPinkTextColor forState:UIControlStateSelected];
         [button addTarget:self action:@selector(genderButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -452,6 +472,55 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.delegate valueChanged:self.value forKey:self.key];
 }
 
-
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([navigationController.viewControllers count] == 3)
+    {
+        CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+        
+        UIView *plCropOverlay = [[[viewController.view.subviews objectAtIndex:1]subviews] objectAtIndex:0];
+        
+        plCropOverlay.hidden = YES;
+        
+        int position = 0;
+        
+        if (screenHeight == 568)
+        {
+            position = 124;
+        }
+        else
+        {
+            position = 80;
+        }
+        
+        CAShapeLayer *circleLayer = [CAShapeLayer layer];
+        
+        UIBezierPath *path2 = [UIBezierPath bezierPathWithOvalInRect:
+                               CGRectMake(0.0f, position, 320.0f, 320.0f)];
+        [path2 setUsesEvenOddFillRule:YES];
+        
+        [circleLayer setPath:[path2 CGPath]];
+        
+        [circleLayer setFillColor:[[UIColor clearColor] CGColor]];
+        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 320, screenHeight-72) cornerRadius:0];
+        
+        [path appendPath:path2];
+        [path setUsesEvenOddFillRule:YES];
+        
+        CAShapeLayer *fillLayer = [CAShapeLayer layer];
+        fillLayer.path = path.CGPath;
+        fillLayer.fillRule = kCAFillRuleEvenOdd;
+        fillLayer.fillColor = [UIColor blackColor].CGColor;
+        fillLayer.opacity = 0.8;
+        [viewController.view.layer addSublayer:fillLayer];
+        
+        UILabel *moveLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 320, 50)];
+        [moveLabel setText:@"Move and Scale"];
+        [moveLabel setTextAlignment:NSTextAlignmentCenter];
+        [moveLabel setTextColor:[UIColor whiteColor]];
+        
+        [viewController.view addSubview:moveLabel];
+    }
+}
 
 @end

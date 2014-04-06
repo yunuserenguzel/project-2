@@ -111,7 +111,7 @@
 - (void) initUserViews
 {
     self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageMaxFrame]];
-    [self.profileImageView.layer setCornerRadius:8.0];
+    [self.profileImageView.layer setCornerRadius:[self profileImageMaxFrame].size.height * 0.5];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
     [self addSubview:self.profileImageView];

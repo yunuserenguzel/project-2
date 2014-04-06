@@ -19,15 +19,19 @@
 
 - (CGRect) oldPasswordFieldFrame
 {
-    return CGRectMake(-1.0, 50.0, 322.0, 44.0);
+    return CGRectMake(-1.0, 50.0, 322.0, 55.0);
 }
 - (CGRect) passwordFieldFrame
 {
-    return CGRectMake(-1.0, 120.0, 322.0, 44.0);
+    return CGRectMake(-1.0, 120.0, 322.0, 55.0);
+}
+- (CGRect) repasswordFieldFrame
+{
+    return CGRectMake(-1.0, 120.0+54.5, 322.0, 55.0);
 }
 - (CGRect) saveButtonFrame
 {
-    return CGRectMake(-1.0, 200.0, 322.0, 44.0);
+    return CGRectMake(-1.0, 250.0, 322.0, 55.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -60,19 +64,23 @@
     [self.password setPlaceholder:@"New Password"];
     [self.scrollView addSubview:self.password];
     
-    for(UITextField* field in @[self.oldPassword,self.password])
+    self.repassword = [[UITextField alloc] initWithFrame:[self repasswordFieldFrame]];
+    [self.repassword setPlaceholder:@"Re New Password"];
+    [self.scrollView addSubview:self.repassword];
+    
+    for(UITextField* field in @[self.oldPassword,self.password,self.repassword])
     {
         field.secureTextEntry = YES;
         field.backgroundColor = [UIColor whiteColor];
         field.textAlignment = NSTextAlignmentCenter;
         field.borderStyle = UITextBorderStyleNone;
-        field.font = [UIFont boldSystemFontOfSize:16.0];
+        field.font = [UIFont systemFontOfSize:16.0];
         field.textColor = MainThemeColor;
         field.layer.borderColor = CellSpacingLineGrayColor.CGColor;
-        field.layer.borderWidth = 1.0;
-        field.leftView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)];
+        field.layer.borderWidth = 0.5;
+        field.leftView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 49.0)];
         field.leftViewMode = UITextFieldViewModeAlways;
-        field.rightView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 44.0)];
+        field.rightView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10.0, 49.0)];
         field.rightViewMode = UITextFieldViewModeAlways;
         field.tintColor = MainThemeColor;
         [field addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
@@ -89,8 +97,28 @@
     [self.scrollView addSubview:self.saveButton];
     [self.saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
     [self.saveButton setEnabled:NO];
+    
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.view addGestureRecognizer:tapGesture];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(keyboardWillShow:)
+     name:UIKeyboardWillShowNotification
+     object:self.view.window];
+    // register for keyboard notifications
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(keyboardWillHide:)
+     name:UIKeyboardWillHideNotification
+     object:self.view.window];
 }
 
+- (void) closeKeyboard
+{
+    [self.view endEditing:YES];
+}
 - (void)textFieldDidChange
 {
     [self.cancelButton setTitle:@"Cancel"];
@@ -113,6 +141,7 @@
 - (void) save
 {
     [self.saveButton setSelected:YES];
+    [self closeKeyboard];
 //    [self.saveButton setEnabled:NO];
     [SNCAPIManager
      editProfileWithFields:@{@"old_password" : self.oldPassword.text, @"password" : self.password.text}
@@ -120,14 +149,20 @@
          [UIView animateWithDuration:0.5 animations:^{
              [self.oldPassword setText:nil];
              [self.password setText:nil];
+             [self.repassword setText:nil];
              [self.saveButton setSelected:NO];
              [self.saveButton setEnabled:NO];
              [self.saveButton setTitle:@"Changed" forState:UIControlStateDisabled];
              [self.cancelButton setTitle:@"Done"];
          }];
      } andErrorBlock:^(NSError *error) {
+         [self.oldPassword setText:nil];
+         [self.password setText:nil];
+         [self.repassword setText:nil];
+         [self.saveButton setSelected:NO];
+         [self.saveButton setEnabled:NO];
          if (error.code == 220) {
-             
+             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Your old password does not match" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
          }
      }];
     
@@ -136,6 +171,25 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)keyboardWillHide:(NSNotification *)n
+{
+    [self.scrollView setContentInset:UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0)];
+}
+
+- (void)keyboardWillShow:(NSNotification *)n
+{
+    NSDictionary* userInfo = [n userInfo];
+    
+    // get the size of the keyboard
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    [self.scrollView setContentInset:UIEdgeInsetsMake(1.0, 0.0, keyboardSize.height, 0.0)];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

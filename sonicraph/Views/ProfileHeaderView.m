@@ -38,7 +38,7 @@
 }
 - (CGRect) websiteLabelFrame
 {
-    return CGRectMake(156.0, 76.0, 160.0, 20.0);
+    return CGRectMake(152.0, 78.0, 160.0, 20.0);
 }
 - (CGRect) websiteImageViewFrame
 {
@@ -119,7 +119,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-//        [self setBackgroundColor:rgb(245,245,245)];
         [self setBackgroundColor:[UIColor whiteColor]];
         [self initProfileImageAndUserInfoLabels];
         [self initCountableLabels];
@@ -185,10 +184,17 @@
     self.locationImageView.image = [UIImage imageNamed:@"location.png"];
     self.locationImageView.contentMode = UIViewContentModeScaleAspectFit;
     
-    self.websiteLabel = [[UILabel alloc] initWithFrame:[self websiteLabelFrame]];
-    self.websiteLabel.font = [UIFont systemFontOfSize:13.0];
-    self.websiteLabel.textColor = [UIColor lightGrayColor];
-    [self addSubview:self.websiteLabel];
+    self.websiteTextView = [[UITextView alloc] initWithFrame:[self websiteLabelFrame]];
+    self.websiteTextView.editable = NO;
+    [self.websiteTextView setTextAlignment:NSTextAlignmentLeft];
+    [self.websiteTextView setTextContainerInset:UIEdgeInsetsZero];
+    self.websiteTextView.dataDetectorTypes = UIDataDetectorTypeLink;
+    [self.websiteTextView setContentInset:UIEdgeInsetsZero];
+    self.websiteTextView.font = [UIFont systemFontOfSize:13.0];
+    [self.websiteTextView setTintColor:[UIColor lightGrayColor]];
+    self.websiteTextView.textColor = [UIColor lightGrayColor];
+    [self.websiteTextView setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:self.websiteTextView];
     
     self.websiteImageView = [[UIImageView alloc] initWithFrame:[self websiteImageViewFrame]];
     [self addSubview:self.websiteImageView];

@@ -120,12 +120,16 @@
             {
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:@"This username already exists. Choose a different username." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
             }
+            else {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+            }
             [self.tableView setUserInteractionEnabled:YES];
             self.navigationItem.rightBarButtonItem = self.saveButton;
             [activityIndicator stopAnimating];
         }];
     }
 }
+
 
 - (void) prepareFields
 {

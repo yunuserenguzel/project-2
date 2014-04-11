@@ -122,7 +122,9 @@
                 }
             }];
             arrayOfCallBacksForThumbnail = nil;
-        } andRefreshBlock:nil andErrorBlock:nil];
+        } andRefreshBlock:nil andErrorBlock:^(NSError *error) {
+            isInProcess = NO;
+        }];
     }
 }
 

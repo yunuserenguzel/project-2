@@ -270,8 +270,11 @@
 
 - (void) enableFacebook
 {
-        // We will post on behalf of the user, these are the permissions we need:
-    [SNCFacebookManager grantPermissionWithCompletionBlock:nil andErrorBlock:nil];
+    [SNCFacebookManager grantPermissionWithCompletionBlock:^(id object) {
+        
+    } andErrorBlock:^(NSError *error) {
+        self.facebookSwitch.on = NO;
+    }];
 }
 
 - (void) setClickedButtonSelected:(UIButton*)button

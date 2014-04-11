@@ -96,6 +96,13 @@
                  // There was an error requesting the permission information
                  // See our Handling Errors guide: https://developers.facebook.com/docs/ios/errors/
                  NSLog(@"%@", error.description);
+                 [FBSession.activeSession closeAndClearTokenInformation];
+                 [FBSession.activeSession close];
+                 [FBSession setActiveSession:nil];
+                 if(errorBlock)
+                 {
+                     errorBlock(error);
+                 }
              }
          }];
     }

@@ -139,7 +139,7 @@
     [self addGestureRecognizer:self.tapGesture];
     
     _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    [self.longPressGesture setMinimumPressDuration:1.5];
+    [self.longPressGesture setMinimumPressDuration:1];
     [self addGestureRecognizer:self.longPressGesture];
     
     self.pausedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Paused.png"]];
@@ -214,6 +214,10 @@
          if([self.sonicUrl.path isEqualToString:sonic.remoteSonicDataFileUrl.path]){
              dispatch_async(dispatch_get_main_queue(), ^{
                  self.sonic = sonic;
+                 if(self.shouldAutoPlay)
+                 {
+                     [self play];
+                 }
              });
          }
      }
@@ -226,19 +230,19 @@
 //         }
      }
      andErrorBlock:^(NSError *error) {
-         UIButton* retryButton = [UIButton buttonWithType:UIButtonTypeCustom];
-         [retryButton setImage:[UIImage imageNamed:@"retry_icon.png"] forState:UIControlStateNormal];
-         retryButton.frame = [self imageViewFrame];
-         [self addSubview:retryButton];
-         [retryButton addTarget:self action:@selector(retry:) forControlEvents:UIControlEventTouchUpInside];
+//         UIButton* retryButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//         [retryButton setImage:[UIImage imageNamed:@"retry_icon.png"] forState:UIControlStateNormal];
+//         retryButton.frame = [self imageViewFrame];
+//         [self addSubview:retryButton];
+//         [retryButton addTarget:self action:@selector(retry:) forControlEvents:UIControlEventTouchUpInside];
      }];
 }
 
-- (void) retry:(UIButton*)retryButton
-{
-    [retryButton removeFromSuperview];
-    [self downloadSonicData];
-}
+//- (void) retry:(UIButton*)retryButton
+//{
+//    [retryButton removeFromSuperview];
+//    [self downloadSonicData];
+//}
 
 - (void) initializeImageView
 {

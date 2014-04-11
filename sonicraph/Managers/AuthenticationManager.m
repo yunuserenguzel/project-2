@@ -63,6 +63,7 @@ static AuthenticationManager* sharedInstance = nil;
 - (void) initializeSessionWithToken:(NSString*)token andUser:(User*)user
 {
     [self clearThirdPartyAppLogins];
+    [SNCAPIConnector destorySharedInstance];
     self.token = token;
     self.authenticatedUser = user;
     _isUserAuthenticated = YES;
@@ -198,7 +199,7 @@ static AuthenticationManager* sharedInstance = nil;
     [[NSNotificationCenter defaultCenter]
      postNotificationName:NotificationUserLoggedOut
      object:nil];
-
+    [SNCAPIConnector destorySharedInstance];
     [SNCAPIManager destroyAuthenticationWithCompletionBlock:nil andErrorBlock:nil];
     
 }

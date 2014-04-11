@@ -19,6 +19,8 @@
 
 @property (readonly) UILongPressGestureRecognizer* longPressGesture;
 
+@property BOOL shouldAutoPlay;
+
 - (void) play;
 
 - (void) pause;

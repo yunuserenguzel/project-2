@@ -8,17 +8,25 @@
 
 #import "SNCAPIConnector.h"
 #import "AuthenticationManager.h"
+#define ErrorCodeAuthenticationRequired 401
 
+static SNCAPIConnector* sharedInstance = nil;
 @implementation SNCAPIConnector
-
+{
+    BOOL isWarnedForAuthenticationRequired;
+}
 
 + (SNCAPIConnector *)sharedInstance
 {
-    static SNCAPIConnector* sharedInstance = nil;
     if(sharedInstance == nil){
         sharedInstance = [[SNCAPIConnector alloc] initWithHostName:@"www.sonicraph.com/api"];
     }
     return sharedInstance;
+}
+
++ (void) destorySharedInstance
+{
+    sharedInstance = nil;
 }
 
 - (MKNetworkOperation *) postRequestWithParams:(NSDictionary*) params
@@ -121,6 +129,15 @@
             if(errorBlock != nil)
                 errorBlock(apiError);
             NSLog(@"error at op :%@\nerror:%@",completedOperation, apiError);
+            
+            if ([apiError code] == ErrorCodeAuthenticationRequired)
+            {
+                if(!isWarnedForAuthenticationRequired)
+                {
+                    [[[UIAlertView alloc] initWithTitle:@"Session ended" message:@"Your session is ended. Please login to continue. " delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+                }
+                [[AuthenticationManager sharedInstance] logout];
+            }
         }
         else{
             completionBlock(responseDictionary);

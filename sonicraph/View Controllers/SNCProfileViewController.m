@@ -83,7 +83,7 @@
 {
     [super viewDidLoad];
     self.sonics = [[SonicArray alloc] init];
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationItem.title = @"Profile";
     [self initializeSonicCollectionView];
     [self initializeSonicListTableView];
@@ -179,10 +179,10 @@
         isLoadingFromServer = YES;
         if(self.activityIndicator == nil)
         {
-            self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         }
         [self.activityIndicator setFrame:CGRectMake(0.0, scrollView.contentSize.height, 320.0, 44.0)];
-        [scrollView addSubview:self.activityIndicator];
+        [scrollView insertSubview:self.activityIndicator atIndex:0];
         [self.activityIndicator startAnimating];
         [SNCAPIManager getUserSonics:self.user before:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
             NSUInteger from = self.sonics.count;
@@ -384,7 +384,7 @@
     [self.sonicCollectionView setDelegate:self];
     [self.sonicCollectionView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 44.0, 0.0)];
     [self.sonicCollectionView registerClass:[SonicCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
-    [self.sonicCollectionView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.sonicCollectionView setBackgroundColor:[UIColor whiteColor]];
     [self.sonicCollectionView setShowsVerticalScrollIndicator:NO];
 
 	[self.view addSubview:self.sonicCollectionView];
@@ -396,6 +396,7 @@
 {
     self.sonicListTableView = [[UITableView alloc] initWithFrame:[self sonicCollectionViewFrame] style:UITableViewStylePlain];
     [self.view addSubview:self.sonicListTableView];
+    [self.sonicListTableView setBackgroundColor:[UIColor whiteColor]];
     [self.sonicListTableView setDataSource:self];
     [self.sonicListTableView setDelegate:self];
     [self.sonicListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -417,8 +418,8 @@
     }
     [self.sonicListTableView reloadData];
     [self.sonicListTableView setContentOffset:self.sonicCollectionView.contentOffset animated:NO];
-    [self.sonicListTableView setContentOffset:CGPointMake(0.0, -44.0) animated:YES];
-    [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -44.0) animated:NO];
+//    [self.sonicListTableView setContentOffset:CGPointMake(0.0, -44.0) animated:YES];
+//    [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -44.0) animated:NO];
 }
 
 - (void) setGridViewModeOn
@@ -435,8 +436,8 @@
     }
     [self.sonicCollectionView reloadData];
     [self.sonicCollectionView setContentOffset:self.sonicListTableView.contentOffset animated:NO];
-    [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -44.0) animated:YES];
-    [self.sonicListTableView setContentOffset:CGPointMake(0.0, -44.0) animated:NO];
+//    [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -44.0) animated:YES];
+//    [self.sonicListTableView setContentOffset:CGPointMake(0.0, -44.0) animated:NO];
 }
 - (void) showLikedSonics
 {

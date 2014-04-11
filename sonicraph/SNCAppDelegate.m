@@ -120,6 +120,8 @@ static SNCAppDelegate* sharedInstance = nil;
         // Show the user the logged-out UI
         NSLog(@"%@",alertTitle);
         NSLog(@"%@",alertText);
+        
+        [[[UIAlertView alloc] initWithTitle:@"Facebook Error" message:alertText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
     }
 }
 - (void)applicationWillResignActive:(UIApplication *)application

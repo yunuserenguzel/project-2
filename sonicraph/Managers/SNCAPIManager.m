@@ -106,6 +106,9 @@ Sonic* sonicFromServerDictionary(NSDictionary* sonicDict)
     if(sonic.isResonic){
         sonic.originalSonic = sonicFromServerDictionary([sonicDict objectForKey:@"original_sonic"]);
     }
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:NotificationUpdateSonic
+     object:sonic];
     return sonic;
 }
 Notification* notificationFromServerDictionary(NSDictionary* dict)
@@ -323,9 +326,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                 SonicComment* sonicComment = sonicCommentFromServerDictionary([responseDictionary objectForKey:@"comment"]);
                 sonicComment.sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"]);
                 sonicComment.user = [[AuthenticationManager sharedInstance] authenticatedUser];
-                [[NSNotificationCenter defaultCenter]
-                 postNotificationName:NotificationUpdateSonic
-                 object:sonicComment.sonic];
+
                 if(completionBlock){
                     completionBlock(sonicComment);
                 }
@@ -341,6 +342,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             useToken:YES
             andOperation:@"sonic/delete_comment"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
+                sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"]);
                 [[NSNotificationCenter defaultCenter]
                  postNotificationName:NotificationCommentDeleted
                  object:sonicComment];
@@ -375,7 +377,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             andOperation:@"sonic/like_sonic"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"]);
-                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUpdateSonic object:sonic];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUpdateSonic object:sonic];
                 if(completionBlock){
                     completionBlock(sonic);
                 }
@@ -390,7 +392,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             andOperation:@"sonic/dislike_sonic"
             andCompletionBlock:^(NSDictionary *responseDictionary) {
                 Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"]);
-                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUpdateSonic object:sonic];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUpdateSonic object:sonic];
                 if(completionBlock){
                     completionBlock(sonic);
                 }

@@ -52,6 +52,7 @@
     BOOL keyboardIsShown;
     User* selectedUser;
     CGFloat keyboardHeight;
+    CGPoint lastScrollOffset;
 }
 
 - (CGRect) tabbarMaxFrame
@@ -120,10 +121,16 @@
      selector:@selector(commentDeletedNotification:)
      name:NotificationCommentDeleted
      object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(sonicUpdated) name:NotificationUpdateViewForSonic object:self.sonic];
     [self configureViews];
 
 }
 
+-(void) sonicUpdated
+{
+    [self refreshNavigationItemText];
+}
 
 - (void) commentDeletedNotification:(NSNotification*)notification
 {
@@ -308,7 +315,11 @@
     [self.tabActionBarView setFrame:CGRectByRatio([self tabActionBarViewMaxFrame], [self getCurrentTabActionBarMinFrame], ratio)];
     
     [self.tabBarController.tabBar setFrame:CGRectByRatio([self tabbarMaxFrame], [self tabbarMinFrame], ratio > 1.0 ? 1.0 : ratio)];
-    [self.writeCommentView.growingTextView resignFirstResponder];
+    if(abs(lastScrollOffset.y - scrollView.contentOffset.y) > 3)
+    {
+        [self.writeCommentView.growingTextView resignFirstResponder];
+        lastScrollOffset = scrollView.contentOffset;
+    }
 }
 
 
@@ -397,7 +408,7 @@
 //    }
     
     [self refreshContentWithScrollToContentTop:scrollToContentTop];
-    
+    self.headerView.sonicPlayerView.shouldAutoPlay = self.shouldAutoPlay;
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrlString]];
     self.headerView.usernameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.username] ;
     self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
@@ -790,13 +801,14 @@
 
 - (void)SNCResizableTextViewDoneButtonPressed:(SNCResizableTextView *)textView
 {
+    [self.writeCommentView setUserInteractionEnabled:NO];
     [SNCAPIManager writeCommentToSonic:self.sonic withText:self.writeCommentView.growingTextView.text withCompletionBlock:^(id object) {
         [self.commentsContent addObject:object];
         [self reloadData];
+        [self.writeCommentView setUserInteractionEnabled:YES];
         [self.writeCommentView.growingTextView setText:@""];
-        [self.writeCommentView.growingTextView setEditable:YES];
     } andErrorBlock:^(NSError *error) {
-        [self.writeCommentView.growingTextView setEditable:YES];
+        [self.writeCommentView setUserInteractionEnabled:YES];
     }];
 }
 

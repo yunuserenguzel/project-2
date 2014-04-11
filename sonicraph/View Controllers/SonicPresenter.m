@@ -37,6 +37,7 @@ static SonicPresenter* sharedInstance = nil;
         [self dismissViewControllers];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         self.sonicViewController = [storyboard instantiateViewControllerWithIdentifier:@"SonicViewController"];
+        [self.sonicViewController setShouldAutoPlay:YES];
         self.navigationController = [[SNCNavigationViewController alloc] init];
         [self.navigationController pushViewController:self.sonicViewController animated:NO];
         

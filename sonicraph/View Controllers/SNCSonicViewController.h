@@ -53,6 +53,7 @@ UIAlertViewDelegate, UIActionSheetDelegate>
 @property UIView* tabActionBarView;
 
 @property SNCResizableTextView* writeCommentView;
+@property BOOL shouldAutoPlay;
 
 @property UIButton* likeButton;
 @property UIButton* resonicButton;

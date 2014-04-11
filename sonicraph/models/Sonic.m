@@ -23,7 +23,7 @@
 
 - (void)updateWithSonic:(Sonic *)sonic
 {
-    if([[self sonicId] isEqualToString:sonic.sonicId]){
+    if([[self sonicId] isEqualToString:sonic.sonicId] && self != sonic){
         self.resonicCount = sonic.resonicCount;
         self.likeCount = sonic.likeCount;
         self.commentCount = sonic.commentCount;
@@ -47,7 +47,7 @@
 
 - (void) updateWithNotification:(NSNotification*)notification
 {
-    if (notification.object != self) {
+    if ([notification.object isKindOfClass:[Sonic class]]) {
         [self updateWithSonic:notification.object];
     }
 }

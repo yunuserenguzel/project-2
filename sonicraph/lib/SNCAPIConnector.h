@@ -17,7 +17,7 @@ typedef void (^Block) ();
 @interface SNCAPIConnector : MKNetworkEngine
 
 + (SNCAPIConnector*) sharedInstance;
-
++ (void) destorySharedInstance;
 
 - (MKNetworkOperation *) postRequestWithParams:(NSDictionary*) params
                                      useToken:(BOOL)useToken

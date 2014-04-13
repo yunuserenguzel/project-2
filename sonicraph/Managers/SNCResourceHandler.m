@@ -271,6 +271,80 @@
     }
 }
 
+- (void) clearAllCachedSonicData
+{
+    [[NSFileManager defaultManager] removeItemAtPath:[SNCResourceHandler sonicCacheDirectory] error:nil];
+}
+
+- (void) clearAllCachedImage
+{
+    [[NSFileManager defaultManager] removeItemAtPath:[SNCResourceHandler imageCacheDirectory] error:nil];
+}
+
+- (void)clearTimeOutCachedSonicData
+{
+    NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[SNCResourceHandler sonicCacheDirectory] error:nil];
+    [self clearTimeOutCacheFiles:files atFolder:[SNCResourceHandler sonicCacheDirectory]];
+}
+
+- (void)clearTimeOutCachedImage
+{
+    NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[SNCResourceHandler imageCacheDirectory] error:nil];
+    [self clearTimeOutCacheFiles:files atFolder:[SNCResourceHandler imageCacheDirectory]];
+}
+
+- (void) clearTimeOutCacheFiles:(NSArray*)fileNames  atFolder:(NSString*)folderPath
+{
+    for (NSString* fileName in fileNames) {
+        NSString* filePath = [[SNCResourceHandler imageCacheDirectory] stringByAppendingPathComponent:fileName];
+        NSError* error;
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:&error];
+        if(!error)
+        {
+            NSDate *date = [attributes fileModificationDate];
+            if(abs([date timeIntervalSinceNow]) > FILE_TIMEOUT_INTERVAL)
+            {
+                error = nil;
+                [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+                if(error)
+                {
+                    NSLog(@"Error removing file %@ :\n%@",filePath,error);
+                }
+            }
+        }
+    }
+}
+
+- (void)clearCachedImageWithUrls:(NSArray *)urls
+{
+    NSMutableArray* filePaths = [NSMutableArray new];
+    for (NSURL* url in urls) {
+        [filePaths addObject:[[SNCResourceHandler imageCacheDirectory] stringByAppendingPathComponent:url.lastPathComponent]];
+    }
+    [self clearCacheFilesAtPaths:filePaths];
+}
+
+- (void)clearCachedSonicDataWithUrls:(NSArray *)urls
+{
+    NSMutableArray* filePaths = [NSMutableArray new];
+    for (NSURL* url in urls) {
+        [filePaths addObject:[[SNCResourceHandler sonicCacheDirectory] stringByAppendingPathComponent:url.lastPathComponent]];
+    }
+    [self clearCacheFilesAtPaths:filePaths];
+}
+
+-(void) clearCacheFilesAtPaths:(NSArray*)filePaths
+{
+    for (NSString* filePath in filePaths) {
+        NSError* error;
+        [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+        if(error)
+        {
+            NSLog(@"Error removing file %@ :\n%@",filePath,error);
+        }
+    }
+}
+
 + (NSString*) sonicCacheDirectory
 {
     static NSString* cacheFolder = nil;

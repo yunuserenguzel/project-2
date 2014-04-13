@@ -45,7 +45,15 @@
     NSLog(@"imageData: %d",[imageData length]);
     NSString* imageDataString = [imageData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
     NSLog(@"imageDataString: %d",[[imageDataString dataUsingEncoding:NSUTF8StringEncoding] length]);
-    return @{ @"image": imageDataString, @"sound": [self.sound base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed] };
+    NSString* soundDataString = [self.sound base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+    if(imageDataString && soundDataString)
+    {
+        return @{ @"image": imageDataString, @"sound":soundDataString};
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 + (SonicData *)sonicDataWithImage:(UIImage *)image andSound:(NSData *)sound
@@ -89,15 +97,6 @@
      error:nil];
     NSString* filePath = [folderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.snc",id]];
     return filePath;
-}
-
-- (void)saveToFile
-{
-    NSString* filePath = [SonicData filePathWithId:self.sonic.sonicId];
-    NSString* file = [[self dictionaryFromSonicData] JSONString];
-    NSError* error;
-    [file writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
-    NSLog(@"saveToFile error: %@",error);
 }
 
 - (void)setSonic:(Sonic *)sonic

@@ -43,7 +43,6 @@ typedef void (^SonicDataBlock) (SonicData* sonicData, NSError* error);
 @property (nonatomic) NSURL* localSonicDataFileUrl;
 @property (nonatomic) NSURL* remoteSonicDataFileUrl;
 
-- (void) saveToFile;
 
 - (void) setSoundCroppingFrom:(CGFloat)from to:(CGFloat)to withCompletionHandler:(SonicDataBlock) sonicBlock;
 

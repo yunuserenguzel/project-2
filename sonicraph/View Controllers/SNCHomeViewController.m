@@ -37,7 +37,7 @@
 
 - (CGRect) tableFooterViewRect
 {
-    return CGRectMake(0.0, 0.0, 320.0, 44.0);
+    return CGRectMake(0.0, 0.0, 320.0, 11.0);
 }
 
 - (void)viewDidLoad

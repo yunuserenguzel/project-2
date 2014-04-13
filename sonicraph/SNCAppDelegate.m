@@ -15,6 +15,7 @@
 
 #import "AuthenticationManager.h"
 #import "SonicPresenter.h"
+#import "SNCResourceHandler.h"
 
 
 static SNCAppDelegate* sharedInstance = nil;
@@ -38,6 +39,12 @@ static SNCAppDelegate* sharedInstance = nil;
         {
             [[AuthenticationManager sharedInstance] displayAuthenticationView];
         }
+    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SNCResourceHandler sharedInstance] clearTimeOutCachedImage];
+        [[SNCResourceHandler sharedInstance] clearTimeOutCachedSonicData];
+        
+        [[SNCResourceHandler sharedInstance] clearAllCachedImage];
     });
     
     return YES;

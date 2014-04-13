@@ -382,6 +382,8 @@
     self.sonicCollectionView = [[UICollectionView alloc] initWithFrame:[self sonicCollectionViewFrame] collectionViewLayout:self.sonicCollectionViewFlowLayout];
     [self.sonicCollectionView setDataSource:self];
     [self.sonicCollectionView setDelegate:self];
+    [self.sonicCollectionView setBounces:YES];
+    [self.sonicCollectionView setAlwaysBounceVertical:YES];
     [self.sonicCollectionView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 44.0, 0.0)];
     [self.sonicCollectionView registerClass:[SonicCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.sonicCollectionView setBackgroundColor:[UIColor whiteColor]];
@@ -399,6 +401,7 @@
     [self.sonicListTableView setBackgroundColor:[UIColor whiteColor]];
     [self.sonicListTableView setDataSource:self];
     [self.sonicListTableView setDelegate:self];
+    [self.sonicListTableView setAlwaysBounceVertical:YES];
     [self.sonicListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.sonicListTableView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 0.0, 0.0)];
     [self.sonicListTableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];

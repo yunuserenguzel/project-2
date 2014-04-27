@@ -74,7 +74,7 @@
 }
 - (CGRect) tabActionBarContentFrame
 {
-    return CGRectMake(0.0, 0.0, 320.0, self.tabBarController.tabBar.frame.size.height);
+    return CGRectMake(0.0, 0.0, 320.0, 49.0);
 }
 
 - (CGRect) tabActionBarViewMaxFrame
@@ -101,15 +101,12 @@
     [self initHeaderViews];
     [self initTabsViews];
     
-//    self.refreshControl = [[UIRefreshControl alloc] init];
-//    self.refreshControl = self.refreshControl;
-//    [self.refreshControl addTarget:self action:@selector(refreshContent) forControlEvents:UIControlEventValueChanged];
-    
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(keyboardWillShow:)
      name:UIKeyboardWillShowNotification
      object:self.view.window];
+
     // register for keyboard notifications
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -165,7 +162,6 @@
     self.tabActionBarView.backgroundColor = rgb(235, 235, 235);
     
     self.writeCommentView = [[SNCResizableTextView alloc] initWithFrame:[self tabActionBarContentFrame]];
-//    [self calculateAndSetTabActionBarFrameForGrowingTextFieldHeight:self.writeCommentView.frame.size.height];
     self.writeCommentView.delegate = self;
     [self.writeCommentView setUserInteractionEnabled:YES];
     self.writeCommentView.backgroundColor = rgb(235, 235, 235);
@@ -235,17 +231,6 @@
     }];
     [self closeKeyboard];
     [self.tabActionBarView removeFromSuperview];
-    
-//    UIView *keyboardSuperview = self.writeCommentView.growingTextView.inputAccessoryView.superview;
-//    [self.transitionCoordinator
-//     animateAlongsideTransitionInView:keyboardSuperview
-//     animation:
-//     ^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//         CGRect keyboardFrame = keyboardSuperview.frame;
-//         keyboardFrame.origin.x = self.view.bounds.size.width;
-//         keyboardSuperview.frame = keyboardFrame;
-//     }
-//     completion:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -400,12 +385,6 @@
         [self setCurrentContentType:ContentTypeComments];
         [self.headerView.segmentedControl setSelectedSegmentIndex:1];
     }
-//    else {
-//        [self.tableView setContentOffset:CGPointMake(0.0,0.0)];
-//        [self setCurrentContentType:ContentTypeComments];
-//        [self.headerView.segmentedBar setSelectedSegmentIndex:1];
-//        scrollToContentTop = NO;
-//    }
     
     [self refreshContentWithScrollToContentTop:scrollToContentTop];
     self.headerView.sonicPlayerView.shouldAutoPlay = self.shouldAutoPlay;
@@ -939,7 +918,6 @@
 
 - (void)dealloc
 {
-    NSLog(@"SNCViewController dealloced");
     [[NSNotificationCenter defaultCenter]
      removeObserver:self
      name:nil

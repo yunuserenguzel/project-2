@@ -394,6 +394,7 @@ CGFloat heightForIdentifier(NSString* identifier)
             return NO;
         }
     }
+    
     return YES;
 }
 

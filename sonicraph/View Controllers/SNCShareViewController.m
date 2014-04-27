@@ -86,16 +86,8 @@
 - (CGRect) facebookButtonFrame
 {
     CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(110.0, 44.0);
-    frame.origin = CGPointMake(105.0, self.view.frame.size.height - frame.size.height - 22.0);
-    return frame;
-}
-
-- (CGRect) shareOnFacebookFrame
-{
-    CGRect frame = [self facebookButtonFrame];
-    frame.origin.y += frame.size.height + 5;
-    frame.size.height = 15.0;
+    frame.size = CGSizeMake(320.0, 44.0);
+    frame.origin = CGPointMake(0.0, self.view.frame.size.height - 44.0);
     return frame;
 }
 
@@ -170,23 +162,20 @@
     [self.backButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [self.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.backButton setImage:[UIImage imageNamed:@"BackArrow.png"] forState:UIControlStateNormal];
+    [self.backButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
     [self.backButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0)];
     [self.backButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
     [self.view addSubview:self.backButton];
     
-    self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
-    [self.titleLabel setText:@"Share"];
-    [self.titleLabel setTextColor:[UIColor whiteColor]];
-    [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.titleLabel setFont:self.backButton.titleLabel.font];
-    [self.view addSubview:self.titleLabel];
-    
     self.doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.doneButton setFrame:[self doneButtonFrame]];
+    [self.doneButton setTitle:@"Post" forState:UIControlStateNormal];
+    [self.doneButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
+    [self.doneButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 76.0, 0.0, 0.0)];
+    [self.doneButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 38.0)];
     [self.doneButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     [self.doneButton setImage:[UIImage imageNamed:@"Share.png"] forState:UIControlStateNormal];
     [self.doneButton addTarget:self action:@selector(shareSonic) forControlEvents:UIControlEventTouchUpInside];
-    [self.doneButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 10.0)];
     [self.doneButton setEnabled:NO];
     [self.view addSubview:self.doneButton];
 }
@@ -201,7 +190,6 @@
     [self.view addSubview:self.sonicPlayerView];
     [self.sonicPlayerView.longPressGesture setDelegate:self];
     [self.sonicPlayerView.tapGesture setDelegate:self];
-//    self.sonicPlayerView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void) initTags
@@ -245,16 +233,17 @@
     self.facebookSwitch = [[SNCSwitchView alloc] init];
     [self.facebookSwitch addTarget:self action:@selector(facebookButtonChanged:) forControlEvents:UIControlEventValueChanged];
     [self.facebookSwitch setFrame:[self facebookButtonFrame]];
-    [self.facebookSwitch setImage:[UIImage imageNamed:@"FacebookShareButtonIcon.png"]];
-    [self.facebookSwitch setBackgroundImage:[UIImage imageNamed:@"FacebookShareButtonBase.png"]];
+    [self.facebookSwitch setImage:[UIImage imageNamed:@"facebook_share_button.png"]];
+    [self.facebookSwitch setBackgroundColor:[UIColor whiteColor]];
+    [self.facebookSwitch.textLabel setText:@"Share On Facebook"];
     [self.view addSubview:self.facebookSwitch];
-    
-    self.shareOnFacebook = [[UILabel alloc] initWithFrame:[self shareOnFacebookFrame]];
-    [self.shareOnFacebook setText:@"Share on facebook"];
-    [self.shareOnFacebook setFont:[UIFont systemFontOfSize:12.0]];
-    [self.shareOnFacebook setTextColor:[[UIColor whiteColor] colorWithAlphaComponent:0.6]];
-    [self.shareOnFacebook setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:self.shareOnFacebook];
+//    
+//    self.shareOnFacebook = [[UILabel alloc] initWithFrame:[self shareOnFacebookFrame]];
+//    [self.shareOnFacebook setText:@"Share on facebook"];
+//    [self.shareOnFacebook setFont:[UIFont systemFontOfSize:12.0]];
+//    [self.shareOnFacebook setTextColor:[[UIColor whiteColor] colorWithAlphaComponent:0.6]];
+//    [self.shareOnFacebook setTextAlignment:NSTextAlignmentCenter];
+//    [self.view addSubview:self.shareOnFacebook];
     
 }
 

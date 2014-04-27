@@ -8,6 +8,7 @@
 
 #import "SNCSwitchView.h"
 #import "TypeDefs.h"
+#import "Configurations.h"
 
 @implementation SNCSwitchView
 
@@ -27,6 +28,11 @@
 
 }
 
+- (CGRect) textLabelFrame
+{
+    return CGRectMake(100.0, 0.0, 240.0, 44.0);
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -38,7 +44,7 @@
 
 - (id) init
 {
-    self = [super initWithFrame:CGRectMake(0.0, 0.0, 180.0, 44.0)];
+    self = [super initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
     if (self) {
         [self initViews];
     }
@@ -52,39 +58,21 @@
     _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureFired:)];
     [self addGestureRecognizer:self.tapGesture];
     
-    _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
-    [self.backgroundImageView setContentMode:UIViewContentModeCenter];
-    [self addSubview:self.backgroundImageView];
-    
-    _onLabel = [[UILabel alloc] initWithFrame:[self onLabelFrame]];
-    [self.onLabel setText:@"On"];
-    [self.onLabel setTextAlignment:NSTextAlignmentCenter];
-    [self addSubview:self.onLabel];
-    
-    _offLabel = [[UILabel alloc] initWithFrame:[self offLabelFrame]];
-    [self.offLabel setText:@"Off"];
-    [self.offLabel setTextAlignment:NSTextAlignmentCenter];
-    [self addSubview:self.offLabel];
-    
-    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.height, self.frame.size.height)];
+    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(60.0, 0.0, self.frame.size.height, self.frame.size.height)];
     [self.imageView setUserInteractionEnabled:YES];
     [self.imageView setContentMode:UIViewContentModeCenter];
     [self addSubview:self.imageView];
     
-    _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureFired:)];
-    [self.imageView addGestureRecognizer:self.panGesture];
+    _textLabel = [[UILabel alloc] initWithFrame:[self textLabelFrame]];
+    [self.textLabel setFont:[UIFont systemFontOfSize:16.0]];
+    [self.textLabel setTextColor:TabbarNonActiveButtonTintColor];
+    [self addSubview:self.textLabel];
 }
 
 - (void)setImage:(UIImage *)image
 {
     _image = image;
     self.imageView.image = image;
-}
-
--(void)setBackgroundImage:(UIImage *)backgroundImage
-{
-    _backgroundImage = backgroundImage;
-    self.backgroundImageView.image = backgroundImage;
 }
 
 - (CGRect) frameWithZeroOrigin
@@ -98,19 +86,7 @@
     CGRect imageViewFrame = self.imageView.frame;
     imageViewFrame.size = CGSizeMake(self.frame.size.height, self.frame.size.height);
     self.imageView.frame = imageViewFrame;
-    [self.backgroundImageView setFrame:[self frameWithZeroOrigin]];
-    [self.onLabel setFrame:[self onLabelFrame]];
-    [self.offLabel setFrame:[self offLabelFrame]];
-//    [self.layer setCornerRadius:self.frame.size.height * 0.5];
-//    [self.imageView.layer setCornerRadius:self.frame.size.height * 0.5];
-//    [self calculateAlphaForImageView];
 }
-
-//- (void) calculateAlphaForImageView
-//{
-//    CGFloat ratio = self.imageView.frame.origin.x / (self.frame.size.width-self.imageView.frame.size.width);
-//    self.imageView.alpha = (ratio * 0.5) + 0.5;
-//}
 
 - (void) tapGestureFired:(UITapGestureRecognizer*)tapGesture
 {
@@ -127,57 +103,20 @@
  - (void)setOn:(BOOL)on
 {
     _on = on;
-    CGFloat targetX = 0.0;
-    if(on)
-    {
-        targetX = self.frame.size.width - self.imageView.frame.size.width;
-    }
     [UIView animateWithDuration:0.1 animations:^{
-        CGRect imageViewFrame = self.imageView.frame;
-        imageViewFrame.origin.x = targetX;
-        self.imageView.frame = imageViewFrame;
-//        [self calculateAlphaForImageView];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
         if(on)
         {
-            [self.onLabel setAlpha:1.0];
-            [self.offLabel setAlpha:0.0];
+            self.imageView.alpha = 1.0;
+            self.textLabel.alpha = 1.0;
         }
         else
         {
-            [self.onLabel setAlpha:0.0];
-            [self.offLabel setAlpha:1.0];
+            self.imageView.alpha = 0.5;
+            self.textLabel.alpha = 0.5;
         }
     }];
 }
-
-- (void) panGestureFired:(UIPanGestureRecognizer*)panGesture
-{
-    CGPoint currentLocation = [panGesture locationInView:self];
-    if(panGesture.state == UIGestureRecognizerStateEnded)
-    {
-        
-    }
-    else
-    {
-        CGRect imageViewFrame = self.imageView.frame;
-        if(currentLocation.x - imageViewFrame.size.width * 0.5 >= 0 && currentLocation.x + imageViewFrame.size.width * 0.5 <= self.frame.size.width)
-        {
-            imageViewFrame.origin.x = currentLocation.x - imageViewFrame.size.width * 0.5;
-            self.imageView.frame = imageViewFrame;
-//            [self calculateAlphaForImageView];
-        }
-    }
-    if(currentLocation.x > self.frame.size.width * 0.5)
-    {
-        [self setOn:YES];
-    }
-    else
-    {
-        [self setOn:NO];
-    }
-}
-
 
 
 @end

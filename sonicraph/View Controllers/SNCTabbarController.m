@@ -74,7 +74,7 @@ static int previousTabIndex = 0;
                             @"camera.png",
                             @"notifications.png",
                             @"profile.png"];
-    NSLog(@"tabbar height: %f",self.tabBar.frame.size.height);
+//    NSLog(@"tabbar height: %f",self.tabBar.frame.size.height);
     for(int i=0; i<self.tabBar.items.count; i++)
     {
         UITabBarItem* item = [self.tabBar.items objectAtIndex:i];
@@ -107,7 +107,7 @@ static int previousTabIndex = 0;
 
 - (void)dealloc
 {
-    NSLog(@"tabbar dealloc");
+//    NSLog(@"tabbar dealloc");
 }
 
 - (void)didReceiveMemoryWarning

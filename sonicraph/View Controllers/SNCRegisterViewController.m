@@ -96,6 +96,7 @@
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setTitle:@"Already signed up? Log in" forState:UIControlStateNormal];
+    [self.loginButton.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
     [self.loginButton setFrame:[self loginButtonFrame]];
     [self.scrollView addSubview:self.loginButton];
     [self.loginButton addTarget:self action:@selector(openLogin) forControlEvents:UIControlEventTouchUpInside];
@@ -130,10 +131,21 @@
 
 - (void) registerUser
 {
+    UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [indicator setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:indicator];
+    [indicator startAnimating];
+
     [[AuthenticationManager sharedInstance] registerUserWithEmail:self.emailField.text andPassword:self.passwordField.text andCompletionBlock:^(User *user, NSString *token) {
-        
+        [indicator stopAnimating];
+        [indicator removeFromSuperview];
     } andErrorBlock:^(NSError *error) {
-        
+        [indicator stopAnimating];
+        [indicator removeFromSuperview];
+        if(error.code == APIErrorCodeEmailExist)
+        {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Email address is already taken by another user. Please enter a different email address" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        }
     }];
 }
 

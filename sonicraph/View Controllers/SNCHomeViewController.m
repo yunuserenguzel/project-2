@@ -77,7 +77,6 @@
 {
 
     self.tableView.contentInset = [self edgeInsetsForScrollContent];
-//    [self.tableView setBackgroundColor:CellSpacingGrayColor];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView setScrollsToTop:YES];
@@ -91,16 +90,11 @@
     self.bottomActivityIndicator.frame = [self tableFooterViewRect];
     [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
     
-//    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gothroughbackground.png"]];
-//    imageView.alpha = 0.2;
-//    imageView.frame = CGRectMake(0.0, 0.0, self.tableView.frame.size.width, self.tableView.frame.size.height);
-//    self.tableView.backgroundView = imageView;
 }
 
 - (void) initRefreshController
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
-//    [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl addTarget:self action:@selector(refreshFromServer) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -128,7 +122,6 @@
 - (void) refreshFromServer
 {
     isLoadingFromServer = YES;
-//    Sonic* lastSonic = self.sonics.count > 0 ? [self.sonics objectAtIndex:0] : nil;
     [SNCAPIManager getSonicsAfter:nil withCompletionBlock:^(NSArray *sonics) {
         self.sonics = [[SonicArray alloc] init];
         [self.sonics importSonicsWithArray:sonics];
@@ -217,41 +210,9 @@
     }
 }
 
-- (void) autoPlay:(UIScrollView*)scrollView
-{
-    if([self.refreshControl isRefreshing])
-    {
-        return;
-    }
-    CGFloat x = self.tableView.contentOffset.x;
-    CGFloat y = self.tableView.contentOffset.y + self.tableView.frame.size.height * 0.5;
-    CGFloat width = self.tableView.frame.size.width;
-    CGFloat height = HeightForHomeCell * 0.4;
-    y -= height * 0.5;
-    CGRect rect = CGRectMake(x, y, width, height);
-    
-    NSArray* indexPaths = [self.tableView indexPathsForRowsInRect:rect];
-    if([indexPaths count] == 1){
-        cellWiningTheCenter = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [cellWiningTheCenter cellWonCenterOfTableView];
-        });
-    }
-    else {
-        for(NSIndexPath* indexPath in indexPaths)
-        {
-            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.tableView cellForRowAtIndexPath:indexPath];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [cell cellLostCenterOfTableView];
-            });
-        }
-    }
-}
-
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [cellWiningTheCenter cellLostCenterOfTableView];
+    [self stopPlaying];
     if(!isLoadingFromServer && self.sonics.count > 0 && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0)
     {
         isLoadingFromServer = YES;
@@ -272,21 +233,6 @@
     }
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if(!decelerate){
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self autoPlay:scrollView];
-        });
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self autoPlay:scrollView];
-    });
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

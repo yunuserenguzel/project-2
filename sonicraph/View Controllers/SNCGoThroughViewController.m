@@ -20,7 +20,7 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 {
     UIView* base = [[UIView alloc] initWithFrame:CGRectMake(textField.frame.origin.x, textField.frame.origin.y, textField.frame.size.width, textField.frame.size.height)];
     [base setUserInteractionEnabled:YES];
-    [base setBackgroundColor:[[UIColor whiteColor] colorWithAlphaComponent:0.3]];
+    [base setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.3]];
     UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 0.0, 90.0, textField.frame.size.height)];
     [label setFont:[UIFont boldSystemFontOfSize:18.0]];
     [label setTextColor:[UIColor whiteColor]];
@@ -55,6 +55,8 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 
 @property SMPageControl* pageControl;
 
+@property UIButton* toBeginningButton;
+
 @end
 
 @implementation SNCGoThroughViewController
@@ -70,6 +72,11 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 - (CGRect) pageControlFrame
 {
     return CGRectMake(0.0, self.view.frame.size.height-130.0, 320.0,22.0);
+}
+
+- (CGRect) toBeginningButtonFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height - 150.0, 320.0, 22.0);
 }
 
 + (SNCGoThroughViewController *)create
@@ -107,7 +114,7 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     [self.view insertSubview:imageView atIndex:0];
     
     self.loginButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height-100.0, 320.0, 44.0)];
-    [self.loginButton setBackgroundImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5] forState:UIControlStateNormal];
+    [self.loginButton setBackgroundImageWithColor:[[UIColor blackColor] colorWithAlphaComponent:0.5] forState:UIControlStateNormal];
     [self.loginButton setTitle:@"Log in" forState:UIControlStateNormal];
     [self.view addSubview:self.loginButton];
     [self.loginButton addTarget:self action:@selector(showLoginViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -115,16 +122,27 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.registerButton.frame = [self registerButtonFrame];
     [self.registerButton setTitle:@"Not yet registered? Sign up" forState:UIControlStateNormal];
+    [self.registerButton.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
     [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.registerButton addTarget:self action:@selector(openRegister) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.registerButton];
     
     self.pageControl = [[SMPageControl alloc] initWithFrame:[self pageControlFrame]];
+    [self.pageControl setUserInteractionEnabled:NO];
     [self.pageControl setNumberOfPages:4];
     [self.pageControl setCurrentPage:0];
     [self.pageControl setIndicatorDiameter:10.0];
     [self.view addSubview:self.pageControl];
     [self hidePageControl];
+    
+    
+    self.toBeginningButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.toBeginningButton setImage:[UIImage imageNamed:@"gothrough_to_beginning.png"] forState:UIControlStateNormal];
+    [self.toBeginningButton setFrame:[self toBeginningButtonFrame]];
+    [self.toBeginningButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.toBeginningButton addTarget:self action:@selector(toBeginning) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.toBeginningButton];
+    [self.toBeginningButton setHidden:YES];
     
     self.dataSource = self;
     self.delegate = self;
@@ -143,7 +161,15 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     }];
 }
 
-- (void)startGoThrough
+- (void) toBeginning
+{
+    [self showLoginButton];
+    [self showRegisterButton];
+    [self.toBeginningButton setHidden:YES];
+    [self showViewController:[self.contentViewControllers objectAtIndex:0] direction:UIPageViewControllerNavigationDirectionReverse];
+}
+
+- (void) startGoThrough
 {
     [self showViewController:[self.contentViewControllers objectAtIndex:1] direction:UIPageViewControllerNavigationDirectionForward];
     [self.pageControl setCurrentPage:0];
@@ -152,6 +178,7 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 
 - (void) openRegister
 {
+    [self.toBeginningButton setHidden:NO];
     [self hideLoginButton];
     [self hideRegisterButton];
     [self hidePageControl];
@@ -168,7 +195,6 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 
 - (void) showLoginButton
 {
-    
     [UIView animateWithDuration:0.3 animations:^{
         self.loginButton.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
     }];
@@ -213,6 +239,7 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     [self hideLoginButton];
     [self showRegisterButton];
     [self hidePageControl];
+    [self.toBeginningButton setHidden:NO];
     [self showViewController:self.loginViewController direction:UIPageViewControllerNavigationDirectionForward];
    
 }
@@ -268,26 +295,18 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
     UIViewController* viewController = [pendingViewControllers objectAtIndex:0];
-    if(viewController == self.loginViewController || viewController == self.registerViewController)
-    {
-        [self hideLoginButton];
-        [self hidePageControl];
-    }
-    else
-    {
-        [self showLoginButton];
-    }
-    NSInteger index = [self.contentViewControllers indexOfObject:viewController];
-    index--;
-    if(index < 0)
-    {
-        [self hidePageControl];
-    }
+    [self redesignForViewController:viewController];
+    
 }
 
 -(void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
     UIViewController* viewController = [self.viewControllers objectAtIndex:0];
+    [self redesignForViewController:viewController];
+}
+
+- (void) redesignForViewController:(UIViewController*)viewController
+{
     if(viewController == self.loginViewController || viewController == self.registerViewController)
     {
         [self hideLoginButton];
@@ -297,7 +316,7 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     {
         [self showLoginButton];
     }
-    NSInteger index = [self.contentViewControllers indexOfObject:viewController];
+    int index = (int)[self.contentViewControllers indexOfObject:viewController];
     index--;
     if(index >= 0)
     {
@@ -308,7 +327,9 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     {
         [self hidePageControl];
     }
+    
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -310,17 +310,19 @@ typedef enum SonicRecordType {
     [self.tabBarController.tabBar setHidden:YES];
     [self.equalizer stopAnimating];
     
-}
-
-- (void) viewDidAppear:(BOOL)animated
-{
     [self.mediaManager startCamera];
-
+    
     [self.recordTypeSwitch setEnabled:YES];
     [self.activityIndicator stopAnimating];
     [self.soundTimeSlider setValue:0.0];
     [self.recordButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
     [self.recordButton addTarget:self action:@selector(recordButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.recordButton setEnabled:NO];
+    [self performSelector:@selector(prepareForRetake) withObject:nil afterDelay:0.5];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
     if(self.recordType == SonicRecordTypeSoundFirst)
     {
         [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];
@@ -338,6 +340,7 @@ typedef enum SonicRecordType {
     [self.tabBarController.tabBar setHidden:NO];
     [self.soundTimer invalidate];
     [locationManager stopUpdatingLocation];
+    [self.equalizer stopAnimating];
 }
 
 - (void) takePicture
@@ -612,7 +615,10 @@ typedef enum SonicRecordType {
     [self.equalizer stopAnimating];
     [self.soundTimer invalidate];
     [self.mediaManager stopAudioRecording];
-    [self.recordButton setEnabled:YES];
+    if(isMediaManagerReady)
+    {
+        [self.recordButton setEnabled:YES];
+    }
     [self.mediaManager startCamera];
     [self.recordTypeSwitch setEnabled:YES];
     [self.activityIndicator stopAnimating];
@@ -699,7 +705,7 @@ typedef enum SonicRecordType {
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
     currentLocation = newLocation;
-	NSLog(@"%@", currentLocation);
+//	NSLog(@"%@", currentLocation);
 }
 
 static CGRect swapWidthAndHeight(CGRect rect)

@@ -13,51 +13,7 @@
 #import "Configurations.h"
 #import "SNCResourceHandler.h"
 #import "SNCPreloaderImageView.h"
-
-//@interface LoadingView : UIView
-//@property (nonatomic) CGFloat ratio;
-//@end
-//
-//@implementation LoadingView
-//
-//- (void)setRatio:(CGFloat)ratio
-//{
-//    _ratio = ratio;
-//    [self setNeedsDisplay];
-//}
-//
-//- (void)drawRect:(CGRect)rect
-//{
-////    [super drawRect:rect];
-//    
-//    CGContextRef context = UIGraphicsGetCurrentContext();
-//    CGContextSetFillColorWithColor(context, [UIColor lightGrayColor].CGColor);
-//    CGContextFillRect(context, self.bounds);
-//    
-//    CGRect allRect = self.bounds;
-//    CGRect circleRect = CGRectMake(allRect.origin.x + 2, allRect.origin.y + 2,
-//                                   allRect.size.width - 4, allRect.size.height - 4);
-//    
-//    // Draw background
-//    CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0); // white
-//    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 0.1); // translucent white
-//    CGContextSetLineWidth(context, 2.0);
-//    CGContextFillEllipseInRect(context, circleRect);
-//    CGContextStrokeEllipseInRect(context, circleRect);
-//    
-//    // Draw progress
-//    float x = (allRect.size.width / 2);
-//    float y = (allRect.size.height / 2);
-//    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0); // white
-//    CGContextMoveToPoint(context, x, y);
-//    CGContextAddArc(context, x, y, (allRect.size.width - 4) / 2, -(M_PI / 2),
-//                    (self.ratio * 2 * M_PI) - M_PI / 2, 0);
-//    CGContextClosePath(context);
-//    CGContextFillPath(context);
-//}
-//
-//@end
-
+#import "SNCEqualizerView.h"
 
 @interface SonicPlayerView () <AVAudioPlayerDelegate>
 
@@ -69,15 +25,16 @@
 
 @property NSTimer* timer;
 
-@property UIImageView* pausedImageView;
-
 @property SNCPreloaderImageView* preloader;
+
+@property UIImageView* playImageView;
+
+@property SNCEqualizerView* equalizerView;
 
 @end
 
 @implementation SonicPlayerView
 {
-//    LoadingView* loadingView;
 }
 
 - (CGRect) imageViewFrame
@@ -92,10 +49,14 @@
     return CGRectMake(0.0, 320.0, 320.0, 1.5);
 }
 
-- (CGRect) pausedImageViewFrame
+- (CGRect) playImageViewFrame
 {
-    CGFloat w = 70.0 / 1.5, h = 74.0 / 1.5;
-    return CGRectMake(160.0-(w*0.5), 160.0-(h*0.5), w, h);
+    return CGRectMake(280.0, 280.0, 30.0, 30.0);
+}
+
+- (CGRect) equalizerViewFrame
+{
+    return CGRectMake(285.0, 290.0, 20.0, 20.0);
 }
 
 - (CGRect) preloaderViewFrame
@@ -142,53 +103,29 @@
     [self.longPressGesture setMinimumPressDuration:1];
     [self addGestureRecognizer:self.longPressGesture];
     
-    self.pausedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Paused.png"]];
-    [self.pausedImageView setContentMode:UIViewContentModeScaleAspectFit];
-    [self.pausedImageView setFrame:[self pausedImageViewFrame]];
-    [self.pausedImageView setHidden:YES];
-    [self.imageView addSubview:self.pausedImageView];
     
     self.preloader = [[SNCPreloaderImageView alloc] initWithFrame:[self preloaderViewFrame]];
     [self.imageView addSubview:self.preloader];
     [self.preloader setHidden:YES];
-
+    
+    self.playImageView = [[UIImageView alloc] initWithFrame:[self playImageViewFrame]];
+    [self.playImageView setImage:[UIImage imageNamed:@"playSonicImage.png"]];
+    [self addSubview:self.playImageView];
+    
 }
+
 - (void) longPress:(UILongPressGestureRecognizer* )longGesture
 {
-//    NSLog(@"state: %d", longGesture.state);
     if([longGesture state] == UIGestureRecognizerStateBegan){
         [self stop];
         [self play];
     }
-}
-- (void) showPausedImageView
-{
-    [self.pausedImageView setAlpha:0.25];
-    [self.pausedImageView setHidden:NO];
-    CGFloat duration = 0.5;
-    [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.pausedImageView.transform = CGAffineTransformMakeScale(1.5, 1.5);
-    } completion:^(BOOL finished) {
-    }];
-    
-    [UIView animateWithDuration:duration * 0.4 animations:^{
-        [self.pausedImageView setAlpha:0.6];
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:duration * 0.4 animations:^{
-            [self.pausedImageView setAlpha:0.25];
-        } completion:^(BOOL finished) {
-            self.pausedImageView.transform = CGAffineTransformMakeScale(1.0, 1.0);
-            [self.pausedImageView setHidden:YES];
-        }];
-    }];
-
 }
 
 - (void) tapped
 {
     if([self.audioPlayer isPlaying]){
         [self pause];
-        [self showPausedImageView];
     }
     else{
         [self play];
@@ -222,27 +159,12 @@
          }
      }
      andRefreshBlock:^(CGFloat ratio, NSURL* sonicUrl) {
-//         if([self.sonicUrl.path isEqualToString:sonicUrl.path])
-//         {
-//             dispatch_async(dispatch_get_main_queue(), ^{
-//                 loadingView.ratio = ratio;
-//             });
-//         }
+
      }
      andErrorBlock:^(NSError *error) {
-//         UIButton* retryButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//         [retryButton setImage:[UIImage imageNamed:@"retry_icon.png"] forState:UIControlStateNormal];
-//         retryButton.frame = [self imageViewFrame];
-//         [self addSubview:retryButton];
-//         [retryButton addTarget:self action:@selector(retry:) forControlEvents:UIControlEventTouchUpInside];
+         [self downloadSonicData];
      }];
 }
-
-//- (void) retry:(UIButton*)retryButton
-//{
-//    [retryButton removeFromSuperview];
-//    [self downloadSonicData];
-//}
 
 - (void) initializeImageView
 {
@@ -282,16 +204,23 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.soundSlider setValue:self.audioPlayer.currentTime];
+        if(![self.audioPlayer isPlaying]){
+            [self stop];
+        }
     });
-    if(![self.audioPlayer isPlaying]){
-        [self.timer invalidate];
-    }
 }
 
 - (void)play
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.equalizerView removeFromSuperview];
+        self.equalizerView = [[SNCEqualizerView alloc] initWithFrame:[self equalizerViewFrame]];
+        [self addSubview:self.equalizerView];
+        [self.equalizerView startAnimating];
+    });
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:NULL];
     [self.audioPlayer play];
+    [self.playImageView setHidden:YES];
     if(self.timer == nil || ![self.timer isValid]){
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
         [self.timer setTolerance:0.01];
@@ -300,14 +229,18 @@
 
 - (void)stop
 {
+    [self.playImageView setHidden:NO];
+    [self.equalizerView stopAnimating];
     [self.timer invalidate];
     [self.audioPlayer stop];
     [self.audioPlayer setCurrentTime:0.1];
-    [self.soundSlider setValue:0.1];
+    [self.soundSlider setValue:0.0];
 }
 
 - (void)pause
 {
+    [self.playImageView setHidden:NO];
+    [self.equalizerView stopAnimating];
     [self.timer invalidate];
     [self.audioPlayer pause];
 }

@@ -14,6 +14,7 @@
 #import "Notification.h"
 
 #define APIErrorCodeUsernameExist 212
+#define APIErrorCodeEmailExist 211
 
 User* userFromServerDictionary(NSDictionary* dictionary);
 SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary);

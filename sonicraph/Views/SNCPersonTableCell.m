@@ -187,7 +187,7 @@
 
     self.unfollowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.unfollowButton setFrame:[self followButtonFrame]];
-    [self.unfollowButton setImage:[UIImage imageNamed:@"FollowingBlue.png"] forState:UIControlStateNormal];
+    [self.unfollowButton setImage:[UIImage imageNamed:@"Following.png"] forState:UIControlStateNormal];
     [self.unfollowButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.followContent addSubview:self.unfollowButton];
     

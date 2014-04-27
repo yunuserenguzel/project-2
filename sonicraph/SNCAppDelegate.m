@@ -22,10 +22,6 @@ static SNCAppDelegate* sharedInstance = nil;
 
 @implementation SNCAppDelegate
 
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-
 + (SNCAppDelegate *)sharedInstance
 {
     return sharedInstance;
@@ -43,8 +39,6 @@ static SNCAppDelegate* sharedInstance = nil;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SNCResourceHandler sharedInstance] clearTimeOutCachedImage];
         [[SNCResourceHandler sharedInstance] clearTimeOutCachedSonicData];
-        
-        [[SNCResourceHandler sharedInstance] clearAllCachedImage];
     });
     
     return YES;

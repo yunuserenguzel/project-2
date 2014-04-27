@@ -7,6 +7,8 @@
 //
 
 #import "SNCEqualizerView.h"
+#import <QuartzCore/QuartzCore.h>
+
 
 #define ARC4RANDOM_MAX  0x100000000
 
@@ -80,8 +82,15 @@ typedef void (^CompletionBoolBlock) (BOOL successful);
     {
         return;
     }
+    [self setHidden:NO];
+    [CATransaction begin];
+    [self.layer removeAllAnimations];
+    [CATransaction commit];
     shouldAnimate = YES;
     self.alpha = 1.0;
+    for (UIView* bar in self.bars) {
+        [self setHeight:self.frame.size.height forBar:bar];
+    }
     [self normalizeWithAnimationWithCompletionBlock:^(BOOL successful) {
         [self randomizeWithAnimation];
     }];
@@ -89,10 +98,11 @@ typedef void (^CompletionBoolBlock) (BOOL successful);
 
 - (void)stopAnimating
 {
+    [CATransaction begin];
+    [self.layer removeAllAnimations];
+    [CATransaction commit];
+    [self setHidden:YES];
     shouldAnimate = NO;
-    [self normalizeWithAnimationWithCompletionBlock:^(BOOL successful) {
-        self.alpha = 0.0;
-    }];
 }
 
 - (void) normalizeWithAnimationWithCompletionBlock:(CompletionBoolBlock) animation
@@ -119,6 +129,10 @@ typedef void (^CompletionBoolBlock) (BOOL successful);
 
 - (void) randomizeWithAnimation
 {
+    if(!shouldAnimate)
+    {
+        return;
+    }
     [UIView animateWithDuration:0.3 animations:^{
         for (int i=0; i< self.bars.count;i++) {
             UIView* bar = [self.bars objectAtIndex:i];
@@ -135,10 +149,7 @@ typedef void (^CompletionBoolBlock) (BOOL successful);
                [self setHeight:height forBar:bar];
            }
        } completion:^(BOOL finished) {
-           if(shouldAnimate)
-           {
-               [self randomizeWithAnimation];
-           }
+           [self randomizeWithAnimation];
        }];
     }];
 }

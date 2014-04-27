@@ -40,7 +40,7 @@
 }
 - (CGRect) titleLabelFrame
 {
-    return CGRectMake(106.0, 0.0, 108.0, 66.0);
+    return CGRectMake(0.0, [self soundSliderFrame].origin.y + 66.0, 320.0, 22.0);
 }
 
 - (CGRect) doneButtonFrame
@@ -185,19 +185,15 @@
     [self.backButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [self.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.backButton setImage:[UIImage imageNamed:@"BackArrow.png"] forState:UIControlStateNormal];
+    [self.backButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
     [self.backButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0)];
     [self.backButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
     [self.view addSubview:self.backButton];
     
-    self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
-    [self.titleLabel setText:@"Trim Sound"];
-    [self.titleLabel setTextColor:[UIColor whiteColor]];
-    [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.titleLabel setFont:self.backButton.titleLabel.font];
-    [self.view addSubview:self.titleLabel];
     
     self.doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.doneButton setFrame:[self doneButtonFrame]];
+    [self.doneButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
     [self.doneButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [self.doneButton addTarget:self action:@selector(doneEdit) forControlEvents:UIControlEventTouchUpInside];
@@ -237,12 +233,21 @@
     [self.soundSlider setLowerHandleImageHighlighted:[UIImage imageNamed:@"TrimSoundHandle.png"]];
     [self.soundSlider setUpperHandleImageHighlighted:[UIImage imageNamed:@"TrimSoundHandle.png"]];
     [self.view addSubview:self.soundSlider];
+    
+    
+    self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
+    [self.titleLabel setText:@"Trim sound using handles"];
+    [self.titleLabel setTextColor:[UIColor whiteColor]];
+    [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
+    [self.view addSubview:self.titleLabel];
 }
 
 - (void) initializeResetButton
 {
     self.resetButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.resetButton setTitle:@"Original" forState:UIControlStateNormal];
+    [self.resetButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
     [self.resetButton setBackgroundColor:CameraViewControllersBackgroundColor];
 //    [self.resetButton.layer setBorderColor:[UIColor blackColor].CGColor];
 //    [self.resetButton.layer setBorderWidth:1.0f];
@@ -256,6 +261,7 @@
 {
     self.replayButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.replayButton setTitle:@"Replay" forState:UIControlStateNormal];
+    [self.replayButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
     [self.replayButton setBackgroundColor:CameraViewControllersBackgroundColor];
 //    [self.replayButton.layer setBorderColor:[UIColor blackColor].CGColor];
 //    [self.replayButton.layer setBorderWidth:1.0f];

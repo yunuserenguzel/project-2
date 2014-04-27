@@ -11,17 +11,13 @@
 @interface SNCSwitchView : UIControl
 
 @property (nonatomic) UIImage* image;
-@property (nonatomic) UIImage* backgroundImage;
 
 @property (readonly) UIImageView* imageView;
-@property (readonly) UIImageView* backgroundImageView;
 
-@property (readonly) UIPanGestureRecognizer* panGesture;
+@property (readonly) UILabel* textLabel;
 
 @property (readonly) UITapGestureRecognizer* tapGesture;
 
-@property (readonly) UILabel* onLabel;
-@property (readonly) UILabel* offLabel;
 
 @property (nonatomic) BOOL on;
 

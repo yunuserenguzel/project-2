@@ -136,43 +136,10 @@
 }
 
 
-- (void) autoPlay:(UIScrollView*)scrollView
-{
-    if(scrollView != self.sonicListTableView)
-    {
-        return;
-    }
-    
-    CGFloat x = self.sonicListTableView.contentOffset.x;
-    CGFloat y = self.sonicListTableView.contentOffset.y + self.sonicListTableView.frame.size.height * 0.5;
-    CGFloat width = self.sonicListTableView.frame.size.width;
-    CGFloat height = HeightForHomeCell * 0.5;
-    y -= height * 0.5;
-    CGRect rect = CGRectMake(x, y, width, height);
-    
-    NSArray* indexPaths = [self.sonicListTableView indexPathsForRowsInRect:rect];
-    if([indexPaths count] == 1 && scrollView.contentOffset.y > -75){
-        cellWiningTheCenter = (SNCHomeTableCell*)[self.sonicListTableView cellForRowAtIndexPath:[indexPaths objectAtIndex:0]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [cellWiningTheCenter cellWonCenterOfTableView];
-        });
-    }
-    else {
-        for(NSIndexPath* indexPath in indexPaths)
-        {
-            SNCHomeTableCell* cell = (SNCHomeTableCell*)[self.sonicListTableView cellForRowAtIndexPath:indexPath];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [cell cellLostCenterOfTableView];
-            });
-        }
-    }
-    
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     //stop auto playing
-    [cellWiningTheCenter cellLostCenterOfTableView];
+    [self stopPlaying];
     
     if(self.user && !isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0 && !showLikedSonics)
     {
@@ -203,23 +170,6 @@
             [self.activityIndicator removeFromSuperview];
         }];
     }
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if(!decelerate)
-    {
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self autoPlay:scrollView];
-        });
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self autoPlay:scrollView];
-    });
 }
 
 - (void) stopPlaying
@@ -388,7 +338,7 @@
     [self.sonicCollectionView registerClass:[SonicCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     [self.sonicCollectionView setBackgroundColor:[UIColor whiteColor]];
     [self.sonicCollectionView setShowsVerticalScrollIndicator:NO];
-
+    [self.sonicCollectionView setScrollsToTop:YES];
 	[self.view addSubview:self.sonicCollectionView];
     
     [self.sonicCollectionView setHidden:YES];
@@ -402,6 +352,7 @@
     [self.sonicListTableView setDataSource:self];
     [self.sonicListTableView setDelegate:self];
     [self.sonicListTableView setAlwaysBounceVertical:YES];
+    [self.sonicListTableView setScrollsToTop:YES];
     [self.sonicListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.sonicListTableView setContentInset:UIEdgeInsetsMake([self profileHeaderViewFrame].size.height, 0.0, 0.0, 0.0)];
     [self.sonicListTableView registerClass:[SNCHomeTableCell class] forCellReuseIdentifier:HomeTableCellIdentifier];
@@ -414,10 +365,13 @@
     [self.profileHeaderView.gridViewButton setSelected:NO];
     [self.profileHeaderView.likedSonicsButton setSelected:NO];
     [self.sonicListTableView addSubview:self.profileHeaderView];
+    
     [self stopPlaying];
     if([self.sonicListTableView isHidden] == YES){
         [self.sonicCollectionView setHidden:YES];
         [self.sonicListTableView setHidden:NO];
+        [self disableScrollsToTopPropertyOnAllSubviewsOf:self.view];
+        [self.sonicListTableView setScrollsToTop:YES];
     }
     [self.sonicListTableView reloadData];
     [self.sonicListTableView setContentOffset:self.sonicCollectionView.contentOffset animated:NO];
@@ -436,11 +390,11 @@
     if([self.sonicCollectionView isHidden] == YES){
         [self.sonicCollectionView setHidden:NO];
         [self.sonicListTableView setHidden:YES];
+        [self disableScrollsToTopPropertyOnAllSubviewsOf:self.view];
+        [self.sonicCollectionView setScrollsToTop:YES];
     }
     [self.sonicCollectionView reloadData];
     [self.sonicCollectionView setContentOffset:self.sonicListTableView.contentOffset animated:NO];
-//    [self.sonicCollectionView setContentOffset:CGPointMake(0.0, -44.0) animated:YES];
-//    [self.sonicListTableView setContentOffset:CGPointMake(0.0, -44.0) animated:NO];
 }
 - (void) showLikedSonics
 {
@@ -467,6 +421,19 @@
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    return YES;
+}
+- (void) disableScrollsToTopPropertyOnAllSubviewsOf:(UIView *)view {
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:[UIScrollView class]]) {
+            ((UIScrollView *)subview).scrollsToTop = NO;
+        }
+        [self disableScrollsToTopPropertyOnAllSubviewsOf:subview];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

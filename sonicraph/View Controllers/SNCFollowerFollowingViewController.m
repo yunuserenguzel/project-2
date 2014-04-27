@@ -22,14 +22,6 @@
     User* userToBeOpen;
 }
 
-//- (CGRect) tableViewFrame
-//{
-//    CGRect frame = self.view.frame;
-//    frame.origin.y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-//    frame.size.height -= frame.origin.y;
-//    return frame;
-//}
-
 - (CGRect) segmentedControlFrame
 {
     CGFloat y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height + 6;
@@ -53,8 +45,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-//    self.shouldShowFollowers = YES;
     [self initializeTableView];
     [self initializeSegmentedControl];
     

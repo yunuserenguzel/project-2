@@ -75,8 +75,7 @@ static SNCLoginViewController* sharedInstance = nil;
         [self.view addSubview:base];
     }
     
-    [self.usernameField setPlaceholder:@"or e-mail"];
-    
+    self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"or e-mail" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
     [self.usernameField setReturnKeyType:UIReturnKeyNext];
     [self.passwordField setReturnKeyType:UIReturnKeyDone];
     
@@ -102,7 +101,7 @@ static SNCLoginViewController* sharedInstance = nil;
     }
     else
     {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Write your email to receive reset password mail" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Write your email and press \"Forgot Password ?\" to receive reset password mail" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     }
 }
 

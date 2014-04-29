@@ -82,6 +82,7 @@ static SNCLoginViewController* sharedInstance = nil;
     self.forgotPassword = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.forgotPassword setFrame:[self forgotPasswordFrame]];
     [self.forgotPassword setTitle:@"Forgot Password ? " forState:UIControlStateNormal];
+    [self.forgotPassword.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
     [self.forgotPassword addTarget:self action:@selector(resetPassword) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.forgotPassword];
     

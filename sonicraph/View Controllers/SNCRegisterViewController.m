@@ -91,8 +91,11 @@
     [self.scrollView addSubview:self.termsLabel];
     self.termsLabel.numberOfLines = 2;
     self.termsLabel.text = @"by signing up \n I agree the Terms of Service";
+    [self.termsLabel setFont:[UIFont systemFontOfSize:12.0]];
     self.termsLabel.textColor = [UIColor whiteColor];
     self.termsLabel.textAlignment = NSTextAlignmentCenter;
+    [self.termsLabel setUserInteractionEnabled:YES];
+    [self.termsLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openTerms)]];
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setTitle:@"Already signed up? Log in" forState:UIControlStateNormal];
@@ -104,6 +107,11 @@
     UIGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
     [self.view addGestureRecognizer:tapGesture];
 }
+- (void) openTerms
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/terms"]];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.emailField)

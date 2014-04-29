@@ -235,7 +235,7 @@
     self.profileHeaderView.usernamelabel.text = [NSString stringWithFormat:@"@%@",self.user.username];
     self.profileHeaderView.fullnameLabel.text = self.user.fullName;
     self.profileHeaderView.locationLabel.text = self.user.location;
-    self.profileHeaderView.websiteTextView.text = self.user.website;
+    self.profileHeaderView.websiteTextView.text = [[self.user.website stringByReplacingOccurrencesOfString:@"http://" withString:@""] stringByReplacingOccurrencesOfString:@"https://" withString:@""];
     self.profileHeaderView.numberOfSonicsLabel.text = [NSString stringWithFormat:@"%d",self.user.sonicCount];
     self.profileHeaderView.numberOfFollowersLabel.text = [NSString stringWithFormat:@"%d",self.user.followerCount];
     self.profileHeaderView.numberOfFollowingsLabel.text = [NSString stringWithFormat:@"%d",self.user.followingCount];

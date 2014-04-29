@@ -203,7 +203,7 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.contentView addSubview:self.stringValueField];
     [self.stringValueField setTextAlignment:NSTextAlignmentLeft];
     [self.stringValueField setFont:[UIFont systemFontOfSize:15.0]];
-    [self.stringValueField setTextColor:LightPinkTextColor];
+    [self.stringValueField setTextColor:MainThemeColor];
     [self.stringValueField setValue:UITextFieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
     [self.stringValueField setReturnKeyType:UIReturnKeyDone];
 }
@@ -245,7 +245,7 @@ CGFloat heightForIdentifier(NSString* identifier)
 //    [self.dateOfBirthButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [self.dateOfBirthButton addTarget:self action:@selector(dateCellTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.dateOfBirthButton setTitleColor:UITextFieldPlaceholderColor forState:UIControlStateNormal];
-    [self.dateOfBirthButton setTitleColor:LightPinkTextColor forState:UIControlStateSelected];
+    [self.dateOfBirthButton setTitleColor:MainThemeColor forState:UIControlStateSelected];
     [self.dateOfBirthButton setTitle:@"mm / dd / yyyy" forState:UIControlStateNormal];
     [self.dateOfBirthButton.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
     [self.contentView addSubview:self.dateOfBirthButton];
@@ -264,7 +264,7 @@ CGFloat heightForIdentifier(NSString* identifier)
     [datePicker setDatePickerMode:UIDatePickerModeDate];
     [datePicker setFrame:CGRectMake(0.0, viewController.view.frame.size.height-datePicker.frame.size.height, 320.0, datePicker.frame.size.height)];
     [datePicker setBackgroundColor:[UIColor whiteColor]];
-    [datePicker setTintColor:LightPinkTextColor];
+    [datePicker setTintColor:MainThemeColor];
     [viewController.view addSubview:datePicker];
     
     
@@ -340,7 +340,7 @@ CGFloat heightForIdentifier(NSString* identifier)
         [button.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
 //        [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [button setTitleColor:UITextFieldPlaceholderColor forState:UIControlStateNormal];
-        [button setTitleColor:LightPinkTextColor forState:UIControlStateSelected];
+        [button setTitleColor:MainThemeColor forState:UIControlStateSelected];
         [button addTarget:self action:@selector(genderButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
 }

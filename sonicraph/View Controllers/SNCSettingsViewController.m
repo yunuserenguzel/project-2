@@ -16,7 +16,7 @@
 #define RateApp @"Rate This App"
 #define SendFeedback @"Send Feedback"
 
-#define FAQ @"FAQ"
+#define FAQ @"About"
 #define LegalPrivacy @"Legal & Privacy"
 #define AppVersion @"App Version"
 
@@ -163,7 +163,7 @@
     }
     else if([settingsField.key isEqualToString:FAQ])
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/faq"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/about"]];
     }
     else if([settingsField.key isEqualToString:LegalPrivacy])
     {

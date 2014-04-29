@@ -22,6 +22,7 @@
 
 @property UIActivityIndicatorView* bottomActivityIndicator;
 
+@property UILabel* oops;
 
 @end
 
@@ -40,11 +41,19 @@
     return CGRectMake(0.0, 0.0, 320.0, 11.0);
 }
 
+- (CGRect) oopsFrame
+{
+    return CGRectMake(0.0, self.view.frame.size.height*0.5 - 160.0, 320.0, 160.0);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     indexOfCellToBeIncreased = -1;
     [self initTableView];
+    [self initOops];
+    
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_bar_logo.png"]];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -92,6 +101,18 @@
     
 }
 
+- (void) initOops
+{
+    self.oops = [[UILabel alloc] initWithFrame:[self oopsFrame]];
+    self.oops.textColor = TabbarNonActiveButtonTintColor;
+    self.oops.textAlignment = NSTextAlignmentCenter;
+    self.oops.font = [UIFont systemFontOfSize:14.0];
+    self.oops.numberOfLines = 0;
+    [self.oops setHidden:YES];
+    self.oops.text = @"Oops!\n\nYou don't have any Sonic yet\nBe creative & inspire people\n\n Follow and get Followers\nit's fun with friends";
+    [self.view addSubview:self.oops];
+}
+
 - (void) initRefreshController
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -125,6 +146,7 @@
     [SNCAPIManager getSonicsAfter:nil withCompletionBlock:^(NSArray *sonics) {
         self.sonics = [[SonicArray alloc] init];
         [self.sonics importSonicsWithArray:sonics];
+        [self.oops setHidden:(self.sonics.count > 0)];
         [self refresh];
         [self.refreshControl endRefreshing];
         isLoadingFromServer = NO;

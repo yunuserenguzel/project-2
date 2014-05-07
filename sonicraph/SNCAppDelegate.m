@@ -174,6 +174,16 @@ static SNCAppDelegate* sharedInstance = nil;
     }
     return nil;
 }
+
+- (void) updateDeviceToken
+{
+    
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     UIRemoteNotificationTypeAlert |
+     UIRemoteNotificationTypeBadge |
+     UIRemoteNotificationTypeSound];
+}
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSString* deviceTokenStr = [deviceToken description];

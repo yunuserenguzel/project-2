@@ -69,6 +69,7 @@ typedef void (^CompletionUserBlock) (User *user,NSString* token);
 typedef void (^CompletionBoolBlock) (BOOL successful);
 typedef void (^CompletionSonicBlock) (Sonic* sonic);
 typedef void (^CompletionIdBlock) (id object);
+typedef void (^CompletionDoubleIdBlock) (id object1,id object2);
 typedef void (^RefreshBlock) (CGFloat ratio, NSURL* url);
 typedef void (^ErrorBlock) (NSError *error);
 

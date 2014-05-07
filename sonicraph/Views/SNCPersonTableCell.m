@@ -54,9 +54,12 @@
     [self.profileImageView setFrame:[self profileImageViewFrame]];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
-    [self.profileImageView.layer setCornerRadius:[self profileImageViewFrame].size.height * 0.5];
+//    [self.profileImageView.layer setCornerRadius:[self profileImageViewFrame].size.height * 0.5];
+//    [self.profileImageView.layer setShouldRasterize:YES];
+    [self.profileImageView.layer setDrawsAsynchronously:YES];
     [self.profileImageView setUserInteractionEnabled:YES];
     [self.profileImageView setImage:UserPlaceholderImage];
+    
     [self.contentView addSubview:self.profileImageView];
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
@@ -124,9 +127,9 @@
         [self.usernameLabel setText:[@"@" stringByAppendingString:self.user.username]];
         [self.fullnameLabel setText:self.user.fullName];
         [self.locationLabel setText:self.user.location];
-        [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image) {
+        [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if(image){
+                if(image && self.user == user){
                     [self.profileImageView setImage:image];
                 }
             });
@@ -183,6 +186,10 @@
     [self.followButton.layer setBorderWidth:1.0];
     [self.followButton.layer setBorderColor:MainThemeColor.CGColor];
     [self.followButton.layer setCornerRadius:5.0];
+    [self.followButton.layer setOpaque:YES];
+    [self.followButton.layer setShouldRasterize:YES];
+    [self.followButton.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+    [self.followButton.layer setDrawsAsynchronously:YES];
     [self.followContent addSubview:self.followButton];
 
     self.unfollowButton = [UIButton buttonWithType:UIButtonTypeCustom];

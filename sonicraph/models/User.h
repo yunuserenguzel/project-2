@@ -31,7 +31,7 @@
 @property NSInteger followerCount;
 @property NSInteger followingCount;
 
-- (void) getThumbnailProfileImageWithCompletionBlock:(CompletionIdBlock)completionBlock;
+- (void) getThumbnailProfileImageWithCompletionBlock:(CompletionDoubleIdBlock)completionBlock;
 - (void) updateWithUser:(User*)user;
 - (void) fireUserUpdatedForViewNotification;
 @end

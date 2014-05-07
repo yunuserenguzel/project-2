@@ -23,28 +23,13 @@
 
 #define CellIdentifierSonicComment @"CellIdentifierSonicComment"
 
-//typedef void (^AnimationFrame)(CGFloat ratio);
-//void animateWithFrameRecursive(NSDate* startTime, CGFloat duration, AnimationFrame frame){
-//    NSDate* currentTime = [NSDate date];
-//    CGFloat ratio = 0.0;
-//    CGFloat interval = [currentTime timeIntervalSinceDate:startTime];
-//    if( duration > interval ){
-//        ratio = interval / duration;
-//    } else if (duration <= interval){
-//        ratio = 1.0;
-//    }
-//    frame(ratio);
-//    if (ratio <= 1.0){
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            animateWithFrameRecursive(startTime, duration, frame);
-//        });
-//    }
-//}
-//void animateWithFrame(CGFloat duration,AnimationFrame frame){
-//    NSDate* startTime = [NSDate date];
-//    animateWithFrameRecursive(startTime, duration, frame);
-//}
+@interface SNCSonicViewController ()
 
+@property UIActivityIndicatorView* likesCenterActivityIndicator;
+@property UIActivityIndicatorView* commentsCenterActivityIndicator;
+@property UIActivityIndicatorView* resonicsCenterActivityIndicator;
+
+@end
 
 @implementation SNCSonicViewController
 {
@@ -87,6 +72,11 @@
     return CGRectMake(0.0, [[UIScreen mainScreen] bounds].size.height - 44.0, 320.0, 44.0);
 }
 
+- (CGRect) centerActivityIndicatorFrame
+{
+    return CGRectMake(0.0, HeaderViewMaxHeight, 320.0, self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height - HeaderViewMinHeight);
+}
+
 #pragma mark initialize views
 - (void)viewDidLoad
 {
@@ -95,6 +85,7 @@
     self.likesContent = [NSMutableArray new];
     self.resonicsContent = [NSMutableArray new];
     [self initTableView];
+    [self initializeActivityIndicators];
     
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"whitemore.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openActionsMenu)]];
     
@@ -198,6 +189,18 @@
     [self.headerView.usernameLabel addGestureRecognizer:tapGesture];
     [self.headerView.profileImageView setUserInteractionEnabled:YES];
     [self.headerView.usernameLabel setUserInteractionEnabled:YES];
+}
+
+- (void) initializeActivityIndicators
+{
+    self.likesCenterActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.commentsCenterActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.resonicsCenterActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    for (UIActivityIndicatorView* indicator in @[self.likesCenterActivityIndicator,self.commentsCenterActivityIndicator, self.resonicsCenterActivityIndicator]) {
+        [indicator setFrame:[self centerActivityIndicatorFrame]];
+        [indicator setColor:TabbarNonActiveButtonTintColor];
+        [self.tableView addSubview:indicator];
+    }
 }
 
 - (void) tapGesture
@@ -393,9 +396,11 @@
     self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
     self.headerView.createdAtLabel.text = [self.sonic.creationDate formattedAsTimeAgo];
     [self.headerView.profileImageView setImage:UserPlaceholderImage];
-    [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
+    [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.headerView.profileImageView.image = (UIImage*) object;
+            if (image) {
+                self.headerView.profileImageView.image = image;
+            }
         });
     }];
     
@@ -486,29 +491,35 @@
     }
     if(currentContentType == ContentTypeLikes)
     {
+        [self.likesCenterActivityIndicator startAnimating];
         [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
             self.likesContent = [users mutableCopy];
             [self reloadData];
+            [self.likesCenterActivityIndicator stopAnimating];
         } andErrorBlock:^(NSError *error) {
-            
+            [self.likesCenterActivityIndicator stopAnimating];
         }];
     }
     else if(currentContentType == ContentTypeComments)
     {
+        [self.commentsCenterActivityIndicator startAnimating];
         [SNCAPIManager getCommentsOfSonic:self.sonic withCompletionBlock:^(NSArray *comments) {
             self.commentsContent = [comments mutableCopy];
             [self reloadData];
+            [self.commentsCenterActivityIndicator stopAnimating];
         } andErrorBlock:^(NSError *error) {
-            
+            [self.commentsCenterActivityIndicator stopAnimating];
         }];
     }
     else if(currentContentType == ContentTypeResonics)
     {
+        [self.resonicsCenterActivityIndicator startAnimating];
         [SNCAPIManager getResonicsOfSonic:self.sonic withCompletionBlock:^(NSArray *resonics) {
             self.resonicsContent = [resonics mutableCopy];
             [self reloadData];
+            [self.resonicsCenterActivityIndicator stopAnimating];
         } andErrorBlock:^(NSError *error) {
-            
+            [self.resonicsCenterActivityIndicator stopAnimating];
         }];
     }
 }

@@ -111,7 +111,7 @@
 - (void) initUserViews
 {
     self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageMaxFrame]];
-    [self.profileImageView.layer setCornerRadius:[self profileImageMaxFrame].size.height * 0.5];
+//    [self.profileImageView.layer setCornerRadius:[self profileImageMaxFrame].size.height * 0.5];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
     [self addSubview:self.profileImageView];
@@ -155,13 +155,13 @@
 //    [self.createdAtLabel setFrame:CGRectByRatio([self createdAtLabelMaxFrame], [self createdAtLabelMinFrame], ratio)];
     [self.segmentedControl setFrame:CGRectByRatio([self segmentedBarMaxFrame], [self segmentedBarMinFrame], ratio)];
     if(ratio < 1.0){
-        [self.sonicPlayerView stop];
+//        [self.sonicPlayerView stop];
         [self.tapToTopView setHidden:NO];
-        [self.sonicPlayerView setUserInteractionEnabled:NO];
+//        [self.sonicPlayerView setUserInteractionEnabled:NO];
     }
     else {
         [self.tapToTopView setHidden:YES];
-        [self.sonicPlayerView setUserInteractionEnabled:YES];
+//        [self.sonicPlayerView setUserInteractionEnabled:YES];
     }
 }
 

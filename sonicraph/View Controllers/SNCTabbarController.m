@@ -11,6 +11,7 @@
 
 #import "Configurations.h"
 #import "SNCGoThroughViewController.h"
+#import "SNCAppDelegate.h"
 
 #define CameraTabbarIndex 1
 
@@ -94,10 +95,7 @@ static int previousTabIndex = 0;
     [self setDelegate:self];
     [self setSelectedIndex:0];
     
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     UIRemoteNotificationTypeAlert |
-     UIRemoteNotificationTypeBadge |
-     UIRemoteNotificationTypeSound];
+    [[SNCAppDelegate sharedInstance] updateDeviceToken];
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer

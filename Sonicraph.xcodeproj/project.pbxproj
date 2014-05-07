@@ -19,6 +19,7 @@
 		AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */; };
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
+		AE1C3A59191A226000675F97 /* UIImage+CircularImage.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1C3A58191A226000675F97 /* UIImage+CircularImage.m */; };
 		AE2768C718DE21D7008D75F4 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2768C618DE21D7008D75F4 /* SMPageControl.m */; };
 		AE2768CA18DE255D008D75F4 /* SNCGetStartedPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2768C918DE255D008D75F4 /* SNCGetStartedPageContentViewController.m */; };
 		AE2AF54C18D82FE5007C9BB1 /* SNCGoThroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF54B18D82FE5007C9BB1 /* SNCGoThroughViewController.m */; };
@@ -295,6 +296,8 @@
 		AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground@2x.png"; sourceTree = "<group>"; };
 		AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver.png"; sourceTree = "<group>"; };
 		AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver@2x.png"; sourceTree = "<group>"; };
+		AE1C3A57191A226000675F97 /* UIImage+CircularImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+CircularImage.h"; sourceTree = "<group>"; };
+		AE1C3A58191A226000675F97 /* UIImage+CircularImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CircularImage.m"; sourceTree = "<group>"; };
 		AE2768C518DE21D7008D75F4 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
 		AE2768C618DE21D7008D75F4 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
 		AE2768C818DE255D008D75F4 /* SNCGetStartedPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCGetStartedPageContentViewController.h; sourceTree = "<group>"; };
@@ -977,6 +980,8 @@
 				AE86EE9B182E741900F74F1D /* NSData+Base64.m */,
 				AE86E9F618E40B0D00DF82BA /* NSString+Extended.h */,
 				AE86E9F718E40B0D00DF82BA /* NSString+Extended.m */,
+				AE1C3A57191A226000675F97 /* UIImage+CircularImage.h */,
+				AE1C3A58191A226000675F97 /* UIImage+CircularImage.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1044,6 +1049,7 @@
 		AE86EE82182C0DF300F74F1D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AED56ED91801A39F000DF866 /* MKNetworkKit */,
 				AE86E9EC18E40AEC00DF82BA /* Categories */,
 				AE2768C518DE21D7008D75F4 /* SMPageControl.h */,
 				AE2768C618DE21D7008D75F4 /* SMPageControl.m */,
@@ -1820,10 +1826,9 @@
 				AE86EE8D182C0E0E00F74F1D /* View Controllers */,
 				AE86EE7C182C0DC000F74F1D /* Views */,
 				AE86EEAC18316BC500F74F1D /* Managers */,
-				AE86EE82182C0DF300F74F1D /* Lib */,
 				AE86EE80182C0DD700F74F1D /* Common */,
 				AE86EE77182C0DA800F74F1D /* Models */,
-				AED56ED91801A39F000DF866 /* MKNetworkKit */,
+				AE86EE82182C0DF300F74F1D /* Lib */,
 				AED56EAC1801A35D000DF866 /* SNCAppDelegate.h */,
 				AED56EAD1801A35D000DF866 /* SNCAppDelegate.m */,
 				AED56EAF1801A35D000DF866 /* Main.storyboard */,
@@ -1875,7 +1880,8 @@
 				AED56EED1801A39F000DF866 /* MKNetworkOperation.m */,
 				AED56EEE1801A39F000DF866 /* Reachability */,
 			);
-			path = MKNetworkKit;
+			name = MKNetworkKit;
+			path = ../MKNetworkKit;
 			sourceTree = "<group>";
 		};
 		AED56EDA1801A39F000DF866 /* Categories */ = {
@@ -2218,6 +2224,7 @@
 				AE7E19011896641D009A9B7F /* UIImage+Alpha.m in Sources */,
 				AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */,
 				AE7E18EB18954102009A9B7F /* SNCNotificationCell.m in Sources */,
+				AE1C3A59191A226000675F97 /* UIImage+CircularImage.m in Sources */,
 				AEB9F7B9187B521F005F4988 /* SNCRegisterViewController.m in Sources */,
 				AED56EF71801A39F000DF866 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
 				AE86EE8B182C0DF300F74F1D /* SNCAPIConnector.m in Sources */,
@@ -2620,7 +2627,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/Sonicraph-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/sonicraph/Sonicraph-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/yunuserenguzel/Documents/sonicraph_ios/sonicraph/AudioConverterKit/3rd-party/lib",
@@ -2629,7 +2636,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Sonicraph;
-				PROVISIONING_PROFILE = "CBA34142-C653-49BE-B253-25D39324E2D5";
+				PROVISIONING_PROFILE = "661CECA3-B261-4C77-A9D9-DB7A8E87B517";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2650,7 +2657,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/Sonicraph-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/sonicraph/Sonicraph-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/yunuserenguzel/Documents/sonicraph_ios/sonicraph/AudioConverterKit/3rd-party/lib",
@@ -2659,7 +2666,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Sonicraph;
-				PROVISIONING_PROFILE = "CBA34142-C653-49BE-B253-25D39324E2D5";
+				PROVISIONING_PROFILE = "661CECA3-B261-4C77-A9D9-DB7A8E87B517";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

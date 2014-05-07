@@ -102,9 +102,11 @@
     self.createdAtLabel.text = [self.notification.createdAt formattedAsTimeAgo];
     self.profileImageView.image = UserPlaceholderImage;
     [self updateNotificationTextAndImage];
-    [self.notification.byUser getThumbnailProfileImageWithCompletionBlock:^(UIImage* image) {
+    [self.notification.byUser getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.profileImageView.image = image;
+            if (self.notification.byUser == user) {
+                self.profileImageView.image = image;
+            }
         });
     }];
 }

@@ -64,10 +64,10 @@ SearchContentType;
 {
     if(_searchContentType != searchContentType){
         _searchContentType = searchContentType;
-        self.searchBar.text = @"";
+//        self.searchBar.text = @"";
         [self.searchBar removeFromSuperview];
-        self.users = nil;
-        self.sonics = nil;
+//        self.users = nil;
+//        self.sonics = nil;
         [self.userTableView reloadData];
         [self.sonicsCollectionView reloadData];
         if(self.searchContentType == SearchContentTypeUsers){

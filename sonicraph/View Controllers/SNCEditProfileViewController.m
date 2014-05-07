@@ -144,10 +144,10 @@
     [self.fields2 addObject:[SettingsField k:@"MM / DD / YYYY" sK:@"date_of_birth" v:self.user.dateOfBirth t:SettingsTableCellDateValueIdentifier]];
     [self.fields2 addObject:[SettingsField k:GenderVisibleKey sK:@"gender" v:self.user.gender t:SettingsTableCellGenderValueIdentifier]];
     [self.tableView reloadData];
-    [self.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
-        imageSettings.value = object;
+    [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
+            imageSettings.value = image;
         });
     }];
 }

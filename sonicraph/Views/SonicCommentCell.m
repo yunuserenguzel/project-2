@@ -144,10 +144,10 @@
 - (void) configureViews
 {
     [self.userProfileImageView setImage:UserPlaceholderImage];
-    [self.sonicComment.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
+    [self.sonicComment.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
        dispatch_async(dispatch_get_main_queue(), ^{
-           if(object){
-               [self.userProfileImageView setImage:object];
+           if(image && self.sonicComment.user == user){
+               [self.userProfileImageView setImage:image];
            }
        });
     }];

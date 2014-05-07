@@ -67,6 +67,7 @@ static AuthenticationManager* sharedInstance = nil;
     self.token = token;
     self.authenticatedUser = user;
     _isUserAuthenticated = YES;
+    [[SNCAppDelegate sharedInstance] updateDeviceToken];
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserLoggedIn object:user];
         [self displayApplicationView];

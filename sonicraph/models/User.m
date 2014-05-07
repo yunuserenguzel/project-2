@@ -12,6 +12,7 @@
 #import "UIImage+scaleToSize.h"
 #import "Configurations.h"
 #import "SNCResourceHandler.h"
+#import "UIImage+CircularImage.h"
 
 @implementation User
 {
@@ -95,12 +96,12 @@
         self.thumbnailProfileImage = nil;
     }
 }
-- (void)getThumbnailProfileImageWithCompletionBlock:(CompletionIdBlock)completionBlock
+- (void)getThumbnailProfileImageWithCompletionBlock:(CompletionDoubleIdBlock)completionBlock
 {
     
     if(self.thumbnailProfileImage){
         if(completionBlock){
-            completionBlock(self.thumbnailProfileImage);
+            completionBlock(self.thumbnailProfileImage,self);
         }
     }
     else {
@@ -112,13 +113,14 @@
             return;
         }
         isInProcess = YES;
-        [[SNCResourceHandler sharedInstance] getImageWithUrl:[NSURL URLWithString:self.profileImageUrl] withCompletionBlock:^(id object) {
-            self.thumbnailProfileImage = [(UIImage*)object imageByScalingAndCroppingForSize:UserThumbnailSize];
+        [[SNCResourceHandler sharedInstance] getImageWithUrl:[NSURL URLWithString:self.profileImageUrl] withCompletionBlock:^(UIImage* rawImage) {
+            rawImage = [rawImage circularImage];
+            self.thumbnailProfileImage = [(UIImage*)rawImage imageByScalingAndCroppingForSize:UserThumbnailSize];
             isInProcess = NO;
-            [arrayOfCallBacksForThumbnail enumerateObjectsUsingBlock:^(CompletionIdBlock completionBlock, NSUInteger idx, BOOL *stop) {
+            [arrayOfCallBacksForThumbnail enumerateObjectsUsingBlock:^(CompletionDoubleIdBlock completionBlock, NSUInteger idx, BOOL *stop) {
                 if(completionBlock){
 //                    NSLog(@"calling completion block at index %d",idx);
-                    completionBlock(self.thumbnailProfileImage);
+                    completionBlock(self.thumbnailProfileImage,self);
                 }
             }];
             arrayOfCallBacksForThumbnail = nil;

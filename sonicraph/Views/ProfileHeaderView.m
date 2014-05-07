@@ -137,6 +137,8 @@
         self.followButton.layer.borderWidth = 1.0;
         self.followButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
         [self.followButton setClipsToBounds:YES];
+        [self.followButton.layer setShouldRasterize:YES];
+        [self.followButton.layer setRasterizationScale:6.0];
         [self addSubview:self.followButton];
 
     }
@@ -147,7 +149,7 @@
 {
     self.userProfileImageView = [[UIImageView alloc] initWithImage:UserPlaceholderImage];
     [self.userProfileImageView setFrame:[self userProfileImageViewFrame]];
-    [self.userProfileImageView.layer setCornerRadius:[self userProfileImageViewFrame].size.width * 0.5];
+//    [self.userProfileImageView.layer setCornerRadius:[self userProfileImageViewFrame].size.width * 0.5];
     [self.userProfileImageView setClipsToBounds:YES];
     [self.userProfileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self addSubview:self.userProfileImageView];
@@ -162,6 +164,8 @@
     [userProfileImageBorder.layer setCornerRadius:frame.size.height * 0.5];
     [userProfileImageBorder.layer setBorderColor:rgb(240, 240, 240).CGColor];
     [userProfileImageBorder.layer setBorderWidth:3.0];
+    [userProfileImageBorder.layer setShouldRasterize:YES];
+    [userProfileImageBorder.layer setRasterizationScale:2.0];
     [self addSubview:userProfileImageBorder];
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];

@@ -22,5 +22,6 @@
 
 - (NSURL *)applicationDocumentsDirectory;
 
+- (void) updateDeviceToken;
 
 @end

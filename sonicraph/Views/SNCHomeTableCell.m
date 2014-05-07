@@ -168,7 +168,7 @@
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.userImageView setImage:UserPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
-    [self.userImageView.layer setCornerRadius:[self userImageViewFrame].size.height * 0.5];
+//    [self.userImageView.layer setCornerRadius:[self userImageViewFrame].size.height * 0.5];
     [self addSubview:self.userImageView];
     
     self.userImageMaskView = [[UIImageView alloc] initWithFrame:[self userImageMaskViewFrame]];
@@ -454,9 +454,12 @@
     [self.fullnameLabel setText:[sonic.owner fullName]];
     [self.usernameLabel setText:[NSString stringWithFormat:@"@%@",[sonic.owner username]]];
     [self.userImageView setImage:UserPlaceholderImage];
-    [sonic.owner getThumbnailProfileImageWithCompletionBlock:^(id object) {
+    [sonic.owner getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.userImageView setImage:object];
+            if(image && [self actualSonic].owner == user)
+            {
+                [self.userImageView setImage:image];
+            }
         });
     }];
     [self.timestampLabel setText:[[sonic creationDate] formattedAsTimeAgo]];

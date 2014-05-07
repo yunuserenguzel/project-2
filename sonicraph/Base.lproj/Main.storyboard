@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d7G-lq-cZK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d7G-lq-cZK">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -249,12 +249,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GIz-gu-0wJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-366" y="3008"/>
+            <point key="canvasLocation" x="-366" y="3236"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="9ak-gi-547">
             <objects>
-                <viewController id="P2x-fH-UPE" customClass="SNCProfileViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="P2x-fH-UPE" customClass="SNCProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ane-tN-YGE"/>
                         <viewControllerLayoutGuide type="bottom" id="Pfz-jx-4mD"/>
@@ -265,7 +265,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="xag-Zq-TuR"/>
+                    <keyCommands/>
                     <connections>
+                        <outlet property="view" destination="RCw-zh-NHI" id="hal-HN-QtN"/>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="5Ah-IT-aOa"/>
                         <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="xgg-1F-Qkn"/>
                         <segue destination="eAz-5z-Z0t" kind="modal" identifier="EditProfileSegue" id="FTh-mS-2kq"/>
@@ -273,7 +275,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y6f-AS-Kv5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-366" y="2226"/>
+            <point key="canvasLocation" x="-366" y="2423"/>
         </scene>
         <!--Navigation View Controller - Home-->
         <scene sceneID="hYG-yn-2P9">
@@ -458,9 +460,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="q27-RJ-FdK"/>
+        <segue reference="5Ah-IT-aOa"/>
         <segue reference="FTh-mS-2kq"/>
-        <segue reference="djt-so-LCv"/>
-        <segue reference="hm7-BI-Gmx"/>
         <segue reference="xgg-1F-Qkn"/>
     </inferredMetricsTieBreakers>
 </document>

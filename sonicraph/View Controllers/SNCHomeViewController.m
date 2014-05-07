@@ -21,7 +21,7 @@
 @property SonicArray* sonics;
 
 @property UIActivityIndicatorView* bottomActivityIndicator;
-
+@property UIActivityIndicatorView* centerActivityIndicator;
 @property UILabel* oops;
 
 @end
@@ -52,6 +52,7 @@
     indexOfCellToBeIncreased = -1;
     [self initTableView];
     [self initOops];
+    [self initializeActivityIndicator];
     
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_bar_logo.png"]];
     
@@ -76,7 +77,6 @@
      name:NotificationUserLoggedIn
      object:nil];
     
-    self.sonics  = [[SonicArray alloc] init];
     [self initRefreshController];
     [self refreshFromServer];
     
@@ -84,7 +84,6 @@
 }
 - (void) initTableView
 {
-
     self.tableView.contentInset = [self edgeInsetsForScrollContent];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -95,9 +94,6 @@
     [self.tableView setShowsHorizontalScrollIndicator:NO];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:[self tableFooterViewRect]]];
     [self.tableView setTableHeaderView:[UIView new]];
-    self.bottomActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.bottomActivityIndicator.frame = [self tableFooterViewRect];
-    [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
     
 }
 
@@ -111,6 +107,25 @@
     [self.oops setHidden:YES];
     self.oops.text = @"Oops!\n\nYou don't have any Sonic yet\nBe creative & inspire people\n\n Follow and get Followers\nit's fun with friends";
     [self.view addSubview:self.oops];
+}
+
+- (void) initializeActivityIndicator
+{
+    self.centerActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.centerActivityIndicator setColor:[MainThemeColor colorWithAlphaComponent:0.6]];
+    self.centerActivityIndicator.frame = CGRectMake(0.0, 0.0, 320.0, self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height - 33.0);
+    [self.tableView addSubview:self.centerActivityIndicator];
+    UILabel* label = [[UILabel alloc] init];
+    [label setText:@"Loading sonics..."];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [label setFont:[UIFont boldSystemFontOfSize:14.0]];
+    [label setTextColor:self.centerActivityIndicator.color];
+    [label setFrame:CGRectMake(0.0, self.centerActivityIndicator.frame.size.height * 0.5 + 22.0, 320.0, 33.0)];
+    [self.centerActivityIndicator addSubview:label];
+    
+    self.bottomActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.bottomActivityIndicator.frame = [self tableFooterViewRect];
+    [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
 }
 
 - (void) initRefreshController
@@ -130,7 +145,7 @@
 
 - (void) userLoggedOut:(NSNotification*)notification
 {
-    self.sonics = [[SonicArray alloc] init];
+    self.sonics = nil;
     [self refresh];
 }
 
@@ -143,6 +158,10 @@
 - (void) refreshFromServer
 {
     isLoadingFromServer = YES;
+    if(self.sonics == nil)
+    {
+        [self.centerActivityIndicator startAnimating];
+    }
     [SNCAPIManager getSonicsAfter:nil withCompletionBlock:^(NSArray *sonics) {
         self.sonics = [[SonicArray alloc] init];
         [self.sonics importSonicsWithArray:sonics];
@@ -150,9 +169,11 @@
         [self refresh];
         [self.refreshControl endRefreshing];
         isLoadingFromServer = NO;
+        [self.centerActivityIndicator stopAnimating];
     } andErrorBlock:^(NSError *error) {
         [self.refreshControl endRefreshing];
         isLoadingFromServer = NO;
+        [self.centerActivityIndicator stopAnimating];
     }];
 }
 

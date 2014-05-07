@@ -466,6 +466,10 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
     {
         [params setObject:sonic.sonicId forKey:@"before"];
     }
+    else
+    {
+        [params setObject:[NSNumber numberWithInt:9] forKey:@"limit"];
+    }
     [params setObject:count forKey:@"count"];
     return [SNCAPIManager getSonicsWithParams:params
                           withCompletionBlock:completionBlock

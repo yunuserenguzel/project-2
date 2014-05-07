@@ -36,14 +36,15 @@
 
 
 @property SonicArray* likedSonics;
-@property UIActivityIndicatorView* activityIndicator;
+@property UIActivityIndicatorView* bottomActivityIndicator;
+@property UIActivityIndicatorView* centerActivityIndicator;
+@property UIActivityIndicatorView* centerLikesActivityIndicator;
 
 @end
 
 @implementation SNCProfileViewController
 {
     Sonic* selectedSonic;
-    User* userToBeOpen;
     BOOL showLikedSonics;
     BOOL shouldShowFollowers;
     BOOL isLoadingFromServer;
@@ -54,6 +55,11 @@
 - (CGRect) profileHeaderViewFrame
 {
     return CGRectMake(0.0, -ProfileHeaderViewHeight, 320.0, ProfileHeaderViewHeight);
+}
+
+- (CGRect) centerActivityIndicatorFrame
+{
+    return CGRectMake(0.0, 0.0, 320.0, [self sonicCollectionViewFrame].size.height - ProfileHeaderViewHeight);
 }
 
 - (CGRect) scrollContentHeaderFrame
@@ -82,13 +88,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.sonics = [[SonicArray alloc] init];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationItem.title = @"Profile";
+    [self initializeActivityIndicator];
     [self initializeSonicCollectionView];
     [self initializeSonicListTableView];
     [self initializeHeaderView];
-    
+    [self setGridViewModeOn];
     [self refresh];
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -110,14 +116,25 @@
     
 }
 
+- (void) initializeActivityIndicator
+{
+    self.centerActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.centerActivityIndicator setColor:[UIColor lightGrayColor]];
+    [self.centerActivityIndicator setFrame:[self centerActivityIndicatorFrame]];
+
+    self.centerLikesActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.centerLikesActivityIndicator setColor:[UIColor lightGrayColor]];
+    [self.centerLikesActivityIndicator setFrame:[self centerActivityIndicatorFrame]];
+
+}
+
 - (void) initializeHeaderView
 {
     self.profileHeaderView = [[ProfileHeaderView alloc] initWithFrame:[self profileHeaderViewFrame]];
     [self.profileHeaderView.gridViewButton addTarget:self action:@selector(setGridViewModeOn) forControlEvents:UIControlEventTouchUpInside];
     [self.profileHeaderView.listViewButton addTarget:self action:@selector(setListViewModeOn) forControlEvents:UIControlEventTouchUpInside];
     [self.profileHeaderView.likedSonicsButton addTarget:self action:@selector(showLikedSonics) forControlEvents:UIControlEventTouchUpInside];
-    [self setGridViewModeOn];
-    
+
     UIGestureRecognizer* tapGestureRecognizer;
     tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
     [self.profileHeaderView.followersLabel addGestureRecognizer:tapGestureRecognizer];
@@ -141,16 +158,16 @@
     //stop auto playing
     [self stopPlaying];
     
-    if(self.user && !isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0 && !showLikedSonics)
+    if(self.user && self.sonics && !isLoadingFromServer && scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.frame.size.height) < 20.0 && !showLikedSonics)
     {
         isLoadingFromServer = YES;
-        if(self.activityIndicator == nil)
+        if(self.bottomActivityIndicator == nil)
         {
-            self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            self.bottomActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         }
-        [self.activityIndicator setFrame:CGRectMake(0.0, scrollView.contentSize.height, 320.0, 44.0)];
-        [scrollView insertSubview:self.activityIndicator atIndex:0];
-        [self.activityIndicator startAnimating];
+        [self.bottomActivityIndicator setFrame:CGRectMake(0.0, scrollView.contentSize.height, 320.0, 44.0)];
+        [scrollView insertSubview:self.bottomActivityIndicator atIndex:0];
+        [self.bottomActivityIndicator startAnimating];
         [SNCAPIManager getUserSonics:self.user before:self.sonics.lastObject withCompletionBlock:^(NSArray *sonics) {
             NSUInteger from = self.sonics.count;
             [self.sonics importSonicsWithArray:sonics];
@@ -159,15 +176,15 @@
             {
                 isLoadingFromServer = NO;
             }
-            [self.activityIndicator stopAnimating];
-            [self.activityIndicator removeFromSuperview];
+            [self.bottomActivityIndicator stopAnimating];
+            [self.bottomActivityIndicator removeFromSuperview];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self refreshFrom:from to:to];
-                [self.activityIndicator setFrame:CGRectMake(0.0, scrollView.contentSize.height, 320.0, 44.0)];
+                [self.bottomActivityIndicator setFrame:CGRectMake(0.0, scrollView.contentSize.height, 320.0, 44.0)];
             });
         } andErrorBlock:^(NSError *error) {
             isLoadingFromServer = NO;
-            [self.activityIndicator removeFromSuperview];
+            [self.bottomActivityIndicator removeFromSuperview];
         }];
     }
 }
@@ -201,8 +218,8 @@
 
 - (void) userLoggedOut:(NSNotification*)notification
 {
-    self.sonics = [[SonicArray alloc] init];
-    self.likedSonics = [[SonicArray alloc] init];
+    self.sonics = nil;
+    self.likedSonics = nil;
     [self refresh];
 }
 - (void)setUser:(User *)user
@@ -211,25 +228,51 @@
     {
         _user = user;
         [self configureViews];
-        isLoadingFromServer = YES;
-        [SNCAPIManager getUserSonics:self.user before:nil withCompletionBlock:^(NSArray *sonics) {
-            [self.sonics importSonicsWithArray:sonics];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self refresh];
-                isLoadingFromServer = NO;
-            });
-        } andErrorBlock:^(NSError *error) {
-            isLoadingFromServer = NO;
-        }];
     }
+}
+
+- (void) getSonicsFromServer
+{
+    isLoadingFromServer = YES;
+    [self.centerActivityIndicator startAnimating];
+    [SNCAPIManager getUserSonics:self.user before:nil withCompletionBlock:^(NSArray *sonics) {
+        if(self.sonics == nil)
+        {
+            self.sonics = [[SonicArray alloc] init];
+        }
+        [self.sonics importSonicsWithArray:sonics];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.centerActivityIndicator stopAnimating];
+            [self refresh];
+            isLoadingFromServer = NO;
+        });
+    } andErrorBlock:^(NSError *error) {
+        isLoadingFromServer = NO;
+        [self.centerActivityIndicator stopAnimating];
+    }];
+
 }
 
 - (void) configureViews
 {
+    if(!self.user || !self.isViewLoaded)
+    {
+        return;
+    }
+    [self setGridViewModeOn];
+    [self getSonicsFromServer];
+    [self configureProfileViews];
+}
+
+- (void) configureProfileViews
+{
     self.profileHeaderView.userProfileImageView.image = UserPlaceholderImage;
-    [self.user getThumbnailProfileImageWithCompletionBlock:^(id object) {
+    [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.profileHeaderView.userProfileImageView.image = (UIImage*) object;
+            if(image && self.user == user)
+            {
+                self.profileHeaderView.userProfileImageView.image = image;
+            }
         });
     }];
     self.profileHeaderView.usernamelabel.text = [NSString stringWithFormat:@"@%@",self.user.username];
@@ -340,7 +383,6 @@
     [self.sonicCollectionView setShowsVerticalScrollIndicator:NO];
     [self.sonicCollectionView setScrollsToTop:YES];
 	[self.view addSubview:self.sonicCollectionView];
-    
     [self.sonicCollectionView setHidden:YES];
 }
 
@@ -365,7 +407,7 @@
     [self.profileHeaderView.gridViewButton setSelected:NO];
     [self.profileHeaderView.likedSonicsButton setSelected:NO];
     [self.sonicListTableView addSubview:self.profileHeaderView];
-    
+    [self.sonicListTableView addSubview:self.centerActivityIndicator];
     [self stopPlaying];
     if([self.sonicListTableView isHidden] == YES){
         [self.sonicCollectionView setHidden:YES];
@@ -385,6 +427,8 @@
     [self.profileHeaderView.gridViewButton setSelected:YES];
     [self.profileHeaderView.likedSonicsButton setSelected:NO];
     [self.sonicCollectionView addSubview:self.profileHeaderView];
+    [self.sonicCollectionView addSubview:self.centerActivityIndicator];
+    [self.centerLikesActivityIndicator removeFromSuperview];
     showLikedSonics = NO;
     [self stopPlaying];
     if([self.sonicCollectionView isHidden] == YES){
@@ -402,13 +446,21 @@
     [self.profileHeaderView.listViewButton setSelected:NO];
     [self.profileHeaderView.gridViewButton setSelected:NO];
     [self.profileHeaderView.likedSonicsButton setSelected:YES];
+    [self.sonicCollectionView addSubview:self.centerLikesActivityIndicator];
+    [self.centerActivityIndicator removeFromSuperview];
     showLikedSonics = YES;
     if(self.likedSonics == nil) {
         self.likedSonics = [[SonicArray alloc] init];
+        [self.centerLikesActivityIndicator startAnimating];
         [SNCAPIManager getSonicsILikedwithCompletionBlock:^(NSArray *sonics) {
-            [self.likedSonics importSonicsWithArray:sonics];
-            [self.sonicCollectionView reloadData];
-        } andErrorBlock:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.likedSonics importSonicsWithArray:sonics];
+                [self.sonicCollectionView reloadData];
+                [self.centerLikesActivityIndicator stopAnimating];
+            });
+        } andErrorBlock:^(NSError *error) {
+            [self.centerLikesActivityIndicator stopAnimating];
+        }];
     }
     [self.sonicCollectionView reloadData];
 }
@@ -499,7 +551,7 @@
 {
     User* user = notification.object;
     if(self.user == user){
-        [self configureViews];
+        [self configureProfileViews];
     }
 }
 
@@ -558,25 +610,29 @@
 
 - (void)openProfileForUser:(User *)user
 {
-    if(user != self.user){
-        
+    if(user && user != self.user){
+        SNCProfileViewController* profile = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        [profile setUser:user];
+        [self.navigationController pushViewController:profile animated:YES];
     }
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString* segueIdentifier = [segue identifier];
-    if ([segueIdentifier isEqualToString:ProfileToPreviewSegue]){
+    if ([segueIdentifier isEqualToString:ProfileToPreviewSegue])
+    {
         SNCSonicViewController* preview = segue.destinationViewController;
+        [preview setInitiationType:sonicViewControllerInitiationType];
         [preview setSonic:selectedSonic];
+        sonicViewControllerInitiationType = SonicViewControllerInitiationTypeNone;
     }
-    else if([segueIdentifier isEqualToString:ProfileToFollowerFollowingSegue]){
+    else if([segueIdentifier isEqualToString:ProfileToFollowerFollowingSegue])
+    {
         SNCFollowerFollowingViewController* follow = segue.destinationViewController;
         [follow setUser:self.user];
         [follow setShouldShowFollowers:shouldShowFollowers];
     }
 }
-
-
 
 - (void)dealloc
 {

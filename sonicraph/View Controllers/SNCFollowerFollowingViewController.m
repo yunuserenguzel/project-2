@@ -13,6 +13,12 @@
 
 @interface SNCFollowerFollowingViewController ()
 
+@property UIActivityIndicatorView* followersCenterActivityIndicator;
+@property UIActivityIndicatorView* followingsCenterActivityIndicator;
+
+@property UILabel* noFollowingsLabel;
+@property UILabel* noFollowersLabel;
+
 @end
 
 @implementation SNCFollowerFollowingViewController
@@ -22,10 +28,20 @@
     User* userToBeOpen;
 }
 
+- (CGRect) centerActivityIndicatorFrame
+{
+    return CGRectMake(0.0, 0.0, 320.0, self.view.frame.size.height-self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height);
+}
+
 - (CGRect) segmentedControlFrame
 {
     CGFloat y = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height + 6;
     return CGRectMake(70.0, y, 160.0, 33.0);
+}
+
+- (CGRect) noLabelFrame
+{
+    return CGRectMake(60.0, 0.0, 200.0, self.view.frame.size.height-self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -47,7 +63,8 @@
     [super viewDidLoad];
     [self initializeTableView];
     [self initializeSegmentedControl];
-    
+    [self initializeActivityIndicators];
+    [self initializeNoLabels];
     [self configureViews];
     
 }
@@ -61,34 +78,53 @@
 {
     if(![self isViewLoaded]) return;
     if(!self.user)return;
-    if(!self.shouldShowFollowers)
+    
+    [self.segmentedControl setSelectedSegmentIndex:self.shouldShowFollowers? 0 : 1];
+    [self segmentChanged:self.segmentedControl];
+    [self getDataFromServer];
+}
+
+- (void) getDataFromServer
+{
+    if(![self.refreshControl isRefreshing])
     {
-        [self.segmentedControl setSelectedSegmentIndex:1];
+        [self.followersCenterActivityIndicator startAnimating];
     }
     [SNCAPIManager getFollowersOfUser:self.user withCompletionBlock:^(NSArray *users) {
+        [self.noFollowersLabel setHidden:(users != nil && users.count > 0)];
         followers = users;
         [self.tableView reloadData];
+        [self.followersCenterActivityIndicator stopAnimating];
+        [self.refreshControl endRefreshing];
     } andErrorBlock:^(NSError *error) {
-        
-    }];
-    [SNCAPIManager getFollowingsOfUser:self.user withCompletionBlock:^(NSArray *users) {
-        followings = users;
-        [self.tableView reloadData];
-    } andErrorBlock:^(NSError *error) {
-        
+        [self.followersCenterActivityIndicator stopAnimating];
+        [self.refreshControl endRefreshing];
     }];
     
+    if(![self.refreshControl isRefreshing])
+    {
+        [self.followingsCenterActivityIndicator startAnimating];
+    }
+    [SNCAPIManager getFollowingsOfUser:self.user withCompletionBlock:^(NSArray *users) {
+        [self.noFollowingsLabel setHidden:(users != nil && users.count > 0)];
+        followings = users;
+        [self.tableView reloadData];
+        [self.followingsCenterActivityIndicator stopAnimating];
+        [self.refreshControl endRefreshing];
+    } andErrorBlock:^(NSError *error) {
+        [self.followingsCenterActivityIndicator stopAnimating];
+        [self.refreshControl endRefreshing];
+    }];
 }
 
 - (void) initializeTableView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:[self frameForScrollContent]];
-    self.tableView.contentInset = [self edgeInsetsForScrollContent];
-    [self.view addSubview:self.tableView];
-    [self.tableView setDelegate:self];
+//    self.tableView.contentInset = [self edgeInsetsForScrollContent];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
-    [self.tableView setDataSource:self];
     [self.tableView registerClass:[SNCPersonFollowableTableCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView setTableFooterView:[UIView new]];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(getDataFromServer) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void) initializeSegmentedControl
@@ -101,13 +137,58 @@
     self.navigationItem.titleView = self.segmentedControl;
 }
 
+- (void) initializeActivityIndicators
+{
+    self.followersCenterActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.followingsCenterActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    
+    for (UIActivityIndicatorView* indicator in @[self.followingsCenterActivityIndicator,self.followersCenterActivityIndicator]) {
+        indicator.color = TabbarNonActiveButtonTintColor;
+        indicator.frame = [self centerActivityIndicatorFrame];
+    }
+    
+    [self.tableView addSubview:self.followersCenterActivityIndicator];
+}
+
+- (void) initializeNoLabels
+{
+    self.noFollowersLabel = [[UILabel alloc] init];
+    [self.noFollowersLabel setText:@"You do not have followers\nInvite friends from settings to have followers!"];
+
+    self. noFollowingsLabel = [[UILabel alloc] init];
+    [self.noFollowingsLabel setText:@"You do not follow anyone.\nUse search to follow people!"];
+    
+    for (UILabel* label in @[self.noFollowersLabel,self.noFollowingsLabel]) {
+        [label setFrame:[self noLabelFrame]];
+        [label setNumberOfLines:0];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [label setFont:[UIFont systemFontOfSize:16.0]];
+        [label setTextColor:TabbarNonActiveButtonTintColor];
+        [label setHidden:YES];
+        [self.tableView addSubview:label];
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:label.text];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:18];
+        [paragraphStyle setAlignment:NSTextAlignmentCenter];
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [label.text length])];
+        label.attributedText = attributedString ;
+    }
+}
+
 - (void) segmentChanged:(UISegmentedControl*)segmentedControl
 {
     if([segmentedControl selectedSegmentIndex] == 0){
         self.shouldShowFollowers = YES;
-        
+        [self.tableView addSubview:self.followersCenterActivityIndicator];
+        [self.followingsCenterActivityIndicator removeFromSuperview];
+        [self.tableView addSubview:self.noFollowersLabel];
+        [self.noFollowingsLabel removeFromSuperview];
     } else if([segmentedControl selectedSegmentIndex] == 1){
         self.shouldShowFollowers = NO;
+        [self.tableView addSubview:self.followingsCenterActivityIndicator];
+        [self.followersCenterActivityIndicator removeFromSuperview];
+        [self.tableView addSubview:self.noFollowingsLabel];
+        [self.noFollowersLabel removeFromSuperview];
     }
     [[self tableView] reloadData];
 }

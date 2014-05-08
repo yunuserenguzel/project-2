@@ -350,7 +350,7 @@ CGFloat heightForIdentifier(NSString* identifier)
     [self.maleButton setSelected:NO];
     [self.femaleButton setSelected:NO];
     [button setSelected:YES];
-    NSString* value = self.maleButton ? @"male" : @"female";
+    NSString* value = self.maleButton == button ? @"male" : @"female";
     [self.delegate valueChanged:value forKey:self.key];
 }
 

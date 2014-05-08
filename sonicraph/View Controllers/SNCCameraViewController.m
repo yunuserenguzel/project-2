@@ -186,7 +186,11 @@ typedef enum SonicRecordType {
       selector:@selector(initializeMediaManager)
       object:nil]
      start];
-    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(prepareForRetake)
+     name:UIApplicationDidBecomeActiveNotification
+     object:nil];
     
 }
 
@@ -331,8 +335,10 @@ typedef enum SonicRecordType {
     {
         [self.recordButton setImage:RecordButtonCameraImage forState:UIControlStateNormal];
     }
-    
-    [locationManager startUpdatingLocation];
+    if(isMediaManagerReady)
+    {
+        [locationManager startUpdatingLocation];
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -408,6 +414,28 @@ typedef enum SonicRecordType {
         [self.recordButton addTarget:self action:@selector(stopAudioRecording) forControlEvents:UIControlEventTouchUpInside];
         [self.recordButton setImage:RecordButtonMicrophoneImage forState:UIControlStateNormal];
     }
+}
+
+- (void)sonicraphMediaManagerReady:(SonicraphMediaManager *)manager
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        isMediaManagerReady = YES;
+        [self.recordButton setEnabled:YES];
+        [locationManager startUpdatingLocation];
+    });
+}
+
+- (void) microphonePermissionDeniedForManager:(SonicraphMediaManager *)manager
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[[UIAlertView alloc]
+          initWithTitle:@"Microphone Permission Denied"
+          message:@"To capture sonics, you should give microphone permission. It can be found in Settings / Privacy / Microphone"
+          delegate:self
+          cancelButtonTitle:@"Ok"
+          otherButtonTitles: nil]
+         show];
+    });
 }
 
 - (void) startAudioRecording
@@ -649,9 +677,8 @@ typedef enum SonicRecordType {
 {
     self.mediaManager = [[SonicraphMediaManager alloc] initWithView:self.cameraView];
     [self.mediaManager setDelegate:self];
+    [self.mediaManager prepareForCapture];
     isMainCamera = YES;
-    isMediaManagerReady = YES;
-    [self.recordButton setEnabled:YES];
     NSLog(@"Media Manager Ready");
 }
 

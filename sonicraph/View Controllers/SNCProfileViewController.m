@@ -18,6 +18,7 @@
 #import "SNCAppDelegate.h"
 #import "UIButton+StateProperties.h"
 #import "AuthenticationManager.h"
+#import "SonicCollectionViewFlowLayout.h"
 
 @interface UICollectionViewFlowLayout (WihtoutInsertAnimation)
 
@@ -25,10 +26,7 @@
 
 @implementation UICollectionViewFlowLayout (WihtoutInsertAnimation)
 
-- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
-{
-    return nil;
-}
+
 
 @end
 
@@ -367,11 +365,7 @@
 
 - (void) initializeSonicCollectionView
 {
-    self.sonicCollectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [self.sonicCollectionViewFlowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    [self.sonicCollectionViewFlowLayout setItemSize:CGSizeMake(106.0, 106.0)];
-    [self.sonicCollectionViewFlowLayout setMinimumLineSpacing:1.0];
-    [self.sonicCollectionViewFlowLayout setMinimumInteritemSpacing:1.0];
+    self.sonicCollectionViewFlowLayout = [[SonicCollectionViewFlowLayout alloc] init];
     self.sonicCollectionView = [[UICollectionView alloc] initWithFrame:[self sonicCollectionViewFrame] collectionViewLayout:self.sonicCollectionViewFlowLayout];
     [self.sonicCollectionView setDataSource:self];
     [self.sonicCollectionView setDelegate:self];

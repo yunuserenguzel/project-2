@@ -16,7 +16,7 @@
 #define SonicSize CGSizeMake(320.0,320.0)
 
 #define SonicPlayerViewSize CGSizeMake(320.0,322.0)
-#define SonicCollectionViewCellSize CGSizeMake(106.0,106.0)
+#define SonicCollectionViewCellSize CGSizeMake(130.0,130.0)
 #define HeightForHomeCell 455.0
 
 #define MainThemeColor rgb(221, 90, 98)

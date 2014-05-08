@@ -21,6 +21,10 @@ typedef void (^ ImageBlock)(UIImage* image);
 
 - (void) audioRecordStartedForManager:(SonicraphMediaManager*)manager ;
 
+- (void) microphonePermissionDeniedForManager:(SonicraphMediaManager*)manager;
+
+- (void) sonicraphMediaManagerReady:(SonicraphMediaManager*)manager;
+
 @end
 
 @interface SonicraphMediaManager : NSObject <AVAudioRecorderDelegate>
@@ -32,6 +36,8 @@ typedef void (^ ImageBlock)(UIImage* image);
 @property (readonly) AVAudioRecorder *audioRecorder;
 
 - (id) initWithView:(UIView*)view;
+
+- (void) prepareForCapture;
 
 - (void) takePictureWithCompletionBlock:(ImageBlock)completionBlock;
 

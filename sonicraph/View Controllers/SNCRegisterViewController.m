@@ -154,6 +154,10 @@
         {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Email address is already taken by another user. Please enter a different email address" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
         }
+        else if(error.code == APIErrorCodeEmailIsNotValid)
+        {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Email is not valid. Please enter a valid email address" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        }
     }];
 }
 

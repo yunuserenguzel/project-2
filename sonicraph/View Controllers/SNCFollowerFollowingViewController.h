@@ -12,13 +12,11 @@
 #import "TypeDefs.h"
 #import "UIViewController+CustomMethods.h"
 
-@interface SNCFollowerFollowingViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,SNCPersonFollowableTableCellProtocol,OpenProfileProtocol>
+@interface SNCFollowerFollowingViewController : UITableViewController <SNCPersonFollowableTableCellProtocol,OpenProfileProtocol>
 
 @property (nonatomic) User* user;
 
 @property (nonatomic) BOOL shouldShowFollowers;
-
-@property UITableView* tableView;
 
 @property UISegmentedControl* segmentedControl;
 

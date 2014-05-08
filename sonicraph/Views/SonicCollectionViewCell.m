@@ -19,7 +19,7 @@
 
 - (CGRect) resonicImageViewFrame
 {
-    return CGRectMake(SonicCollectionViewCellSize.width - 28.0,SonicCollectionViewCellSize.height - 25.0, 20.0 ,20.0);
+    return CGRectMake(SonicCollectionViewCellSize.width - 48.0,SonicCollectionViewCellSize.height - 45.0, 20.0 ,20.0);
 }
 
 - (id)initWithFrame:(CGRect)frame

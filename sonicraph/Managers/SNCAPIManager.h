@@ -15,6 +15,7 @@
 
 #define APIErrorCodeUsernameExist 212
 #define APIErrorCodeEmailExist 211
+#define APIErrorCodeEmailIsNotValid 1021
 
 User* userFromServerDictionary(NSDictionary* dictionary);
 SonicComment* sonicCommentFromServerDictionary(NSDictionary* dictionary);
@@ -81,6 +82,9 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                     withCompletionBlock:(CompletionArrayBlock)completionBlock
                           andErrorBlock:(ErrorBlock)errorBlock;
 
++ (MKNetworkOperation*) getPopulerSonicsWithCompletionBlock:(CompletionArrayBlock)completionBlock
+                                              andErrorBlock:(ErrorBlock)errorBlock;
+
 + (MKNetworkOperation*) getUserSonics:(User*)user
                                before:(Sonic*)sonic
                   withCompletionBlock:(CompletionArrayBlock)completionBlock
@@ -146,6 +150,8 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
 + (MKNetworkOperation*) resetPasswordForEmail:(NSString*)email
                           withCompletionBlock:(CompletionBoolBlock)completionBlock
                                 andErrorBlock:(ErrorBlock)errorBlock;
+
+
 
 
 @end

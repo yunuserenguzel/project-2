@@ -551,6 +551,25 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
             andErrorBlock:errorBlock];
 }
 
++ (MKNetworkOperation *)getPopulerSonicsWithCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
+{
+    NSString* operation = @"sonic/get_populer_sonics";
+    return [[SNCAPIConnector sharedInstance]
+            getRequestWithParams:@{}
+            useToken:YES
+            andOperation:operation
+            andCompletionBlock:^(NSDictionary *responseDictionary) {
+                NSMutableArray* sonics = [[NSMutableArray alloc] init];
+                for (NSDictionary* sonicDict in [responseDictionary objectForKey:@"sonics"]) {
+                    [sonics addObject:sonicFromServerDictionary(sonicDict)];
+                }
+                if(completionBlock){
+                    completionBlock(sonics);
+                }
+            }
+            andErrorBlock:errorBlock];
+}
+
 + (MKNetworkOperation*) checkIsTokenValid:(NSString*)token withCompletionBlock:(CompletionUserBlock)block andErrorBlock:(ErrorBlock)errorBlock;
 {
     return [[SNCAPIConnector sharedInstance]
@@ -586,6 +605,17 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 
 + (MKNetworkOperation *)registerWithEmail:(NSString *)email password:(NSString *)password andCompletionBlock:(CompletionUserBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    
+    if( ![emailTest evaluateWithObject:email] )
+    {
+        if(errorBlock)
+        {
+            errorBlock([NSError errorWithDomain:@"Email Error" code:APIErrorCodeEmailIsNotValid userInfo:nil]);
+            return nil;
+        }
+    }
     NSDictionary* params = @{@"email":email,
                              @"password":password};
     return [[SNCAPIConnector sharedInstance]

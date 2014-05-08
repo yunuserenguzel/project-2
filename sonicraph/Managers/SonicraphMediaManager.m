@@ -42,10 +42,14 @@
 {
     if(self = [super init]){
         _cameraView = view;
-        [self initializeCamera];
-        [self initializeAudio];
     }
     return self;
+}
+
+- (void) prepareForCapture
+{
+    [self initializeCamera];
+    [self initializeAudio];
 }
 - (void) initializeCamera
 {
@@ -96,13 +100,20 @@
                 
             } else {
                 [self.audioRecorder prepareToRecord];
+                if([self.delegate respondsToSelector:@selector(sonicraphMediaManagerReady:)])
+                {
+                    [self.delegate sonicraphMediaManagerReady:self];
+                }
             }
         }
         else {
-            // Microphone disabled code
+            if([self.delegate respondsToSelector:@selector(microphonePermissionDeniedForManager:)])
+            {
+                [self.delegate microphonePermissionDeniedForManager:self];
+            }
         }
     }];
-   }
+}
 
 - (void)takePictureWithCompletionBlock:(ImageBlock)completionBlock
 {

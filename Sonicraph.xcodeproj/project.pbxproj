@@ -19,8 +19,10 @@
 		AE1596BF182452CF00929D1D /* slider-default7-trackBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */; };
 		AE1596C0182452CF00929D1D /* slider-default7-trackCrossedOver.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */; };
 		AE1596C1182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */; };
+		AE1A4D19191C180000B20C51 /* SonicCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1A4D18191C180000B20C51 /* SonicCollectionViewFlowLayout.m */; };
+		AE1A4D25191C20BA00B20C51 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1A4D24191C20BA00B20C51 /* SMPageControl.m */; };
+		AE1A4D28191C395E00B20C51 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1A4D27191C395E00B20C51 /* Crashlytics.framework */; };
 		AE1C3A59191A226000675F97 /* UIImage+CircularImage.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1C3A58191A226000675F97 /* UIImage+CircularImage.m */; };
-		AE2768C718DE21D7008D75F4 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2768C618DE21D7008D75F4 /* SMPageControl.m */; };
 		AE2768CA18DE255D008D75F4 /* SNCGetStartedPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2768C918DE255D008D75F4 /* SNCGetStartedPageContentViewController.m */; };
 		AE2AF54C18D82FE5007C9BB1 /* SNCGoThroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF54B18D82FE5007C9BB1 /* SNCGoThroughViewController.m */; };
 		AE2AF58A18D8BFE9007C9BB1 /* SNCPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF58918D8BFE9007C9BB1 /* SNCPageContentViewController.m */; };
@@ -296,10 +298,13 @@
 		AE1596B7182452CF00929D1D /* slider-default7-trackBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackBackground@2x.png"; sourceTree = "<group>"; };
 		AE1596B8182452CF00929D1D /* slider-default7-trackCrossedOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver.png"; sourceTree = "<group>"; };
 		AE1596B9182452CF00929D1D /* slider-default7-trackCrossedOver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-default7-trackCrossedOver@2x.png"; sourceTree = "<group>"; };
+		AE1A4D17191C180000B20C51 /* SonicCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		AE1A4D18191C180000B20C51 /* SonicCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SonicCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		AE1A4D23191C20BA00B20C51 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
+		AE1A4D24191C20BA00B20C51 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
+		AE1A4D27191C395E00B20C51 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		AE1C3A57191A226000675F97 /* UIImage+CircularImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+CircularImage.h"; sourceTree = "<group>"; };
 		AE1C3A58191A226000675F97 /* UIImage+CircularImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CircularImage.m"; sourceTree = "<group>"; };
-		AE2768C518DE21D7008D75F4 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
-		AE2768C618DE21D7008D75F4 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
 		AE2768C818DE255D008D75F4 /* SNCGetStartedPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCGetStartedPageContentViewController.h; sourceTree = "<group>"; };
 		AE2768C918DE255D008D75F4 /* SNCGetStartedPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCGetStartedPageContentViewController.m; sourceTree = "<group>"; };
 		AE2AF54A18D82FE5007C9BB1 /* SNCGoThroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCGoThroughViewController.h; sourceTree = "<group>"; };
@@ -823,6 +828,7 @@
 				AECBA64318564D9D00DE8EDE /* QuartzCore.framework in Frameworks */,
 				AE15967D181BF64800929D1D /* AudioToolbox.framework in Frameworks */,
 				AE86EEC918316CA800F74F1D /* AudioConverter.a in Frameworks */,
+				AE1A4D28191C395E00B20C51 /* Crashlytics.framework in Frameworks */,
 				AE86EECC18316CA800F74F1D /* MP3Converter.a in Frameworks */,
 				AE15967B181BE95E00929D1D /* AVFoundation.framework in Frameworks */,
 				AED56E9E1801A35D000DF866 /* CoreGraphics.framework in Frameworks */,
@@ -1032,6 +1038,8 @@
 				AEDE11EC18D1AD05007E60F8 /* SNCEqualizerView.m */,
 				AECAB03D18D4B11F007BC760 /* SNCPreloaderImageView.h */,
 				AECAB03E18D4B11F007BC760 /* SNCPreloaderImageView.m */,
+				AE1A4D17191C180000B20C51 /* SonicCollectionViewFlowLayout.h */,
+				AE1A4D18191C180000B20C51 /* SonicCollectionViewFlowLayout.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1051,8 +1059,8 @@
 			children = (
 				AED56ED91801A39F000DF866 /* MKNetworkKit */,
 				AE86E9EC18E40AEC00DF82BA /* Categories */,
-				AE2768C518DE21D7008D75F4 /* SMPageControl.h */,
-				AE2768C618DE21D7008D75F4 /* SMPageControl.m */,
+				AE1A4D23191C20BA00B20C51 /* SMPageControl.h */,
+				AE1A4D24191C20BA00B20C51 /* SMPageControl.m */,
 				AE10C3D918C721D200AD4D1A /* HPGrowingTextView */,
 				AE86EE83182C0DF300F74F1D /* JSONKit */,
 				AE86EE86182C0DF300F74F1D /* SNCAPIConnector.h */,
@@ -1803,6 +1811,7 @@
 		AED56E9A1801A35D000DF866 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE1A4D27191C395E00B20C51 /* Crashlytics.framework */,
 				AEDED1F218BEB02100FEB636 /* Social.framework */,
 				AEC59C2918AA0DF100E66E41 /* FacebookSDK */,
 				AEC59C2718AA0DE100E66E41 /* FacebookSDK */,
@@ -1934,6 +1943,7 @@
 				AED56E941801A35D000DF866 /* Sources */,
 				AED56E951801A35D000DF866 /* Frameworks */,
 				AED56E961801A35D000DF866 /* Resources */,
+				AE1A4D26191C38DD00B20C51 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2201,6 +2211,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		AE1A4D26191C38DD00B20C51 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run d3de0613d3e232607b02e1bd842d3060e867ee96 547bf3396a9239824029554fdf414a46a181e1daff0d0046b9489fc73b77ef3c";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AED56E941801A35D000DF866 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -2214,6 +2240,7 @@
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
 				AED3323118BC888A002FB70A /* SNCSwitchView.m in Sources */,
+				AE1A4D19191C180000B20C51 /* SonicCollectionViewFlowLayout.m in Sources */,
 				AEDE11ED18D1AD05007E60F8 /* SNCEqualizerView.m in Sources */,
 				AE7E18DF18906859009A9B7F /* SNCSearchViewController.m in Sources */,
 				AEAE6E5B18C4393300169596 /* SilentSwitchDetector.m in Sources */,
@@ -2231,7 +2258,6 @@
 				AE9ABCF818797E15008FE96B /* SonicCollectionViewCell.m in Sources */,
 				AE7E18FC18966334009A9B7F /* UIImage+Resize.m in Sources */,
 				AED56EFA1801A39F000DF866 /* Reachability.m in Sources */,
-				AE2768C718DE21D7008D75F4 /* SMPageControl.m in Sources */,
 				AEDA48EB18E17EF0006D42B8 /* SonicPresenter.m in Sources */,
 				AE86EECE18316CA800F74F1D /* Mp3ConverterInterface.m in Sources */,
 				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
@@ -2240,6 +2266,7 @@
 				AE7E19021896641D009A9B7F /* UIImage+RoundedCorner.m in Sources */,
 				AE10C3DF18C721D200AD4D1A /* HPTextViewInternal.m in Sources */,
 				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
+				AE1A4D25191C20BA00B20C51 /* SMPageControl.m in Sources */,
 				AE86EE99182D7D2000F74F1D /* SNCProfileViewController.m in Sources */,
 				AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */,
 				AED56EAE1801A35D000DF866 /* SNCAppDelegate.m in Sources */,
@@ -2623,6 +2650,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/yunuserenguzel/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/Sonicraph-Prefix.pch";
@@ -2653,6 +2681,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/yunuserenguzel/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "sonicraph/Sonicraph-Prefix.pch";

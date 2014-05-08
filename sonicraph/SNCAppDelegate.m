@@ -16,7 +16,7 @@
 #import "AuthenticationManager.h"
 #import "SonicPresenter.h"
 #import "SNCResourceHandler.h"
-
+#import <Crashlytics/Crashlytics.h>
 
 static SNCAppDelegate* sharedInstance = nil;
 
@@ -29,6 +29,7 @@ static SNCAppDelegate* sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Crashlytics startWithAPIKey:@"d3de0613d3e232607b02e1bd842d3060e867ee96"];
     sharedInstance = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         if(![[AuthenticationManager sharedInstance] token])

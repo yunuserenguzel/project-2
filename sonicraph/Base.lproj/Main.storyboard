@@ -61,10 +61,10 @@
                         <barButtonItem key="backBarButtonItem" title="Profile" id="Ycq-qZ-dlc"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="5ii-yk-Nma"/>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="V84-TT-bI4"/>
                         <segue destination="eAz-5z-Z0t" kind="modal" identifier="EditProfileSegue" id="5ZY-xa-aVr"/>
                         <segue destination="xLm-uF-05U" kind="push" identifier="ProfileToSettingsSegue" id="1u3-r6-fFi"/>
+                        <segue destination="tTC-O6-BSJ" kind="push" identifier="ProfileToFollowerFollowingSegue" id="BfJ-8i-16Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pVH-57-z5s" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -72,26 +72,26 @@
             <point key="canvasLocation" x="-1300" y="588"/>
         </scene>
         <!--Follower Following View Controller-->
-        <scene sceneID="noc-uK-Tdr">
+        <scene sceneID="5lY-Gj-Zml">
             <objects>
-                <viewController id="Cwr-fm-aNP" customClass="SNCFollowerFollowingViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0yS-I9-GVW"/>
-                        <viewControllerLayoutGuide type="bottom" id="P6b-1b-ECQ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="waz-hw-SYG">
+                <tableViewController id="tTC-O6-BSJ" customClass="SNCFollowerFollowingViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OKc-eu-epn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="i2p-42-1Dq"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="tTC-O6-BSJ" id="n0g-6U-BtG"/>
+                            <outlet property="delegate" destination="tTC-O6-BSJ" id="YOI-GD-eaC"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="T7w-qN-HLY"/>
                     <connections>
-                        <segue destination="P2x-fH-UPE" kind="push" identifier="FollowerFollowingToProfileSegue" id="rEn-e1-8Y3"/>
+                        <segue destination="P2x-fH-UPE" kind="push" identifier="FollowerFollowingToProfileSegue" id="Vni-LZ-UtC"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="I69-8v-YwK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qSN-o6-Zmx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-366" y="1480"/>
+            <point key="canvasLocation" x="-366" y="1615"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="XWz-m4-vcq">
@@ -269,8 +269,8 @@
                     <connections>
                         <outlet property="view" destination="RCw-zh-NHI" id="hal-HN-QtN"/>
                         <segue destination="N56-gF-1FD" kind="push" identifier="ProfileToPreviewSegue" id="5Ah-IT-aOa"/>
-                        <segue destination="Cwr-fm-aNP" kind="push" identifier="ProfileToFollowerFollowingSegue" id="xgg-1F-Qkn"/>
                         <segue destination="eAz-5z-Z0t" kind="modal" identifier="EditProfileSegue" id="FTh-mS-2kq"/>
+                        <segue destination="tTC-O6-BSJ" kind="push" identifier="ProfileToFollowerFollowingSegue" id="SmP-yO-WGP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y6f-AS-Kv5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -460,9 +460,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="q27-RJ-FdK"/>
-        <segue reference="5Ah-IT-aOa"/>
-        <segue reference="FTh-mS-2kq"/>
-        <segue reference="xgg-1F-Qkn"/>
+        <segue reference="5ZY-xa-aVr"/>
+        <segue reference="V84-TT-bI4"/>
+        <segue reference="SmP-yO-WGP"/>
+        <segue reference="Vni-LZ-UtC"/>
     </inferredMetricsTieBreakers>
 </document>

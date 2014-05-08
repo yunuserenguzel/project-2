@@ -14,6 +14,8 @@
 #import "SNCProfileViewController.h"
 #import "SNCSonicViewController.h"
 #import "Configurations.h"
+#import "SonicCollectionViewFlowLayout.h"
+
 
 typedef enum SearchContentType {
     SearchContentTypeSonics = 111,
@@ -25,6 +27,7 @@ SearchContentType;
 
 @property NSArray* users;
 @property SonicArray* sonics;
+@property SonicArray* populerSonics;
 
 @property (nonatomic) SearchContentType searchContentType;
 
@@ -47,7 +50,7 @@ SearchContentType;
 }
 - (CGRect) contentRect
 {
-    CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height;
+    CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height - [[UIApplication sharedApplication] statusBarFrame].size.height;
     return CGRectMake(0.0, 0.0, 320.0, h);
 }
 
@@ -64,10 +67,7 @@ SearchContentType;
 {
     if(_searchContentType != searchContentType){
         _searchContentType = searchContentType;
-//        self.searchBar.text = @"";
         [self.searchBar removeFromSuperview];
-//        self.users = nil;
-//        self.sonics = nil;
         [self.userTableView reloadData];
         [self.sonicsCollectionView reloadData];
         if(self.searchContentType == SearchContentTypeUsers){
@@ -85,9 +85,9 @@ SearchContentType;
 - (void) segmentControlValueChanged
 {
     if(self.segmentControl.selectedSegmentIndex == 0){
-        self.searchContentType = SearchContentTypeUsers;
-    } else {
         self.searchContentType = SearchContentTypeSonics;
+    } else {
+        self.searchContentType = SearchContentTypeUsers;
     }
 }
 
@@ -109,10 +109,13 @@ SearchContentType;
     [self initUserTableView];
     [self initSonicCollectionView];
     [self initSearchInstruments];
-    [self setSearchContentType:SearchContentTypeUsers];
+    [self setSearchContentType:SearchContentTypeSonics];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clean) name:NotificationUserLoggedOut object:nil];
+
+    [self getPopulerSonics];
 }
+
 - (void) clean
 {
     self.searchBar.text = @"";
@@ -125,7 +128,7 @@ SearchContentType;
 
 - (void) initSegmentControl
 {
-    self.segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Users",@"Sonics"]];
+    self.segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Sonics",@"Users"]];
     [self.segmentControl setFrame:[self segmentedControlFrame]];
     [self.segmentControl setSelectedSegmentIndex:0];
     self.navigationItem.titleView = self.segmentControl;
@@ -148,15 +151,13 @@ SearchContentType;
 
 - (void) initSonicCollectionView
 {
-    UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
-    [layout setItemSize:CGSizeMake(106, 106)];
-    [layout setMinimumInteritemSpacing:1.0];
-    [layout setMinimumLineSpacing:1.0];
+    UICollectionViewFlowLayout* layout = [[SonicCollectionViewFlowLayout alloc] init];
     [layout setHeaderReferenceSize:CGSizeMake(320.0, 44.0)];
     self.sonicsCollectionView = [[UICollectionView alloc] initWithFrame:[self contentRect] collectionViewLayout:layout];
     [self.view addSubview:self.sonicsCollectionView];
     [self.sonicsCollectionView setDataSource:self];
     [self.sonicsCollectionView setDelegate:self];
+    [self.sonicsCollectionView setAlwaysBounceVertical:YES];
     [self.sonicsCollectionView setBackgroundColor:[UIColor whiteColor]];
     [self.sonicsCollectionView registerClass:[SonicCollectionViewCell class] forCellWithReuseIdentifier:@"SonicCell"];
 }
@@ -188,6 +189,20 @@ SearchContentType;
     [self clean];
 }
 
+- (void) getPopulerSonics
+{
+    [SNCAPIManager getPopulerSonicsWithCompletionBlock:^(NSArray *sonics) {
+        self.populerSonics = [[SonicArray alloc] init];
+        [self.populerSonics importSonicsWithArray:sonics];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.sonicsCollectionView reloadData];
+        });
+    } andErrorBlock:^(NSError *error) {
+        
+    }];
+    
+}
+
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self.searchBar resignFirstResponder];
@@ -212,7 +227,9 @@ SearchContentType;
             self.navigationItem.rightBarButtonItem = nil;
             self.sonics = [[SonicArray alloc] init];
             [self.sonics importSonicsWithArray:sonics];
-            [self.sonicsCollectionView reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.sonicsCollectionView reloadData];
+            });
         } andErrorBlock:^(NSError *error) {
             [activityView stopAnimating];
             self.navigationItem.rightBarButtonItem = nil;
@@ -224,13 +241,22 @@ SearchContentType;
 {
     SonicCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SonicCell" forIndexPath:indexPath];
     [cell setUserInteractionEnabled:YES];
-    [cell setSonic:[self.sonics objectAtIndex:indexPath.row]];
+    Sonic* sonic;
+    if(self.sonics == nil)
+    {
+        sonic = [self.populerSonics objectAtIndex:indexPath.row];
+    }
+    else
+    {
+        sonic = [self.sonics objectAtIndex:indexPath.row];
+    }
+    [cell setSonic:sonic];
     return cell;
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.sonics ? self.sonics.count : 0;
+    return self.sonics ? self.sonics.count : (self.populerSonics ? self.populerSonics.count : 0);
 }
 
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -240,7 +266,8 @@ SearchContentType;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    selectedSonic = [self.sonics objectAtIndex:indexPath.row];
+    SonicCollectionViewCell* cell = (SonicCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    selectedSonic = cell.sonic;
     [self performSegueWithIdentifier:SearchToSonicSegue sender:self];
 }
 

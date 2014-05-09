@@ -50,7 +50,7 @@
 - (void) initViews
 {
     
-    self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageViewFrame]];
+    self.profileImageView = [[FadingImageView alloc] initWithFrame:[self profileImageViewFrame]];
     [self.profileImageView setFrame:[self profileImageViewFrame]];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
@@ -130,7 +130,7 @@
         [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(image && self.user == user){
-                    [self.profileImageView setImage:image];
+                    [self.profileImageView setImageWithAnimation:image];
                 }
             });
         }];

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SonicPlayerView.h"
 #import "TypeDefs.h"
+#import "FadingImageView.h"
 
 #define LikesTabButtonTag 5111
 #define CommentsTabButtonTag 5112
@@ -22,7 +23,7 @@
 @property SonicPlayerView* sonicPlayerView;
 @property UILabel* usernameLabel;
 @property UILabel* fullnameLabel;
-@property UIImageView* profileImageView;
+@property FadingImageView* profileImageView;
 @property UILabel* createdAtLabel;
 
 @property UISegmentedControl* segmentedControl;

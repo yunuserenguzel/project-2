@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Notification.h"
 #import "Configurations.h"
-
+#import "FadingImageView.h"
 
 @interface SNCNotificationCell : UITableViewCell
 
 @property (nonatomic) Notification* notification;
 
 @property UIImageView* notificationTypeImageView;
-@property UIImageView* profileImageView;
+@property FadingImageView* profileImageView;
 @property UILabel* fullnameLabel;
 @property UILabel* usernameLabel;
 @property UILabel* notificationTextLabel;

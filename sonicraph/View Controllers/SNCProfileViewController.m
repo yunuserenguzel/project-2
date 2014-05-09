@@ -269,7 +269,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if(image && self.user == user)
             {
-                self.profileHeaderView.userProfileImageView.image = image;
+                [self.profileHeaderView.userProfileImageView setImageWithAnimation:image];
             }
         });
     }];

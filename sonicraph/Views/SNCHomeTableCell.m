@@ -164,12 +164,13 @@
 
 - (void) initUserInfo
 {
-    self.userImageView = [[UIImageView alloc] initWithFrame:[self userImageViewFrame]];
+    self.userImageView = [[FadingImageView alloc] initWithFrame:[self userImageViewFrame]];
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.userImageView setImage:UserPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
 //    [self.userImageView.layer setCornerRadius:[self userImageViewFrame].size.height * 0.5];
     [self addSubview:self.userImageView];
+    
     
     self.userImageMaskView = [[UIImageView alloc] initWithFrame:[self userImageMaskViewFrame]];
     [self addSubview:self.userImageMaskView];
@@ -458,7 +459,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if(image && [self actualSonic].owner == user)
             {
-                [self.userImageView setImage:image];
+                [self.userImageView setImageWithAnimation:image];
             }
         });
     }];
@@ -471,9 +472,19 @@
     }
     [self.likeButton setSelected:sonic.isLikedByMe];
     [self.commentButton setSelected:sonic.isCommentedByMe];
+    
     self.likesCountLabel.text = [NSString stringWithFormat:@"%d",sonic.likeCount];
     self.commentsCountLabel.text = [NSString stringWithFormat:@"%d",sonic.commentCount];
     self.resonicsCountLabel.text = [NSString stringWithFormat:@"%d",sonic.resonicCount];
+    
+    self.likesCountLabel.hidden = sonic.likeCount <= 0;
+    self.commentsCountLabel.hidden = sonic.commentCount <= 0;
+    self.resonicsCountLabel.hidden = sonic.resonicCount <= 0;
+    
+    self.likeButton.transform = CGAffineTransformMakeTranslation((sonic.likeCount <= 0 ? 11.0 : 0.0), 0.0);
+    self.commentButton.transform = CGAffineTransformMakeTranslation((sonic.commentCount <= 0 ? 11.0 : 0.0), 0.0);
+    self.resonicButton.transform = CGAffineTransformMakeTranslation((sonic.resonicCount <= 0 ? 11.0 : 0.0), 0.0);
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

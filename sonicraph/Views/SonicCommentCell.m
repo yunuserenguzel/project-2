@@ -70,7 +70,7 @@
 {
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    self.userProfileImageView = [[UIImageView alloc] initWithFrame:[self userProfileImageViewFrame]];
+    self.userProfileImageView = [[FadingImageView alloc] initWithFrame:[self userProfileImageViewFrame]];
     [self.contentView addSubview:self.userProfileImageView];
     [self.userProfileImageView setClipsToBounds:YES];
     [self.userProfileImageView setUserInteractionEnabled:YES];
@@ -147,7 +147,7 @@
     [self.sonicComment.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
        dispatch_async(dispatch_get_main_queue(), ^{
            if(image && self.sonicComment.user == user){
-               [self.userProfileImageView setImage:image];
+               [self.userProfileImageView setImageWithAnimation:image];
            }
        });
     }];

@@ -25,16 +25,16 @@
 
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(140.0, 35.0, 160.0, 20.0);
+    return CGRectMake(140.0, 38.0, 160.0, 20.0);
 }
 
 - (CGRect) locationLabelFrame
 {
-    return CGRectMake(156.0, 60.0, 160.0, 20.0);
+    return CGRectMake(156.0, 58.0, 160.0, 20.0);
 }
 - (CGRect) locationImageViewFrame
 {
-    return CGRectMake(140.0, 64.0, 12.0, 12.0);
+    return CGRectMake(140.0, 62.0, 12.0, 12.0);
 }
 - (CGRect) websiteLabelFrame
 {
@@ -46,7 +46,7 @@
 }
 - (CGRect) followButtonFrame
 {
-    return CGRectMake(140.0, 100.0, 150.0, 30.0);
+    return CGRectMake(140.0, 100.0, 160.0, 30.0);
 }
 
 - (CGRect) numberOfSonicsLabelFrame
@@ -147,7 +147,7 @@
 
 - (void) initProfileImageAndUserInfoLabels
 {
-    self.userProfileImageView = [[UIImageView alloc] initWithImage:UserPlaceholderImage];
+    self.userProfileImageView = [[FadingImageView alloc] initWithImage:UserPlaceholderImage];
     [self.userProfileImageView setFrame:[self userProfileImageViewFrame]];
 //    [self.userProfileImageView.layer setCornerRadius:[self userProfileImageViewFrame].size.width * 0.5];
     [self.userProfileImageView setClipsToBounds:YES];

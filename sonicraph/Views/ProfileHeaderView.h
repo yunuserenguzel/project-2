@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "FadingImageView.h"
 #define ProfileHeaderViewHeight 240.0
 
 @interface ProfileHeaderView : UIView <UIGestureRecognizerDelegate>
 
-@property UIImageView* userProfileImageView;
+@property FadingImageView* userProfileImageView;
 @property UILabel* fullnameLabel;
 @property UILabel* usernamelabel;
 @property UILabel* locationLabel;

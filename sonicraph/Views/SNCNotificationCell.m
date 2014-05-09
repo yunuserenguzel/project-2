@@ -56,7 +56,7 @@
     [self.contentView addSubview:self.notificationTypeImageView];
     [self.notificationTypeImageView setContentMode:UIViewContentModeCenter];
     
-    self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageViewFrame]];
+    self.profileImageView = [[FadingImageView alloc] initWithFrame:[self profileImageViewFrame]];
     [self.contentView addSubview:self.profileImageView];
     self.profileImageView.layer.cornerRadius = [self profileImageViewFrame].size.height * 0.5;
     [self.profileImageView setClipsToBounds:YES];
@@ -105,7 +105,7 @@
     [self.notification.byUser getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.notification.byUser == user) {
-                self.profileImageView.image = image;
+                [self.profileImageView setImageWithAnimation:image];
             }
         });
     }];

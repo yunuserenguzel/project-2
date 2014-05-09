@@ -27,7 +27,7 @@
 }
 - (CGRect) usernameLabelMaxFrame
 {
-    return CGRectMake(64.0, 22.0, 244.0, 18.0);
+    return CGRectMake(64.0, 26.0, 244.0, 18.0);
 }
 - (CGRect) createdAtLabelMaxFrame
 {
@@ -110,7 +110,7 @@
 
 - (void) initUserViews
 {
-    self.profileImageView = [[UIImageView alloc] initWithFrame:[self profileImageMaxFrame]];
+    self.profileImageView = [[FadingImageView alloc] initWithFrame:[self profileImageMaxFrame]];
 //    [self.profileImageView.layer setCornerRadius:[self profileImageMaxFrame].size.height * 0.5];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];

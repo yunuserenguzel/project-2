@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SonicComment.h"
 #import "TypeDefs.h"
+#import "FadingImageView.h"
+
 @interface SonicCommentCell : UITableViewCell <UIActionSheetDelegate>
 
 @property (nonatomic) SonicComment* sonicComment;
@@ -17,7 +19,7 @@
 @property UILabel* commentTextLabel;
 @property UILabel* createdAtLabel;
 @property UIButton* deleteButton;
-@property UIImageView* userProfileImageView;
+@property FadingImageView* userProfileImageView;
 
 @property (weak) id<OpenProfileProtocol> delegate;
 

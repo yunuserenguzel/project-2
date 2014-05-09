@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Sonic.h"
 #import "TypeDefs.h"
+#import "FadingImageView.h"
 
 #define HomeTableCellIdentifier @"HomeTableCellIdentifier"
 @class SNCHomeTableCell;
@@ -36,7 +37,7 @@ SNCHomeTableCellActionType;
 @property (nonatomic) Sonic* sonic;
 
 
-@property UIImageView* userImageView;
+@property FadingImageView* userImageView;
 @property UIImageView* userImageMaskView;
 @property UILabel* usernameLabel;
 @property UILabel* fullnameLabel;

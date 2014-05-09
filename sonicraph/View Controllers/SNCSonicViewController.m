@@ -29,6 +29,10 @@
 @property UIActivityIndicatorView* commentsCenterActivityIndicator;
 @property UIActivityIndicatorView* resonicsCenterActivityIndicator;
 
+@property UILabel* noLikesLabel;
+@property UILabel* noCommentsLabel;
+@property UILabel* noResonicsLabel;
+
 @end
 
 @implementation SNCSonicViewController
@@ -77,6 +81,11 @@
     return CGRectMake(0.0, HeaderViewMaxHeight, 320.0, self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height - HeaderViewMinHeight);
 }
 
+- (CGRect) noLabelFrame
+{
+    return CGRectMake(0.0, HeaderViewMaxHeight + 44.0, 320.0, self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height - HeaderViewMinHeight);
+}
+
 #pragma mark initialize views
 - (void)viewDidLoad
 {
@@ -86,6 +95,7 @@
     self.resonicsContent = [NSMutableArray new];
     [self initTableView];
     [self initializeActivityIndicators];
+    [self initializeNoLabels];
     
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"whitemore.png"] style:UIBarButtonItemStylePlain target:self action:@selector(openActionsMenu)]];
     
@@ -200,6 +210,48 @@
         [indicator setFrame:[self centerActivityIndicatorFrame]];
         [indicator setColor:TabbarNonActiveButtonTintColor];
         [self.tableView addSubview:indicator];
+    }
+}
+
+- (void) initializeNoLabels
+{
+    self.noLikesLabel = [[UILabel alloc] init];
+    self.noCommentsLabel = [[UILabel alloc] init];
+    self.noResonicsLabel = [[UILabel alloc] init];
+    
+    self.noLikesLabel.text = @"This sonic has no likes";
+    self.noCommentsLabel.text = @"This sonic has no comments";
+    self.noResonicsLabel.text = @"This sonic has no resonics";
+    
+    for (UILabel* label in @[self.noLikesLabel,self.noCommentsLabel,self.noResonicsLabel]) {
+        [label setFrame:[self noLabelFrame]];
+        [label setHidden:YES];
+        [label setNumberOfLines:0];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [label setFont:[UIFont systemFontOfSize:16.0]];
+        [label setTextColor:TabbarNonActiveButtonTintColor];
+        [self.tableView addSubview:label];
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:label.text];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:18];
+        [paragraphStyle setAlignment:NSTextAlignmentCenter];
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [label.text length])];
+        label.attributedText = attributedString ;
+    }
+}
+
+- (void) insertNoLabel:(UILabel*)noLabel
+{
+    for(UILabel* label in @[self.noLikesLabel, self.noCommentsLabel, self.noResonicsLabel])
+    {
+        if(label == noLabel)
+        {
+            [self.tableView addSubview:label];
+        }
+        else
+        {
+            [label removeFromSuperview];
+        }
     }
 }
 
@@ -393,13 +445,13 @@
     self.headerView.sonicPlayerView.shouldAutoPlay = self.shouldAutoPlay;
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrlString]];
     self.headerView.usernameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.username] ;
-    self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
+    self.headerView.fullnameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.fullName] ;
     self.headerView.createdAtLabel.text = [self.sonic.creationDate formattedAsTimeAgo];
     [self.headerView.profileImageView setImage:UserPlaceholderImage];
     [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (image) {
-                self.headerView.profileImageView.image = image;
+                [self.headerView.profileImageView setImageWithAnimation:image];
             }
         });
     }];
@@ -449,12 +501,15 @@
     {
         case ContentTypeComments:
             [self.tabActionBarView addSubview:self.writeCommentView];
+            [self insertNoLabel:self.noCommentsLabel];
             break;
         case ContentTypeLikes:
             [self.tabActionBarView addSubview:self.likeButton];
+            [self insertNoLabel:self.noLikesLabel];
             break;
         case ContentTypeResonics:
             [self.tabActionBarView addSubview:self.resonicButton];
+            [self insertNoLabel:self.noResonicsLabel];
             break;
         default:
             [self.navigationItem setTitle:@""];
@@ -469,19 +524,29 @@
     switch (currentContentType)
     {
         case ContentTypeComments:
-            [self.navigationItem setTitle:[CommentsText stringByAppendingString:[NSString stringWithFormat:@" (%d)",self.sonic.commentCount]]];
+            [self setNavigationItemTitle:CommentsText andCount:self.sonic.commentCount];
             break;
         case ContentTypeLikes:
-            [self.navigationItem setTitle:[LikesText stringByAppendingString:[NSString stringWithFormat:@" (%d)",self.sonic.likeCount]]];
+            [self setNavigationItemTitle:LikesText andCount:self.sonic.likeCount];
             break;
         case ContentTypeResonics:
-            [self.navigationItem setTitle:[ResonicsText stringByAppendingString:[NSString stringWithFormat:@" (%d)",self.sonic.resonicCount]]];
+            [self setNavigationItemTitle:ResonicsText andCount:self.sonic.resonicCount];
             break;
         default:
             [self.navigationItem setTitle:@"Sonic"];
+            [self setNavigationItemTitle:@"Sonic" andCount:0];
             break;
     }
 }
+
+- (void) setNavigationItemTitle:(NSString*) title andCount:(int)count
+{
+    if (count > 0) {
+        title = [title stringByAppendingString:[NSString stringWithFormat:@" (%d)", count]];
+    }
+    [self.navigationItem setTitle:title];
+}
+
 - (void) refreshContentWithScrollToContentTop:(BOOL)scrollToContentTop
 {
     [self reloadData];
@@ -493,6 +558,7 @@
     {
         [self.likesCenterActivityIndicator startAnimating];
         [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
+            self.noLikesLabel.hidden = (users && users.count > 0);
             self.likesContent = [users mutableCopy];
             [self reloadData];
             [self.likesCenterActivityIndicator stopAnimating];
@@ -504,6 +570,7 @@
     {
         [self.commentsCenterActivityIndicator startAnimating];
         [SNCAPIManager getCommentsOfSonic:self.sonic withCompletionBlock:^(NSArray *comments) {
+            self.noCommentsLabel.hidden = (comments && comments.count > 0);
             self.commentsContent = [comments mutableCopy];
             [self reloadData];
             [self.commentsCenterActivityIndicator stopAnimating];
@@ -515,6 +582,7 @@
     {
         [self.resonicsCenterActivityIndicator startAnimating];
         [SNCAPIManager getResonicsOfSonic:self.sonic withCompletionBlock:^(NSArray *resonics) {
+            self.noResonicsLabel.hidden = (resonics && resonics.count > 0);
             self.resonicsContent = [resonics mutableCopy];
             [self reloadData];
             [self.resonicsCenterActivityIndicator stopAnimating];

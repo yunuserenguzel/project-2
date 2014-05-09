@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "User.h"
 #import "TypeDefs.h"
+#import "FadingImageView.h"
 
 #define SNCPersonTableCellIdentifier @"SNCPersonTableCellIdentifier"
 
@@ -27,7 +28,7 @@
 @property (nonatomic) User* user;
 
 @property UILabel* usernameLabel;
-@property UIImageView* profileImageView;
+@property FadingImageView* profileImageView;
 @property UILabel* fullnameLabel;
 @property UILabel* locationLabel;
 @property UIImageView* locationImageView;

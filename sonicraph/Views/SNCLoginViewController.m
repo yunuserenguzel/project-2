@@ -113,6 +113,7 @@ static SNCLoginViewController* sharedInstance = nil;
         if(buttonIndex != alertView.cancelButtonIndex)
         {
             UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            [indicator setColor:[UIColor whiteColor]];
             [indicator setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
             [self.view addSubview:indicator];
             [indicator startAnimating];
@@ -154,6 +155,7 @@ static SNCLoginViewController* sharedInstance = nil;
 {
     UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [indicator setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
+    [indicator setColor:[UIColor whiteColor]];
     [self.view addSubview:indicator];
     [indicator startAnimating];
     [self.view setUserInteractionEnabled:NO];

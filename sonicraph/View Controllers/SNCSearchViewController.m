@@ -29,6 +29,8 @@ SearchContentType;
 @property SonicArray* sonics;
 @property SonicArray* populerSonics;
 
+@property UIActivityIndicatorView* centerSonicActivtyIndicator;
+
 @property (nonatomic) SearchContentType searchContentType;
 
 @end
@@ -52,6 +54,10 @@ SearchContentType;
 {
     CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height - [[UIApplication sharedApplication] statusBarFrame].size.height;
     return CGRectMake(0.0, 0.0, 320.0, h);
+}
+- (CGRect) centerActivityIndicatorFrame
+{
+    return CGRectMake(0.0, 0.0, 320.0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height - 33.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -100,6 +106,12 @@ SearchContentType;
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(scrollToTop)
+     name:NotificationTabbarItemReSelected
+     object:[NSNumber numberWithInt:1]];
+    
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
@@ -109,11 +121,25 @@ SearchContentType;
     [self initUserTableView];
     [self initSonicCollectionView];
     [self initSearchInstruments];
+    [self initializeCenterActivityIndicator];
     [self setSearchContentType:SearchContentTypeSonics];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clean) name:NotificationUserLoggedOut object:nil];
 
     [self getPopulerSonics];
+}
+
+- (void) initializeCenterActivityIndicator
+{
+    self.centerSonicActivtyIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.centerSonicActivtyIndicator setFrame:[self centerActivityIndicatorFrame]];
+    [self.sonicsCollectionView addSubview:self.centerSonicActivtyIndicator];
+}
+
+- (void) scrollToTop
+{
+    [self.sonicsCollectionView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+    [self.userTableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
 
 - (void) clean
@@ -146,7 +172,6 @@ SearchContentType;
     self.userTableView.dataSource = self;
     [self.userTableView setSeparatorInset:UIEdgeInsetsZero];
     [self.userTableView setUserInteractionEnabled:YES];
-//    [self.userTableView setAllowsSelection:YES];
 }
 
 - (void) initSonicCollectionView
@@ -167,7 +192,6 @@ SearchContentType;
     self.searchBar = [[UISearchBar alloc] initWithFrame:[self searchFieldFrame]];
     [self.searchBar setDelegate:self];
     [self.searchBar setBarTintColor:CellSpacingGrayColor];
-//    [self.searchBar setTintColor:CellSpacingGrayColor];
     [self.searchBar.layer setBorderColor:CellSpacingGrayColor.CGColor];
     [self.searchBar.layer setBorderWidth:1.0];
     self.searchBar.keyboardType = UIKeyboardTypeAlphabet;
@@ -191,14 +215,17 @@ SearchContentType;
 
 - (void) getPopulerSonics
 {
+    [self.centerSonicActivtyIndicator startAnimating];
     [SNCAPIManager getPopulerSonicsWithCompletionBlock:^(NSArray *sonics) {
         self.populerSonics = [[SonicArray alloc] init];
         [self.populerSonics importSonicsWithArray:sonics];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.sonicsCollectionView reloadData];
+            [self.centerSonicActivtyIndicator stopAnimating];
         });
-    } andErrorBlock:^(NSError *error) {
         
+    } andErrorBlock:^(NSError *error) {
+        [self.centerSonicActivtyIndicator stopAnimating];
     }];
     
 }
@@ -208,6 +235,7 @@ SearchContentType;
     [self.searchBar resignFirstResponder];
     if(activityView == nil){
         activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        [activityView setColor:[UIColor whiteColor]];
     }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
     [activityView startAnimating];

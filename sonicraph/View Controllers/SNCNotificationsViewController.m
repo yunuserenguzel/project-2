@@ -13,6 +13,8 @@
 
 @interface SNCNotificationsViewController ()
 @property NSArray* notifications;
+
+@property UIActivityIndicatorView* centerActivityIndicator;
 @end
 
 @implementation SNCNotificationsViewController
@@ -24,6 +26,11 @@
 {
     CGFloat h = self.view.frame.size.height  - self.tabBarController.tabBar.frame.size.height;
     return CGRectMake(0.0, 0.0, 320.0, h);
+}
+
+- (CGRect) centerActivityIndicatorFrame
+{
+    return CGRectMake(0.0, 0.0, 320.0, self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height - 33.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -42,14 +49,17 @@
         return;
     }
     isLoadingFromServer = YES;
+    [self.centerActivityIndicator startAnimating];
     [SNCAPIManager getNotificationsWithCompletionBlock:^(NSArray *notifications) {
         self.notifications = notifications;
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
         isLoadingFromServer = NO;
+        [self.centerActivityIndicator stopAnimating];
     } andErrorBlock:^(NSError *error) {
         [self.refreshControl endRefreshing];
         isLoadingFromServer = NO;
+        [self.centerActivityIndicator stopAnimating];
     }];
 }
 
@@ -64,6 +74,12 @@
      selector:@selector(clean)
      name:NotificationUserLoggedOut
      object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(scrollToTop)
+     name:NotificationTabbarItemReSelected
+     object:[NSNumber numberWithInt:3]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,8 +105,22 @@
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
     [self.tableView registerClass:[SNCNotificationCell class] forCellReuseIdentifier:@"NotificationCell"];
 //    [self.view addSubview:self.tableView];
+    [self.tableView setTableFooterView:[UIView new]];
     [self initRefreshControl];
+    [self initializeCenterActivityIndicator];
     
+}
+
+-(void) initializeCenterActivityIndicator
+{
+    self.centerActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.centerActivityIndicator setFrame:[self centerActivityIndicatorFrame]];
+    [self.tableView addSubview:self.centerActivityIndicator];
+}
+
+- (void) scrollToTop
+{
+    [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
 
 - (void) initRefreshControl

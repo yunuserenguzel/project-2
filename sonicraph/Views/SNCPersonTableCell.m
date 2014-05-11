@@ -16,16 +16,17 @@
 
 - (CGRect) profileImageViewFrame
 {
-    return CGRectMake(5.0, PersonTableCellHeight * 0.5 - 24.5, 49.0, 49.0);
+    return CGRectMake(10.0, 8.0, 49.0, 49.0);
 }
 
 - (CGRect) fullnameLabelFrame
 {
-    return CGRectMake(64.0, 7.0, 320.0 - 60.0, 22.0);
+    return CGRectMake(68.0, 5.0, 150.0, 18.0);
 }
+
 - (CGRect) usernameLabelFrame
 {
-    return CGRectMake(64.0, 27.0, 320.0 - 60.0, 18.0);
+    return CGRectMake(68.0, 26.0, 150.0, 16.0);
 }
 
 - (CGRect) locationLabelFrame
@@ -54,18 +55,15 @@
     [self.profileImageView setFrame:[self profileImageViewFrame]];
     [self.profileImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.profileImageView setClipsToBounds:YES];
-//    [self.profileImageView.layer setCornerRadius:[self profileImageViewFrame].size.height * 0.5];
-//    [self.profileImageView.layer setShouldRasterize:YES];
     [self.profileImageView.layer setDrawsAsynchronously:YES];
     [self.profileImageView setUserInteractionEnabled:YES];
     [self.profileImageView setImage:UserPlaceholderImage];
-    
     [self.contentView addSubview:self.profileImageView];
     
     self.fullnameLabel = [[UILabel alloc] initWithFrame:[self fullnameLabelFrame]];
     [self.contentView addSubview:self.fullnameLabel];
     [self.fullnameLabel setTextColor:FullnameTextColor];
-    self.fullnameLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    self.fullnameLabel.font = [UIFont boldSystemFontOfSize:15.0];
     
     self.usernameLabel = [[UILabel alloc] initWithFrame:[self usernameLabelFrame]];
     [self.usernameLabel setTextColor:[UIColor lightGrayColor]];
@@ -127,13 +125,17 @@
         [self.usernameLabel setText:[@"@" stringByAppendingString:self.user.username]];
         [self.fullnameLabel setText:self.user.fullName];
         [self.locationLabel setText:self.user.location];
-        [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if(image && self.user == user){
-                    [self.profileImageView setImageWithAnimation:image];
-                }
-            });
-        }];
+        self.locationImageView.hidden = !self.user.location || [self.user.location isEqualToString:@""];
+        if(self.profileImageView.image != self.user.thumbnailProfileImage)
+        {
+            [self.user getThumbnailProfileImageWithCompletionBlock:^(UIImage* image,User* user) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(image && self.user == user){
+                        [self.profileImageView setImageWithAnimation:image];
+                    }
+                });
+            }];
+        }
     }
 }
 
@@ -168,6 +170,11 @@
 {
     return CGRectMake(0.0, 18.0, 80.0, 30.0);
 }
+
+- (CGRect) unfollowButtonFrame
+{
+    return CGRectMake(40.0, 18.0, 40.0, 30.0);
+}
 - (void) initViews{
     [super initViews];
     self.followContent = [[UIView alloc] initWithFrame:[self followContentFrame]];
@@ -193,7 +200,7 @@
     [self.followContent addSubview:self.followButton];
 
     self.unfollowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.unfollowButton setFrame:[self followButtonFrame]];
+    [self.unfollowButton setFrame:[self unfollowButtonFrame]];
     [self.unfollowButton setImage:[UIImage imageNamed:@"Following.png"] forState:UIControlStateNormal];
     [self.unfollowButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.followContent addSubview:self.unfollowButton];

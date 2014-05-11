@@ -15,6 +15,7 @@
 #import "SNCSwitchView.h"
 #import "SNCAppDelegate.h"
 #import "SNCFacebookManager.h"
+#import "SNCTabbarController.h"
 
 #define FacebookShareDefaultValueKey @"FacebookShareDefaultValueKey" 
 
@@ -133,6 +134,11 @@
      selector:@selector(keyboardWillHide:)
      name:UIKeyboardWillHideNotification
      object:self.view.window];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(checkInternetForDoneButton:)
+     name:kReachabilityChangedNotification
+     object:nil];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
     self.facebookSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:FacebookShareDefaultValueKey] boolValue];
@@ -178,6 +184,20 @@
     [self.doneButton addTarget:self action:@selector(shareSonic) forControlEvents:UIControlEventTouchUpInside];
     [self.doneButton setEnabled:NO];
     [self.view addSubview:self.doneButton];
+    
+    [self checkInternetForDoneButton:nil];
+}
+
+- (void) checkInternetForDoneButton:(NSNotification*)notification
+{
+    NSLog(@"%@",notification);
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    if (networkStatus == NotReachable) {
+        [self.doneButton setEnabled:NO];
+    } else {
+        [self.doneButton setEnabled:YES];
+    }
 }
 
 - (void) back
@@ -297,7 +317,10 @@
         }
     }];
     
-    [self.tabBarController setSelectedIndex:0];
+    
+    SNCTabbarController* tabbar = (SNCTabbarController*)self.tabBarController;
+    [tabbar setSelectedIndex:0];
+    [tabbar removeCameraViewController:self.navigationController];
     [self.navigationController popToRootViewControllerAnimated:NO];
 }
 

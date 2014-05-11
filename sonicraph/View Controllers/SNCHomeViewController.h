@@ -16,5 +16,5 @@
 //@property UIRefreshControl* refreshControl;
 
 - (void) openSonicDetails:(Sonic*)sonic;
-
+- (void) scrollToTop;
 @end

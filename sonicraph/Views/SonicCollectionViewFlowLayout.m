@@ -25,9 +25,9 @@
 {
     [self setScrollDirection:UICollectionViewScrollDirectionVertical];
     [self setItemSize:SonicCollectionViewCellSize];
-    [self setMinimumLineSpacing:20.0];
-    [self setMinimumInteritemSpacing:20.0];
-    [self setSectionInset:UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)];
+    [self setMinimumLineSpacing:10.0];
+    [self setMinimumInteritemSpacing:10.0];
+    [self setSectionInset:UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0)];
 }
 - (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
 {

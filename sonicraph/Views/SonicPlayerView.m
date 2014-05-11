@@ -176,20 +176,32 @@
 
 - (void)setSonic:(SonicData *)sonic
 {
-    _sonic = sonic;
-    [self.preloader setHidden:YES];
-    self.imageView.image = self.sonic.image;
-    if(sonic == nil){
-        [self.audioPlayer stop];
-        self.audioPlayer = nil;
+    if (_sonic != sonic) {
+        _sonic = sonic;
+        [self.preloader setHidden:YES];
+        self.imageView.image = self.sonic.image;
+//        self.imageView.transform = CGAffineTransformMakeScale(0.5, 0.5);
+//        [UIView animateKeyframesWithDuration:0.1 delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModePaced animations:^{
+//            self.imageView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+//        } completion:^(BOOL finished) {
+//            [UIView animateKeyframesWithDuration:0.05 delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModePaced animations:^{
+//                self.imageView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+//            } completion:^(BOOL finished) {
+//                
+//            }];
+//        }];
+        if(sonic == nil){
+            [self.audioPlayer stop];
+            self.audioPlayer = nil;
+        }
+        else {
+            NSError* error;
+            self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:&error];
+            [self.audioPlayer setCurrentTime:0.1];
+            [self.soundSlider setMaximumValue:self.audioPlayer.duration];
+        }
+        [self.soundSlider setValue:0.1];
     }
-    else {
-        NSError* error;
-        self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.sonic.sound error:&error];
-        [self.audioPlayer setCurrentTime:0.1];
-        [self.soundSlider setMaximumValue:self.audioPlayer.duration];
-    }
-    [self.soundSlider setValue:0.1];
 }
 
 - (void)setFrame:(CGRect)frame

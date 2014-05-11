@@ -123,8 +123,10 @@ Notification* notificationFromServerDictionary(NSDictionary* dict);
                  withCompletionBlock:(CompletionBoolBlock)completionBlock
                        andErrorBlock:(ErrorBlock)errorBlock;
 
-+ (MKNetworkOperation*) getSonicsILikedwithCompletionBlock:(CompletionArrayBlock)completionBlock
-                                             andErrorBlock:(ErrorBlock)errorBlock;
+
++ (MKNetworkOperation*) getSonicsILikedBeforeSonic:(Sonic*) sonic
+                               withCompletionBlock:(CompletionArrayBlock)completionBlock
+                                     andErrorBlock:(ErrorBlock)errorBlock;
 
 + (MKNetworkOperation*) getSonicsWithSearchQuery:(NSString*)query
                              withCompletionBlock:(CompletionArrayBlock)completionBlock

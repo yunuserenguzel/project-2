@@ -397,7 +397,7 @@
         <!--Navigation Controller - Camera-->
         <scene sceneID="Nli-MK-1Y4">
             <objects>
-                <navigationController definesPresentationContext="YES" id="esE-xM-snl" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="CameraContainerController" definesPresentationContext="YES" id="esE-xM-snl" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Camera" id="SHW-Eb-fuJ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vwm-YA-u75">
                         <autoresizingMask key="autoresizingMask"/>

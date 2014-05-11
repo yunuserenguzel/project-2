@@ -29,4 +29,6 @@
 
 - (void) configureViews;
 
+
+- (void) scrollToTop;
 @end

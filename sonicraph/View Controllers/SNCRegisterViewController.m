@@ -140,6 +140,7 @@
 - (void) registerUser
 {
     UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [indicator setColor:[UIColor whiteColor]];
     [indicator setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:indicator];
     [indicator startAnimating];

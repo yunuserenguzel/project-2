@@ -13,7 +13,7 @@
 #import "SNCGoThroughViewController.h"
 #import "SNCAppDelegate.h"
 
-#define CameraTabbarIndex 1
+#define CameraTabbarIndex 2
 
 static int previousTabIndex = 0;
 
@@ -35,8 +35,25 @@ static int previousTabIndex = 0;
 }
 - (BOOL) tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-    previousTabIndex = tabBarController.selectedIndex;
+//    if(previousTabIndex == tabBarController.selectedIndex)
+//    {
+//        NSLog(@"I'm here");
+//    }
+//    previousTabIndex = tabBarController.selectedIndex;
     return YES;
+}
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    int currentIndex = [tabBar.items indexOfObject:item];
+    if(previousTabIndex == currentIndex)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationTabbarItemReSelected object:[NSNumber numberWithInt:currentIndex]];
+    }
+    if(currentIndex != CameraTabbarIndex)
+    {
+        previousTabIndex = currentIndex;
+    }
 }
 
 - (void) openPreviousTab
@@ -65,6 +82,17 @@ static int previousTabIndex = 0;
     for (UIView* view in self.tabBar.subviews) {
         [view setBackgroundColor:[UIColor clearColor]];
     }
+    
+    [self configureTabbarItems];
+    
+    [self setDelegate:self];
+    [self setSelectedIndex:0];
+    
+    [[SNCAppDelegate sharedInstance] updateDeviceToken];
+}
+
+- (void) configureTabbarItems
+{
     NSArray* selectedImageNames = @[@"homeactive.png",
                                     @"searchactive.png",
                                     @"cameraactive.png",
@@ -75,27 +103,37 @@ static int previousTabIndex = 0;
                             @"camera.png",
                             @"notifications.png",
                             @"profile.png"];
-//    NSLog(@"tabbar height: %f",self.tabBar.frame.size.height);
+    //    NSLog(@"tabbar height: %f",self.tabBar.frame.size.height);
     for(int i=0; i<self.tabBar.items.count; i++)
     {
         UITabBarItem* item = [self.tabBar.items objectAtIndex:i];
         [item setTitle:nil];
         [item setImageInsets:UIEdgeInsetsMake(5.0, 0.0, -5.0, 0.0)];
+        if(i == 1)
+        {
+            [item setImageInsets:UIEdgeInsetsMake(6.0, -2.0, -6.0, 2.0)];
+        }
         [item setImage:[[UIImage imageNamed:[imageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [item setSelectedImage:[[UIImage imageNamed:[selectedImageNames objectAtIndex:i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        if([item.title isEqualToString:@"Camera"])
-        {
-            [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:NavigationBarBlueColor, NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
-        }
+//        if([item.title isEqualToString:@"Camera"])
+//        {
+//            [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:NavigationBarBlueColor, NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+//        }
     }
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:MainThemeColor, NSForegroundColorAttributeName, nil]
                                              forState:UIControlStateSelected];
+
+}
+
+- (void) removeCameraViewController:(UIViewController*)viewController
+{
+    NSMutableArray* mutableViewControllers = [self.viewControllers mutableCopy];
+    [mutableViewControllers removeObject:viewController];
     
-    
-    [self setDelegate:self];
-    [self setSelectedIndex:0];
-    
-    [[SNCAppDelegate sharedInstance] updateDeviceToken];
+    UINavigationController* navigation = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"CameraContainerController"];
+    [mutableViewControllers insertObject:navigation atIndex:CameraTabbarIndex];
+    self.viewControllers = [NSArray arrayWithArray:mutableViewControllers];
+    [self configureTabbarItems];
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer

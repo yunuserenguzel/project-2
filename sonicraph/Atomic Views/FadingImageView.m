@@ -7,17 +7,22 @@
 //
 
 #import "FadingImageView.h"
-
+#define ARC4RANDOM_MAX      0x100000000
+//
 @implementation FadingImageView
 
 -(void)setImageWithAnimation:(UIImage *)image
 {
     [super setImage:image];
+
     CATransition *transition = [CATransition animation];
-    transition.duration = 0.15f;
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    transition.type = kCATransitionFade;
-//    transition.type = kCATransitionMoveIn;
+    
+    double val = ((double)arc4random() / ARC4RANDOM_MAX);
+    transition.duration = val * 0.10 + 0.10;
+//    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.timingFunction = [[CAMediaTimingFunction alloc] initWithControlPoints:.34 :.01 :.69 :1.57];
+//    transition.type = kCATransitionFade;
+    transition.type = kCATransitionMoveIn;
     [self.layer addAnimation:transition forKey:nil];
 
 }

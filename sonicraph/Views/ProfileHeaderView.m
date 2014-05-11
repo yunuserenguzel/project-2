@@ -119,7 +119,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setBackgroundColor:[UIColor whiteColor]];
+        [self setBackgroundColor:[UIColor clearColor]];
         [self initProfileImageAndUserInfoLabels];
         [self initCountableLabels];
         [self initTabButtons];
@@ -281,15 +281,4 @@
     CGContextAddLineToPoint(context, [self buttonHolderViewFrame].size.width, [self buttonHolderViewFrame].origin.y); //draw to this point
     CGContextStrokePath(context);
 }
-//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-//{
-//    UIView* view = [super hitTest:point withEvent:event];
-//    if(view == self){
-//        return nil;
-//    }
-//    else {
-//        return view;
-//    }
-//}
-
 @end

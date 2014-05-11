@@ -429,9 +429,9 @@ typedef enum SonicRecordType {
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [[[UIAlertView alloc]
-          initWithTitle:@"Microphone Permission Denied"
-          message:@"To capture sonics, you should give microphone permission. It can be found in Settings / Privacy / Microphone"
-          delegate:self
+          initWithTitle:@"We Need Your Permission"
+          message:@"To capture sonics, you should allow Sonicraph to access the Microphone. It can be found in Settings / Privacy / Microphone"
+          delegate:nil
           cancelButtonTitle:@"Ok"
           otherButtonTitles: nil]
          show];
@@ -627,13 +627,18 @@ typedef enum SonicRecordType {
 
 - (void) cancelButtonTapped
 {
-    capturedAudio = nil;
-    capturedImage = nil;
-    [self.soundTimer invalidate];
-    [self.mediaManager stopAudioRecording];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+//    capturedAudio = nil;
+//    capturedImage = nil;
+//    [self.soundTimer invalidate];
+//    [self.mediaManager stopAudioRecording];
+//    [self.mediaManager stopCamera];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
     SNCTabbarController* tabbar = (SNCTabbarController*)[[SNCAppDelegate sharedInstance] tabbarController];
     [tabbar openPreviousTab];
+    [tabbar removeCameraViewController:self.parentViewController];
+//    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+//        
+//    }];
 
 }
 - (void) prepareForRetake
@@ -733,6 +738,11 @@ typedef enum SonicRecordType {
 {
     currentLocation = newLocation;
 //	NSLog(@"%@", currentLocation);
+}
+
+- (void)dealloc
+{
+    NSLog(@"SNCViewController dealloced");
 }
 
 static CGRect swapWidthAndHeight(CGRect rect)

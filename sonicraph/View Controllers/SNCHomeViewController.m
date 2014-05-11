@@ -76,12 +76,31 @@
      selector:@selector(refreshFromServer)
      name:NotificationUserLoggedIn
      object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(reachabilityChangedHandler:)
+     name:kReachabilityChangedNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(scrollToTop)
+     name:NotificationTabbarItemReSelected
+     object:[NSNumber numberWithInt:0]];
     
     [self initRefreshController];
     [self refreshFromServer];
     
     
+    
 }
+
+- (void) reachabilityChangedHandler:(NSNotification*)notification
+{
+//    Reachability* reachability = notification.object;
+    
+//    if(reachability.currentReachabilityStatus)
+}
+
 - (void) initTableView
 {
     self.tableView.contentInset = [self edgeInsetsForScrollContent];
@@ -94,25 +113,33 @@
     [self.tableView setShowsHorizontalScrollIndicator:NO];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:[self tableFooterViewRect]]];
     [self.tableView setTableHeaderView:[UIView new]];
-    
 }
 
 - (void) initOops
 {
     self.oops = [[UILabel alloc] initWithFrame:[self oopsFrame]];
-    self.oops.textColor = TabbarNonActiveButtonTintColor;
+    self.oops.textColor = [UIColor lightGrayColor];
     self.oops.textAlignment = NSTextAlignmentCenter;
-    self.oops.font = [UIFont systemFontOfSize:14.0];
+    self.oops.font = [UIFont boldSystemFontOfSize:15.0];
     self.oops.numberOfLines = 0;
     [self.oops setHidden:YES];
-    self.oops.text = @"Oops!\n\nYou don't have any Sonic yet\nBe creative & inspire people\n\n Follow and get Followers\nit's fun with friends";
+    self.oops.text = @"Oops!\n\nYou don't have any Sonic yet\n\n Follow and get followers\nit's fun with friends";
     [self.view addSubview:self.oops];
+    
+    NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc ] initWithString:self.oops.text];
+    // for those calls we don't specify a range so it affects the whole string
+    
+    [attrStr setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:20.0]} range:NSMakeRange(0, 5)];
+    // now we only change the color of "Hello"
+    
+    
+    self.oops.attributedText = attrStr;
 }
 
 - (void) initializeActivityIndicator
 {
     self.centerActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [self.centerActivityIndicator setColor:[MainThemeColor colorWithAlphaComponent:0.6]];
+    [self.centerActivityIndicator setColor:MainThemeColor];
     self.centerActivityIndicator.frame = CGRectMake(0.0, 0.0, 320.0, self.tableView.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height - 33.0);
     [self.tableView addSubview:self.centerActivityIndicator];
     UILabel* label = [[UILabel alloc] init];
@@ -125,12 +152,14 @@
     
     self.bottomActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.bottomActivityIndicator.frame = [self tableFooterViewRect];
+    self.bottomActivityIndicator.color = MainThemeColor;
     [self.tableView.tableFooterView addSubview:self.bottomActivityIndicator];
 }
 
 - (void) initRefreshController
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.tintColor = MainThemeColor;
     [self.refreshControl addTarget:self action:@selector(refreshFromServer) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -142,10 +171,15 @@
     }
 }
 
+- (void) scrollToTop
+{
+    [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+}
 
 - (void) userLoggedOut:(NSNotification*)notification
 {
     self.sonics = nil;
+    [self.oops setHidden:YES];
     [self refresh];
 }
 
@@ -153,6 +187,7 @@
 {
     [self.sonics addObject:notification.object];
     [self refresh];
+    [self.oops setHidden:YES];
 }
 
 - (void) refreshFromServer
@@ -163,6 +198,7 @@
         [self.centerActivityIndicator startAnimating];
     }
     [SNCAPIManager getSonicsAfter:nil withCompletionBlock:^(NSArray *sonics) {
+//        sonics = @[];
         self.sonics = [[SonicArray alloc] init];
         [self.sonics importSonicsWithArray:sonics];
         [self.oops setHidden:(self.sonics.count > 0)];

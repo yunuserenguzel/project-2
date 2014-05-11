@@ -168,7 +168,6 @@
     [self.userImageView setContentMode:UIViewContentModeScaleAspectFill];
     [self.userImageView setImage:UserPlaceholderImage];
     [self.userImageView setClipsToBounds:YES];
-//    [self.userImageView.layer setCornerRadius:[self userImageViewFrame].size.height * 0.5];
     [self addSubview:self.userImageView];
     
     
@@ -299,9 +298,6 @@
 
 - (void) share
 {
-//    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Share on Facebook",@"Share on Twitter",@"Copy URL",@"Open Details", nil];
-//    actionSheet.tag = SonicActionSheetTag;
-//    [actionSheet showInView:self];
     
     self.sonicActionSheet = [[SonicActionSheet alloc] initWithSonic:self.sonic includeOpenDetails:YES];
     self.sonicActionSheet.delegate = self;
@@ -316,29 +312,13 @@
         {
             [self.delegate openSonicDetails:self.sonic];
         }
-//        if(buttonIndex == 0){
-//            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you confirm to delete this sonic?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
-//            alert.tag = DeleteConfirmAlertViewTag;
-//            [alert show];
-//        }
     }
-//    else if(actionSheet.tag == DeleteResonicActionSheetTag){
-//        if(buttonIndex == 0) {
-//            if(self.sonic.isResonic){
-//                [SNCAPIManager deleteSonic:self.sonic withCompletionBlock:^(BOOL successful) {
-//                    [SNCAPIManager deleteResonic:self.sonic.originalSonic withCompletionBlock:^(Sonic *sonic) {
-//                        [self.sonic.originalSonic updateWithSonic:sonic];
-//                    } andErrorBlock:nil];
-//                } andErrorBlock:^(NSError *error) {
-//                    
-//                }];
-//            } else {
-//                [SNCAPIManager deleteResonic:self.sonic withCompletionBlock:^(Sonic *sonic) {
-//                    [self.sonic updateWithSonic:sonic];
-//                } andErrorBlock:nil];
-//            }
-//        }
-//    }
+    else if(actionSheet.tag == DeleteResonicActionSheetTag)
+    {
+        if(actionSheet.destructiveButtonIndex == buttonIndex){
+            [SNCAPIManager deleteResonic:self.sonic withCompletionBlock:nil andErrorBlock:nil];
+        }
+    }
     
 }
 
@@ -420,7 +400,7 @@
         [SNCAPIManager likeSonic:currentSonic withCompletionBlock:^(Sonic *sonic) {
             [currentSonic updateWithSonic:sonic];
         } andErrorBlock:^(NSError *error) {
-            [self.likeButton setSelected:YES];
+            [self.likeButton setSelected:NO];
         }];
     }
 }
@@ -454,15 +434,19 @@
     [self.sonicPlayerView setSonicUrl:[NSURL URLWithString:sonic.sonicUrlString]];
     [self.fullnameLabel setText:[sonic.owner fullName]];
     [self.usernameLabel setText:[NSString stringWithFormat:@"@%@",[sonic.owner username]]];
-    [self.userImageView setImage:UserPlaceholderImage];
-    [sonic.owner getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if(image && [self actualSonic].owner == user)
-            {
-                [self.userImageView setImageWithAnimation:image];
-            }
-        });
-    }];
+    
+    if(sonic.owner.thumbnailProfileImage != self.userImageView.image)
+    {
+        [self.userImageView setImage:UserPlaceholderImage];
+        [sonic.owner getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(image && sonic.owner == user)
+                {
+                    [self.userImageView setImage:image];
+                }
+            });
+        }];
+    }
     [self.timestampLabel setText:[[sonic creationDate] formattedAsTimeAgo]];
     if([sonic.owner.userId isEqualToString:[[[AuthenticationManager sharedInstance] authenticatedUser] userId]]){
         [self.resonicButton setEnabled:NO];
@@ -477,13 +461,17 @@
     self.commentsCountLabel.text = [NSString stringWithFormat:@"%d",sonic.commentCount];
     self.resonicsCountLabel.text = [NSString stringWithFormat:@"%d",sonic.resonicCount];
     
-    self.likesCountLabel.hidden = sonic.likeCount <= 0;
-    self.commentsCountLabel.hidden = sonic.commentCount <= 0;
-    self.resonicsCountLabel.hidden = sonic.resonicCount <= 0;
     
-    self.likeButton.transform = CGAffineTransformMakeTranslation((sonic.likeCount <= 0 ? 11.0 : 0.0), 0.0);
-    self.commentButton.transform = CGAffineTransformMakeTranslation((sonic.commentCount <= 0 ? 11.0 : 0.0), 0.0);
-    self.resonicButton.transform = CGAffineTransformMakeTranslation((sonic.resonicCount <= 0 ? 11.0 : 0.0), 0.0);
+    [UIView animateWithDuration:0.2 animations:^{
+        
+        self.likesCountLabel.hidden = sonic.likeCount <= 0;
+        self.commentsCountLabel.hidden = sonic.commentCount <= 0;
+        self.resonicsCountLabel.hidden = sonic.resonicCount <= 0;
+        
+        self.likeButton.transform = CGAffineTransformMakeTranslation((sonic.likeCount <= 0 ? 11.0 : 0.0), 0.0);
+        self.commentButton.transform = CGAffineTransformMakeTranslation((sonic.commentCount <= 0 ? 11.0 : 0.0), 0.0);
+        self.resonicButton.transform = CGAffineTransformMakeTranslation((sonic.resonicCount <= 0 ? 11.0 : 0.0), 0.0);
+    }];
     
 }
 

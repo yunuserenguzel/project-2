@@ -46,6 +46,10 @@
 #define NotificationUpdateViewForSonic @"NotificationUpdateViewForSonic"
 #define NotificationNewSonicCreated @"NotificationNewSonicCreated"
 
+#define NotificationResonicDeleted @"NotificationResonicDeleted"
+
+#define NotificationTabbarItemReSelected @"NotificationTabbarItemReSelected"
+
 UIColor* rgb(CGFloat red, CGFloat green, CGFloat blue);
 
 CGRect CGRectByRatio(CGRect maxRect, CGRect minRect, CGFloat ratio);

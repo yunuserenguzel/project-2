@@ -17,6 +17,7 @@
 #import "SonicPresenter.h"
 #import "SNCResourceHandler.h"
 #import <Crashlytics/Crashlytics.h>
+#import "Configurations.h"
 
 static SNCAppDelegate* sharedInstance = nil;
 
@@ -42,7 +43,19 @@ static SNCAppDelegate* sharedInstance = nil;
         [[SNCResourceHandler sharedInstance] clearTimeOutCachedSonicData];
     });
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification:) name:kReachabilityChangedNotification object:nil];
+    
+    [[UIActivityIndicatorView appearance] setColor:MainThemeColor];
+    [[UIRefreshControl appearance] setTintColor:MainThemeColor];
+    
     return YES;
+}
+
+- (void) reachabilityChangedNotification:(NSNotification*)notification
+{
+//    Reachability* reachability = notification.object;
+    
+    NSLog(@"%@\n%@",notification,notification.object);
 }
 
 - (void) userLoggedIn

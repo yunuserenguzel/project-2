@@ -51,7 +51,13 @@
      selector:@selector(refreshForNewLogin:)
      name:NotificationUserLoggedIn
      object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(scrollToTop)
+     name:NotificationTabbarItemReSelected
+     object:[NSNumber numberWithInt:4]];
 }
+
 
 - (void) userChanged:(NSNotification*)notification
 {
@@ -67,6 +73,7 @@
     [self.sonics addObject:notification.object];
     [[self sonicCollectionView] reloadData];
     [[self sonicListTableView] reloadData];
+    
 }
 
 - (void) openSettings
@@ -84,7 +91,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 - (void)didReceiveMemoryWarning
 {

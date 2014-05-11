@@ -8,7 +8,6 @@
 
 #import "SonicraphMediaManager.h"
 #import "UIImage+scaleToSize.h"
-#import "UIImage+imageForSoundData.h"
 
 #define TempSoundFileName @"sound.caf"
 #define TempConvertedSoundFileName @"converted_sound.caf"

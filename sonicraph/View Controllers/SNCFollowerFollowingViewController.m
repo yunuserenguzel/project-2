@@ -10,6 +10,7 @@
 #import "SNCAPIManager.h"
 #import "Configurations.h"
 #import "SNCProfileViewController.h"
+#import "AuthenticationManager.h"
 
 @interface SNCFollowerFollowingViewController ()
 
@@ -41,7 +42,8 @@
 
 - (CGRect) noLabelFrame
 {
-    return CGRectMake(60.0, 0.0, 200.0, self.view.frame.size.height-self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height);
+//    return CGRectMake(60.0, 0.0, 200.0, self.view.frame.size.height-self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height);
+    return CGRectMake(0.0, self.view.frame.size.height*0.5 - 160.0, 320.0, 160.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -93,7 +95,10 @@
     [SNCAPIManager getFollowersOfUser:self.user withCompletionBlock:^(NSArray *users) {
         [self.noFollowersLabel setHidden:(users != nil && users.count > 0)];
         followers = users;
-        [self.tableView reloadData];
+        if(self.shouldShowFollowers)
+        {
+            [self.tableView reloadData];
+        }
         [self.followersCenterActivityIndicator stopAnimating];
         [self.refreshControl endRefreshing];
     } andErrorBlock:^(NSError *error) {
@@ -108,7 +113,10 @@
     [SNCAPIManager getFollowingsOfUser:self.user withCompletionBlock:^(NSArray *users) {
         [self.noFollowingsLabel setHidden:(users != nil && users.count > 0)];
         followings = users;
-        [self.tableView reloadData];
+        if(!self.shouldShowFollowers)
+        {
+            [self.tableView reloadData];
+        }
         [self.followingsCenterActivityIndicator stopAnimating];
         [self.refreshControl endRefreshing];
     } andErrorBlock:^(NSError *error) {
@@ -143,7 +151,7 @@
     self.followingsCenterActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     
     for (UIActivityIndicatorView* indicator in @[self.followingsCenterActivityIndicator,self.followersCenterActivityIndicator]) {
-        indicator.color = TabbarNonActiveButtonTintColor;
+        indicator.color = MainThemeColor;
         indicator.frame = [self centerActivityIndicatorFrame];
     }
     
@@ -153,24 +161,29 @@
 - (void) initializeNoLabels
 {
     self.noFollowersLabel = [[UILabel alloc] init];
-    [self.noFollowersLabel setText:@"You do not have followers\nInvite friends from settings to have followers!"];
-
     self. noFollowingsLabel = [[UILabel alloc] init];
-    [self.noFollowingsLabel setText:@"You do not follow anyone.\nUse search to follow people!"];
-    
+    if(self.user == [[AuthenticationManager sharedInstance] authenticatedUser])
+    {
+        [self.noFollowersLabel setText:@"Uh oh!\n\nYou don't have any followers\n\nInvite your friends \nfrom settings"];
+        [self.noFollowingsLabel setText:@"C'mon!\n\nY U NO follow anyone\n\nUse search to find people!"];
+    }
+    else
+    {
+        [self.noFollowersLabel setText:[NSString stringWithFormat:@"Uh oh!\n\n%@ does not have followers.", self.user.fullName]];
+        [self.noFollowingsLabel setText:[NSString stringWithFormat:@"Uh oh!\n\n%@ does not follow anyone.", self.user.fullName]];
+    }
+
     for (UILabel* label in @[self.noFollowersLabel,self.noFollowingsLabel]) {
         [label setFrame:[self noLabelFrame]];
         [label setNumberOfLines:0];
         [label setTextAlignment:NSTextAlignmentCenter];
-        [label setFont:[UIFont systemFontOfSize:16.0]];
-        [label setTextColor:TabbarNonActiveButtonTintColor];
+        [label setFont:[UIFont boldSystemFontOfSize:15.0]];
+        [label setTextColor:[UIColor lightGrayColor]];
         [label setHidden:YES];
         [self.tableView addSubview:label];
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:label.text];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setLineSpacing:18];
-        [paragraphStyle setAlignment:NSTextAlignmentCenter];
-        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [label.text length])];
+        
+        [attributedString setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:20.0]} range:NSMakeRange(0, 6)];
         label.attributedText = attributedString ;
     }
 }

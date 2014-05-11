@@ -208,7 +208,7 @@
     self.resonicsCenterActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     for (UIActivityIndicatorView* indicator in @[self.likesCenterActivityIndicator,self.commentsCenterActivityIndicator, self.resonicsCenterActivityIndicator]) {
         [indicator setFrame:[self centerActivityIndicatorFrame]];
-        [indicator setColor:TabbarNonActiveButtonTintColor];
+        [indicator setColor:MainThemeColor];
         [self.tableView addSubview:indicator];
     }
 }
@@ -219,9 +219,9 @@
     self.noCommentsLabel = [[UILabel alloc] init];
     self.noResonicsLabel = [[UILabel alloc] init];
     
-    self.noLikesLabel.text = @"This sonic has no likes";
-    self.noCommentsLabel.text = @"This sonic has no comments";
-    self.noResonicsLabel.text = @"This sonic has no resonics";
+    self.noLikesLabel.text = @"No likes yet";
+    self.noCommentsLabel.text = @"No comments yet";
+    self.noResonicsLabel.text = @"No resonics yet";
     
     for (UILabel* label in @[self.noLikesLabel,self.noCommentsLabel,self.noResonicsLabel]) {
         [label setFrame:[self noLabelFrame]];
@@ -229,7 +229,7 @@
         [label setNumberOfLines:0];
         [label setTextAlignment:NSTextAlignmentCenter];
         [label setFont:[UIFont systemFontOfSize:16.0]];
-        [label setTextColor:TabbarNonActiveButtonTintColor];
+        [label setTextColor:MainThemeColor];
         [self.tableView addSubview:label];
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:label.text];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -445,7 +445,7 @@
     self.headerView.sonicPlayerView.shouldAutoPlay = self.shouldAutoPlay;
     [self.headerView.sonicPlayerView setSonicUrl:[NSURL URLWithString:self.sonic.sonicUrlString]];
     self.headerView.usernameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.username] ;
-    self.headerView.fullnameLabel.text = [@"@" stringByAppendingString:self.sonic.owner.fullName] ;
+    self.headerView.fullnameLabel.text = self.sonic.owner.fullName;
     self.headerView.createdAtLabel.text = [self.sonic.creationDate formattedAsTimeAgo];
     [self.headerView.profileImageView setImage:UserPlaceholderImage];
     [self.sonic.owner getThumbnailProfileImageWithCompletionBlock:^(UIImage* image, User* user) {
@@ -558,7 +558,7 @@
     {
         [self.likesCenterActivityIndicator startAnimating];
         [SNCAPIManager getLikesOfSonic:self.sonic withCompletionBlock:^(NSArray *users) {
-            self.noLikesLabel.hidden = (users && users.count > 0);
+
             self.likesContent = [users mutableCopy];
             [self reloadData];
             [self.likesCenterActivityIndicator stopAnimating];
@@ -570,7 +570,7 @@
     {
         [self.commentsCenterActivityIndicator startAnimating];
         [SNCAPIManager getCommentsOfSonic:self.sonic withCompletionBlock:^(NSArray *comments) {
-            self.noCommentsLabel.hidden = (comments && comments.count > 0);
+
             self.commentsContent = [comments mutableCopy];
             [self reloadData];
             [self.commentsCenterActivityIndicator stopAnimating];
@@ -582,7 +582,7 @@
     {
         [self.resonicsCenterActivityIndicator startAnimating];
         [SNCAPIManager getResonicsOfSonic:self.sonic withCompletionBlock:^(NSArray *resonics) {
-            self.noResonicsLabel.hidden = (resonics && resonics.count > 0);
+
             self.resonicsContent = [resonics mutableCopy];
             [self reloadData];
             [self.resonicsCenterActivityIndicator stopAnimating];
@@ -590,6 +590,13 @@
             [self.resonicsCenterActivityIndicator stopAnimating];
         }];
     }
+}
+
+- (void) checkForNoLabels
+{
+    self.noCommentsLabel.hidden = (self.commentsContent && self.commentsContent.count > 0);
+    self.noResonicsLabel.hidden = (self.resonicsContent && self.resonicsContent.count > 0);
+    self.noLikesLabel.hidden = (self.likesContent && self.likesContent.count > 0);
 }
 
 - (void) segmentedControlChanged
@@ -796,6 +803,7 @@
     [self.tableView setContentOffset:scrollPoint];
     [self.tableView reloadData];
     [self setTableViewContentSize];
+    [self checkForNoLabels];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -860,13 +868,19 @@
 - (void)SNCResizableTextViewDoneButtonPressed:(SNCResizableTextView *)textView
 {
     [self.writeCommentView setUserInteractionEnabled:NO];
+    UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [indicator setFrame:CGRectMake(0.0, 0.0, 44.0, 44.0)];
+    [textView.doneButton addSubview:indicator];
+    [indicator startAnimating];
     [SNCAPIManager writeCommentToSonic:self.sonic withText:self.writeCommentView.growingTextView.text withCompletionBlock:^(id object) {
         [self.commentsContent addObject:object];
         [self reloadData];
         [self.writeCommentView setUserInteractionEnabled:YES];
         [self.writeCommentView.growingTextView setText:@""];
+        [indicator removeFromSuperview];
     } andErrorBlock:^(NSError *error) {
         [self.writeCommentView setUserInteractionEnabled:YES];
+        [indicator removeFromSuperview];
     }];
 }
 

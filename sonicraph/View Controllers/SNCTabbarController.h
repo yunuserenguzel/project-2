@@ -12,4 +12,6 @@
 
 - (void) openPreviousTab;
 
+- (void) removeCameraViewController:(UIViewController*)viewController;
+
 @end

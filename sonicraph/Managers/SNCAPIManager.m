@@ -413,10 +413,19 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
 
 + (MKNetworkOperation *)deleteResonic:(Sonic *)sonic withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
-    NSDictionary* params = @{@"sonic": sonic.sonicId};
+    NSDictionary* params;
+    if(sonic.isResonic)
+    {
+        params = @{@"sonic": sonic.originalSonic.sonicId};
+    }
+    else
+    {
+        params = @{@"sonic": sonic.sonicId};
+    }
     return  [[SNCAPIConnector sharedInstance]
              getRequestWithParams:params useToken:YES andOperation:@"sonic/delete_resonic" andCompletionBlock:^(NSDictionary *responseDictionary) {
                  Sonic* sonic = sonicFromServerDictionary([responseDictionary objectForKey:@"sonic"]);
+                 [[NSNotificationCenter defaultCenter] postNotificationName:NotificationResonicDeleted object:sonic];
                  if(completionBlock){
                      completionBlock(sonic);
                  }
@@ -476,10 +485,15 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                                 andErrorBlock:errorBlock];
 }
 
-
-+ (MKNetworkOperation *)getSonicsILikedwithCompletionBlock:(CompletionArrayBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
++ (MKNetworkOperation*) getSonicsILikedBeforeSonic:(Sonic*) sonic
+                              withCompletionBlock:(CompletionArrayBlock)completionBlock
+                                    andErrorBlock:(ErrorBlock)errorBlock;
 {
     NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    if(sonic)
+    {
+        [params setObject:sonic.sonicId forKey:@"before"];
+    }
     [params setObject:[NSNumber numberWithBool:YES] forKey:@"me_liked"];
     return [SNCAPIManager getSonicsWithParams:params
                           withCompletionBlock:completionBlock

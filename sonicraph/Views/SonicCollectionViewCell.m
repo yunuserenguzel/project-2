@@ -27,7 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self setClipsToBounds:NO];
+        [self setClipsToBounds:YES];
         [self setBackgroundColor:[UIColor whiteColor]];
         self.sonicPlayerView = [[SonicPlayerView alloc] initWithFrame:[self imageViewFrame]];
         [self.sonicPlayerView setUserInteractionEnabled:NO];

@@ -432,7 +432,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                  
              } andErrorBlock:errorBlock];
 }
-+(MKNetworkOperation *)createSonic:(SonicData *)sonic withTags:(NSString *)tags withCompletionBlock:(CompletionSonicBlock)completionBlock
++(MKNetworkOperation *)createSonic:(SonicData *)sonic withTags:(NSString *)tags withCompletionBlock:(CompletionSonicBlock)completionBlock andErrorBlock:(ErrorBlock)errorBlock
 {
     NSString* sonicData = [[sonic dictionaryFromSonicData] JSONString];
     NSString* tempFile = [SonicData filePathWithId:@"temp_sonic"];
@@ -457,9 +457,7 @@ Notification* notificationFromServerDictionary(NSDictionary* dict)
                     completionBlock(sonic);
                 }
             }
-            andErrorBlock:^(NSError *error) {
-                
-            }];
+            andErrorBlock:errorBlock];
 }
 
 

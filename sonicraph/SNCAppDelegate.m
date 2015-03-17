@@ -19,6 +19,8 @@
 #import <Crashlytics/Crashlytics.h>
 #import "Configurations.h"
 
+#import "SNCSplashView.h"
+
 static SNCAppDelegate* sharedInstance = nil;
 
 @implementation SNCAppDelegate
@@ -47,7 +49,8 @@ static SNCAppDelegate* sharedInstance = nil;
     
     [[UIActivityIndicatorView appearance] setColor:MainThemeColor];
     [[UIRefreshControl appearance] setTintColor:MainThemeColor];
-    
+
+
     return YES;
 }
 

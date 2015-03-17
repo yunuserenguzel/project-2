@@ -47,11 +47,12 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
 
 @property NSArray* contentViewControllers;
 
+@property UIButton* registerButton;
 @property UIButton* loginButton;
 
 @property SNCLoginViewController* loginViewController;
 @property SNCRegisterViewController* registerViewController;
-@property UIButton* registerButton;
+
 
 @property SMPageControl* pageControl;
 
@@ -64,9 +65,9 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     NSInteger currentIndex;
 }
 
-- (CGRect) registerButtonFrame
+- (CGRect) loginButtonFrame
 {
-    return CGRectMake(10.0, self.view.frame.size.height-50.0, 300, 50.0);
+    return CGRectMake(0.0, self.view.frame.size.height-44.0, 320, 44.0);
 }
 
 - (CGRect) pageControlFrame
@@ -113,19 +114,22 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     [imageView setContentMode:UIViewContentModeCenter];
     [self.view insertSubview:imageView atIndex:0];
     
-    self.loginButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height-100.0, 320.0, 44.0)];
-    [self.loginButton setBackgroundImageWithColor:[[UIColor blackColor] colorWithAlphaComponent:0.5] forState:UIControlStateNormal];
-    [self.loginButton setTitle:@"Log in" forState:UIControlStateNormal];
-    [self.view addSubview:self.loginButton];
-    [self.loginButton addTarget:self action:@selector(showLoginViewController) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.registerButton.frame = [self registerButtonFrame];
-    [self.registerButton setTitle:@"Not yet registered? Sign up" forState:UIControlStateNormal];
-    [self.registerButton.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
-    [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.registerButton addTarget:self action:@selector(openRegister) forControlEvents:UIControlEventTouchUpInside];
+    self.registerButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height-[self loginButtonFrame].size.height-44.0, 320.0, 44.0)];
+    [self.registerButton setTitleColor:MainThemeColor forState:UIControlStateNormal];
+    [self.registerButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+    [self.registerButton setBackgroundImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:1.0] forState:UIControlStateNormal];
+    [self.registerButton setTitle:@"Join Now!" forState:UIControlStateNormal];
     [self.view addSubview:self.registerButton];
+    [self.registerButton addTarget:self action:@selector(openRegister) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [self.registerButton setBackgroundImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:1.0] forState:UIControlStateNormal];
+    self.loginButton.frame = [self loginButtonFrame];
+    [self.loginButton setTitle:@"Sign in" forState:UIControlStateNormal];
+    [self.loginButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16.0]];
+    [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.loginButton addTarget:self action:@selector(showLoginViewController) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.loginButton];
     
     self.pageControl = [[SMPageControl alloc] initWithFrame:[self pageControlFrame]];
     [self.pageControl setUserInteractionEnabled:NO];
@@ -184,6 +188,15 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     [self hidePageControl];
     [self showRegisterViewController];
 }
+- (void) showLoginViewController
+{
+    [self hideLoginButton];
+    [self showRegisterButton];
+    [self hidePageControl];
+    [self.toBeginningButton setHidden:NO];
+    [self showViewController:self.loginViewController direction:UIPageViewControllerNavigationDirectionForward];
+    
+}
 - (void) showRegisterViewController
 {
     if(self.registerViewController == nil)
@@ -234,15 +247,7 @@ UIView* textFieldWithBaseAndLabel(UITextField* textField)
     }];
 }
 
-- (void) showLoginViewController
-{
-    [self hideLoginButton];
-    [self showRegisterButton];
-    [self hidePageControl];
-    [self.toBeginningButton setHidden:NO];
-    [self showViewController:self.loginViewController direction:UIPageViewControllerNavigationDirectionForward];
-   
-}
+
 
 - (void) showViewController:(UIViewController*)viewController direction:(UIPageViewControllerNavigationDirection)direction
 {

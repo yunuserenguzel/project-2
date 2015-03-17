@@ -76,7 +76,7 @@
     [self.fields addObject:[NSMutableArray new]];
     [[self.fields objectAtIndex:2] addObject:[SettingsField k:FAQ sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
     [[self.fields objectAtIndex:2] addObject:[SettingsField k:LegalPrivacy sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
-    [[self.fields objectAtIndex:2] addObject:[SettingsField k:AppVersion sK:nil v:@"1.0" t:SettingsTableCellInfoIdentifier]];
+    [[self.fields objectAtIndex:2] addObject:[SettingsField k:AppVersion sK:nil v:@"1.1.0" t:SettingsTableCellInfoIdentifier]];
     
     [self.fields addObject:[NSMutableArray new]];
     [[self.fields objectAtIndex:3] addObject:[SettingsField k:@"Logout" sK:nil v:nil t:SettingsTableCellButtonIdentifier]];
@@ -158,16 +158,16 @@
         MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
         [controller setSubject:[NSString stringWithFormat:@"Feedback | %@ | %@",[[AuthenticationManager sharedInstance] authenticatedUser].fullName, [[AuthenticationManager sharedInstance] authenticatedUser].userId]];
-        [controller setToRecipients:@[@"feedback@sonicraph.com"]];
+        [controller setToRecipients:@[@"sonicraphdeveloper@gmail.com"]];
         [self presentViewController:controller animated:YES completion:nil];
     }
     else if([settingsField.key isEqualToString:FAQ])
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/about"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://sonicraph.herokuapp.com/about"]];
     }
     else if([settingsField.key isEqualToString:LegalPrivacy])
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/legal"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://sonicraph.herokuapp.com/legal"]];
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

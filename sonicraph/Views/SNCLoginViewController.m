@@ -56,7 +56,7 @@ static SNCLoginViewController* sharedInstance = nil;
 {
     self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
     [self.view addSubview:self.titleLabel];
-    [self.titleLabel setText:@"Log in"];
+    [self.titleLabel setText:@"Sign in"];
     [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [self.titleLabel setTextColor:[UIColor whiteColor]];
     [self.titleLabel setFont:[UIFont systemFontOfSize:26.0]];

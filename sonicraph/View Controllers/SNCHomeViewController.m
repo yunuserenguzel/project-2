@@ -15,6 +15,7 @@
 #import "SonicArray.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "SNCAppDelegate.h"
+#import "SNCSplashView.h"
 
 @interface SNCHomeViewController ()
 
@@ -49,6 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [SNCSplashView splash];
     indexOfCellToBeIncreased = -1;
     [self initTableView];
     [self initOops];
@@ -90,8 +92,7 @@
     [self initRefreshController];
     [self refreshFromServer];
     
-    
-    
+
 }
 
 - (void) reachabilityChangedHandler:(NSNotification*)notification

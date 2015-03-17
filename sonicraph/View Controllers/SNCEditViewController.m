@@ -310,7 +310,6 @@
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:NULL];
     NSData* sound = self.sonic.sound ? self.sonic.sound : self.sonic.rawSound;
     audioPlayer = [[AVAudioPlayer alloc] initWithData:sound error:nil];
-    [audioPlayer setVolume:1.0];
     audioPlayer.delegate = self;
     if([self isViewLoaded]){
         [self configureViews];

@@ -161,7 +161,7 @@
     params.link = [NSURL URLWithString:sonic.shareUrlString];
     params.name = name;
     params.caption = fullNameFild;
-    params.description = @"sonicraph.com";
+//    params.description = @"sonicraph.com";
     if ([FBDialogs canPresentShareDialogWithParams:params]) {
         [FBDialogs
          presentShareDialogWithLink:params.link

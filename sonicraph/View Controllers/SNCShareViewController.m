@@ -144,6 +144,7 @@
     self.facebookSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:FacebookShareDefaultValueKey] boolValue];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.activityIndicator.color = [UIColor whiteColor];
     [self.activityIndicator setFrame:[self sonicPlayerViewFrame]];
     [self.view addSubview:self.activityIndicator];
     [[self activityIndicator] startAnimating];
@@ -310,18 +311,28 @@
 
 - (void) shareSonic
 {
+    UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicator.frame = self.view.bounds;
+    [self.view addSubview:activityIndicator];
+    [activityIndicator setUserInteractionEnabled:YES];
+    [activityIndicator startAnimating];
+    activityIndicator.tintColor = [UIColor whiteColor];
+    activityIndicator.color = [UIColor whiteColor];
+    activityIndicator.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.6];
     [SNCAPIManager createSonic:self.sonic withTags:self.tagsTextView.growingTextView.text withCompletionBlock:^(Sonic *sonic) {
         if(self.facebookSwitch.on)
         {
             [SNCFacebookManager postSonic:sonic withCompletionBlock:nil andErrorBlock:nil];
         }
+        [activityIndicator stopAnimating];
+        SNCTabbarController* tabbar = (SNCTabbarController*)self.tabBarController;
+        [tabbar setSelectedIndex:0];
+        [tabbar removeCameraViewController:self.navigationController];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    } andErrorBlock:^(NSError *error) {
+        [activityIndicator stopAnimating];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"An error occurred while sending your sonic. Please check your internet connnection and try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
     }];
-    
-    
-    SNCTabbarController* tabbar = (SNCTabbarController*)self.tabBarController;
-    [tabbar setSelectedIndex:0];
-    [tabbar removeCameraViewController:self.navigationController];
-    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)didReceiveMemoryWarning

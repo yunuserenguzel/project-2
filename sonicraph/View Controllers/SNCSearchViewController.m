@@ -157,6 +157,7 @@ SearchContentType;
     self.segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Sonics",@"Users"]];
     [self.segmentControl setFrame:[self segmentedControlFrame]];
     [self.segmentControl setSelectedSegmentIndex:0];
+    self.navigationItem.prompt = @"Search";
     self.navigationItem.titleView = self.segmentControl;
     [self.segmentControl sizeToFit];
     [self.segmentControl addTarget:self action:@selector(segmentControlValueChanged) forControlEvents:UIControlEventValueChanged];

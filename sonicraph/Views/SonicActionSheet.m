@@ -17,7 +17,7 @@
 
 @implementation SonicActionSheet
 {
-    __weak id<UIActionSheetDelegate> actualDelegate;
+    id<UIActionSheetDelegate> actualDelegate;;
 }
 
 - (id)initWithSonic:(Sonic *)sonic includeOpenDetails:(BOOL)includeOpenDetails

@@ -12,6 +12,7 @@
 #import "Configurations.h"
 #import "SNCGoThroughViewController.h"
 #import "SNCAppDelegate.h"
+#import "SNCSplashView.h"
 
 #define CameraTabbarIndex 2
 
@@ -60,10 +61,10 @@ static int previousTabIndex = 0;
 {
     [self setSelectedIndex:previousTabIndex];
 }
-//
+
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+
 }
 
 - (void) viewDidLoad
@@ -89,7 +90,15 @@ static int previousTabIndex = 0;
     [self setSelectedIndex:0];
     
     [[SNCAppDelegate sharedInstance] updateDeviceToken];
+    
+
+
 }
+
+//-(void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//}
 
 - (void) configureTabbarItems
 {

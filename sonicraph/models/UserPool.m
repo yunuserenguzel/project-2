@@ -66,7 +66,6 @@ static UserPool* sharedPool = nil;
 
 - (void)removeUser:(User *)user
 {
-    
     [self.users removeObjectForKey:user.userId];
 }
 - (void)dealloc

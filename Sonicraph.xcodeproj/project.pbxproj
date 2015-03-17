@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		AE00351418B7744200CB8BC0 /* retry_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE00351318B7744200CB8BC0 /* retry_icon.png */; };
+		AE0113161A8CAAA4005CB275 /* SNCSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0113151A8CAAA4005CB275 /* SNCSplashView.m */; };
+		AE0113271A8D3104005CB275 /* CBZRasterSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0113221A8D3104005CB275 /* CBZRasterSplashView.m */; };
+		AE0113281A8D3104005CB275 /* CBZSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0113241A8D3104005CB275 /* CBZSplashView.m */; };
+		AE0113291A8D3104005CB275 /* CBZVectorSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0113261A8D3104005CB275 /* CBZVectorSplashView.m */; };
 		AE10C3DE18C721D200AD4D1A /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10C3DB18C721D200AD4D1A /* HPGrowingTextView.m */; };
 		AE10C3DF18C721D200AD4D1A /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10C3DD18C721D200AD4D1A /* HPTextViewInternal.m */; };
 		AE1479B618C13F0800046C06 /* _TextFieldBackgroundActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE1479B318C13F0800046C06 /* _TextFieldBackgroundActive@2x.png */; };
@@ -111,6 +115,7 @@
 		AE7E18FC18966334009A9B7F /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FB18966334009A9B7F /* UIImage+Resize.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		AE7E19011896641D009A9B7F /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		AE7E19021896641D009A9B7F /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		AE7F9B7E1A8D396F009D06F1 /* sonic_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE7F9B7D1A8D396F009D06F1 /* sonic_icon@2x.png */; };
 		AE86E9F818E40B0D00DF82BA /* NSString+Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86E9F718E40B0D00DF82BA /* NSString+Extended.m */; };
 		AE86EE7B182C0DA800F74F1D /* SonicData.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7A182C0DA800F74F1D /* SonicData.m */; };
 		AE86EE7F182C0DC000F74F1D /* NMRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = AE86EE7E182C0DC000F74F1D /* NMRangeSlider.m */; };
@@ -285,6 +290,14 @@
 
 /* Begin PBXFileReference section */
 		AE00351318B7744200CB8BC0 /* retry_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retry_icon.png; sourceTree = "<group>"; };
+		AE0113141A8CAAA4005CB275 /* SNCSplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCSplashView.h; sourceTree = "<group>"; };
+		AE0113151A8CAAA4005CB275 /* SNCSplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCSplashView.m; sourceTree = "<group>"; };
+		AE0113211A8D3104005CB275 /* CBZRasterSplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBZRasterSplashView.h; sourceTree = "<group>"; };
+		AE0113221A8D3104005CB275 /* CBZRasterSplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBZRasterSplashView.m; sourceTree = "<group>"; };
+		AE0113231A8D3104005CB275 /* CBZSplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBZSplashView.h; sourceTree = "<group>"; };
+		AE0113241A8D3104005CB275 /* CBZSplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBZSplashView.m; sourceTree = "<group>"; };
+		AE0113251A8D3104005CB275 /* CBZVectorSplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBZVectorSplashView.h; sourceTree = "<group>"; };
+		AE0113261A8D3104005CB275 /* CBZVectorSplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBZVectorSplashView.m; sourceTree = "<group>"; };
 		AE10C3DA18C721D200AD4D1A /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		AE10C3DB18C721D200AD4D1A /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		AE10C3DC18C721D200AD4D1A /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -412,6 +425,7 @@
 		AE7E18FE1896641D009A9B7F /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		AE7E18FF1896641D009A9B7F /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
 		AE7E19001896641D009A9B7F /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		AE7F9B7D1A8D396F009D06F1 /* sonic_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sonic_icon@2x.png"; sourceTree = "<group>"; };
 		AE86E9F618E40B0D00DF82BA /* NSString+Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extended.h"; sourceTree = "<group>"; };
 		AE86E9F718E40B0D00DF82BA /* NSString+Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extended.m"; sourceTree = "<group>"; };
 		AE86EE79182C0DA800F74F1D /* SonicData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SonicData.h; sourceTree = "<group>"; };
@@ -842,6 +856,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE0113201A8D3104005CB275 /* CBZSplashView */ = {
+			isa = PBXGroup;
+			children = (
+				AE0113211A8D3104005CB275 /* CBZRasterSplashView.h */,
+				AE0113221A8D3104005CB275 /* CBZRasterSplashView.m */,
+				AE0113231A8D3104005CB275 /* CBZSplashView.h */,
+				AE0113241A8D3104005CB275 /* CBZSplashView.m */,
+				AE0113251A8D3104005CB275 /* CBZVectorSplashView.h */,
+				AE0113261A8D3104005CB275 /* CBZVectorSplashView.m */,
+			);
+			path = CBZSplashView;
+			sourceTree = "<group>";
+		};
 		AE10C3D918C721D200AD4D1A /* HPGrowingTextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -858,6 +885,7 @@
 		AE15965C18142C6300929D1D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				AE7F9B7D1A8D396F009D06F1 /* sonic_icon@2x.png */,
 				AE1CDF43191EA67500D456FD /* preloader */,
 				AE716D11190D9E1700E9ED97 /* nav_bar_logo@2x.png */,
 				AE37F83C18EF611A007AB492 /* AddTagIcon@2x.png */,
@@ -901,6 +929,8 @@
 				AECAB03E18D4B11F007BC760 /* SNCPreloaderImageView.m */,
 				AE1A4D2B191D16BB00B20C51 /* FadingImageView.h */,
 				AE1A4D2C191D16BB00B20C51 /* FadingImageView.m */,
+				AE0113141A8CAAA4005CB275 /* SNCSplashView.h */,
+				AE0113151A8CAAA4005CB275 /* SNCSplashView.m */,
 			);
 			path = "Atomic Views";
 			sourceTree = "<group>";
@@ -1099,6 +1129,7 @@
 		AE86EE82182C0DF300F74F1D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AE0113201A8D3104005CB275 /* CBZSplashView */,
 				AE86EEB618316CA700F74F1D /* AudioConverterKit */,
 				AED56ED91801A39F000DF866 /* MKNetworkKit */,
 				AE86E9EC18E40AEC00DF82BA /* Categories */,
@@ -1970,7 +2001,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SNC;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Yunus Eren Guzel";
 				TargetAttributes = {
 					AED56E971801A35D000DF866 = {
@@ -2172,6 +2203,7 @@
 				AE6B691518E38B66003169CD /* resonicactive@2x.png in Resources */,
 				AE1CDF86191EA8C100D456FD /* listview@2x.png in Resources */,
 				AE1CDF6C191EA67500D456FD /* Preloader_10_00010@2x.png in Resources */,
+				AE7F9B7E1A8D396F009D06F1 /* sonic_icon@2x.png in Resources */,
 				AE1CDF7E191EA67500D456FD /* Preloader_10_00028@2x.png in Resources */,
 				AE37F82C18EF5C7F007AB492 /* AddCommentIcon@2x.png in Resources */,
 				AE1CDF75191EA67500D456FD /* Preloader_10_00019@2x.png in Resources */,
@@ -2248,6 +2280,7 @@
 				AE86EE94182C0E0E00F74F1D /* SNCCameraViewController.m in Sources */,
 				AE86EE96182C0E0E00F74F1D /* SNCShareViewController.m in Sources */,
 				AED56EF41801A39F000DF866 /* NSDictionary+RequestEncoding.m in Sources */,
+				AE0113281A8D3104005CB275 /* CBZSplashView.m in Sources */,
 				AED3323118BC888A002FB70A /* SNCSwitchView.m in Sources */,
 				AE1A4D19191C180000B20C51 /* SonicCollectionViewFlowLayout.m in Sources */,
 				AEDE11ED18D1AD05007E60F8 /* SNCEqualizerView.m in Sources */,
@@ -2273,6 +2306,7 @@
 				AED56EF61801A39F000DF866 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
 				AEB945EF1876047900FCE111 /* SonicCommentCell.m in Sources */,
 				AE86EECA18316CA800F74F1D /* AudioConverter.m in Sources */,
+				AE0113161A8CAAA4005CB275 /* SNCSplashView.m in Sources */,
 				AE7E19021896641D009A9B7F /* UIImage+RoundedCorner.m in Sources */,
 				AE10C3DF18C721D200AD4D1A /* HPTextViewInternal.m in Sources */,
 				AE86EE95182C0E0E00F74F1D /* SNCEditViewController.m in Sources */,
@@ -2295,7 +2329,9 @@
 				AECBA6411856408600DE8EDE /* SNCLoginViewController.m in Sources */,
 				AED56EF11801A39F000DF866 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				AED56EF21801A39F000DF866 /* NSData+MKBase64.m in Sources */,
+				AE0113271A8D3104005CB275 /* CBZRasterSplashView.m in Sources */,
 				AE3E12A018D70CFC006801FC /* SNCChangePasswordViewController.m in Sources */,
+				AE0113291A8D3104005CB275 /* CBZVectorSplashView.m in Sources */,
 				AED56EF91801A39F000DF866 /* MKNetworkOperation.m in Sources */,
 				AEDAAE0D185DDAFC001DD389 /* TypeDefs.m in Sources */,
 				AE86EEB418316BC500F74F1D /* SNCAPIManager.m in Sources */,
@@ -2580,7 +2616,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2619,7 +2654,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2651,10 +2685,9 @@
 		AED56ED41801A35D000DF866 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Yunus Guzel (J592UV7UG6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2671,9 +2704,9 @@
 					/Users/yunuserenguzel/Documents/sonicraph_ios/sonicraph/AudioConverterKit,
 					/Users/yunuserenguzel/Documents/FacebookSDK/FacebookSDK.framework/Versions/A,
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Sonicraph;
-				PROVISIONING_PROFILE = "CBA34142-C653-49BE-B253-25D39324E2D5";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2682,10 +2715,9 @@
 		AED56ED51801A35D000DF866 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Yunus Guzel (J592UV7UG6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2702,9 +2734,9 @@
 					/Users/yunuserenguzel/Documents/sonicraph_ios/sonicraph/AudioConverterKit,
 					/Users/yunuserenguzel/Documents/FacebookSDK/FacebookSDK.framework/Versions/A,
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Sonicraph;
-				PROVISIONING_PROFILE = "CBA34142-C653-49BE-B253-25D39324E2D5";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

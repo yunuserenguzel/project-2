@@ -44,7 +44,7 @@
 
 - (CGRect) loginButtonFrame
 {
-    return CGRectMake(0.0, self.view.frame.size.height - 50.0, 320.0, 50.0);
+    return CGRectMake(0.0, self.view.frame.size.height - 44.0, 320.0, 44.0);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -61,7 +61,7 @@
     [super viewDidLoad];
     self.titleLabel = [[UILabel alloc] initWithFrame:[self titleLabelFrame]];
     [self.view addSubview:self.titleLabel];
-    [self.titleLabel setText:@"Sign up"];
+    [self.titleLabel setText:@"Join Now!"];
     [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [self.titleLabel setTextColor:[UIColor whiteColor]];
     [self.titleLabel setFont:[UIFont systemFontOfSize:26.0]];
@@ -99,7 +99,7 @@
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setTitle:@"Already signed up? Log in" forState:UIControlStateNormal];
-    [self.loginButton.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
+    [self.loginButton.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
     [self.loginButton setFrame:[self loginButtonFrame]];
     [self.scrollView addSubview:self.loginButton];
     [self.loginButton addTarget:self action:@selector(openLogin) forControlEvents:UIControlEventTouchUpInside];
@@ -109,7 +109,7 @@
 }
 - (void) openTerms
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.sonicraph.com/terms"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://sonicraph.herokuapp.com/terms"]];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -124,6 +124,12 @@
         [self registerUser];
     }
     return YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.emailField becomeFirstResponder];
 }
 
 - (void) openLogin

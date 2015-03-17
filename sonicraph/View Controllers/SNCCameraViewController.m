@@ -160,6 +160,7 @@ typedef enum SonicRecordType {
     [self initializeCameraFeaturesBar];
     [self initializeSoundTimeSlider];
     [self initializeRetakeAndCancelButton];
+    [self initializeMediaManager];
     
     self.recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.recordButton setImage:RecordButtonCameraImage forState:UIControlStateNormal];
@@ -181,11 +182,6 @@ typedef enum SonicRecordType {
 	locationManager.distanceFilter = kCLDistanceFilterNone;
 	locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    [[[NSThread alloc]
-      initWithTarget:self
-      selector:@selector(initializeMediaManager)
-      object:nil]
-     start];
     [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(prepareForRetake)
@@ -353,6 +349,7 @@ typedef enum SonicRecordType {
 {
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.activityIndicator setTintAdjustmentMode:UIViewTintAdjustmentModeDimmed];
+    self.activityIndicator.color = [UIColor whiteColor];
     [self.maskView addSubview:self.activityIndicator];
     [self.activityIndicator setFrame:CGRectMake(0.0, 0.0, self.maskView.frame.size.width, self.maskView.frame.size.height)];
     [self.activityIndicator startAnimating];
@@ -443,7 +440,7 @@ typedef enum SonicRecordType {
     [self.mediaManager startAuidoRecording];
     [self.recordButton setEnabled:NO];
     self.soundTimerInitialFireDate = [NSDate date];
-    self.soundTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSoundTimer:) userInfo:nil repeats:YES];
+    self.soundTimer = [NSTimer scheduledTimerWithTimeInterval:0.17 target:self selector:@selector(updateSoundTimer:) userInfo:nil repeats:YES];
     
     [self.view addSubview:self.equalizer];
     [self.equalizer startAnimating];

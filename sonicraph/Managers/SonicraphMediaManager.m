@@ -223,8 +223,7 @@
 - (void) startCamera
 {
     if([session isRunning] == NO){
-        [[[NSThread alloc] initWithTarget:session selector:@selector(startRunning) object:nil] start];
-//    [session startRunning];
+        [session startRunning];
     }
 }
 
